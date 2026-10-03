@@ -1447,12 +1447,15 @@ async function callFgoApi(order, fgo) {
       Telefon: order.phone
     },
     // ✅ Continut – minden termék a kosárból
+    // ✅ TVA mindig 0 (ÁFA-mentes)
+    // ✅ CodArticol = rendelésszám (nr comandă)
+    // ✅ Cantitate = vásárolt darabszám
     Continut: order.items.map(it => ({
       Denumire: it.name || 'Termék',
-      CodArticol: it.sku || `TERM-${Date.now()}`,
-      Cantitate: it.quantity || 1,     // ✅ Ahány darabot vásárolt
+      CodArticol: String(order.id),
+      Cantitate: it.quantity || 1,
       PretUnitar: it.price || 0,
-      TVA: 0,                           // ✅ MINDIG 0 (ÁFA-mentes)
+      TVA: 0,
       Valoare: (it.price || 0) * (it.quantity || 1)
     }))
   };
