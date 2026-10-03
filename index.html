@@ -686,11 +686,11 @@
         <label>Cheie Privată (API kulcs)</label>
         <input id="fgoKey" type="password" placeholder="FGO API kulcs" />
         <label>Cod Unic (CUI, RO nélkül)</label>
-        <input id="fgoCui" placeholder="37023909" />
+        <input id="fgoCui" placeholder="39884336" />
         <label>Serie (számla sorozat)</label>
-        <input id="fgoSerie" placeholder="MEL" />
+        <input id="fgoSerie" placeholder="SCN" />
         <label>Platforma URL (a te oldalad)</label>
-        <input id="fgoPlatform" placeholder="https://zen3hub.ro" />
+        <input id="fgoPlatform" placeholder="https://miarmadesigns.ro/" />
         <button class="btn" onclick="saveFgoConfig()">Mentés</button>
       </div>
     </div>
@@ -758,7 +758,7 @@ setPersistence(auth, browserLocalPersistence).catch((err) => {
   console.error('Persistence hiba:', err);
 });
 
-// ⚠️ ADMIN EMAIL – csak ez a felhasználó látja az admin panelt
+// ⚠️ ADMIN EMAIL
 const ADMIN_EMAIL = 'yoaeeyoaee@gmail.com';
 
 // ⚠️ RENDER PROXY URL
@@ -1464,19 +1464,30 @@ async function callFgoApi(order, fgo) {
       Email: order.email,
       Telefon: order.phone
     },
-    produse: order.items.map(it => ({
-      Denumire: it.name,
-      CodArticol: it.sku || '',
-      Cantitate: it.quantity,
-      PretUnitar: it.price,
-      TVA: it.totalTax > 0 ? 19 : 0,
-      Valoare: it.subtotal
-    }))
+    // ✅ HELYES NÉV: Continut (nem Produse!)
+    Continut: order.items.map(it => {
+      const quantity = it.quantity || 1;
+      const netPrice = it.price;
+      const netValue = netPrice * quantity;
+
+      let tvaRate = 0;
+      if (it.totalTax > 0 && it.subtotal > 0) {
+        tvaRate = Math.round((it.totalTax / it.subtotal) * 100);
+      }
+
+      return {
+        Denumire: it.name || 'Termék',
+        CodArticol: it.sku || `TERM-${Date.now()}`,
+        Cantitate: quantity,
+        PretUnitar: netPrice,
+        TVA: tvaRate,
+        Valoare: netValue
+      };
+    })
   };
 
   console.log('📤 Küldés a Render proxy-nak:', payload);
 
-  // ✅ VALÓDI HÍVÁS a Render proxy-ra
   const res = await fetch(FGO_PROXY_URL, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
