@@ -1,0 +1,1802 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Zen3Hub — Luxury Logistics</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #d4af37;
+    --gold-light: #f4e5b1;
+    --gold-dark: #a8842a;
+    --black: #0a0a0a;
+    --text: #e8e8e8;
+    --text-dim: #8a8a8a;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body {
+    font-family: 'Inter', sans-serif;
+    background: var(--black); color: var(--text);
+    min-height: 100vh; overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+  body::before {
+    content: ''; position: fixed; inset: 0;
+    background:
+      radial-gradient(circle at 20% 20%, rgba(212,175,55,0.06) 0%, transparent 50%),
+      radial-gradient(circle at 80% 80%, rgba(212,175,55,0.04) 0%, transparent 50%);
+    pointer-events: none; z-index: 0;
+  }
+
+  #landing {
+    position: fixed; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    background: #000; z-index: 1000;
+    transition: all 1.4s cubic-bezier(0.7, 0, 0.3, 1);
+  }
+  #landing.shrink { transform: scale(0.15); opacity: 0; pointer-events: none; }
+  #brand-wrap { text-align: center; position: relative; }
+  #brand {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(3rem, 9vw, 8rem);
+    font-weight: 600; letter-spacing: 8px;
+    background: linear-gradient(180deg, #f4e5b1 0%, #d4af37 50%, #a8842a 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    animation: brandGlow 3s ease-in-out infinite alternate;
+  }
+  @keyframes brandGlow {
+    from { filter: drop-shadow(0 0 20px rgba(212,175,55,0.4)); }
+    to   { filter: drop-shadow(0 0 50px rgba(212,175,55,0.7)); }
+  }
+  #brand-wrap::after {
+    content: ''; display: block; width: 0; height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    margin: 24px auto 0; animation: lineGrow 2s ease 0.5s forwards;
+  }
+  @keyframes lineGrow { to { width: 200px; } }
+  #brand-sub {
+    font-size: 0.75rem; letter-spacing: 8px;
+    color: var(--gold-dark); text-transform: uppercase;
+    margin-top: 20px; opacity: 0;
+    animation: fadeIn 1.5s ease 1s forwards;
+  }
+  @keyframes fadeIn { to { opacity: 1; } }
+
+  #auth {
+    display: none; min-height: 100vh;
+    align-items: center; justify-content: center;
+    padding: 24px; position: relative; z-index: 1;
+  }
+  #auth.show { display: flex; }
+  .auth-box {
+    background: linear-gradient(145deg, rgba(26,26,26,0.95), rgba(10,10,10,0.98));
+    border: 1px solid rgba(212,175,55,0.25);
+    border-radius: 4px; padding: 56px 48px;
+    width: 100%; max-width: 440px; position: relative;
+    box-shadow: 0 30px 80px rgba(0,0,0,0.8), inset 0 1px 0 rgba(212,175,55,0.1);
+    animation: fadeUp 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .auth-box::before, .auth-box::after {
+    content: ''; position: absolute; width: 20px; height: 20px;
+    border: 1px solid var(--gold);
+  }
+  .auth-box::before { top: -1px; left: -1px; border-right: none; border-bottom: none; }
+  .auth-box::after  { bottom: -1px; right: -1px; border-left: none; border-top: none; }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .auth-box h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2.2rem; font-weight: 600;
+    margin-bottom: 8px; text-align: center;
+    color: var(--gold); letter-spacing: 2px;
+  }
+  .auth-box .subtitle {
+    text-align: center; font-size: 0.7rem;
+    letter-spacing: 4px; text-transform: uppercase;
+    color: var(--text-dim); margin-bottom: 36px;
+  }
+  .auth-box input {
+    width: 100%; padding: 16px 18px; margin-bottom: 16px;
+    background: rgba(0,0,0,0.5);
+    border: 1px solid rgba(212,175,55,0.15);
+    border-radius: 2px; color: var(--text);
+    font-size: 0.95rem; outline: none; transition: 0.3s;
+  }
+  .auth-box input:focus {
+    border-color: var(--gold);
+    background: rgba(0,0,0,0.7);
+    box-shadow: 0 0 0 3px rgba(212,175,55,0.08);
+  }
+  .auth-box input::placeholder { color: #555; }
+
+  .remember-label {
+    display: flex; align-items: center; gap: 8px;
+    margin-bottom: 16px; font-size: 0.8rem;
+    color: var(--text-dim); cursor: pointer;
+    letter-spacing: 1px;
+  }
+  .remember-label input {
+    width: 16px; height: 16px;
+    margin: 0; accent-color: var(--gold); cursor: pointer;
+  }
+
+  .btn-gold {
+    width: 100%; padding: 16px;
+    background: linear-gradient(135deg, #d4af37 0%, #a8842a 100%);
+    border: none; border-radius: 2px;
+    color: #0a0a0a; font-size: 0.85rem; font-weight: 700;
+    letter-spacing: 3px; text-transform: uppercase;
+    cursor: pointer; transition: 0.3s;
+  }
+  .btn-gold:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 15px 40px rgba(212,175,55,0.35);
+    background: linear-gradient(135deg, #f4e5b1 0%, #d4af37 100%);
+  }
+
+  .switch {
+    text-align: center; margin-top: 24px;
+    font-size: 0.8rem; color: var(--text-dim);
+  }
+  .switch span { color: var(--gold); cursor: pointer; font-weight: 600; }
+  .error {
+    color: #ff4d6d; font-size: 0.8rem;
+    margin-bottom: 12px; text-align: center;
+    padding: 10px; background: rgba(255,77,109,0.08);
+    border-left: 2px solid #ff4d6d; border-radius: 2px;
+  }
+  .error:empty { display: none; }
+
+  #paywall {
+    display: none; min-height: 100vh;
+    align-items: center; justify-content: center;
+    padding: 24px; position: relative; z-index: 1;
+  }
+  #paywall.show { display: flex; }
+  .pay-box {
+    background: linear-gradient(145deg, rgba(26,26,26,0.95), rgba(10,10,10,0.98));
+    border: 1px solid rgba(212,175,55,0.25);
+    border-radius: 4px; padding: 56px 48px;
+    max-width: 480px; width: 100%; text-align: center;
+    position: relative; box-shadow: 0 30px 80px rgba(0,0,0,0.8);
+  }
+  .pay-box::before, .pay-box::after {
+    content: ''; position: absolute;
+    width: 20px; height: 20px; border: 1px solid var(--gold);
+  }
+  .pay-box::before { top: -1px; left: -1px; border-right: none; border-bottom: none; }
+  .pay-box::after  { bottom: -1px; right: -1px; border-left: none; border-top: none; }
+  .pay-box h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2rem; color: var(--gold);
+    letter-spacing: 2px; margin-bottom: 8px;
+  }
+  .pay-box p { color: var(--text-dim); font-size: 0.85rem; }
+  .pay-box .email-show {
+    color: var(--gold-light); font-size: 0.8rem;
+    margin-top: 12px; letter-spacing: 1px;
+    padding: 8px; background: rgba(212,175,55,0.06);
+    border: 1px solid rgba(212,175,55,0.2); border-radius: 2px;
+  }
+  .price {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 4.5rem; font-weight: 700;
+    margin: 28px 0; line-height: 1;
+    background: linear-gradient(180deg, #f4e5b1 0%, #d4af37 60%, #a8842a 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  }
+  .price small {
+    font-size: 1rem; color: var(--gold-dark);
+    -webkit-text-fill-color: var(--gold-dark);
+    letter-spacing: 3px; display: block; margin-top: 8px;
+  }
+  #paypal-button-container { margin-top: 28px; }
+  .back-link {
+    display: inline-block; margin-top: 20px;
+    color: var(--text-dim); font-size: 0.75rem;
+    letter-spacing: 2px; text-transform: uppercase;
+    cursor: pointer; transition: 0.2s;
+  }
+  .back-link:hover { color: var(--gold); }
+
+  #dashboard { display: none; min-height: 100vh; position: relative; z-index: 1; }
+  #dashboard.show { display: block; }
+
+  .topbar {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 20px 32px; background: rgba(10,10,10,0.85);
+    border-bottom: 1px solid rgba(212,175,55,0.15);
+    position: sticky; top: 0; z-index: 50;
+    backdrop-filter: blur(20px);
+  }
+  .hamburger {
+    width: 44px; height: 44px;
+    display: flex; flex-direction: column; justify-content: center; gap: 6px;
+    cursor: pointer; padding: 10px; border-radius: 2px;
+    transition: 0.3s; border: 1px solid transparent;
+  }
+  .hamburger:hover { border-color: rgba(212,175,55,0.3); background: rgba(212,175,55,0.05); }
+  .hamburger span { display: block; height: 1.5px; background: var(--gold); border-radius: 2px; transition: 0.3s; }
+  .hamburger span:nth-child(2) { width: 70%; }
+  .topbar .logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-weight: 600; font-size: 1.5rem;
+    color: var(--gold); letter-spacing: 4px;
+  }
+  .topbar .user {
+    font-size: 0.75rem; color: var(--text-dim);
+    letter-spacing: 2px; text-transform: uppercase;
+  }
+
+  .sidebar {
+    position: fixed; top: 0; left: -340px;
+    width: 320px; height: 100vh;
+    background: linear-gradient(180deg, #0e0e0e 0%, #0a0a0a 100%);
+    border-right: 1px solid rgba(212,175,55,0.2);
+    z-index: 200; transition: left 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    padding: 32px 24px; overflow-y: auto;
+  }
+  .sidebar.open { left: 0; }
+  .sidebar .brand-side {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.6rem; color: var(--gold);
+    letter-spacing: 4px; text-align: center;
+    padding-bottom: 20px; border-bottom: 1px solid rgba(212,175,55,0.15);
+    margin-bottom: 24px;
+  }
+  .sidebar h3 {
+    font-size: 0.65rem; text-transform: uppercase;
+    letter-spacing: 4px; color: var(--gold-dark);
+    margin: 24px 0 12px; font-weight: 600;
+  }
+  .sidebar .acc-item {
+    padding: 14px 16px; border-radius: 2px;
+    cursor: pointer; margin-bottom: 6px;
+    transition: 0.25s; display: flex; align-items: center;
+    gap: 12px; font-size: 0.9rem;
+    border: 1px solid transparent; color: var(--text);
+  }
+  .sidebar .acc-item:hover { background: rgba(212,175,55,0.05); border-color: rgba(212,175,55,0.15); }
+  .sidebar .acc-item.active {
+    background: linear-gradient(135deg, rgba(212,175,55,0.15), rgba(212,175,55,0.05));
+    border-color: var(--gold); color: var(--gold-light);
+  }
+  .sidebar .acc-item::before {
+    content: ''; width: 6px; height: 6px;
+    background: var(--gold); border-radius: 50%; opacity: 0.5;
+  }
+  .sidebar .acc-item.active::before { opacity: 1; box-shadow: 0 0 10px var(--gold); }
+  .sidebar .menu-btn {
+    width: 100%; padding: 14px 16px; margin-top: 8px;
+    background: transparent; border: 1px solid rgba(212,175,55,0.15);
+    border-radius: 2px; color: var(--text);
+    text-align: left; cursor: pointer; font-size: 0.85rem;
+    letter-spacing: 1px; transition: 0.25s;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .sidebar .menu-btn:hover { background: rgba(212,175,55,0.08); border-color: var(--gold); color: var(--gold-light); }
+
+  .overlay {
+    position: fixed; inset: 0; background: rgba(0,0,0,0.75);
+    z-index: 150; opacity: 0; pointer-events: none;
+    transition: 0.4s; backdrop-filter: blur(4px);
+  }
+  .overlay.show { opacity: 1; pointer-events: auto; }
+
+  .content { padding: 40px 32px; max-width: 1100px; margin: 0 auto; }
+  .content-header { margin-bottom: 32px; }
+  .content-header h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2.4rem; color: var(--gold);
+    letter-spacing: 2px; font-weight: 600;
+  }
+  .content-header p {
+    color: var(--text-dim); font-size: 0.8rem;
+    letter-spacing: 3px; text-transform: uppercase; margin-top: 6px;
+  }
+
+  .tabs {
+    display: flex; gap: 8px; margin-bottom: 24px;
+    border-bottom: 1px solid rgba(212,175,55,0.15);
+    flex-wrap: wrap;
+  }
+  .tab {
+    padding: 14px 24px;
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid transparent;
+    color: var(--text-dim);
+    font-size: 0.8rem; letter-spacing: 3px;
+    text-transform: uppercase; font-weight: 600;
+    cursor: pointer; transition: 0.25s;
+    font-family: 'Inter', sans-serif;
+  }
+  .tab:hover { color: var(--gold); }
+  .tab.active {
+    color: var(--gold);
+    border-bottom-color: var(--gold);
+  }
+
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+
+  .card {
+    background: linear-gradient(145deg, rgba(22,22,22,0.8), rgba(14,14,14,0.9));
+    border: 1px solid rgba(212,175,55,0.15);
+    border-radius: 2px; padding: 32px;
+    margin-bottom: 24px; transition: 0.3s;
+  }
+  .card:hover { border-color: rgba(212,175,55,0.3); }
+  .card h3 {
+    font-family: 'Cormorant Garamond', serif;
+    margin-bottom: 20px; font-size: 1.4rem;
+    color: var(--gold); letter-spacing: 1px;
+    font-weight: 600; display: flex; align-items: center; gap: 10px;
+  }
+  .card label {
+    display: block; font-size: 0.65rem;
+    color: var(--gold-dark); letter-spacing: 3px;
+    text-transform: uppercase; margin-bottom: 6px;
+    margin-top: 16px; font-weight: 600;
+  }
+  .card input, .card select {
+    width: 100%; padding: 12px 14px;
+    background: rgba(0,0,0,0.4);
+    border: 1px solid rgba(212,175,55,0.15);
+    border-radius: 2px; color: var(--text);
+    font-size: 0.9rem; outline: none; transition: 0.2s;
+  }
+  .card input:focus, .card select:focus {
+    border-color: var(--gold); background: rgba(0,0,0,0.6);
+    box-shadow: 0 0 0 3px rgba(212,175,55,0.06);
+  }
+  .card input::placeholder { color: #444; }
+
+  .btn {
+    padding: 13px 26px;
+    background: linear-gradient(135deg, #d4af37 0%, #a8842a 100%);
+    border: none; border-radius: 2px;
+    color: #0a0a0a; font-weight: 700;
+    font-size: 0.75rem; letter-spacing: 3px;
+    text-transform: uppercase; cursor: pointer;
+    transition: 0.3s; margin-top: 20px;
+  }
+  .btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 30px rgba(212,175,55,0.3);
+    background: linear-gradient(135deg, #f4e5b1 0%, #d4af37 100%);
+  }
+  .btn.secondary {
+    background: transparent;
+    border: 1px solid rgba(212,175,55,0.4);
+    color: var(--gold);
+  }
+  .btn.secondary:hover { background: rgba(212,175,55,0.1); box-shadow: 0 12px 30px rgba(212,175,55,0.15); }
+
+  .btn-row {
+    display: flex; gap: 12px; flex-wrap: wrap; margin-top: 20px;
+  }
+  .btn-row .btn { margin-top: 0; }
+
+  .orders-header {
+    display: flex; justify-content: space-between;
+    align-items: center; margin-bottom: 16px;
+    flex-wrap: wrap; gap: 12px;
+  }
+  .orders-header .select-all {
+    display: flex; align-items: center; gap: 10px;
+    font-size: 0.8rem; color: var(--text-dim);
+    letter-spacing: 2px; text-transform: uppercase;
+    cursor: pointer;
+  }
+  .orders-header .select-all input {
+    width: 18px; height: 18px;
+    accent-color: var(--gold); cursor: pointer;
+  }
+  .orders-list { margin-top: 16px; }
+  .order-item {
+    display: flex; align-items: center;
+    padding: 18px 20px; background: rgba(0,0,0,0.3);
+    border: 1px solid rgba(212,175,55,0.1);
+    border-radius: 2px; margin-bottom: 10px;
+    font-size: 0.9rem; gap: 16px; flex-wrap: wrap; transition: 0.25s;
+  }
+  .order-item:hover { border-color: rgba(212,175,55,0.3); background: rgba(212,175,55,0.03); }
+  .order-item.selected { border-color: var(--gold); background: rgba(212,175,55,0.06); }
+  .order-item .checkbox {
+    width: 20px; height: 20px;
+    accent-color: var(--gold); cursor: pointer;
+    flex-shrink: 0;
+  }
+  .order-item .info { flex: 1; min-width: 200px; }
+  .order-item .info strong { color: var(--gold); }
+  .order-item .info small { color: #8a8a8a; display: block; margin-top: 2px; }
+  .order-item .price-tag {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.4rem; color: var(--gold);
+    font-weight: 700; white-space: nowrap;
+  }
+  .order-item .price-tag small {
+    font-size: 0.7rem; color: var(--text-dim);
+    display: block; text-align: right;
+    letter-spacing: 1px;
+  }
+
+  .badge {
+    display: inline-block; font-size: 0.65rem;
+    padding: 4px 10px; letter-spacing: 2px;
+    text-transform: uppercase; border-radius: 2px;
+    background: rgba(212,175,55,0.1); color: var(--gold);
+    border: 1px solid rgba(212,175,55,0.25);
+    margin-top: 6px; font-weight: 600;
+  }
+  .badge.warn {
+    background: rgba(255,77,109,0.12);
+    color: #ff4d6d;
+    border-color: rgba(255,77,109,0.4);
+    font-size: 0.7rem;
+    padding: 5px 12px;
+  }
+  .badge.success {
+    background: rgba(0,200,100,0.12);
+    color: #00c864;
+    border-color: rgba(0,200,100,0.4);
+  }
+
+  .toast {
+    position: fixed; bottom: 32px; right: 32px;
+    background: linear-gradient(145deg, #1a1a1a, #0e0e0e);
+    border: 1px solid rgba(212,175,55,0.4);
+    border-left: 3px solid var(--gold);
+    padding: 16px 24px; border-radius: 2px;
+    font-size: 0.85rem; color: var(--text);
+    opacity: 0; transform: translateY(20px);
+    transition: 0.4s; z-index: 300; max-width: 360px;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.7);
+  }
+  .toast.show { opacity: 1; transform: translateY(0); }
+
+  .awb-preview {
+    background: #fafafa; color: #0a0a0a;
+    padding: 28px; border-radius: 2px;
+    margin-top: 20px; font-family: 'Courier New', monospace;
+    font-size: 0.85rem; display: none;
+    border: 2px solid var(--gold);
+  }
+  .awb-preview.show { display: block; }
+  .awb-preview h4 {
+    margin-bottom: 14px; padding-bottom: 10px;
+    border-bottom: 2px solid #d4af37;
+    font-size: 1rem; letter-spacing: 2px; text-transform: uppercase;
+  }
+  .awb-preview .row { display: flex; justify-content: space-between; margin: 5px 0; gap: 16px; }
+  .awb-preview .row span:first-child { color: #666; }
+  .awb-preview hr { margin: 12px 0; border: none; border-top: 1px dashed #ccc; }
+
+  ::-webkit-scrollbar { width: 8px; }
+  ::-webkit-scrollbar-track { background: #0a0a0a; }
+  ::-webkit-scrollbar-thumb { background: #333; border-radius: 4px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--gold-dark); }
+
+  @media (max-width: 600px) {
+    .auth-box, .pay-box { padding: 40px 28px; }
+    .content { padding: 28px 20px; }
+    .card { padding: 24px 20px; }
+    .topbar { padding: 16px 20px; }
+    .topbar .user { display: none; }
+    .toast { right: 16px; left: 16px; bottom: 16px; }
+    .tab { padding: 12px 16px; font-size: 0.7rem; letter-spacing: 2px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- LANDING -->
+<div id="landing">
+  <div id="brand-wrap">
+    <div id="brand">Zen3Hub</div>
+    <div id="brand-sub">Luxury Logistics</div>
+  </div>
+</div>
+
+<!-- AUTH -->
+<div id="auth">
+  <div class="auth-box">
+    <h2 id="authTitle">Bejelentkezés</h2>
+    <div class="subtitle">Zen3Hub Platform</div>
+    <div class="error" id="authError"></div>
+    <input type="email" id="email" placeholder="Email cím" autocomplete="email" />
+    <input type="password" id="password" placeholder="Jelszó" autocomplete="current-password" />
+    <label class="remember-label">
+      <input type="checkbox" id="rememberMe" checked />
+      Emlékezz rám (bejelentkezve maradok)
+    </label>
+    <button class="btn-gold" onclick="handleAuth()" id="authBtn">Bejelentkezés</button>
+    <div class="switch">
+      <span id="switchText">Nincs fiókod? Regisztrálj</span>
+    </div>
+  </div>
+</div>
+
+<!-- PAYWALL -->
+<div id="paywall">
+  <div class="pay-box">
+    <h2 id="payTitle">Prémium előfizetés</h2>
+    <p id="paySubtitle">A Zen3Hub használatához havi előfizetés szükséges.</p>
+    <div class="email-show" id="payEmail" style="display:none;"></div>
+    <div class="price">6 <small>EUR / hó</small></div>
+    <p style="color:#666; font-size:0.75rem; letter-spacing:2px;">30 RON ≈ 6 EUR · PayPal</p>
+    <div id="paypal-button-container"></div>
+    <div class="back-link" id="backLink" onclick="cancelPayment()">← Vissza</div>
+  </div>
+</div>
+
+<!-- DASHBOARD -->
+<div id="dashboard">
+  <div class="topbar">
+    <div style="display:flex; align-items:center; gap:20px;">
+      <div class="hamburger" onclick="toggleSidebar()">
+        <span></span><span></span><span></span>
+      </div>
+      <div class="logo">Zen3Hub</div>
+    </div>
+    <div class="user" id="userEmail"></div>
+  </div>
+
+  <div class="sidebar" id="sidebar">
+    <div class="brand-side">Zen3Hub</div>
+    <h3>Fiókok</h3>
+    <div id="accountList"></div>
+    <button class="menu-btn" onclick="addSubAccount()">＋ Új al-account</button>
+    <h3>Műveletek</h3>
+    <button class="menu-btn" onclick="switchTab('awb')">📦 AWB rész</button>
+    <button class="menu-btn" onclick="switchTab('factura')">🧾 Számla rész</button>
+    <h3>Admin</h3>
+    <button class="menu-btn" id="adminBtn" style="display:none;" onclick="switchTab('admin')">👑 Admin panel</button>
+    <h3>Futtatás</h3>
+    <button class="menu-btn" onclick="logout()">🚪 Kijelentkezés</button>
+  </div>
+  <div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
+
+  <div class="content">
+    <div class="content-header">
+      <h1>Irányítópult</h1>
+      <p>Expedíció · AWB · Számlák</p>
+    </div>
+
+    <div class="tabs">
+      <button class="tab active" onclick="switchTab('awb')">📦 AWB</button>
+      <button class="tab" onclick="switchTab('factura')">🧾 Számla</button>
+      <button class="tab" onclick="switchTab('beallitasok')">⚙️ Beállítások</button>
+      <button class="tab" id="adminTabBtn" style="display:none;" onclick="switchTab('admin')">👑 Admin</button>
+    </div>
+
+    <!-- AWB TAB -->
+    <div class="tab-content active" id="tab-awb">
+      <div class="card">
+        <h3>📥 Rendelések (utolsó 2 hét) — AWB-hoz</h3>
+        <button class="btn" onclick="loadOrders()">Rendelések letöltése</button>
+        <button class="btn secondary" onclick="clearOrders()">Lista törlése</button>
+
+        <div class="orders-header" id="ordersHeader" style="display:none; margin-top:24px;">
+          <label class="select-all">
+            <input type="checkbox" id="selectAll" onchange="toggleSelectAll(this)" />
+            Összes kijelölése
+          </label>
+          <span id="selectedCount" style="color:var(--gold); font-size:0.8rem; letter-spacing:2px;">0 kijelölve</span>
+        </div>
+
+        <div class="btn-row" id="actionRow" style="display:none;">
+          <button class="btn" onclick="generateSelectedAWB()">📦 Kijelölteknek AWB</button>
+        </div>
+
+        <div class="orders-list" id="ordersList"></div>
+      </div>
+
+      <div class="card">
+        <h3>📄 AWB előnézet</h3>
+        <div class="awb-preview" id="awbPreview"></div>
+        <div class="btn-row">
+          <button class="btn secondary" onclick="printAWB()">🖨️ Kijelöltek nyomtatása</button>
+          <button class="btn" onclick="printAllAWB()">🖨️ ÖSSZES AWB nyomtatása</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- FACTURA TAB -->
+    <div class="tab-content" id="tab-factura">
+      <div class="card">
+        <h3>📥 Rendelések (utolsó 2 hét) — Számlához</h3>
+        <button class="btn" onclick="loadOrders()">Rendelések letöltése</button>
+        <button class="btn secondary" onclick="clearOrders()">Lista törlése</button>
+
+        <div class="orders-header" id="ordersHeaderFactura" style="display:none; margin-top:24px;">
+          <label class="select-all">
+            <input type="checkbox" id="selectAllFactura" onchange="toggleSelectAllFactura(this)" />
+            Összes kijelölése
+          </label>
+          <span id="selectedCountFactura" style="color:var(--gold); font-size:0.8rem; letter-spacing:2px;">0 kijelölve</span>
+        </div>
+
+        <div class="btn-row" id="actionRowFactura" style="display:none;">
+          <button class="btn" onclick="generateSelectedFactura()">🧾 Kijelölteknek számla</button>
+        </div>
+
+        <div class="orders-list" id="ordersListFactura"></div>
+      </div>
+
+      <div class="card">
+        <h3>🧾 Számla előnézet</h3>
+        <div class="awb-preview" id="facturaPreview"></div>
+        <div class="btn-row">
+          <button class="btn secondary" onclick="printFactura()">🖨️ Kijelöltek nyomtatása</button>
+          <button class="btn" onclick="printAllFactura()">🖨️ ÖSSZES számla nyomtatása</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- BEÁLLÍTÁSOK TAB -->
+    <div class="tab-content" id="tab-beallitasok">
+      <div class="card">
+        <h3>🚚 Expedíciós adatok</h3>
+        <label>Név / Cég</label>
+        <input id="expName" placeholder="Pl. Popescu Ion / SC Exemplu SRL" />
+        <label>Telefonszám</label>
+        <input id="expPhone" placeholder="07xxxxxxxx" />
+        <label>Email</label>
+        <input id="expEmail" placeholder="expeditor@email.com" />
+        <label>Ország</label>
+        <input id="expCountry" placeholder="România" value="România" />
+        <label>Utca, házszám</label>
+        <input id="expStreet" placeholder="Str. Exemplu nr. 10" />
+        <label>Város</label>
+        <input id="expCity" placeholder="București" />
+        <button class="btn" onclick="saveExpeditor()">Mentés</button>
+      </div>
+
+      <div class="card">
+        <h3>🔗 WooCommerce kapcsolat</h3>
+        <label>Webshop URL (pl. https://miarmadesigns.ro)</label>
+        <input id="shopUrl" placeholder="https://miarmadesigns.ro" />
+        <label>WooCommerce Consumer Key</label>
+        <input id="wcKey" placeholder="ck_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" />
+        <label>WooCommerce Consumer Secret</label>
+        <input id="wcSecret" type="password" placeholder="cs_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" />
+        <button class="btn" onclick="saveShopConfig()">Mentés</button>
+      </div>
+
+      <div class="card">
+        <h3>📦 DPD kapcsolat</h3>
+        <label>DPD felhasználó</label>
+        <input id="dpdUser" placeholder="dpd_user" />
+        <label>DPD jelszó</label>
+        <input id="dpdPass" type="password" placeholder="••••••••" />
+        <button class="btn" onclick="saveDpdConfig()">Mentés</button>
+      </div>
+
+      <div class="card">
+        <h3>🧾 FGO Számlázás</h3>
+        <label>FGO API URL</label>
+        <input id="fgoUrl" placeholder="https://api.fgo.ro/v1" value="https://api.fgo.ro/v1" />
+        <label>Cheie Privată (API kulcs)</label>
+        <input id="fgoKey" type="password" placeholder="FGO API kulcs" />
+        <label>Cod Unic (CUI, RO nélkül)</label>
+        <input id="fgoCui" placeholder="37023909" />
+        <label>Serie (számla sorozat)</label>
+        <input id="fgoSerie" placeholder="MEL" />
+        <label>Platforma URL (a te oldalad)</label>
+        <input id="fgoPlatform" placeholder="https://zen3hub.ro" />
+        <button class="btn" onclick="saveFgoConfig()">Mentés</button>
+      </div>
+    </div>
+
+    <!-- ADMIN TAB -->
+    <div class="tab-content" id="tab-admin">
+      <div class="card">
+        <h3>👑 Admin panel – Fizetések és rendelések</h3>
+        <p style="color:var(--text-dim); font-size:0.85rem; margin-bottom:20px;">
+          Itt látod az összes felhasználót, a fizetési státuszukat és a rendeléseiket.
+        </p>
+        <button class="btn" onclick="loadAdminData()">🔄 Adatok frissítése</button>
+      </div>
+
+      <div class="card">
+        <h3>👥 Felhasználók és előfizetések</h3>
+        <div id="adminUsersList" style="margin-top:16px;"></div>
+      </div>
+
+      <div class="card">
+        <h3>📦 Rendelések – fizetési státusz és kézbesítés</h3>
+        <div id="adminOrdersList" style="margin-top:16px;"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<!-- PayPal SDK – LIVE -->
+<script src="https://www.paypal.com/sdk/js?client-id=BAAYyKEybHpIXol-V-A4la2YPvkmPZtC9puaWCLqOPOxsdq80CX1VjaURALzj3gTjmVottYyiPVgbeBP6A&currency=EUR&intent=capture&components=buttons&disable-funding=credit"></script>
+
+<!-- FIREBASE -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import {
+  getAuth,
+  setPersistence,
+  browserLocalPersistence,
+  browserSessionPersistence,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  onAuthStateChanged,
+  signOut
+} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import { getFirestore, doc, setDoc, getDoc, updateDoc, collection, getDocs }
+  from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyDGOcPg9JZTiYhUwIQq6mZHjuIBn2bAVxQ",
+  authDomain: "website-54261.firebaseapp.com",
+  databaseURL: "https://website-54261-default-rtdb.firebaseio.com",
+  projectId: "website-54261",
+  storageBucket: "website-54261.firebasestorage.app",
+  messagingSenderId: "519133159248",
+  appId: "1:519133159248:web:d4de9485446686703f9655",
+  measurementId: "G-TP6NL9FCQP"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+setPersistence(auth, browserLocalPersistence).catch((err) => {
+  console.error('Persistence hiba:', err);
+});
+
+// ⚠️ ADMIN EMAIL – csak ez a felhasználó látja az admin panelt
+const ADMIN_EMAIL = 'yoaeeyoaee@gmail.com';
+
+// ⚠️ RENDER PROXY URL
+const FGO_PROXY_URL = 'https://zen3hub.onrender.com/api/fgo/emitere';
+
+// ---------- Állapot ----------
+let isSignup = false;
+let currentUser = null;
+let currentAccountIndex = 0;
+let currentOrders = [];
+let selectedOrdersAWB = new Set();
+let selectedOrdersFactura = new Set();
+let pendingSignup = null;
+let landingDone = false;
+
+// ---------- Landing kezelés ----------
+function hideLanding(instant = false) {
+  if (landingDone) return;
+  landingDone = true;
+  const landing = document.getElementById('landing');
+  const authEl = document.getElementById('auth');
+
+  if (instant) {
+    landing.style.display = 'none';
+    authEl.style.display = 'none';
+  } else {
+    landing.classList.add('shrink');
+    setTimeout(() => {
+      landing.style.display = 'none';
+      authEl.style.display = '';
+      authEl.classList.add('show');
+    }, 1400);
+  }
+}
+
+auth.onAuthStateChanged((user) => {
+  if (user) hideLanding(true);
+});
+
+setTimeout(() => {
+  if (!auth.currentUser) hideLanding(false);
+}, 2600);
+
+// ---------- Tab váltás ----------
+window.switchTab = function (tab) {
+  if (tab === 'admin' && currentUser?.email !== ADMIN_EMAIL) {
+    toast('❌ Nincs jogosultságod');
+    return;
+  }
+
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+
+  const tabBtn = document.querySelector(`.tab[onclick="switchTab('${tab}')"]`);
+  if (tabBtn) tabBtn.classList.add('active');
+
+  document.getElementById(`tab-${tab}`).classList.add('active');
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('overlay').classList.remove('show');
+
+  if (tab === 'admin') loadAdminData();
+};
+
+// ---------- Auth váltás ----------
+document.getElementById('switchText').addEventListener('click', () => {
+  isSignup = !isSignup;
+  document.getElementById('authTitle').textContent = isSignup ? 'Regisztráció' : 'Bejelentkezés';
+  document.getElementById('authBtn').textContent = isSignup ? 'Fizetés és regisztráció' : 'Bejelentkezés';
+  document.getElementById('switchText').textContent = isSignup ? 'Van már fiókod? Jelentkezz be' : 'Nincs fiókod? Regisztrálj';
+  document.getElementById('authError').textContent = '';
+});
+
+// ---------- Auth ----------
+window.handleAuth = async function () {
+  const email = document.getElementById('email').value.trim();
+  const password = document.getElementById('password').value;
+  const errEl = document.getElementById('authError');
+  const remember = document.getElementById('rememberMe').checked;
+  errEl.textContent = '';
+
+  if (!email || !password) { errEl.textContent = 'Töltsd ki az összes mezőt!'; return; }
+  if (password.length < 6) { errEl.textContent = 'A jelszó legalább 6 karakter legyen!'; return; }
+
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(email)) { errEl.textContent = 'Érvénytelen email cím!'; return; }
+
+  const blocked = ['test.com', 'example.com', 'fake.com', 'asdf.com'];
+  const domain = email.split('@')[1].toLowerCase();
+  if (blocked.includes(domain)) { errEl.textContent = 'Kérlek valós email címet adj meg!'; return; }
+
+  try {
+    await setPersistence(auth, remember ? browserLocalPersistence : browserSessionPersistence);
+  } catch (e) {
+    console.error('Persistence hiba:', e);
+  }
+
+  if (isSignup) {
+    if (email === ADMIN_EMAIL) {
+      errEl.textContent = 'Ez az email admin fiókhoz tartozik. Jelentkezz be!';
+      return;
+    }
+    pendingSignup = { email, password };
+    document.getElementById('payEmail').style.display = 'block';
+    document.getElementById('payEmail').textContent = '📧 ' + email;
+    document.getElementById('payTitle').textContent = 'Fizetés és regisztráció';
+    document.getElementById('paySubtitle').textContent = 'A fiók létrehozása csak sikeres fizetés után történik.';
+    document.getElementById('backLink').style.display = 'inline-block';
+    showPaywall();
+  } else {
+    try {
+      await signInWithEmailAndPassword(auth, email, password);
+      document.getElementById('auth').classList.remove('show');
+      document.getElementById('auth').style.display = 'none';
+    } catch (e) {
+      const map = {
+        'auth/user-not-found': 'Nincs ilyen fiók. Regisztrálj!',
+        'auth/wrong-password': 'Hibás jelszó.',
+        'auth/invalid-credential': 'Hibás email vagy jelszó.',
+        'auth/too-many-requests': 'Túl sok próbálkozás.'
+      };
+      errEl.textContent = map[e.code] || e.message;
+    }
+  }
+};
+
+window.cancelPayment = function () {
+  pendingSignup = null;
+  document.getElementById('paywall').classList.remove('show');
+  document.getElementById('auth').style.display = '';
+  document.getElementById('auth').classList.add('show');
+  document.getElementById('payEmail').style.display = 'none';
+};
+
+// ---------- Auth figyelő ----------
+onAuthStateChanged(auth, async (user) => {
+  if (user) {
+    currentUser = user;
+    document.getElementById('auth').classList.remove('show');
+    document.getElementById('auth').style.display = 'none';
+    document.getElementById('paywall').classList.remove('show');
+    document.getElementById('userEmail').textContent = user.email;
+
+    if (user.email === ADMIN_EMAIL) {
+      document.getElementById('adminBtn').style.display = 'flex';
+      document.getElementById('adminTabBtn').style.display = 'inline-block';
+
+      const userDoc = await getDoc(doc(db, 'users', user.uid));
+      let data = userDoc.data();
+      if (!data) {
+        data = { email: user.email, isAdmin: true, subscriptionActive: true, subscriptionDate: new Date().toISOString(), accounts: [{ name: 'Fő account', data: {} }] };
+        await setDoc(doc(db, 'users', user.uid), data);
+      }
+      showDashboard(data);
+      return;
+    }
+
+    const userDoc = await getDoc(doc(db, 'users', user.uid));
+    const data = userDoc.data() || {};
+
+    const now = new Date();
+    const subDate = data.subscriptionDate ? new Date(data.subscriptionDate) : null;
+    const active = data.subscriptionActive && subDate &&
+      (now - subDate) < 30 * 24 * 60 * 60 * 1000;
+
+    if (!active) {
+      pendingSignup = { email: user.email, uid: user.uid, existing: true };
+      document.getElementById('payTitle').textContent = 'Előfizetés megújítása';
+      document.getElementById('paySubtitle').textContent = 'A hozzáféréshez havi előfizetés szükséges.';
+      document.getElementById('payEmail').style.display = 'block';
+      document.getElementById('payEmail').textContent = '📧 ' + user.email;
+      document.getElementById('backLink').style.display = 'none';
+      showPaywall();
+    } else {
+      showDashboard(data);
+    }
+  } else {
+    currentUser = null;
+    document.getElementById('dashboard').classList.remove('show');
+    document.getElementById('paywall').classList.remove('show');
+    document.getElementById('auth').style.display = '';
+    document.getElementById('auth').classList.add('show');
+    document.getElementById('adminBtn').style.display = 'none';
+    document.getElementById('adminTabBtn').style.display = 'none';
+  }
+});
+
+// ---------- Paywall ----------
+function showPaywall() {
+  document.getElementById('paywall').classList.add('show');
+  document.getElementById('auth').classList.remove('show');
+  document.getElementById('auth').style.display = 'none';
+  document.getElementById('dashboard').classList.remove('show');
+  renderPayPal();
+}
+
+function renderPayPal() {
+  const container = document.getElementById('paypal-button-container');
+  container.innerHTML = '';
+  if (window.paypal) {
+    window.paypal.Buttons({
+      style: { layout: 'vertical', color: 'gold', shape: 'rect', label: 'paypal', height: 48, tagline: false },
+      createOrder: (data, actions) => {
+        return actions.order.create({
+          purchase_units: [{
+            amount: { value: '6.00', currency_code: 'EUR' },
+            description: 'Zen3Hub Prémium előfizetés'
+          }]
+        });
+      },
+      onApprove: async (data, actions) => {
+        await actions.order.capture();
+        if (pendingSignup && !pendingSignup.existing) {
+          try {
+            const cred = await createUserWithEmailAndPassword(auth, pendingSignup.email, pendingSignup.password);
+            await setDoc(doc(db, 'users', cred.user.uid), {
+              email: pendingSignup.email,
+              subscriptionActive: true,
+              subscriptionDate: new Date().toISOString(),
+              expeditor: {}, shopConfig: {}, dpdConfig: {}, fgoConfig: {},
+              accounts: [{ name: 'Fő account', data: {} }],
+              createdAt: new Date().toISOString()
+            });
+            toast('✅ Fizetés sikeres! Fiók létrehozva.');
+            pendingSignup = null;
+          } catch (e) {
+            toast('❌ Fiók hiba: ' + e.message);
+          }
+        } else if (pendingSignup && pendingSignup.existing) {
+          await updateDoc(doc(db, 'users', currentUser.uid), {
+            subscriptionActive: true,
+            subscriptionDate: new Date().toISOString()
+          });
+          toast('✅ Előfizetés megújítva!');
+          const userDoc = await getDoc(doc(db, 'users', currentUser.uid));
+          showDashboard(userDoc.data());
+        }
+      },
+      onError: (err) => {
+        console.error('PayPal hiba:', err);
+        toast('❌ PayPal hiba: ' + err.message);
+      }
+    }).render('#paypal-button-container');
+  } else {
+    container.innerHTML = '<p style="color:#d4af37;">PayPal betöltése...</p>';
+    setTimeout(renderPayPal, 500);
+  }
+}
+
+// ---------- Dashboard ----------
+async function showDashboard(data) {
+  document.getElementById('auth').classList.remove('show');
+  document.getElementById('auth').style.display = 'none';
+  document.getElementById('paywall').classList.remove('show');
+  document.getElementById('dashboard').classList.add('show');
+
+  if (data.expeditor) {
+    document.getElementById('expName').value = data.expeditor.name || '';
+    document.getElementById('expPhone').value = data.expeditor.phone || '';
+    document.getElementById('expEmail').value = data.expeditor.email || '';
+    document.getElementById('expCountry').value = data.expeditor.country || 'România';
+    document.getElementById('expStreet').value = data.expeditor.street || '';
+    document.getElementById('expCity').value = data.expeditor.city || '';
+  }
+  if (data.shopConfig) {
+    document.getElementById('shopUrl').value = data.shopConfig.shopUrl || '';
+    document.getElementById('wcKey').value = data.shopConfig.wcKey || '';
+    document.getElementById('wcSecret').value = data.shopConfig.wcSecret || '';
+  }
+  if (data.dpdConfig) {
+    document.getElementById('dpdUser').value = data.dpdConfig.dpdUser || '';
+    document.getElementById('dpdPass').value = data.dpdConfig.dpdPass || '';
+  }
+  if (data.fgoConfig) {
+    document.getElementById('fgoUrl').value = data.fgoConfig.fgoUrl || 'https://api.fgo.ro/v1';
+    document.getElementById('fgoKey').value = data.fgoConfig.fgoKey || '';
+    document.getElementById('fgoCui').value = data.fgoConfig.fgoCui || '';
+    document.getElementById('fgoSerie').value = data.fgoConfig.fgoSerie || '';
+    document.getElementById('fgoPlatform').value = data.fgoConfig.fgoPlatform || '';
+  }
+
+  renderAccounts(data.accounts || [{ name: 'Fő account' }]);
+}
+
+// ---------- Sidebar ----------
+window.toggleSidebar = function () {
+  document.getElementById('sidebar').classList.toggle('open');
+  document.getElementById('overlay').classList.toggle('show');
+};
+
+function renderAccounts(accounts) {
+  const list = document.getElementById('accountList');
+  list.innerHTML = '';
+  accounts.forEach((acc, i) => {
+    const div = document.createElement('div');
+    div.className = 'acc-item' + (i === currentAccountIndex ? ' active' : '');
+    div.textContent = acc.name;
+    div.onclick = () => {
+      currentAccountIndex = i;
+      renderAccounts(accounts);
+      toast(`Átváltva: ${acc.name}`);
+      toggleSidebar();
+    };
+    list.appendChild(div);
+  });
+}
+
+window.addSubAccount = async function () {
+  const userDoc = await getDoc(doc(db, 'users', currentUser.uid));
+  const data = userDoc.data();
+  const accounts = data.accounts || [];
+  if (accounts.length >= 6) { toast('❌ Maximum 6 account'); return; }
+  accounts.push({ name: `Al-account ${accounts.length}`, data: {} });
+  await updateDoc(doc(db, 'users', currentUser.uid), { accounts });
+  renderAccounts(accounts);
+  toast('✅ Új al-account hozzáadva');
+};
+
+// ---------- Mentések ----------
+window.saveExpeditor = async function () {
+  const expeditor = {
+    name: document.getElementById('expName').value,
+    phone: document.getElementById('expPhone').value,
+    email: document.getElementById('expEmail').value,
+    country: document.getElementById('expCountry').value,
+    street: document.getElementById('expStreet').value,
+    city: document.getElementById('expCity').value
+  };
+  await updateDoc(doc(db, 'users', currentUser.uid), { expeditor });
+  toast('💾 Expedíciós adatok mentve');
+};
+
+window.saveShopConfig = async function () {
+  const shopConfig = {
+    shopUrl: document.getElementById('shopUrl').value.replace(/\/$/, ''),
+    wcKey: document.getElementById('wcKey').value.trim(),
+    wcSecret: document.getElementById('wcSecret').value.trim()
+  };
+  await updateDoc(doc(db, 'users', currentUser.uid), { shopConfig });
+  toast('💾 WooCommerce adatok mentve');
+};
+
+window.saveDpdConfig = async function () {
+  const dpdConfig = {
+    dpdUser: document.getElementById('dpdUser').value,
+    dpdPass: document.getElementById('dpdPass').value
+  };
+  await updateDoc(doc(db, 'users', currentUser.uid), { dpdConfig });
+  toast('💾 DPD adatok mentve');
+};
+
+window.saveFgoConfig = async function () {
+  const fgoConfig = {
+    fgoUrl: document.getElementById('fgoUrl').value,
+    fgoKey: document.getElementById('fgoKey').value,
+    fgoCui: document.getElementById('fgoCui').value,
+    fgoSerie: document.getElementById('fgoSerie').value,
+    fgoPlatform: document.getElementById('fgoPlatform').value
+  };
+  await updateDoc(doc(db, 'users', currentUser.uid), { fgoConfig });
+  toast('💾 FGO adatok mentve');
+};
+
+// ---------- WooCommerce rendelések (utolsó 2 hét) ----------
+window.loadOrders = async function () {
+  const userDoc = await getDoc(doc(db, 'users', currentUser.uid));
+  const data = userDoc.data();
+  const shop = data.shopConfig || {};
+
+  if (!shop.shopUrl) { toast('❌ Add meg a webshop URL-t!'); return; }
+  if (!shop.wcKey || !shop.wcSecret) { toast('❌ Add meg a WooCommerce kulcsokat!'); return; }
+
+  const twoWeeksAgo = new Date();
+  twoWeeksAgo.setDate(twoWeeksAgo.getDate() - 14);
+  const afterDate = twoWeeksAgo.toISOString().split('T')[0] + 'T00:00:00';
+
+  const baseUrl = shop.shopUrl.replace(/\/$/, '');
+  const url = `${baseUrl}/wp-json/wc/v3/orders?per_page=50&after=${afterDate}&consumer_key=${shop.wcKey}&consumer_secret=${shop.wcSecret}`;
+
+  try {
+    const res = await fetch(url);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const orders = await res.json();
+
+    if (!Array.isArray(orders)) throw new Error(orders.message || 'Érvénytelen válasz');
+
+    currentOrders = orders.map(o => {
+      const hasPaidDate = o.date_paid !== null && o.date_paid !== undefined && o.date_paid !== '';
+      const paymentMethod = (o.payment_method || '').toLowerCase();
+      const paymentTitle = o.payment_method_title || '';
+
+      const isCodMethod =
+        paymentMethod === 'cod' ||
+        paymentMethod === 'ramburs' ||
+        paymentMethod === 'cash' ||
+        paymentMethod === 'numerar' ||
+        paymentTitle.toLowerCase().includes('ramburs') ||
+        paymentTitle.toLowerCase().includes('numerar') ||
+        paymentTitle.toLowerCase().includes('livrare');
+
+      const isRamburs = isCodMethod && !hasPaidDate;
+      const isPaid = !isRamburs;
+
+      const totalWithTax = parseFloat(o.total) || 0;
+      const totalTax = parseFloat(o.total_tax) || 0;
+      const netTotal = totalWithTax - totalTax;
+
+      return {
+        id: o.number || o.id,
+        name: `${o.shipping?.first_name || o.billing.first_name} ${o.shipping?.last_name || o.billing.last_name}`.trim(),
+        phone: o.billing.phone || o.shipping?.phone || '',
+        email: o.billing.email || '',
+        address: [
+          o.shipping?.address_1 || o.billing.address_1,
+          o.shipping?.address_2 || o.billing.address_2
+        ].filter(Boolean).join(', '),
+        city: o.shipping?.city || o.billing.city,
+        state: o.shipping?.state || o.billing.state,
+        postcode: o.shipping?.postcode || o.billing.postcode,
+        country: o.shipping?.country || o.billing.country,
+        paid: isPaid,
+        isRamburs: isRamburs,
+        paymentMethod: paymentMethod,
+        paymentTitle: paymentTitle,
+        amount: isRamburs ? totalWithTax : 0,
+        netTotal: netTotal,
+        totalTax: totalTax,
+        totalWithTax: totalWithTax,
+        items: (o.line_items || []).map(it => ({
+          name: it.name,
+          sku: it.sku || '',
+          quantity: it.quantity,
+          price: parseFloat(it.price) || 0,
+          subtotal: parseFloat(it.subtotal) || 0,
+          totalTax: parseFloat(it.total_tax) || 0
+        })),
+        product: o.line_items?.[0]?.name || 'INCALTAMINTE',
+        raw: o
+      };
+    });
+
+    selectedOrdersAWB.clear();
+    selectedOrdersFactura.clear();
+    renderOrdersAWB(currentOrders);
+    renderOrdersFactura(currentOrders);
+    document.getElementById('ordersHeader').style.display = 'flex';
+    document.getElementById('actionRow').style.display = 'flex';
+    document.getElementById('ordersHeaderFactura').style.display = 'flex';
+    document.getElementById('actionRowFactura').style.display = 'flex';
+    updateSelectedCountAWB();
+    updateSelectedCountFactura();
+
+    toast(`✅ ${currentOrders.length} rendelés (utolsó 2 hét)`);
+  } catch (e) {
+    console.error(e);
+    toast('❌ Hiba: ' + e.message);
+  }
+};
+
+window.clearOrders = function () {
+  currentOrders = [];
+  selectedOrdersAWB.clear();
+  selectedOrdersFactura.clear();
+  document.getElementById('ordersList').innerHTML = '';
+  document.getElementById('ordersListFactura').innerHTML = '';
+  document.getElementById('ordersHeader').style.display = 'none';
+  document.getElementById('actionRow').style.display = 'none';
+  document.getElementById('ordersHeaderFactura').style.display = 'none';
+  document.getElementById('actionRowFactura').style.display = 'none';
+  toast('🗑️ Lista törölve');
+};
+
+function renderOrdersAWB(orders) {
+  const list = document.getElementById('ordersList');
+  list.innerHTML = '';
+  if (!orders.length) {
+    list.innerHTML = '<p style="color:#888; text-align:center; padding:20px;">Nincs rendelés az utolsó 2 hétből</p>';
+    return;
+  }
+  orders.forEach(o => {
+    const div = document.createElement('div');
+    div.className = 'order-item';
+    div.dataset.orderId = o.id;
+    div.dataset.type = 'awb';
+
+    const paymentBadge = o.isRamburs
+      ? `<span class="badge warn">💰 RAMBURS: ${o.amount.toFixed(2)} RON fizetendő a kurírnak</span>`
+      : `<span class="badge">💳 Kártya (webshopon fizetve)</span>`;
+
+    div.innerHTML = `
+      <input type="checkbox" class="checkbox" onchange="toggleOrderAWB('${o.id}', this.checked)" />
+      <div class="info">
+        <strong>#${o.id}</strong> — ${o.name}<br>
+        <small>${o.address}, ${o.city} • ${o.phone}</small>
+        <small style="color:#666; font-size:0.75rem;">${o.product}</small><br>
+        ${paymentBadge}
+      </div>
+      <div class="price-tag">
+        ${o.totalWithTax.toFixed(2)} RON
+        <small>nettó: ${o.netTotal.toFixed(2)} · ÁFA: ${o.totalTax.toFixed(2)}</small>
+      </div>
+    `;
+    list.appendChild(div);
+  });
+}
+
+function renderOrdersFactura(orders) {
+  const list = document.getElementById('ordersListFactura');
+  list.innerHTML = '';
+  if (!orders.length) {
+    list.innerHTML = '<p style="color:#888; text-align:center; padding:20px;">Nincs rendelés az utolsó 2 hétből</p>';
+    return;
+  }
+  orders.forEach(o => {
+    const div = document.createElement('div');
+    div.className = 'order-item';
+    div.dataset.orderId = o.id;
+    div.dataset.type = 'factura';
+
+    const paymentBadge = o.isRamburs
+      ? `<span class="badge warn">💰 RAMBURS: ${o.amount.toFixed(2)} RON fizetendő a kurírnak</span>`
+      : `<span class="badge">💳 Kártya (webshopon fizetve)</span>`;
+
+    div.innerHTML = `
+      <input type="checkbox" class="checkbox" onchange="toggleOrderFactura('${o.id}', this.checked)" />
+      <div class="info">
+        <strong>#${o.id}</strong> — ${o.name}<br>
+        <small>${o.address}, ${o.city} • ${o.phone}</small>
+        <small style="color:#666; font-size:0.75rem;">${o.product}</small><br>
+        ${paymentBadge}
+      </div>
+      <div class="price-tag">
+        ${o.totalWithTax.toFixed(2)} RON
+        <small>nettó: ${o.netTotal.toFixed(2)} · ÁFA: ${o.totalTax.toFixed(2)}</small>
+      </div>
+    `;
+    list.appendChild(div);
+  });
+}
+
+// ---------- AWB checkbox ----------
+window.toggleOrderAWB = function (orderId, checked) {
+  if (checked) selectedOrdersAWB.add(orderId);
+  else selectedOrdersAWB.delete(orderId);
+  updateSelectedCountAWB();
+  const item = document.querySelector(`.order-item[data-order-id="${orderId}"][data-type="awb"]`);
+  if (item) item.classList.toggle('selected', checked);
+};
+
+window.toggleSelectAll = function (checkbox) {
+  const all = document.querySelectorAll('.order-item[data-type="awb"] .checkbox');
+  all.forEach(cb => {
+    cb.checked = checkbox.checked;
+    const orderId = cb.closest('.order-item').dataset.orderId;
+    if (checkbox.checked) selectedOrdersAWB.add(orderId);
+    else selectedOrdersAWB.delete(orderId);
+  });
+  document.querySelectorAll('.order-item[data-type="awb"]').forEach(el => {
+    el.classList.toggle('selected', checkbox.checked);
+  });
+  updateSelectedCountAWB();
+};
+
+function updateSelectedCountAWB() {
+  document.getElementById('selectedCount').textContent = `${selectedOrdersAWB.size} kijelölve`;
+}
+
+// ---------- Factura checkbox ----------
+window.toggleOrderFactura = function (orderId, checked) {
+  if (checked) selectedOrdersFactura.add(orderId);
+  else selectedOrdersFactura.delete(orderId);
+  updateSelectedCountFactura();
+  const item = document.querySelector(`.order-item[data-order-id="${orderId}"][data-type="factura"]`);
+  if (item) item.classList.toggle('selected', checked);
+};
+
+window.toggleSelectAllFactura = function (checkbox) {
+  const all = document.querySelectorAll('.order-item[data-type="factura"] .checkbox');
+  all.forEach(cb => {
+    cb.checked = checkbox.checked;
+    const orderId = cb.closest('.order-item').dataset.orderId;
+    if (checkbox.checked) selectedOrdersFactura.add(orderId);
+    else selectedOrdersFactura.delete(orderId);
+  });
+  document.querySelectorAll('.order-item[data-type="factura"]').forEach(el => {
+    el.classList.toggle('selected', checkbox.checked);
+  });
+  updateSelectedCountFactura();
+};
+
+function updateSelectedCountFactura() {
+  document.getElementById('selectedCountFactura').textContent = `${selectedOrdersFactura.size} kijelölve`;
+}
+
+// ---------- AWB tömeges generálás ----------
+window.generateSelectedAWB = async function () {
+  if (selectedOrdersAWB.size === 0) { toast('❌ Nincs kijelölt rendelés'); return; }
+  const userDoc = await getDoc(doc(db, 'users', currentUser.uid));
+  const data = userDoc.data();
+  const exp = data.expeditor || {};
+  const dpd = data.dpdConfig || {};
+
+  if (!exp.name) { toast('❌ Töltsd ki az expedíciós adatokat!'); return; }
+  if (!dpd.dpdUser) { toast('❌ Töltsd ki a DPD adatokat!'); return; }
+
+  const selected = currentOrders.filter(o => selectedOrdersAWB.has(String(o.id)));
+  const nextMonday = getNextMonday();
+
+  let html = `<h4>📦 AWB — ${selected.length} rendelés</h4>`;
+  selected.forEach((o, idx) => {
+    const rambursText = o.isRamburs
+      ? `${o.amount.toFixed(2)} RON (fizetendő a kurírnak)`
+      : '– (kártyával fizetve)';
+
+    html += `
+      <div style="margin-bottom:20px; padding-bottom:15px; ${idx < selected.length-1 ? 'page-break-after: always; border-bottom:1px dashed #ccc;' : ''}">
+        <div class="row"><span><b>#${o.id}</b></span><span>${o.name}</span></div>
+        <div class="row"><span>Telefon:</span><span>${o.phone}</span></div>
+        <div class="row"><span>Cím:</span><span>${o.address}, ${o.city}</span></div>
+        <div class="row"><span>Trimis în:</span><span>${nextMonday}</span></div>
+        <div class="row"><span>Serviciu:</span><span>DPD Standard</span></div>
+        <div class="row"><span>Plătitor:</span><span>Expeditor</span></div>
+        <div class="row"><span>Număr colete:</span><span>1</span></div>
+        <div class="row"><span>Kg:</span><span>1</span></div>
+        <div class="row"><span>Conținut:</span><span>INCALTAMINTE</span></div>
+        <div class="row"><span>Mod ambalare:</span><span>Cutie de carton</span></div>
+        <div class="row"><span><b>Ramburs:</b></span><span style="${o.isRamburs ? 'color:#cc0000; font-weight:bold;' : ''}">${rambursText}</span></div>
+      </div>
+    `;
+  });
+
+  const preview = document.getElementById('awbPreview');
+  preview.classList.add('show');
+  preview.innerHTML = html;
+  toast(`📦 ${selected.length} AWB előkészítve`);
+};
+
+// ---------- Számla tömeges generálás ----------
+window.generateSelectedFactura = async function () {
+  if (selectedOrdersFactura.size === 0) { toast('❌ Nincs kijelölt rendelés'); return; }
+  const userDoc = await getDoc(doc(db, 'users', currentUser.uid));
+  const data = userDoc.data();
+  const fgo = data.fgoConfig || {};
+
+  if (!fgo.fgoKey || !fgo.fgoCui || !fgo.fgoSerie) {
+    toast('❌ Töltsd ki az FGO adatokat!');
+    return;
+  }
+
+  const selected = currentOrders.filter(o => selectedOrdersFactura.has(String(o.id)));
+
+  let html = `<h4>🧾 Számlák — ${selected.length} rendelés</h4>`;
+  let successCount = 0;
+  let errorCount = 0;
+
+  for (const o of selected) {
+    try {
+      const result = await callFgoApi(o, fgo);
+      successCount++;
+      html += `
+        <div style="margin-bottom:20px; padding-bottom:15px; page-break-after: always; border-bottom:1px dashed #ccc;">
+          <div class="row"><span><b>#${o.id}</b></span><span>${o.name}</span></div>
+          <div class="row"><span>Számlaszám:</span><span style="color:#0a0a0a; font-weight:bold;">${result.serie}-${result.numar}</span></div>
+          <div class="row"><span>Nettó:</span><span>${o.netTotal.toFixed(2)} RON</span></div>
+          <div class="row"><span>ÁFA:</span><span>${o.totalTax.toFixed(2)} RON</span></div>
+          <div class="row"><span>Bruttó:</span><span>${o.totalWithTax.toFixed(2)} RON</span></div>
+          <div class="row"><span>Fizetés:</span><span style="${o.isRamburs ? 'color:#cc0000; font-weight:bold;' : ''}">${o.isRamburs ? 'RAMBURS' : 'Kártya'}</span></div>
+          <div class="row"><span>Nyomtatás:</span><span><a href="${result.printUrl}" target="_blank" style="color:#0066cc;">PDF megnyitása</a></span></div>
+        </div>
+      `;
+    } catch (e) {
+      errorCount++;
+      html += `
+        <div style="margin-bottom:20px; padding-bottom:15px; border-bottom:1px dashed #ccc; color:#cc0000;">
+          <div class="row"><span><b>#${o.id}</b></span><span>${o.name}</span></div>
+          <div class="row"><span>HIBA:</span><span>${e.message}</span></div>
+        </div>
+      `;
+    }
+  }
+
+  const preview = document.getElementById('facturaPreview');
+  preview.classList.add('show');
+  preview.innerHTML = html;
+
+  toast(`🧾 ${successCount} számla kész, ${errorCount} hiba`);
+};
+
+// ============================================
+// FGO API HÍVÁS – RENDER PROXY-N KERESZTÜL
+// ============================================
+async function callFgoApi(order, fgo) {
+  const payload = {
+    codUnic: fgo.fgoCui,
+    cheiePrivata: fgo.fgoKey,
+    platformaUrl: fgo.fgoPlatform,
+    serie: fgo.fgoSerie,
+    client: {
+      Denumire: order.name,
+      Adresa: order.address,
+      Localitate: order.city,
+      Judet: order.state,
+      Tara: 'România',
+      Email: order.email,
+      Telefon: order.phone
+    },
+    produse: order.items.map(it => ({
+      Denumire: it.name,
+      CodArticol: it.sku || '',
+      Cantitate: it.quantity,
+      PretUnitar: it.price,
+      TVA: it.totalTax > 0 ? 19 : 0,
+      Valoare: it.subtotal
+    }))
+  };
+
+  console.log('📤 Küldés a Render proxy-nak:', payload);
+
+  // ✅ VALÓDI HÍVÁS a Render proxy-ra
+  const res = await fetch(FGO_PROXY_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload)
+  });
+
+  const result = await res.json();
+  console.log('📥 Render proxy válasz:', result);
+
+  if (!result.success) {
+    throw new Error(result.error || 'FGO hiba');
+  }
+
+  return {
+    serie: result.serie,
+    numar: result.numar,
+    printUrl: result.printUrl
+  };
+}
+
+// ---------- Nyomtatás ----------
+window.printAWB = function () {
+  const preview = document.getElementById('awbPreview');
+  if (!preview.classList.contains('show') || !preview.innerHTML.trim()) {
+    toast('❌ Nincs AWB előnézet'); return;
+  }
+  printHtml(preview.innerHTML, 'AWB');
+};
+
+window.printAllAWB = function () {
+  const preview = document.getElementById('awbPreview');
+  if (!preview.classList.contains('show') || !preview.innerHTML.trim()) {
+    toast('❌ Nincs elkészített AWB'); return;
+  }
+  printHtml(preview.innerHTML, 'Osszes_AWB');
+};
+
+window.printFactura = function () {
+  const preview = document.getElementById('facturaPreview');
+  if (!preview.classList.contains('show') || !preview.innerHTML.trim()) {
+    toast('❌ Nincs számla előnézet'); return;
+  }
+  printHtml(preview.innerHTML, 'Szamla');
+};
+
+window.printAllFactura = function () {
+  const preview = document.getElementById('facturaPreview');
+  if (!preview.classList.contains('show') || !preview.innerHTML.trim()) {
+    toast('❌ Nincs elkészített számla'); return;
+  }
+  printHtml(preview.innerHTML, 'Osszes_Szamla');
+};
+
+function printHtml(html, title) {
+  const win = window.open('', '', 'width=900,height=700');
+  win.document.write(`<html><head><title>${title}</title><style>
+    @media print {
+      .page-break { page-break-after: always; }
+      body { margin: 0; }
+    }
+    body {
+      font-family: 'Courier New', monospace;
+      padding: 20px;
+      line-height: 1.5;
+      color: #000;
+      background: #fff;
+    }
+    .row {
+      display: flex;
+      justify-content: space-between;
+      margin: 5px 0;
+      gap: 16px;
+    }
+    .row span:first-child { color: #666; }
+    h4 {
+      border-bottom: 2px solid #d4af37;
+      padding-bottom: 10px;
+      margin-bottom: 14px;
+      font-size: 1rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+    hr {
+      border: none;
+      border-top: 1px dashed #ccc;
+      margin: 12px 0;
+    }
+    a { color: #0066cc; text-decoration: none; }
+  </style></head><body>${html}</body></html>`);
+  win.document.close();
+  setTimeout(() => {
+    win.focus();
+    win.print();
+  }, 300);
+}
+
+function getNextMonday() {
+  const d = new Date();
+  const day = d.getDay();
+  const diff = (day === 0) ? 1 : (8 - day);
+  d.setDate(d.getDate() + diff);
+  return d.toISOString().split('T')[0];
+}
+
+window.openAWB = function () {
+  switchTab('awb');
+  toast('📦 Jelöld ki a rendeléseket, majd nyomd meg a "Kijelölteknek AWB" gombot!');
+};
+
+window.openFactura = function () {
+  switchTab('factura');
+  toast('🧾 Jelöld ki a rendeléseket, majd nyomd meg a "Kijelölteknek számla" gombot!');
+};
+
+window.logout = async function () {
+  await signOut(auth);
+  toast('👋 Kijelentkezve');
+};
+
+window.toast = function (msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(t._timer);
+  t._timer = setTimeout(() => t.classList.remove('show'), 3500);
+};
+
+// ============================================
+// ADMIN PANEL
+// ============================================
+
+window.loadAdminData = async function () {
+  if (currentUser?.email !== ADMIN_EMAIL) {
+    toast('❌ Nincs jogosultságod');
+    return;
+  }
+  await loadAdminUsers();
+  await loadAdminOrders();
+};
+
+async function loadAdminUsers() {
+  const list = document.getElementById('adminUsersList');
+  list.innerHTML = '<p style="color:#888;">Betöltés...</p>';
+
+  try {
+    const usersRef = collection(db, 'users');
+    const snapshot = await getDocs(usersRef);
+
+    if (snapshot.empty) {
+      list.innerHTML = '<p style="color:#888;">Nincs felhasználó</p>';
+      return;
+    }
+
+    let html = '';
+    snapshot.forEach(docSnap => {
+      const u = docSnap.data();
+      const uid = docSnap.id;
+
+      const now = new Date();
+      const subDate = u.subscriptionDate ? new Date(u.subscriptionDate) : null;
+      const isActive = u.subscriptionActive && subDate &&
+        (now - subDate) < 30 * 24 * 60 * 60 * 1000;
+
+      let daysLeft = 0;
+      if (subDate) {
+        const diff = 30 - Math.floor((now - subDate) / (24 * 60 * 60 * 1000));
+        daysLeft = Math.max(0, diff);
+      }
+
+      const statusBadge = isActive
+        ? `<span class="badge success">✅ Aktív – ${daysLeft} nap</span>`
+        : `<span class="badge warn">❌ Lejárt / nincs</span>`;
+
+      const adminBadge = u.isAdmin
+        ? `<span class="badge" style="background:rgba(212,175,55,0.2); color:var(--gold);">👑 Admin</span>`
+        : '';
+
+      html += `
+        <div class="order-item" style="align-items:flex-start;">
+          <div class="info" style="min-width:250px;">
+            <strong style="color:var(--gold);">${u.email || '–'}</strong> ${adminBadge}<br>
+            <small style="color:#8a8a8a;">UID: ${uid}</small><br>
+            <small style="color:#8a8a8a;">Regisztrált: ${u.createdAt ? new Date(u.createdAt).toLocaleDateString('hu-HU') : '–'}</small><br>
+            <small style="color:#8a8a8a;">Előfizetés kezdete: ${subDate ? subDate.toLocaleDateString('hu-HU') : '–'}</small><br>
+            ${statusBadge}
+          </div>
+        </div>
+      `;
+    });
+
+    list.innerHTML = html;
+  } catch (e) {
+    console.error(e);
+    list.innerHTML = '<p style="color:#ff4d6d;">Hiba: ' + e.message + '</p>';
+  }
+}
+
+async function loadAdminOrders() {
+  const list = document.getElementById('adminOrdersList');
+  list.innerHTML = '<p style="color:#888;">Betöltés...</p>';
+
+  try {
+    const usersRef = collection(db, 'users');
+    const usersSnap = await getDocs(usersRef);
+
+    let html = '';
+    let totalOrders = 0;
+    let totalPaid = 0;
+    let totalRamburs = 0;
+    let totalDelivered = 0;
+
+    for (const userDoc of usersSnap.docs) {
+      const u = userDoc.data();
+      const shop = u.shopConfig || {};
+
+      if (!shop.shopUrl || !shop.wcKey || !shop.wcSecret) continue;
+
+      const twoWeeksAgo = new Date();
+      twoWeeksAgo.setDate(twoWeeksAgo.getDate() - 14);
+      const afterDate = twoWeeksAgo.toISOString().split('T')[0] + 'T00:00:00';
+
+      const baseUrl = shop.shopUrl.replace(/\/$/, '');
+      const url = `${baseUrl}/wp-json/wc/v3/orders?per_page=50&after=${afterDate}&consumer_key=${shop.wcKey}&consumer_secret=${shop.wcSecret}`;
+
+      try {
+        const res = await fetch(url);
+        if (!res.ok) continue;
+        const orders = await res.json();
+        if (!Array.isArray(orders)) continue;
+
+        html += `
+          <h4 style="color:var(--gold); margin:20px 0 12px; font-family:'Cormorant Garamond',serif; font-size:1.2rem;">
+            👤 ${u.email} (${shop.shopUrl})
+          </h4>
+        `;
+
+        orders.forEach(o => {
+          const hasPaidDate = o.date_paid !== null && o.date_paid !== undefined && o.date_paid !== '';
+          const paymentMethod = (o.payment_method || '').toLowerCase();
+          const paymentTitle = o.payment_method_title || '';
+          const isCodMethod =
+            paymentMethod === 'cod' || paymentMethod === 'ramburs' ||
+            paymentMethod === 'cash' || paymentMethod === 'numerar' ||
+            paymentTitle.toLowerCase().includes('ramburs') ||
+            paymentTitle.toLowerCase().includes('numerar') ||
+            paymentTitle.toLowerCase().includes('livrare');
+
+          const isRamburs = isCodMethod && !hasPaidDate;
+          const isPaid = !isRamburs;
+          const total = parseFloat(o.total) || 0;
+
+          totalOrders++;
+          if (isPaid) totalPaid++;
+          else totalRamburs++;
+
+          const name = `${o.shipping?.first_name || o.billing.first_name} ${o.shipping?.last_name || o.billing.last_name}`.trim();
+          const phone = o.billing.phone || o.shipping?.phone || '';
+          const city = o.shipping?.city || o.billing.city;
+
+          const statusBadge = isPaid
+            ? `<span class="badge success">💳 FIZETVE – Kártya</span>`
+            : `<span class="badge warn">💰 RAMBURS: ${total.toFixed(2)} RON</span>`;
+
+          const orderStatus = o.status || 'unknown';
+          const statusText = {
+            'pending': '⏳ Függőben',
+            'processing': '📦 Feldolgozás',
+            'on-hold': '⏸️ Várakozik',
+            'completed': '✅ Teljesítve',
+            'cancelled': '❌ Törölve',
+            'refunded': '↩️ Visszatérítve',
+            'failed': '❌ Sikertelen'
+          }[orderStatus] || orderStatus;
+
+          const deliveredBadge = o.date_completed
+            ? `<span class="badge success">📬 Kézbesítve: ${new Date(o.date_completed).toLocaleDateString('hu-HU')}</span>`
+            : `<span class="badge">🚚 Úton / függőben</span>`;
+
+          if (o.date_completed) totalDelivered++;
+
+          html += `
+            <div class="order-item" style="align-items:flex-start;">
+              <div class="info" style="min-width:250px;">
+                <strong style="color:var(--gold);">#${o.number || o.id}</strong> — ${name}<br>
+                <small style="color:#8a8a8a;">${city} • ${phone}</small><br>
+                <small style="color:#8a8a8a;">Rendelés: ${new Date(o.date_created).toLocaleDateString('hu-HU')}</small><br>
+                ${statusBadge}<br>
+                ${deliveredBadge}<br>
+                <small style="color:#666;">Státusz: ${statusText}</small>
+              </div>
+              <div class="price-tag">
+                ${total.toFixed(2)} RON
+                <small>${isRamburs ? 'ramburs' : 'fizetve'}</small>
+              </div>
+            </div>
+          `;
+        });
+      } catch (e) {
+        console.error('Hiba a rendeléseknél:', e);
+      }
+    }
+
+    const summaryHtml = `
+      <div class="order-item" style="background:rgba(212,175,55,0.05); border-color:var(--gold);">
+        <div class="info">
+          <strong style="color:var(--gold);">📊 ÖSSZESÍTŐ (utolsó 2 hét)</strong><br>
+          <small>Összes rendelés: <b style="color:var(--gold);">${totalOrders}</b></small><br>
+          <small>💳 Fizetve (kártya): <b style="color:#00c864;">${totalPaid}</b></small><br>
+          <small>💰 Ramburs: <b style="color:#ff4d6d;">${totalRamburs}</b></small><br>
+          <small>📬 Kézbesítve: <b style="color:#00c864;">${totalDelivered}</b></small>
+        </div>
+      </div>
+    `;
+
+    list.innerHTML = summaryHtml + (html || '<p style="color:#888;">Nincs rendelés</p>');
+  } catch (e) {
+    console.error(e);
+    list.innerHTML = '<p style="color:#ff4d6d;">Hiba: ' + e.message + '</p>';
+  }
+}
+</script>
+</body>
+</html>
