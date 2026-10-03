@@ -758,13 +758,9 @@ setPersistence(auth, browserLocalPersistence).catch((err) => {
   console.error('Persistence hiba:', err);
 });
 
-// ⚠️ ADMIN EMAIL
 const ADMIN_EMAIL = 'yoaeeyoaee@gmail.com';
-
-// ⚠️ RENDER PROXY URL
 const FGO_PROXY_URL = 'https://zen3hub.onrender.com/api/fgo/emitere';
 
-// ---------- Állapot ----------
 let isSignup = false;
 let currentUser = null;
 let currentAccountIndex = 0;
@@ -774,7 +770,6 @@ let selectedOrdersFactura = new Set();
 let pendingSignup = null;
 let landingDone = false;
 
-// ---------- Landing kezelés ----------
 function hideLanding(instant = false) {
   if (landingDone) return;
   landingDone = true;
@@ -802,7 +797,6 @@ setTimeout(() => {
   if (!auth.currentUser) hideLanding(false);
 }, 2600);
 
-// ---------- Tab váltás ----------
 window.switchTab = function (tab) {
   if (tab === 'admin' && currentUser?.email !== ADMIN_EMAIL) {
     toast('❌ Nincs jogosultságod');
@@ -822,7 +816,6 @@ window.switchTab = function (tab) {
   if (tab === 'admin') loadAdminData();
 };
 
-// ---------- Auth váltás ----------
 document.getElementById('switchText').addEventListener('click', () => {
   isSignup = !isSignup;
   document.getElementById('authTitle').textContent = isSignup ? 'Regisztráció' : 'Bejelentkezés';
@@ -831,7 +824,6 @@ document.getElementById('switchText').addEventListener('click', () => {
   document.getElementById('authError').textContent = '';
 });
 
-// ---------- Auth ----------
 window.handleAuth = async function () {
   const email = document.getElementById('email').value.trim();
   const password = document.getElementById('password').value;
@@ -892,7 +884,6 @@ window.cancelPayment = function () {
   document.getElementById('payEmail').style.display = 'none';
 };
 
-// ---------- Auth figyelő ----------
 onAuthStateChanged(auth, async (user) => {
   if (user) {
     currentUser = user;
@@ -945,7 +936,6 @@ onAuthStateChanged(auth, async (user) => {
   }
 });
 
-// ---------- Paywall ----------
 function showPaywall() {
   document.getElementById('paywall').classList.add('show');
   document.getElementById('auth').classList.remove('show');
@@ -1007,7 +997,6 @@ function renderPayPal() {
   }
 }
 
-// ---------- Dashboard ----------
 async function showDashboard(data) {
   document.getElementById('auth').classList.remove('show');
   document.getElementById('auth').style.display = 'none';
@@ -1042,7 +1031,6 @@ async function showDashboard(data) {
   renderAccounts(data.accounts || [{ name: 'Fő account' }]);
 }
 
-// ---------- Sidebar ----------
 window.toggleSidebar = function () {
   document.getElementById('sidebar').classList.toggle('open');
   document.getElementById('overlay').classList.toggle('show');
@@ -1076,7 +1064,6 @@ window.addSubAccount = async function () {
   toast('✅ Új al-account hozzáadva');
 };
 
-// ---------- Mentések ----------
 window.saveExpeditor = async function () {
   const expeditor = {
     name: document.getElementById('expName').value,
@@ -1121,7 +1108,6 @@ window.saveFgoConfig = async function () {
   toast('💾 FGO adatok mentve');
 };
 
-// ---------- WooCommerce rendelések (utolsó 2 hét) ----------
 window.loadOrders = async function () {
   const userDoc = await getDoc(doc(db, 'users', currentUser.uid));
   const data = userDoc.data();
@@ -1298,7 +1284,6 @@ function renderOrdersFactura(orders) {
   });
 }
 
-// ---------- AWB checkbox ----------
 window.toggleOrderAWB = function (orderId, checked) {
   if (checked) selectedOrdersAWB.add(orderId);
   else selectedOrdersAWB.delete(orderId);
@@ -1325,7 +1310,6 @@ function updateSelectedCountAWB() {
   document.getElementById('selectedCount').textContent = `${selectedOrdersAWB.size} kijelölve`;
 }
 
-// ---------- Factura checkbox ----------
 window.toggleOrderFactura = function (orderId, checked) {
   if (checked) selectedOrdersFactura.add(orderId);
   else selectedOrdersFactura.delete(orderId);
@@ -1352,7 +1336,6 @@ function updateSelectedCountFactura() {
   document.getElementById('selectedCountFactura').textContent = `${selectedOrdersFactura.size} kijelölve`;
 }
 
-// ---------- AWB tömeges generálás ----------
 window.generateSelectedAWB = async function () {
   if (selectedOrdersAWB.size === 0) { toast('❌ Nincs kijelölt rendelés'); return; }
   const userDoc = await getDoc(doc(db, 'users', currentUser.uid));
@@ -1395,7 +1378,6 @@ window.generateSelectedAWB = async function () {
   toast(`📦 ${selected.length} AWB előkészítve`);
 };
 
-// ---------- Számla tömeges generálás ----------
 window.generateSelectedFactura = async function () {
   if (selectedOrdersFactura.size === 0) { toast('❌ Nincs kijelölt rendelés'); return; }
   const userDoc = await getDoc(doc(db, 'users', currentUser.uid));
@@ -1422,7 +1404,7 @@ window.generateSelectedFactura = async function () {
           <div class="row"><span><b>#${o.id}</b></span><span>${o.name}</span></div>
           <div class="row"><span>Számlaszám:</span><span style="color:#0a0a0a; font-weight:bold;">${result.serie}-${result.numar}</span></div>
           <div class="row"><span>Nettó:</span><span>${o.netTotal.toFixed(2)} RON</span></div>
-          <div class="row"><span>ÁFA:</span><span>${o.totalTax.toFixed(2)} RON</span></div>
+          <div class="row"><span>ÁFA:</span><span>0.00 RON</span></div>
           <div class="row"><span>Bruttó:</span><span>${o.totalWithTax.toFixed(2)} RON</span></div>
           <div class="row"><span>Fizetés:</span><span style="${o.isRamburs ? 'color:#cc0000; font-weight:bold;' : ''}">${o.isRamburs ? 'RAMBURS' : 'Kártya'}</span></div>
           <div class="row"><span>Nyomtatás:</span><span><a href="${result.printUrl}" target="_blank" style="color:#0066cc;">PDF megnyitása</a></span></div>
@@ -1464,26 +1446,15 @@ async function callFgoApi(order, fgo) {
       Email: order.email,
       Telefon: order.phone
     },
-    // ✅ HELYES NÉV: Continut (nem Produse!)
-    Continut: order.items.map(it => {
-      const quantity = it.quantity || 1;
-      const netPrice = it.price;
-      const netValue = netPrice * quantity;
-
-      let tvaRate = 0;
-      if (it.totalTax > 0 && it.subtotal > 0) {
-        tvaRate = Math.round((it.totalTax / it.subtotal) * 100);
-      }
-
-      return {
-        Denumire: it.name || 'Termék',
-        CodArticol: it.sku || `TERM-${Date.now()}`,
-        Cantitate: quantity,
-        PretUnitar: netPrice,
-        TVA: tvaRate,
-        Valoare: netValue
-      };
-    })
+    // ✅ Continut – minden termék a kosárból
+    Continut: order.items.map(it => ({
+      Denumire: it.name || 'Termék',
+      CodArticol: it.sku || `TERM-${Date.now()}`,
+      Cantitate: it.quantity || 1,     // ✅ Ahány darabot vásárolt
+      PretUnitar: it.price || 0,
+      TVA: 0,                           // ✅ MINDIG 0 (ÁFA-mentes)
+      Valoare: (it.price || 0) * (it.quantity || 1)
+    }))
   };
 
   console.log('📤 Küldés a Render proxy-nak:', payload);
@@ -1508,7 +1479,6 @@ async function callFgoApi(order, fgo) {
   };
 }
 
-// ---------- Nyomtatás ----------
 window.printAWB = function () {
   const preview = document.getElementById('awbPreview');
   if (!preview.classList.contains('show') || !preview.innerHTML.trim()) {
