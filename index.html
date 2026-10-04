@@ -759,8 +759,10 @@ setPersistence(auth, browserLocalPersistence).catch((err) => {
 });
 
 const ADMIN_EMAIL = 'yoaeeyoaee@gmail.com';
-const FGO_PROXY_URL = 'https://zen3hub.onrender.com/api/fgo/emitere';
-const ORDERS_PER_PAGE = 100; // ✅ 100 rendelés lekérése
+
+// ✅ JAVÍTOTT RENDER URL
+const FGO_PROXY_URL = 'https://zen3hub-3.onrender.com/api/fgo/emitere';
+const ORDERS_PER_PAGE = 100;
 
 let isSignup = false;
 let currentUser = null;
@@ -1109,9 +1111,6 @@ window.saveFgoConfig = async function () {
   toast('💾 FGO adatok mentve');
 };
 
-// ============================================
-// RENDELÉSEK BETÖLTÉSE — 100 rendelés
-// ============================================
 window.loadOrders = async function () {
   const userDoc = await getDoc(doc(db, 'users', currentUser.uid));
   const data = userDoc.data();
@@ -1125,7 +1124,6 @@ window.loadOrders = async function () {
   const afterDate = twoWeeksAgo.toISOString().split('T')[0] + 'T00:00:00';
 
   const baseUrl = shop.shopUrl.replace(/\/$/, '');
-  // ✅ per_page=100 — 100 rendelés lekérése egyszerre
   const url = `${baseUrl}/wp-json/wc/v3/orders?per_page=${ORDERS_PER_PAGE}&after=${afterDate}&orderby=date&order=desc&consumer_key=${shop.wcKey}&consumer_secret=${shop.wcSecret}`;
 
   try {
@@ -1451,10 +1449,6 @@ async function callFgoApi(order, fgo) {
       Email: order.email,
       Telefon: order.phone
     },
-    // ✅ Continut – minden termék a kosárból
-    // ✅ TVA mindig 0 (ÁFA-mentes)
-    // ✅ CodArticol = rendelésszám (nr comandă)
-    // ✅ Cantitate = vásárolt darabszám
     Continut: order.items.map(it => ({
       Denumire: it.name || 'Termék',
       CodArticol: String(order.id),
@@ -1466,6 +1460,7 @@ async function callFgoApi(order, fgo) {
   };
 
   console.log('📤 Küldés a Render proxy-nak:', payload);
+  console.log('📡 Cél URL:', FGO_PROXY_URL);
 
   const res = await fetch(FGO_PROXY_URL, {
     method: 'POST',
@@ -1688,7 +1683,6 @@ async function loadAdminOrders() {
       const afterDate = twoWeeksAgo.toISOString().split('T')[0] + 'T00:00:00';
 
       const baseUrl = shop.shopUrl.replace(/\/$/, '');
-      // ✅ Admin panelen is 100 rendelés
       const url = `${baseUrl}/wp-json/wc/v3/orders?per_page=${ORDERS_PER_PAGE}&after=${afterDate}&orderby=date&order=desc&consumer_key=${shop.wcKey}&consumer_secret=${shop.wcSecret}`;
 
       try {
