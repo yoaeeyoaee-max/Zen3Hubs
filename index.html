@@ -1692,17 +1692,25 @@ async function callFgoApi(order, fgo) {
     Valoare: order.shippingTotal || 0
   });
 
+  // ⚠️ A kedvezményt NEM negatív tételként adjuk át, hanem az FGO
+  // számla-szintű Discount mezőjében (a felületen a "Discount factura" gomb).
+  // Ha a WooCommerce-ből százalékos kedvezmény jött, akkor DiscountTip = 'procent',
+  // egyébként pedig összeg ('valoare').
+  let discountAmount = 0;
+  let discountPercent = 0;
+  let discountType = 'valoare';
+
   if (order.discountTotal > 0) {
-    termekek.push({
-      Denumire: 'discount' + (order.couponCode ? ' ' + order.couponCode : ''),
-      UM: 'BUC',
-      CodArticol: '',
-      NrProduse: 1,
-      PretUnitar: -order.discountTotal,
-      CotaTVA: 0,
-      TVA: 0,
-      Valoare: -order.discountTotal
-    });
+    const coupon = order.raw?.coupon_lines?.[0];
+    const isPercentCoupon = coupon && coupon.discount_type === 'percent';
+
+    if (isPercentCoupon) {
+      discountPercent = parseFloat(coupon.amount) || 0;
+      discountType = 'procent';
+    } else {
+      discountAmount = order.discountTotal;
+      discountType = 'valoare';
+    }
   }
 
   const payload = {
@@ -1720,7 +1728,12 @@ async function callFgoApi(order, fgo) {
       Email: order.email,
       Telefon: order.phone
     },
-    Continut: termekek
+    Continut: termekek,
+
+    // ✅ Számla-szintű kedvezmény (FGO "Discount factura")
+    Discount: discountAmount,
+    DiscountProcent: discountPercent,
+    DiscountTip: discountType,
   };
 
   console.log('📤 Küldés a Render proxy-nak:', payload);
