@@ -4,9 +4,9 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Zen3Hub — Luxury Logistics</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="preconnect" href__="https://fonts.googleapis.com">
+<link rel="preconnect" href__="https://fonts.gstatic.com" crossorigin>
+<link href__="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root {
     --gold: #d4af37;
@@ -1472,15 +1472,16 @@ window.generateSelectedFactura = async function () {
         // ✅ 1:1 FGO számla — beágyazott PDF
         html += `
           <div class="fgo-factura-wrap">
-            <iframe 
-              src="${result.pdfUrl}#toolbar=1&navpanes=0&scrollbar=1&view=FitH" 
+            <iframe
+              src="${result.pdfUrl}#toolbar=1&navpanes=0&scrollbar=1&view=FitH"
               type="application/pdf"
             ></iframe>
             <div class="fgo-factura-link">
-              Ha a számla nem jelenik meg: 
-              <a href="${result.pdfUrl}" target="_blank">kattints ide</a>
+              Ha a számla nem jelenik meg:
+              <a href__="${result.pdfUrl}" target="_blank">kattints ide</a>
               &nbsp;·&nbsp; Számlaszám: <b>${result.serie}-${result.numar}</b>
               &nbsp;·&nbsp; Rendelés: <b>#${o.id}</b>
+              &nbsp;·&nbsp; Vásárló: <b>${o.name}</b>
             </div>
           </div>
         `;
@@ -1511,15 +1512,15 @@ window.generateSelectedFactura = async function () {
 };
 
 // ============================================
-// FGO API HÍVÁS
+// FGO API HÍVÁS — javított mezőnevek (NrProduse, UM, Tip)
 // ============================================
 async function callFgoApi(order, fgo) {
-  // Termékek összeállítása
+  // Termékek összeállítása — FGO kötelező mezők: Denumire, NrProduse, UM, CotaTVA
   const termekek = order.items.map(it => ({
     Denumire: it.name || 'INCALTAMINTE',
-    Um: 'BUC',
+    UM: 'BUC',
     CodArticol: String(order.id),
-    Cantitate: it.quantity || 1,
+    NrProduse: it.quantity || 1,
     PretUnitar: it.price || 0,
     CotaTVA: 0,
     TVA: 0,
@@ -1529,9 +1530,9 @@ async function callFgoApi(order, fgo) {
   // TRANSPORT hozzáadása
   termekek.push({
     Denumire: order.shippingTotal > 0 ? 'TRANSPORT' : 'TRANSPORT GRATUIT',
-    Um: '',
+    UM: 'BUC',
     CodArticol: '',
-    Cantitate: 1,
+    NrProduse: 1,
     PretUnitar: order.shippingTotal || 0,
     CotaTVA: 0,
     TVA: 0,
@@ -1542,10 +1543,10 @@ async function callFgoApi(order, fgo) {
   if (order.discountTotal > 0) {
     termekek.push({
       Denumire: 'discount' + (order.couponCode ? ' ' + order.couponCode : ''),
-      Um: 'Unitate',
+      UM: 'BUC',
       CodArticol: '',
-      Cantitate: -1,
-      PretUnitar: order.discountTotal,
+      NrProduse: 1,
+      PretUnitar: -order.discountTotal,
       CotaTVA: 0,
       TVA: 0,
       Valoare: -order.discountTotal
@@ -1558,6 +1559,7 @@ async function callFgoApi(order, fgo) {
     platformaUrl: fgo.fgoPlatform,
     serie: fgo.fgoSerie,
     client: {
+      Tip: 'PF',
       Denumire: order.name,
       Adresa: order.address,
       Localitate: order.city,
@@ -1609,21 +1611,21 @@ window.printFactura = function () {
         <style>
           @media print {
             body { margin: 0; padding: 0; }
-            .fgo-factura-wrap { 
-              page-break-after: always; 
+            .fgo-factura-wrap {
+              page-break-after: always;
               overflow: visible !important;
             }
             .fgo-factura-wrap:last-child { page-break-after: auto; }
-            iframe { 
-              width: 100% !important; 
+            iframe {
+              width: 100% !important;
               height: auto !important;
               min-height: 1100px !important;
             }
             .fgo-factura-link { display: none !important; }
           }
-          body { 
-            margin: 0; 
-            padding: 0; 
+          body {
+            margin: 0;
+            padding: 0;
             background: #fff;
             font-family: Arial, sans-serif;
           }
