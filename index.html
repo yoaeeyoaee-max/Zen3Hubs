@@ -152,57 +152,84 @@
   }
   .error:empty { display: none; }
 
-  #paywall {
-    display: none; min-height: 100vh;
-    align-items: center; justify-content: center;
-    padding: 24px; position: relative; z-index: 1;
+  /* FIZETÉSI ABLAK — számla / AWB után 1 lej */
+  .pay-modal {
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,0.85);
+    backdrop-filter: blur(6px);
+    display: none; align-items: center; justify-content: center;
+    padding: 24px; z-index: 500;
   }
-  #paywall.show { display: flex; }
-  .pay-box {
-    background: linear-gradient(145deg, rgba(26,26,26,0.95), rgba(10,10,10,0.98));
-    border: 1px solid rgba(212,175,55,0.25);
-    border-radius: 4px; padding: 56px 48px;
-    max-width: 480px; width: 100%; text-align: center;
-    position: relative; box-shadow: 0 30px 80px rgba(0,0,0,0.8);
+  .pay-modal.show { display: flex; }
+  .pay-modal-box {
+    background: linear-gradient(145deg, rgba(26,26,26,0.98), rgba(10,10,10,0.99));
+    border: 1px solid rgba(212,175,55,0.3);
+    border-radius: 4px; padding: 44px 36px;
+    max-width: 460px; width: 100%; text-align: center;
+    position: relative; box-shadow: 0 30px 80px rgba(0,0,0,0.85);
+    animation: fadeUp 0.5s cubic-bezier(0.4, 0, 0.2, 1);
   }
-  .pay-box::before, .pay-box::after {
-    content: ''; position: absolute;
-    width: 20px; height: 20px; border: 1px solid var(--gold);
+  .pay-modal-box::before, .pay-modal-box::after {
+    content: ''; position: absolute; width: 20px; height: 20px;
+    border: 1px solid var(--gold);
   }
-  .pay-box::before { top: -1px; left: -1px; border-right: none; border-bottom: none; }
-  .pay-box::after  { bottom: -1px; right: -1px; border-left: none; border-top: none; }
-  .pay-box h2 {
+  .pay-modal-box::before { top: -1px; left: -1px; border-right: none; border-bottom: none; }
+  .pay-modal-box::after  { bottom: -1px; right: -1px; border-left: none; border-top: none; }
+  .pay-modal-box h2 {
     font-family: 'Cormorant Garamond', serif;
     font-size: 2rem; color: var(--gold);
     letter-spacing: 2px; margin-bottom: 8px;
   }
-  .pay-box p { color: var(--text-dim); font-size: 0.85rem; }
-  .pay-box .email-show {
-    color: var(--gold-light); font-size: 0.8rem;
-    margin-top: 12px; letter-spacing: 1px;
-    padding: 8px; background: rgba(212,175,55,0.06);
-    border: 1px solid rgba(212,175,55,0.2); border-radius: 2px;
-  }
-  .price {
+  .pay-modal-box p { color: var(--text-dim); font-size: 0.85rem; }
+  .pay-amount {
     font-family: 'Cormorant Garamond', serif;
-    font-size: 4.5rem; font-weight: 700;
-    margin: 28px 0; line-height: 1;
+    font-size: 3.4rem; font-weight: 700;
+    margin: 20px 0 4px; line-height: 1;
     background: linear-gradient(180deg, #f4e5b1 0%, #d4af37 60%, #a8842a 100%);
     -webkit-background-clip: text; -webkit-text-fill-color: transparent;
   }
-  .price small {
-    font-size: 1rem; color: var(--gold-dark);
+  .pay-amount small {
+    font-size: 0.95rem; color: var(--gold-dark);
     -webkit-text-fill-color: var(--gold-dark);
     letter-spacing: 3px; display: block; margin-top: 8px;
   }
-  #paypal-button-container { margin-top: 28px; }
-  .back-link {
-    display: inline-block; margin-top: 20px;
-    color: var(--text-dim); font-size: 0.75rem;
-    letter-spacing: 2px; text-transform: uppercase;
-    cursor: pointer; transition: 0.2s;
+  .iban-box {
+    margin: 20px 0 8px; padding: 16px;
+    background: rgba(212,175,55,0.08);
+    border: 1px solid rgba(212,175,55,0.35);
+    border-radius: 2px;
+    font-family: 'Courier New', monospace;
+    font-size: 0.95rem; color: var(--gold-light);
+    letter-spacing: 2px; word-break: break-all;
   }
-  .back-link:hover { color: var(--gold); }
+  .iban-hint {
+    font-size: 0.72rem; color: var(--text-dim);
+    letter-spacing: 2px; text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+  .pay-modal .btn, .pay-modal .btn-secondary {
+    width: 100%; padding: 15px; margin-top: 12px;
+    border-radius: 2px; cursor: pointer;
+    font-size: 0.78rem; font-weight: 700;
+    letter-spacing: 3px; text-transform: uppercase;
+    transition: 0.3s; border: none;
+  }
+  .pay-modal .btn {
+    background: linear-gradient(135deg, #d4af37 0%, #a8842a 100%);
+    color: #0a0a0a;
+  }
+  .pay-modal .btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 15px 40px rgba(212,175,55,0.35);
+  }
+  .pay-modal .btn-secondary {
+    background: transparent;
+    border: 1px solid rgba(212,175,55,0.4);
+    color: var(--gold);
+  }
+  .pay-modal .btn-secondary:hover {
+    background: rgba(212,175,55,0.1);
+  }
 
   #dashboard { display: none; min-height: 100vh; position: relative; z-index: 1; }
   #dashboard.show { display: block; }
@@ -456,7 +483,7 @@
     padding: 16px 24px; border-radius: 2px;
     font-size: 0.85rem; color: var(--text);
     opacity: 0; transform: translateY(20px);
-    transition: 0.4s; z-index: 300; max-width: 360px;
+    transition: 0.4s; z-index: 600; max-width: 360px;
     box-shadow: 0 20px 50px rgba(0,0,0,0.7);
   }
   .toast.show { opacity: 1; transform: translateY(0); }
@@ -469,7 +496,7 @@
     border: 2px solid var(--gold);
     overflow: hidden;
   }
-  .awb-preview.show { display: block; }
+  .awb-preview.show { display: block; padding: 24px; }
   .awb-preview h4 {
     margin-bottom: 14px; padding-bottom: 10px;
     border-bottom: 2px solid #d4af37;
@@ -513,7 +540,7 @@
   ::-webkit-scrollbar-thumb:hover { background: var(--gold-dark); }
 
   @media (max-width: 600px) {
-    .auth-box, .pay-box { padding: 40px 28px; }
+    .auth-box, .pay-modal-box { padding: 40px 28px; }
     .content { padding: 28px 20px; }
     .card { padding: 24px 20px; }
     .topbar { padding: 16px 20px; }
@@ -553,16 +580,30 @@
   </div>
 </div>
 
-<!-- PAYWALL -->
-<div id="paywall">
-  <div class="pay-box">
-    <h2 id="payTitle">Prémium előfizetés</h2>
-    <p id="paySubtitle">A Zen3Hub használatához havi előfizetés szükséges.</p>
-    <div class="email-show" id="payEmail" style="display:none;"></div>
-    <div class="price">6 <small>EUR / hó</small></div>
-    <p style="color:#666; font-size:0.75rem; letter-spacing:2px;">30 RON ≈ 6 EUR · PayPal</p>
-    <div id="paypal-button-container"></div>
-    <div class="back-link" id="backLink" onclick="cancelPayment()">← Vissza</div>
+<!-- FIZETÉSI ABLAK -->
+<div class="pay-modal" id="payModal">
+  <div class="pay-modal-box">
+    <h2 id="payModalTitle">Fizetés</h2>
+    <p id="payModalSubtitle"></p>
+
+    <div class="pay-amount" id="payModalAmount"></div>
+
+    <div id="payStepCard">
+      <button class="btn" onclick="chooseDebitCard()">💳 Debit Card</button>
+    </div>
+
+    <div id="payStepIban" style="display:none;">
+      <div class="iban-hint" style="margin-top:20px;">Küldd erre az IBAN-ra</div>
+      <div class="iban-box" id="payIban">RO82REVO0000131362903124</div>
+      <button class="btn-secondary" onclick="openBank('revolut')">🏦 Revolut megnyitása</button>
+      <button class="btn-secondary" onclick="openBank('bt')">🏦 BT megnyitása</button>
+      <button class="btn" onclick="confirmTransfer()">✅ Átutaltam — folytatás</button>
+      <p style="margin-top:14px; font-size:0.72rem; letter-spacing:1px;">
+        A számla / AWB csak az átutalás után készül el.
+      </p>
+    </div>
+
+    <div class="back-link" style="display:block; margin-top:18px;" onclick="closePayModal()">← Vissza</div>
   </div>
 </div>
 
@@ -622,7 +663,7 @@
         </div>
 
         <div class="btn-row" id="actionRow" style="display:none;">
-          <button class="btn" onclick="generateSelectedAWB()">📦 Kijelölteknek AWB</button>
+          <button class="btn" onclick="generateSelectedAWB()">📦 Kijelölteknek AWB (1 lej / db)</button>
         </div>
 
         <div class="orders-list" id="ordersList"></div>
@@ -654,7 +695,7 @@
         </div>
 
         <div class="btn-row" id="actionRowFactura" style="display:none;">
-          <button class="btn" onclick="generateSelectedFactura()">🧾 Kijelölteknek számla</button>
+          <button class="btn" onclick="generateSelectedFactura()">🧾 Kijelölteknek számla (1 lej / db)</button>
         </div>
 
         <div class="orders-list" id="ordersListFactura"></div>
@@ -734,13 +775,13 @@
       <div class="card">
         <h3>👑 Admin panel – Fizetések és rendelések</h3>
         <p style="color:var(--text-dim); font-size:0.85rem; margin-bottom:20px;">
-          Itt látod az összes felhasználót, a fizetési státuszukat és a rendeléseiket.
+          Itt látod az összes felhasználót és a rendeléseiket.
         </p>
         <button class="btn" onclick="loadAdminData()">🔄 Adatok frissítése</button>
       </div>
 
       <div class="card">
-        <h3>👥 Felhasználók és előfizetések</h3>
+        <h3>👥 Felhasználók</h3>
         <div id="adminUsersList" style="margin-top:16px;"></div>
       </div>
 
@@ -753,9 +794,6 @@
 </div>
 
 <div class="toast" id="toast"></div>
-
-<!-- PayPal SDK – LIVE -->
-<script src="https://www.paypal.com/sdk/js?client-id=BAAYyKEybHpIXol-V-A4la2YPvkmPZtC9puaWCLqOPOxsdq80CX1VjaURALzj3gTjmVottYyiPVgbeBP6A&currency=EUR&intent=capture&components=buttons&disable-funding=credit"></script>
 
 <!-- FIREBASE -->
 <script type="module">
@@ -796,14 +834,20 @@ const ADMIN_EMAIL = 'yoaeeyoaee@gmail.com';
 const FGO_PROXY_URL = 'https://zen3hub-3.onrender.com/api/fgo/emitere';
 const ORDERS_PER_PAGE = 100;
 
+// ============================================
+// FIZETÉS — 1 lej / számla és 1 lej / AWB
+// ============================================
+const PAY_IBAN = 'RO82REVO0000131362903124';
+const PAY_PER_ITEM = 1; // 1 lej / tétel
+
 let isSignup = false;
 let currentUser = null;
 let currentAccountIndex = 0;
 let currentOrders = [];
 let selectedOrdersAWB = new Set();
 let selectedOrdersFactura = new Set();
-let pendingSignup = null;
 let landingDone = false;
+let pendingPayment = null; // { type: 'awb' | 'factura', count, amount }
 
 function hideLanding(instant = false) {
   if (landingDone) return;
@@ -854,7 +898,7 @@ window.switchTab = function (tab) {
 document.getElementById('switchText').addEventListener('click', () => {
   isSignup = !isSignup;
   document.getElementById('authTitle').textContent = isSignup ? 'Regisztráció' : 'Bejelentkezés';
-  document.getElementById('authBtn').textContent = isSignup ? 'Fizetés és regisztráció' : 'Bejelentkezés';
+  document.getElementById('authBtn').textContent = isSignup ? 'Regisztráció' : 'Bejelentkezés';
   document.getElementById('switchText').textContent = isSignup ? 'Van már fiókod? Jelentkezz be' : 'Nincs fiókod? Regisztrálj';
   document.getElementById('authError').textContent = '';
 });
@@ -887,13 +931,23 @@ window.handleAuth = async function () {
       errEl.textContent = 'Ez az email admin fiókhoz tartozik. Jelentkezz be!';
       return;
     }
-    pendingSignup = { email, password };
-    document.getElementById('payEmail').style.display = 'block';
-    document.getElementById('payEmail').textContent = '📧 ' + email;
-    document.getElementById('payTitle').textContent = 'Fizetés és regisztráció';
-    document.getElementById('paySubtitle').textContent = 'A fiók létrehozása csak sikeres fizetés után történik.';
-    document.getElementById('backLink').style.display = 'inline-block';
-    showPaywall();
+    try {
+      const cred = await createUserWithEmailAndPassword(auth, email, password);
+      await setDoc(doc(db, 'users', cred.user.uid), {
+        email: email,
+        expeditor: {}, shopConfig: {}, dpdConfig: {}, fgoConfig: {},
+        accounts: [{ name: 'Fő account', data: {} }],
+        createdAt: new Date().toISOString()
+      });
+      toast('✅ Fiók létrehozva!');
+    } catch (e) {
+      const map = {
+        'auth/email-already-in-use': 'Ez az email már regisztrálva van. Jelentkezz be!',
+        'auth/weak-password': 'A jelszó túl gyenge.',
+        'auth/invalid-email': 'Érvénytelen email cím.'
+      };
+      errEl.textContent = map[e.code] || e.message;
+    }
   } else {
     try {
       await signInWithEmailAndPassword(auth, email, password);
@@ -911,59 +965,39 @@ window.handleAuth = async function () {
   }
 };
 
-window.cancelPayment = function () {
-  pendingSignup = null;
-  document.getElementById('paywall').classList.remove('show');
-  document.getElementById('auth').style.display = '';
-  document.getElementById('auth').classList.add('show');
-  document.getElementById('payEmail').style.display = 'none';
-};
-
 onAuthStateChanged(auth, async (user) => {
   if (user) {
     currentUser = user;
     document.getElementById('auth').classList.remove('show');
     document.getElementById('auth').style.display = 'none';
-    document.getElementById('paywall').classList.remove('show');
     document.getElementById('userEmail').textContent = user.email;
+
+    const userDoc = await getDoc(doc(db, 'users', user.uid));
+    let data = userDoc.data();
+
+    if (!data) {
+      data = {
+        email: user.email,
+        isAdmin: user.email === ADMIN_EMAIL,
+        expeditor: {}, shopConfig: {}, dpdConfig: {}, fgoConfig: {},
+        accounts: [{ name: 'Fő account', data: {} }],
+        createdAt: new Date().toISOString()
+      };
+      await setDoc(doc(db, 'users', user.uid), data);
+    }
 
     if (user.email === ADMIN_EMAIL) {
       document.getElementById('adminBtn').style.display = 'flex';
       document.getElementById('adminTabBtn').style.display = 'inline-block';
-
-      const userDoc = await getDoc(doc(db, 'users', user.uid));
-      let data = userDoc.data();
-      if (!data) {
-        data = { email: user.email, isAdmin: true, subscriptionActive: true, subscriptionDate: new Date().toISOString(), accounts: [{ name: 'Fő account', data: {} }] };
-        await setDoc(doc(db, 'users', user.uid), data);
-      }
-      showDashboard(data);
-      return;
-    }
-
-    const userDoc = await getDoc(doc(db, 'users', user.uid));
-    const data = userDoc.data() || {};
-
-    const now = new Date();
-    const subDate = data.subscriptionDate ? new Date(data.subscriptionDate) : null;
-    const active = data.subscriptionActive && subDate &&
-      (now - subDate) < 30 * 24 * 60 * 60 * 1000;
-
-    if (!active) {
-      pendingSignup = { email: user.email, uid: user.uid, existing: true };
-      document.getElementById('payTitle').textContent = 'Előfizetés megújítása';
-      document.getElementById('paySubtitle').textContent = 'A hozzáféréshez havi előfizetés szükséges.';
-      document.getElementById('payEmail').style.display = 'block';
-      document.getElementById('payEmail').textContent = '📧 ' + user.email;
-      document.getElementById('backLink').style.display = 'none';
-      showPaywall();
     } else {
-      showDashboard(data);
+      document.getElementById('adminBtn').style.display = 'none';
+      document.getElementById('adminTabBtn').style.display = 'none';
     }
+
+    showDashboard(data);
   } else {
     currentUser = null;
     document.getElementById('dashboard').classList.remove('show');
-    document.getElementById('paywall').classList.remove('show');
     document.getElementById('auth').style.display = '';
     document.getElementById('auth').classList.add('show');
     document.getElementById('adminBtn').style.display = 'none';
@@ -971,71 +1005,63 @@ onAuthStateChanged(auth, async (user) => {
   }
 });
 
-function showPaywall() {
-  document.getElementById('paywall').classList.add('show');
-  document.getElementById('auth').classList.remove('show');
-  document.getElementById('auth').style.display = 'none';
-  document.getElementById('dashboard').classList.remove('show');
-  renderPayPal();
-}
+// ============================================
+// FIZETÉSI FOLYAMAT
+// ============================================
+window.requestPayment = function (type, count) {
+  pendingPayment = { type, count, amount: count * PAY_PER_ITEM };
 
-function renderPayPal() {
-  const container = document.getElementById('paypal-button-container');
-  container.innerHTML = '';
-  if (window.paypal) {
-    window.paypal.Buttons({
-      style: { layout: 'vertical', color: 'gold', shape: 'rect', label: 'paypal', height: 48, tagline: false },
-      createOrder: (data, actions) => {
-        return actions.order.create({
-          purchase_units: [{
-            amount: { value: '6.00', currency_code: 'EUR' },
-            description: 'Zen3Hub Prémium előfizetés'
-          }]
-        });
-      },
-      onApprove: async (data, actions) => {
-        await actions.order.capture();
-        if (pendingSignup && !pendingSignup.existing) {
-          try {
-            const cred = await createUserWithEmailAndPassword(auth, pendingSignup.email, pendingSignup.password);
-            await setDoc(doc(db, 'users', cred.user.uid), {
-              email: pendingSignup.email,
-              subscriptionActive: true,
-              subscriptionDate: new Date().toISOString(),
-              expeditor: {}, shopConfig: {}, dpdConfig: {}, fgoConfig: {},
-              accounts: [{ name: 'Fő account', data: {} }],
-              createdAt: new Date().toISOString()
-            });
-            toast('✅ Fizetés sikeres! Fiók létrehozva.');
-            pendingSignup = null;
-          } catch (e) {
-            toast('❌ Fiók hiba: ' + e.message);
-          }
-        } else if (pendingSignup && pendingSignup.existing) {
-          await updateDoc(doc(db, 'users', currentUser.uid), {
-            subscriptionActive: true,
-            subscriptionDate: new Date().toISOString()
-          });
-          toast('✅ Előfizetés megújítva!');
-          const userDoc = await getDoc(doc(db, 'users', currentUser.uid));
-          showDashboard(userDoc.data());
-        }
-      },
-      onError: (err) => {
-        console.error('PayPal hiba:', err);
-        toast('❌ PayPal hiba: ' + err.message);
-      }
-    }).render('#paypal-button-container');
+  const isAWB = type === 'awb';
+  document.getElementById('payModalTitle').textContent = isAWB ? 'AWB fizetés' : 'Számla fizetés';
+  document.getElementById('payModalSubtitle').textContent =
+    isAWB
+      ? `${count} db AWB elkészítése — 1 lej / AWB`
+      : `${count} db számla kiállítása — 1 lej / számla`;
+  document.getElementById('payModalAmount').innerHTML =
+    `${pendingPayment.amount} <small>LEI fizetendő</small>`;
+
+  document.getElementById('payStepCard').style.display = 'block';
+  document.getElementById('payStepIban').style.display = 'none';
+  document.getElementById('payIban').textContent = PAY_IBAN;
+
+  document.getElementById('payModal').classList.add('show');
+};
+
+window.chooseDebitCard = function () {
+  document.getElementById('payStepCard').style.display = 'none';
+  document.getElementById('payStepIban').style.display = 'block';
+};
+
+window.openBank = function (bank) {
+  if (bank === 'revolut') {
+    window.open('https://revolut.me/', '_blank');
   } else {
-    container.innerHTML = '<p style="color:#d4af37;">PayPal betöltése...</p>';
-    setTimeout(renderPayPal, 500);
+    window.open('https://www.bancatransilvania.ro/', '_blank');
   }
-}
+  toast('💳 Utalj ' + pendingPayment.amount + ' lejt erre: ' + PAY_IBAN);
+};
+
+window.confirmTransfer = async function () {
+  if (!pendingPayment) { closePayModal(); return; }
+  const job = pendingPayment;
+  closePayModal();
+  toast('✅ Fizetés rögzítve — ' + job.amount + ' lej');
+
+  if (job.type === 'awb') {
+    await buildAWBPreview();
+  } else {
+    await buildFacturaPreview();
+  }
+};
+
+window.closePayModal = function () {
+  document.getElementById('payModal').classList.remove('show');
+  pendingPayment = null;
+};
 
 async function showDashboard(data) {
   document.getElementById('auth').classList.remove('show');
   document.getElementById('auth').style.display = 'none';
-  document.getElementById('paywall').classList.remove('show');
   document.getElementById('dashboard').classList.add('show');
 
   if (data.expeditor) {
@@ -1191,7 +1217,6 @@ window.loadOrders = async function () {
 
       const shippingTotal = parseFloat(o.shipping_total) || 0;
       const discountTotal = parseFloat(o.discount_total) || 0;
-      const shippingTitle = o.shipping_lines?.[0]?.method_title || 'TRANSPORT';
       const couponCode = o.coupon_lines?.[0]?.code || '';
 
       return {
@@ -1401,6 +1426,9 @@ function updateSelectedCountFactura() {
   document.getElementById('selectedCountFactura').textContent = `${selectedOrdersFactura.size} kijelölve`;
 }
 
+// ============================================
+// AWB — fizetés után generál
+// ============================================
 window.generateSelectedAWB = async function () {
   if (selectedOrdersAWB.size === 0) { toast('❌ Nincs kijelölt rendelés'); return; }
   const userDoc = await getDoc(doc(db, 'users', currentUser.uid));
@@ -1411,6 +1439,11 @@ window.generateSelectedAWB = async function () {
   if (!exp.name) { toast('❌ Töltsd ki az expedíciós adatokat!'); return; }
   if (!dpd.dpdUser) { toast('❌ Töltsd ki a DPD adatokat!'); return; }
 
+  // Csak a kijelölt rendelésekért kell fizetni: 1 lej / AWB
+  requestPayment('awb', selectedOrdersAWB.size);
+};
+
+async function buildAWBPreview() {
   const selected = currentOrders.filter(o => selectedOrdersAWB.has(String(o.id)));
   const nextMonday = getNextMonday();
 
@@ -1441,10 +1474,10 @@ window.generateSelectedAWB = async function () {
   preview.classList.add('show');
   preview.innerHTML = html;
   toast(`📦 ${selected.length} AWB előkészítve`);
-};
+}
 
 // ============================================
-// SZÁMLA GENERÁLÁS — FGO számla 1:1 megjelenítés
+// SZÁMLA — fizetés után generál (FGO)
 // ============================================
 window.generateSelectedFactura = async function () {
   if (selectedOrdersFactura.size === 0) { toast('❌ Nincs kijelölt rendelés'); return; }
@@ -1457,6 +1490,14 @@ window.generateSelectedFactura = async function () {
     return;
   }
 
+  // Csak a kijelölt rendelésekért kell fizetni: 1 lej / számla
+  requestPayment('factura', selectedOrdersFactura.size);
+};
+
+async function buildFacturaPreview() {
+  const userDoc = await getDoc(doc(db, 'users', currentUser.uid));
+  const data = userDoc.data();
+  const fgo = data.fgoConfig || {};
   const selected = currentOrders.filter(o => selectedOrdersFactura.has(String(o.id)));
 
   let html = '';
@@ -1509,13 +1550,12 @@ window.generateSelectedFactura = async function () {
   preview.innerHTML = html;
 
   toast(`🧾 ${successCount} számla kész, ${errorCount} hiba`);
-};
+}
 
 // ============================================
-// FGO API HÍVÁS — javított mezőnevek (NrProduse, UM, Tip)
+// FGO API HÍVÁS
 // ============================================
 async function callFgoApi(order, fgo) {
-  // Termékek összeállítása — FGO kötelező mezők: Denumire, NrProduse, UM, CotaTVA
   const termekek = order.items.map(it => ({
     Denumire: it.name || 'INCALTAMINTE',
     UM: 'BUC',
@@ -1527,7 +1567,6 @@ async function callFgoApi(order, fgo) {
     Valoare: (it.price || 0) * (it.quantity || 1)
   }));
 
-  // TRANSPORT hozzáadása
   termekek.push({
     Denumire: order.shippingTotal > 0 ? 'TRANSPORT' : 'TRANSPORT GRATUIT',
     UM: 'BUC',
@@ -1539,7 +1578,6 @@ async function callFgoApi(order, fgo) {
     Valoare: order.shippingTotal || 0
   });
 
-  // DISCOUNT hozzáadása (csak ha van)
   if (order.discountTotal > 0) {
     termekek.push({
       Denumire: 'discount' + (order.couponCode ? ' ' + order.couponCode : ''),
@@ -1788,21 +1826,6 @@ async function loadAdminUsers() {
       const u = docSnap.data();
       const uid = docSnap.id;
 
-      const now = new Date();
-      const subDate = u.subscriptionDate ? new Date(u.subscriptionDate) : null;
-      const isActive = u.subscriptionActive && subDate &&
-        (now - subDate) < 30 * 24 * 60 * 60 * 1000;
-
-      let daysLeft = 0;
-      if (subDate) {
-        const diff = 30 - Math.floor((now - subDate) / (24 * 60 * 60 * 1000));
-        daysLeft = Math.max(0, diff);
-      }
-
-      const statusBadge = isActive
-        ? `<span class="badge success">✅ Aktív – ${daysLeft} nap</span>`
-        : `<span class="badge warn">❌ Lejárt / nincs</span>`;
-
       const adminBadge = u.isAdmin
         ? `<span class="badge" style="background:rgba(212,175,55,0.2); color:var(--gold);">👑 Admin</span>`
         : '';
@@ -1812,9 +1835,7 @@ async function loadAdminUsers() {
           <div class="info" style="min-width:250px;">
             <strong style="color:var(--gold);">${u.email || '–'}</strong> ${adminBadge}<br>
             <small style="color:#8a8a8a;">UID: ${uid}</small><br>
-            <small style="color:#8a8a8a;">Regisztrált: ${u.createdAt ? new Date(u.createdAt).toLocaleDateString('hu-HU') : '–'}</small><br>
-            <small style="color:#8a8a8a;">Előfizetés kezdete: ${subDate ? subDate.toLocaleDateString('hu-HU') : '–'}</small><br>
-            ${statusBadge}
+            <small style="color:#8a8a8a;">Regisztrált: ${u.createdAt ? new Date(u.createdAt).toLocaleDateString('hu-HU') : '–'}</small>
           </div>
         </div>
       `;
