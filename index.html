@@ -4,9 +4,9 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Zen3Hub — Luxury Logistics</title>
-<link rel="preconnect" href__="https://fonts.googleapis.com">
-<link rel="preconnect" href__="https://fonts.gstatic.com" crossorigin>
-<link href__="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root {
     --gold: #d4af37;
@@ -152,7 +152,6 @@
   }
   .error:empty { display: none; }
 
-  /* FIZETÉSI ABLAK — számla / AWB után 1 lej */
   .pay-modal {
     position: fixed; inset: 0;
     background: rgba(0,0,0,0.85);
@@ -506,7 +505,6 @@
   .awb-preview .row span:first-child { color: #666; }
   .awb-preview hr { margin: 12px 0; border: none; border-top: 1px dashed #ccc; }
 
-  /* FGO számla beágyazás */
   .fgo-factura-wrap {
     background: #fff;
     margin-bottom: 24px;
@@ -718,6 +716,17 @@
     <!-- BEÁLLÍTÁSOK TAB -->
     <div class="tab-content" id="tab-beallitasok">
       <div class="card">
+        <h3>🏢 Aktív al-account</h3>
+        <p style="color:var(--text-dim); font-size:0.85rem; margin-bottom:16px;">
+          Az alábbi beállítások az aktív al-accounthoz tartoznak: <b id="activeAccountName" style="color:var(--gold);">Fő account</b>
+        </p>
+        <label>Al-account neve</label>
+        <input id="accountName" placeholder="Pl. Daniela Margarit" />
+        <button class="btn" onclick="saveAccountName()">Név mentése</button>
+        <button class="btn secondary" onclick="deleteCurrentAccount()">🗑️ Al-account törlése</button>
+      </div>
+
+      <div class="card">
         <h3>🚚 Expedíciós adatok</h3>
         <label>Név / Cég</label>
         <input id="expName" placeholder="Pl. Popescu Ion / SC Exemplu SRL" />
@@ -834,20 +843,21 @@ const ADMIN_EMAIL = 'yoaeeyoaee@gmail.com';
 const FGO_PROXY_URL = 'https://zen3hub-3.onrender.com/api/fgo/emitere';
 const ORDERS_PER_PAGE = 100;
 
-// ============================================
-// FIZETÉS — 1 lej / számla és 1 lej / AWB
-// ============================================
+// Kitiltott order státuszok — ezeket NEM töltjük le
+const BLOCKED_ORDER_STATUSES = ['cancelled', 'refunded', 'failed', 'trash'];
+
 const PAY_IBAN = 'RO82REVO0000131362903124';
-const PAY_PER_ITEM = 1; // 1 lej / tétel
+const PAY_PER_ITEM = 1;
 
 let isSignup = false;
 let currentUser = null;
+let currentUserData = null;
 let currentAccountIndex = 0;
 let currentOrders = [];
 let selectedOrdersAWB = new Set();
 let selectedOrdersFactura = new Set();
 let landingDone = false;
-let pendingPayment = null; // { type: 'awb' | 'factura', count, amount }
+let pendingPayment = null;
 
 function hideLanding(instant = false) {
   if (landingDone) return;
@@ -935,8 +945,8 @@ window.handleAuth = async function () {
       const cred = await createUserWithEmailAndPassword(auth, email, password);
       await setDoc(doc(db, 'users', cred.user.uid), {
         email: email,
-        expeditor: {}, shopConfig: {}, dpdConfig: {}, fgoConfig: {},
-        accounts: [{ name: 'Fő account', data: {} }],
+        accounts: [{ name: 'Fő account', expeditor: {}, shopConfig: {}, dpdConfig: {}, fgoConfig: {} }],
+        activeAccountIndex: 0,
         createdAt: new Date().toISOString()
       });
       toast('✅ Fiók létrehozva!');
@@ -979,12 +989,31 @@ onAuthStateChanged(auth, async (user) => {
       data = {
         email: user.email,
         isAdmin: user.email === ADMIN_EMAIL,
-        expeditor: {}, shopConfig: {}, dpdConfig: {}, fgoConfig: {},
-        accounts: [{ name: 'Fő account', data: {} }],
+        accounts: [{ name: 'Fő account', expeditor: {}, shopConfig: {}, dpdConfig: {}, fgoConfig: {} }],
+        activeAccountIndex: 0,
         createdAt: new Date().toISOString()
       };
       await setDoc(doc(db, 'users', user.uid), data);
     }
+
+    // Migráció: ha régi struktúra (expeditor/shopConfig a gyökérben), átalakítjuk
+    if (!data.accounts) {
+      data.accounts = [{
+        name: 'Fő account',
+        expeditor: data.expeditor || {},
+        shopConfig: data.shopConfig || {},
+        dpdConfig: data.dpdConfig || {},
+        fgoConfig: data.fgoConfig || {}
+      }];
+      delete data.expeditor;
+      delete data.shopConfig;
+      delete data.dpdConfig;
+      delete data.fgoConfig;
+      await setDoc(doc(db, 'users', user.uid), data);
+    }
+
+    currentUserData = data;
+    currentAccountIndex = data.activeAccountIndex || 0;
 
     if (user.email === ADMIN_EMAIL) {
       document.getElementById('adminBtn').style.display = 'flex';
@@ -997,6 +1026,7 @@ onAuthStateChanged(auth, async (user) => {
     showDashboard(data);
   } else {
     currentUser = null;
+    currentUserData = null;
     document.getElementById('dashboard').classList.remove('show');
     document.getElementById('auth').style.display = '';
     document.getElementById('auth').classList.add('show');
@@ -1059,37 +1089,61 @@ window.closePayModal = function () {
   pendingPayment = null;
 };
 
+// ============================================
+// AKTÍV AL-ACCOUNT KEZELÉS
+// ============================================
+function getActiveAccount() {
+  if (!currentUserData?.accounts?.length) {
+    return { name: 'Fő account', expeditor: {}, shopConfig: {}, dpdConfig: {}, fgoConfig: {} };
+  }
+  return currentUserData.accounts[currentAccountIndex] || currentUserData.accounts[0];
+}
+
+async function persistAccounts() {
+  await updateDoc(doc(db, 'users', currentUser.uid), {
+    accounts: currentUserData.accounts,
+    activeAccountIndex: currentAccountIndex
+  });
+}
+
 async function showDashboard(data) {
   document.getElementById('auth').classList.remove('show');
   document.getElementById('auth').style.display = 'none';
   document.getElementById('dashboard').classList.add('show');
 
-  if (data.expeditor) {
-    document.getElementById('expName').value = data.expeditor.name || '';
-    document.getElementById('expPhone').value = data.expeditor.phone || '';
-    document.getElementById('expEmail').value = data.expeditor.email || '';
-    document.getElementById('expCountry').value = data.expeditor.country || 'România';
-    document.getElementById('expStreet').value = data.expeditor.street || '';
-    document.getElementById('expCity').value = data.expeditor.city || '';
-  }
-  if (data.shopConfig) {
-    document.getElementById('shopUrl').value = data.shopConfig.shopUrl || '';
-    document.getElementById('wcKey').value = data.shopConfig.wcKey || '';
-    document.getElementById('wcSecret').value = data.shopConfig.wcSecret || '';
-  }
-  if (data.dpdConfig) {
-    document.getElementById('dpdUser').value = data.dpdConfig.dpdUser || '';
-    document.getElementById('dpdPass').value = data.dpdConfig.dpdPass || '';
-  }
-  if (data.fgoConfig) {
-    document.getElementById('fgoUrl').value = data.fgoConfig.fgoUrl || 'https://api.fgo.ro/v1';
-    document.getElementById('fgoKey').value = data.fgoConfig.fgoKey || '';
-    document.getElementById('fgoCui').value = data.fgoConfig.fgoCui || '';
-    document.getElementById('fgoSerie').value = data.fgoConfig.fgoSerie || '';
-    document.getElementById('fgoPlatform').value = data.fgoConfig.fgoPlatform || '';
-  }
+  renderAccounts(data.accounts);
+  fillSettingsForm();
+}
 
-  renderAccounts(data.accounts || [{ name: 'Fő account' }]);
+function fillSettingsForm() {
+  const acc = getActiveAccount();
+
+  document.getElementById('activeAccountName').textContent = acc.name || 'Fő account';
+  document.getElementById('accountName').value = acc.name || '';
+
+  const exp = acc.expeditor || {};
+  document.getElementById('expName').value = exp.name || '';
+  document.getElementById('expPhone').value = exp.phone || '';
+  document.getElementById('expEmail').value = exp.email || '';
+  document.getElementById('expCountry').value = exp.country || 'România';
+  document.getElementById('expStreet').value = exp.street || '';
+  document.getElementById('expCity').value = exp.city || '';
+
+  const shop = acc.shopConfig || {};
+  document.getElementById('shopUrl').value = shop.shopUrl || '';
+  document.getElementById('wcKey').value = shop.wcKey || '';
+  document.getElementById('wcSecret').value = shop.wcSecret || '';
+
+  const dpd = acc.dpdConfig || {};
+  document.getElementById('dpdUser').value = dpd.dpdUser || '';
+  document.getElementById('dpdPass').value = dpd.dpdPass || '';
+
+  const fgo = acc.fgoConfig || {};
+  document.getElementById('fgoUrl').value = fgo.fgoUrl || 'https://api.fgo.ro/v1';
+  document.getElementById('fgoKey').value = fgo.fgoKey || '';
+  document.getElementById('fgoCui').value = fgo.fgoCui || '';
+  document.getElementById('fgoSerie').value = fgo.fgoSerie || '';
+  document.getElementById('fgoPlatform').value = fgo.fgoPlatform || '';
 }
 
 window.toggleSidebar = function () {
@@ -1100,13 +1154,16 @@ window.toggleSidebar = function () {
 function renderAccounts(accounts) {
   const list = document.getElementById('accountList');
   list.innerHTML = '';
-  accounts.forEach((acc, i) => {
+  (accounts || []).forEach((acc, i) => {
     const div = document.createElement('div');
     div.className = 'acc-item' + (i === currentAccountIndex ? ' active' : '');
     div.textContent = acc.name;
-    div.onclick = () => {
+    div.onclick = async () => {
       currentAccountIndex = i;
+      if (currentUserData) currentUserData.activeAccountIndex = i;
+      await persistAccounts();
       renderAccounts(accounts);
+      fillSettingsForm();
       toast(`Átváltva: ${acc.name}`);
       toggleSidebar();
     };
@@ -1115,18 +1172,51 @@ function renderAccounts(accounts) {
 }
 
 window.addSubAccount = async function () {
-  const userDoc = await getDoc(doc(db, 'users', currentUser.uid));
-  const data = userDoc.data();
-  const accounts = data.accounts || [];
+  if (!currentUserData) return;
+  const accounts = currentUserData.accounts || [];
   if (accounts.length >= 6) { toast('❌ Maximum 6 account'); return; }
-  accounts.push({ name: `Al-account ${accounts.length}`, data: {} });
-  await updateDoc(doc(db, 'users', currentUser.uid), { accounts });
+  accounts.push({
+    name: `Al-account ${accounts.length}`,
+    expeditor: {}, shopConfig: {}, dpdConfig: {}, fgoConfig: {}
+  });
+  currentUserData.accounts = accounts;
+  currentAccountIndex = accounts.length - 1;
+  currentUserData.activeAccountIndex = currentAccountIndex;
+  await persistAccounts();
   renderAccounts(accounts);
-  toast('✅ Új al-account hozzáadva');
+  fillSettingsForm();
+  toast('✅ Új al-account hozzáadva (külön beállításokkal)');
+};
+
+window.saveAccountName = async function () {
+  const name = document.getElementById('accountName').value.trim();
+  if (!name) { toast('❌ Adj nevet az al-accountnak'); return; }
+  const acc = getActiveAccount();
+  acc.name = name;
+  await persistAccounts();
+  renderAccounts(currentUserData.accounts);
+  document.getElementById('activeAccountName').textContent = name;
+  toast('💾 Al-account név mentve');
+};
+
+window.deleteCurrentAccount = async function () {
+  if (!currentUserData) return;
+  const accounts = currentUserData.accounts || [];
+  if (accounts.length <= 1) { toast('❌ Legalább 1 account kell'); return; }
+  if (!confirm('Biztosan törlöd ezt az al-accountot?')) return;
+  accounts.splice(currentAccountIndex, 1);
+  currentAccountIndex = 0;
+  currentUserData.accounts = accounts;
+  currentUserData.activeAccountIndex = 0;
+  await persistAccounts();
+  renderAccounts(accounts);
+  fillSettingsForm();
+  toast('🗑️ Al-account törölve');
 };
 
 window.saveExpeditor = async function () {
-  const expeditor = {
+  const acc = getActiveAccount();
+  acc.expeditor = {
     name: document.getElementById('expName').value,
     phone: document.getElementById('expPhone').value,
     email: document.getElementById('expEmail').value,
@@ -1134,48 +1224,50 @@ window.saveExpeditor = async function () {
     street: document.getElementById('expStreet').value,
     city: document.getElementById('expCity').value
   };
-  await updateDoc(doc(db, 'users', currentUser.uid), { expeditor });
-  toast('💾 Expedíciós adatok mentve');
+  await persistAccounts();
+  toast('💾 Expedíciós adatok mentve (ehhez az al-accounthez)');
 };
 
 window.saveShopConfig = async function () {
-  const shopConfig = {
+  const acc = getActiveAccount();
+  acc.shopConfig = {
     shopUrl: document.getElementById('shopUrl').value.replace(/\/$/, ''),
     wcKey: document.getElementById('wcKey').value.trim(),
     wcSecret: document.getElementById('wcSecret').value.trim()
   };
-  await updateDoc(doc(db, 'users', currentUser.uid), { shopConfig });
-  toast('💾 WooCommerce adatok mentve');
+  await persistAccounts();
+  toast('💾 WooCommerce adatok mentve (ehhez az al-accounthez)');
 };
 
 window.saveDpdConfig = async function () {
-  const dpdConfig = {
+  const acc = getActiveAccount();
+  acc.dpdConfig = {
     dpdUser: document.getElementById('dpdUser').value,
     dpdPass: document.getElementById('dpdPass').value
   };
-  await updateDoc(doc(db, 'users', currentUser.uid), { dpdConfig });
-  toast('💾 DPD adatok mentve');
+  await persistAccounts();
+  toast('💾 DPD adatok mentve (ehhez az al-accounthez)');
 };
 
 window.saveFgoConfig = async function () {
-  const fgoConfig = {
+  const acc = getActiveAccount();
+  acc.fgoConfig = {
     fgoUrl: document.getElementById('fgoUrl').value,
     fgoKey: document.getElementById('fgoKey').value,
     fgoCui: document.getElementById('fgoCui').value,
     fgoSerie: document.getElementById('fgoSerie').value,
     fgoPlatform: document.getElementById('fgoPlatform').value
   };
-  await updateDoc(doc(db, 'users', currentUser.uid), { fgoConfig });
-  toast('💾 FGO adatok mentve');
+  await persistAccounts();
+  toast('💾 FGO adatok mentve (ehhez az al-accounthez)');
 };
 
 // ============================================
-// RENDELÉSEK BETÖLTÉSE — 100 rendelés
+// RENDELÉSEK BETÖLTÉSE — CSAK NEM ANULÁLT
 // ============================================
 window.loadOrders = async function () {
-  const userDoc = await getDoc(doc(db, 'users', currentUser.uid));
-  const data = userDoc.data();
-  const shop = data.shopConfig || {};
+  const acc = getActiveAccount();
+  const shop = acc.shopConfig || {};
 
   if (!shop.shopUrl) { toast('❌ Add meg a webshop URL-t!'); return; }
   if (!shop.wcKey || !shop.wcSecret) { toast('❌ Add meg a WooCommerce kulcsokat!'); return; }
@@ -1190,9 +1282,17 @@ window.loadOrders = async function () {
   try {
     const res = await fetch(url);
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    const orders = await res.json();
+    const rawOrders = await res.json();
 
-    if (!Array.isArray(orders)) throw new Error(orders.message || 'Érvénytelen válasz');
+    if (!Array.isArray(rawOrders)) throw new Error(rawOrders.message || 'Érvénytelen válasz');
+
+    // ⚠️ CSAK a nem anulált / nem törölt / nem visszatérített ordereket tartjuk meg
+    const orders = rawOrders.filter(o => {
+      const status = (o.status || '').toLowerCase();
+      return !BLOCKED_ORDER_STATUSES.includes(status);
+    });
+
+    const skipped = rawOrders.length - orders.length;
 
     currentOrders = orders.map(o => {
       const hasPaidDate = o.date_paid !== null && o.date_paid !== undefined && o.date_paid !== '';
@@ -1268,7 +1368,8 @@ window.loadOrders = async function () {
     updateSelectedCountAWB();
     updateSelectedCountFactura();
 
-    toast(`✅ ${currentOrders.length} rendelés betöltve (max ${ORDERS_PER_PAGE})`);
+    const skipMsg = skipped > 0 ? ` (${skipped} anulált/törölt kihagyva)` : '';
+    toast(`✅ ${currentOrders.length} érvényes rendelés betöltve${skipMsg}`);
   } catch (e) {
     console.error(e);
     toast('❌ Hiba: ' + e.message);
@@ -1292,7 +1393,7 @@ function renderOrdersAWB(orders) {
   const list = document.getElementById('ordersList');
   list.innerHTML = '';
   if (!orders.length) {
-    list.innerHTML = '<p style="color:#888; text-align:center; padding:20px;">Nincs rendelés az utolsó 2 hétből</p>';
+    list.innerHTML = '<p style="color:#888; text-align:center; padding:20px;">Nincs érvényes rendelés az utolsó 2 hétből</p>';
     return;
   }
   orders.forEach(o => {
@@ -1335,7 +1436,7 @@ function renderOrdersFactura(orders) {
   const list = document.getElementById('ordersListFactura');
   list.innerHTML = '';
   if (!orders.length) {
-    list.innerHTML = '<p style="color:#888; text-align:center; padding:20px;">Nincs rendelés az utolsó 2 hétből</p>';
+    list.innerHTML = '<p style="color:#888; text-align:center; padding:20px;">Nincs érvényes rendelés az utolsó 2 hétből</p>';
     return;
   }
   orders.forEach(o => {
@@ -1431,15 +1532,13 @@ function updateSelectedCountFactura() {
 // ============================================
 window.generateSelectedAWB = async function () {
   if (selectedOrdersAWB.size === 0) { toast('❌ Nincs kijelölt rendelés'); return; }
-  const userDoc = await getDoc(doc(db, 'users', currentUser.uid));
-  const data = userDoc.data();
-  const exp = data.expeditor || {};
-  const dpd = data.dpdConfig || {};
+  const acc = getActiveAccount();
+  const exp = acc.expeditor || {};
+  const dpd = acc.dpdConfig || {};
 
   if (!exp.name) { toast('❌ Töltsd ki az expedíciós adatokat!'); return; }
   if (!dpd.dpdUser) { toast('❌ Töltsd ki a DPD adatokat!'); return; }
 
-  // Csak a kijelölt rendelésekért kell fizetni: 1 lej / AWB
   requestPayment('awb', selectedOrdersAWB.size);
 };
 
@@ -1481,23 +1580,20 @@ async function buildAWBPreview() {
 // ============================================
 window.generateSelectedFactura = async function () {
   if (selectedOrdersFactura.size === 0) { toast('❌ Nincs kijelölt rendelés'); return; }
-  const userDoc = await getDoc(doc(db, 'users', currentUser.uid));
-  const data = userDoc.data();
-  const fgo = data.fgoConfig || {};
+  const acc = getActiveAccount();
+  const fgo = acc.fgoConfig || {};
 
   if (!fgo.fgoKey || !fgo.fgoCui || !fgo.fgoSerie) {
     toast('❌ Töltsd ki az FGO adatokat!');
     return;
   }
 
-  // Csak a kijelölt rendelésekért kell fizetni: 1 lej / számla
   requestPayment('factura', selectedOrdersFactura.size);
 };
 
 async function buildFacturaPreview() {
-  const userDoc = await getDoc(doc(db, 'users', currentUser.uid));
-  const data = userDoc.data();
-  const fgo = data.fgoConfig || {};
+  const acc = getActiveAccount();
+  const fgo = acc.fgoConfig || {};
   const selected = currentOrders.filter(o => selectedOrdersFactura.has(String(o.id)));
 
   let html = '';
@@ -1509,8 +1605,13 @@ async function buildFacturaPreview() {
       const result = await callFgoApi(o, fgo);
       successCount++;
 
+      // Számlaszám formázás: ha nincs szám, csak a serie marad, pl. "SCN-"
+      const szamlaSzam = result.numar
+        ? `${result.serie}-${result.numar}`
+        : `${result.serie}-`;
+
       if (result.pdfUrl && result.pdfUrl.trim().length > 0) {
-        // ✅ 1:1 FGO számla — beágyazott PDF
+        // ✅ Van PDF link — beágyazott FGO számla
         html += `
           <div class="fgo-factura-wrap">
             <iframe
@@ -1519,27 +1620,40 @@ async function buildFacturaPreview() {
             ></iframe>
             <div class="fgo-factura-link">
               Ha a számla nem jelenik meg:
-              <a href__="${result.pdfUrl}" target="_blank">kattints ide</a>
-              &nbsp;·&nbsp; Számlaszám: <b>${result.serie}-${result.numar}</b>
+              <a href="${result.pdfUrl}" target="_blank">kattints ide</a>
+              &nbsp;·&nbsp; Számlaszám: <b>${szamlaSzam}</b>
               &nbsp;·&nbsp; Rendelés: <b>#${o.id}</b>
               &nbsp;·&nbsp; Vásárló: <b>${o.name}</b>
             </div>
           </div>
         `;
       } else {
+        // ⚠️ Nincs PDF link — a kért formátum:
+        // #62336 — Daniela Margarit
+        // ⚠️ Az FGO nem adott PDF linket. Számlaszám: SCN-
         html += `
-          <div style="margin-bottom:20px; padding:20px; border:1px dashed #cc0000; color:#cc0000; background:#fff5f5;">
-            <div><b>#${o.id}</b> — ${o.name}</div>
-            <div>⚠️ Az FGO nem adott PDF linket. Számlaszám: ${result.serie}-${result.numar}</div>
+          <div style="margin-bottom:24px; padding:24px; border:1px dashed #cc0000; color:#cc0000; background:#fff5f5; page-break-after:always; font-family:'Inter',sans-serif;">
+            <div style="font-size:16px; font-weight:700; color:#0a0a0a; margin-bottom:10px;">
+              #${o.id} — ${o.name}
+            </div>
+            <div style="font-size:14px;">
+              ⚠️ Az FGO nem adott PDF linket. Számlaszám: <b>${szamlaSzam}</b>
+            </div>
           </div>
         `;
       }
     } catch (e) {
       errorCount++;
+      const szamlaSzam = `${fgo.fgoSerie || 'SCN'}-`;
       html += `
-        <div style="margin-bottom:20px; padding:20px; border:1px dashed #cc0000; color:#cc0000; background:#fff5f5;">
-          <div><b>#${o.id}</b> — ${o.name}</div>
-          <div>HIBA: ${e.message}</div>
+        <div style="margin-bottom:24px; padding:24px; border:1px dashed #cc0000; color:#cc0000; background:#fff5f5; page-break-after:always; font-family:'Inter',sans-serif;">
+          <div style="font-size:16px; font-weight:700; color:#0a0a0a; margin-bottom:10px;">
+            #${o.id} — ${o.name}
+          </div>
+          <div style="font-size:14px;">
+            ⚠️ Az FGO nem adott PDF linket. Számlaszám: <b>${szamlaSzam}</b><br>
+            <small style="color:#999;">(${e.message})</small>
+          </div>
         </div>
       `;
     }
@@ -1632,7 +1746,7 @@ async function callFgoApi(order, fgo) {
 }
 
 // ============================================
-// NYOMTATÁS — Beágyazott FGO PDF-ek nyomtatása
+// NYOMTATÁS
 // ============================================
 window.printFactura = function () {
   const preview = document.getElementById('facturaPreview');
@@ -1703,9 +1817,6 @@ window.printAllFactura = function () {
   window.printFactura();
 };
 
-// ============================================
-// AWB NYOMTATÁS
-// ============================================
 window.printAWB = function () {
   const preview = document.getElementById('awbPreview');
   if (!preview.classList.contains('show') || !preview.innerHTML.trim()) {
@@ -1830,11 +1941,14 @@ async function loadAdminUsers() {
         ? `<span class="badge" style="background:rgba(212,175,55,0.2); color:var(--gold);">👑 Admin</span>`
         : '';
 
+      const accountsCount = (u.accounts || []).length;
+
       html += `
         <div class="order-item" style="align-items:flex-start;">
           <div class="info" style="min-width:250px;">
             <strong style="color:var(--gold);">${u.email || '–'}</strong> ${adminBadge}<br>
             <small style="color:#8a8a8a;">UID: ${uid}</small><br>
+            <small style="color:#8a8a8a;">Al-accountok: ${accountsCount}</small><br>
             <small style="color:#8a8a8a;">Regisztrált: ${u.createdAt ? new Date(u.createdAt).toLocaleDateString('hu-HU') : '–'}</small>
           </div>
         </div>
@@ -1861,106 +1975,121 @@ async function loadAdminOrders() {
     let totalPaid = 0;
     let totalRamburs = 0;
     let totalDelivered = 0;
+    let totalCancelled = 0;
 
     for (const userDoc of usersSnap.docs) {
       const u = userDoc.data();
-      const shop = u.shopConfig || {};
+      const accounts = u.accounts || [];
 
-      if (!shop.shopUrl || !shop.wcKey || !shop.wcSecret) continue;
+      for (let ai = 0; ai < accounts.length; ai++) {
+        const acc = accounts[ai];
+        const shop = acc.shopConfig || {};
 
-      const twoWeeksAgo = new Date();
-      twoWeeksAgo.setDate(twoWeeksAgo.getDate() - 14);
-      const afterDate = twoWeeksAgo.toISOString().split('T')[0] + 'T00:00:00';
+        if (!shop.shopUrl || !shop.wcKey || !shop.wcSecret) continue;
 
-      const baseUrl = shop.shopUrl.replace(/\/$/, '');
-      const url = `${baseUrl}/wp-json/wc/v3/orders?per_page=${ORDERS_PER_PAGE}&after=${afterDate}&orderby=date&order=desc&consumer_key=${shop.wcKey}&consumer_secret=${shop.wcSecret}`;
+        const twoWeeksAgo = new Date();
+        twoWeeksAgo.setDate(twoWeeksAgo.getDate() - 14);
+        const afterDate = twoWeeksAgo.toISOString().split('T')[0] + 'T00:00:00';
 
-      try {
-        const res = await fetch(url);
-        if (!res.ok) continue;
-        const orders = await res.json();
-        if (!Array.isArray(orders)) continue;
+        const baseUrl = shop.shopUrl.replace(/\/$/, '');
+        const url = `${baseUrl}/wp-json/wc/v3/orders?per_page=${ORDERS_PER_PAGE}&after=${afterDate}&orderby=date&order=desc&consumer_key=${shop.wcKey}&consumer_secret=${shop.wcSecret}`;
 
-        html += `
-          <h4 style="color:var(--gold); margin:20px 0 12px; font-family:'Cormorant Garamond',serif; font-size:1.2rem;">
-            👤 ${u.email} (${shop.shopUrl})
-          </h4>
-        `;
+        try {
+          const res = await fetch(url);
+          if (!res.ok) continue;
+          const rawOrders = await res.json();
+          if (!Array.isArray(rawOrders)) continue;
 
-        orders.forEach(o => {
-          const hasPaidDate = o.date_paid !== null && o.date_paid !== undefined && o.date_paid !== '';
-          const paymentMethod = (o.payment_method || '').toLowerCase();
-          const paymentTitle = o.payment_method_title || '';
-          const isCodMethod =
-            paymentMethod === 'cod' || paymentMethod === 'ramburs' ||
-            paymentMethod === 'cash' || paymentMethod === 'numerar' ||
-            paymentTitle.toLowerCase().includes('ramburs') ||
-            paymentTitle.toLowerCase().includes('numerar') ||
-            paymentTitle.toLowerCase().includes('livrare');
-
-          const isRamburs = isCodMethod && !hasPaidDate;
-          const isPaid = !isRamburs;
-          const total = parseFloat(o.total) || 0;
-
-          totalOrders++;
-          if (isPaid) totalPaid++;
-          else totalRamburs++;
-
-          const name = `${o.shipping?.first_name || o.billing.first_name} ${o.shipping?.last_name || o.billing.last_name}`.trim();
-          const phone = o.billing.phone || o.shipping?.phone || '';
-          const city = o.shipping?.city || o.billing.city;
-
-          const statusBadge = isPaid
-            ? `<span class="badge success">💳 FIZETVE – Kártya</span>`
-            : `<span class="badge warn">💰 RAMBURS: ${total.toFixed(2)} RON</span>`;
-
-          const orderStatus = o.status || 'unknown';
-          const statusText = {
-            'pending': '⏳ Függőben',
-            'processing': '📦 Feldolgozás',
-            'on-hold': '⏸️ Várakozik',
-            'completed': '✅ Teljesítve',
-            'cancelled': '❌ Törölve',
-            'refunded': '↩️ Visszatérítve',
-            'failed': '❌ Sikertelen'
-          }[orderStatus] || orderStatus;
-
-          const deliveredBadge = o.date_completed
-            ? `<span class="badge success">📬 Kézbesítve: ${new Date(o.date_completed).toLocaleDateString('hu-HU')}</span>`
-            : `<span class="badge">🚚 Úton / függőben</span>`;
-
-          if (o.date_completed) totalDelivered++;
+          // Csak a nem anulált ordereket számoljuk
+          const orders = rawOrders.filter(o => {
+            const status = (o.status || '').toLowerCase();
+            return !BLOCKED_ORDER_STATUSES.includes(status);
+          });
+          const skipped = rawOrders.length - orders.length;
+          totalCancelled += skipped;
 
           html += `
-            <div class="order-item" style="align-items:flex-start;">
-              <div class="info" style="min-width:250px;">
-                <strong style="color:var(--gold);">#${o.number || o.id}</strong> — ${name}<br>
-                <small style="color:#8a8a8a;">${city} • ${phone}</small><br>
-                <small style="color:#8a8a8a;">Rendelés: ${new Date(o.date_created).toLocaleDateString('hu-HU')}</small><br>
-                ${statusBadge}<br>
-                ${deliveredBadge}<br>
-                <small style="color:#666;">Státusz: ${statusText}</small>
-              </div>
-              <div class="price-tag">
-                ${total.toFixed(2)} RON
-                <small>${isRamburs ? 'ramburs' : 'fizetve'}</small>
-              </div>
-            </div>
+            <h4 style="color:var(--gold); margin:20px 0 12px; font-family:'Cormorant Garamond',serif; font-size:1.2rem;">
+              👤 ${u.email} · ${acc.name || 'Fő account'} (${shop.shopUrl})
+            </h4>
           `;
-        });
-      } catch (e) {
-        console.error('Hiba a rendeléseknél:', e);
+
+          orders.forEach(o => {
+            const hasPaidDate = o.date_paid !== null && o.date_paid !== undefined && o.date_paid !== '';
+            const paymentMethod = (o.payment_method || '').toLowerCase();
+            const paymentTitle = o.payment_method_title || '';
+            const isCodMethod =
+              paymentMethod === 'cod' || paymentMethod === 'ramburs' ||
+              paymentMethod === 'cash' || paymentMethod === 'numerar' ||
+              paymentTitle.toLowerCase().includes('ramburs') ||
+              paymentTitle.toLowerCase().includes('numerar') ||
+              paymentTitle.toLowerCase().includes('livrare');
+
+            const isRamburs = isCodMethod && !hasPaidDate;
+            const isPaid = !isRamburs;
+            const total = parseFloat(o.total) || 0;
+
+            totalOrders++;
+            if (isPaid) totalPaid++;
+            else totalRamburs++;
+
+            const name = `${o.shipping?.first_name || o.billing.first_name} ${o.shipping?.last_name || o.billing.last_name}`.trim();
+            const phone = o.billing.phone || o.shipping?.phone || '';
+            const city = o.shipping?.city || o.billing.city;
+
+            const statusBadge = isPaid
+              ? `<span class="badge success">💳 FIZETVE – Kártya</span>`
+              : `<span class="badge warn">💰 RAMBURS: ${total.toFixed(2)} RON</span>`;
+
+            const orderStatus = o.status || 'unknown';
+            const statusText = {
+              'pending': '⏳ Függőben',
+              'processing': '📦 Feldolgozás',
+              'on-hold': '⏸️ Várakozik',
+              'completed': '✅ Teljesítve',
+              'cancelled': '❌ Törölve',
+              'refunded': '↩️ Visszatérítve',
+              'failed': '❌ Sikertelen'
+            }[orderStatus] || orderStatus;
+
+            const deliveredBadge = o.date_completed
+              ? `<span class="badge success">📬 Kézbesítve: ${new Date(o.date_completed).toLocaleDateString('hu-HU')}</span>`
+              : `<span class="badge">🚚 Úton / függőben</span>`;
+
+            if (o.date_completed) totalDelivered++;
+
+            html += `
+              <div class="order-item" style="align-items:flex-start;">
+                <div class="info" style="min-width:250px;">
+                  <strong style="color:var(--gold);">#${o.number || o.id}</strong> — ${name}<br>
+                  <small style="color:#8a8a8a;">${city} • ${phone}</small><br>
+                  <small style="color:#8a8a8a;">Rendelés: ${new Date(o.date_created).toLocaleDateString('hu-HU')}</small><br>
+                  ${statusBadge}<br>
+                  ${deliveredBadge}<br>
+                  <small style="color:#666;">Státusz: ${statusText}</small>
+                </div>
+                <div class="price-tag">
+                  ${total.toFixed(2)} RON
+                  <small>${isRamburs ? 'ramburs' : 'fizetve'}</small>
+                </div>
+              </div>
+            `;
+          });
+        } catch (e) {
+          console.error('Hiba a rendeléseknél:', e);
+        }
       }
     }
 
     const summaryHtml = `
       <div class="order-item" style="background:rgba(212,175,55,0.05); border-color:var(--gold);">
         <div class="info">
-          <strong style="color:var(--gold);">📊 ÖSSZESÍTŐ (utolsó 2 hét)</strong><br>
-          <small>Összes rendelés: <b style="color:var(--gold);">${totalOrders}</b></small><br>
+          <strong style="color:var(--gold);">📊 ÖSSZESÍTŐ (utolsó 2 hét — érvényes rendelések)</strong><br>
+          <small>Összes érvényes rendelés: <b style="color:var(--gold);">${totalOrders}</b></small><br>
           <small>💳 Fizetve (kártya): <b style="color:#00c864;">${totalPaid}</b></small><br>
           <small>💰 Ramburs: <b style="color:#ff4d6d;">${totalRamburs}</b></small><br>
-          <small>📬 Kézbesítve: <b style="color:#00c864;">${totalDelivered}</b></small>
+          <small>📬 Kézbesítve: <b style="color:#00c864;">${totalDelivered}</b></small><br>
+          <small>❌ Anulált/törölt (kihagyva): <b style="color:#8a8a8a;">${totalCancelled}</b></small>
         </div>
       </div>
     `;
