@@ -1517,7 +1517,7 @@ async function callFgoApi(order, fgo) {
   // Termékek összeállítása
   const termekek = order.items.map(it => ({
     Denumire: it.name || 'INCALTAMINTE',
-    Um: 'Bucata',
+    Um: 'BUC',
     CodArticol: String(order.id),
     Cantitate: it.quantity || 1,
     PretUnitar: it.price || 0,
