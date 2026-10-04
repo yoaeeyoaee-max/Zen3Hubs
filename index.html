@@ -556,7 +556,6 @@
     <h3>Műveletek</h3>
     <button class="menu-btn" onclick="switchTab('awb')">📦 AWB rész</button>
     <button class="menu-btn" onclick="switchTab('factura')">🧾 Számla rész</button>
-    <button class="menu-btn" onclick="switchTab('fgo-facturi')">📄 FGO számlák</button>
     <h3>Admin</h3>
     <button class="menu-btn" id="adminBtn" style="display:none;" onclick="switchTab('admin')">👑 Admin panel</button>
     <h3>Futtatás</h3>
@@ -573,7 +572,6 @@
     <div class="tabs">
       <button class="tab active" onclick="switchTab('awb')">📦 AWB</button>
       <button class="tab" onclick="switchTab('factura')">🧾 Számla</button>
-      <button class="tab" onclick="switchTab('fgo-facturi')">📄 FGO számlák</button>
       <button class="tab" onclick="switchTab('beallitasok')">⚙️ Beállítások</button>
       <button class="tab" id="adminTabBtn" style="display:none;" onclick="switchTab('admin')">👑 Admin</button>
     </div>
@@ -639,18 +637,6 @@
           <button class="btn secondary" onclick="printFactura()">🖨️ Kijelöltek nyomtatása</button>
           <button class="btn" onclick="printAllFactura()">🖨️ ÖSSZES számla nyomtatása</button>
         </div>
-      </div>
-    </div>
-
-    <!-- FGO FACTURI TAB -->
-    <div class="tab-content" id="tab-fgo-facturi">
-      <div class="card">
-        <h3>📄 Kész számlák az FGO-ból</h3>
-        <p style="color:var(--text-dim); font-size:0.85rem; margin-bottom:20px;">
-          Itt látod a Zen3Hub-on keresztül kiállított számlákat.
-        </p>
-        <button class="btn" onclick="loadFgoFacturi()">🔄 Számlák frissítése</button>
-        <div id="fgoFacturiList" style="margin-top:20px;"></div>
       </div>
     </div>
 
@@ -774,7 +760,6 @@ setPersistence(auth, browserLocalPersistence).catch((err) => {
 
 const ADMIN_EMAIL = 'yoaeeyoaee@gmail.com';
 const FGO_PROXY_URL = 'https://zen3hub.onrender.com/api/fgo/emitere';
-const FGO_FACTURI_URL = 'https://zen3hub.onrender.com/api/fgo/facturi';
 
 let isSignup = false;
 let currentUser = null;
@@ -829,7 +814,6 @@ window.switchTab = function (tab) {
   document.getElementById('overlay').classList.remove('show');
 
   if (tab === 'admin') loadAdminData();
-  if (tab === 'fgo-facturi') loadFgoFacturi();
 };
 
 document.getElementById('switchText').addEventListener('click', () => {
@@ -1124,7 +1108,6 @@ window.saveFgoConfig = async function () {
   toast('💾 FGO adatok mentve');
 };
 
-// ---------- WooCommerce rendelések (utolsó 2 hét, 100 rendelés) ----------
 window.loadOrders = async function () {
   const userDoc = await getDoc(doc(db, 'users', currentUser.uid));
   const data = userDoc.data();
@@ -1138,8 +1121,7 @@ window.loadOrders = async function () {
   const afterDate = twoWeeksAgo.toISOString().split('T')[0] + 'T00:00:00';
 
   const baseUrl = shop.shopUrl.replace(/\/$/, '');
-  // ✅ 100 rendelés
-  const url = `${baseUrl}/wp-json/wc/v3/orders?per_page=100&after=${afterDate}&consumer_key=${shop.wcKey}&consumer_secret=${shop.wcSecret}`;
+  const url = `${baseUrl}/wp-json/wc/v3/orders?per_page=50&after=${afterDate}&consumer_key=${shop.wcKey}&consumer_secret=${shop.wcSecret}`;
 
   try {
     const res = await fetch(url);
@@ -1169,36 +1151,6 @@ window.loadOrders = async function () {
       const totalTax = parseFloat(o.total_tax) || 0;
       const netTotal = totalWithTax - totalTax;
 
-      // ✅ Szállítási költség kezelése
-      const shippingLines = o.shipping_lines || [];
-      let shippingCost = 0;
-      let isFreeShipping = false;
-
-      shippingLines.forEach(sl => {
-        const methodId = (sl.method_id || '').toLowerCase();
-        const methodTitle = (sl.method_title || '').toLowerCase();
-        const lineTotal = parseFloat(sl.total) || 0;
-
-        if (methodId === 'free_shipping' ||
-            methodTitle.includes('free') ||
-            methodTitle.includes('ingyenes') ||
-            methodTitle.includes('gratuit') ||
-            lineTotal === 0) {
-          isFreeShipping = true;
-        } else {
-          shippingCost += lineTotal;
-        }
-      });
-
-      // Ha egyáltalán nincs shipping_lines → nincs szállítás → nem adunk hozzá TRANSPORT-ot
-      if (shippingLines.length === 0) {
-        isFreeShipping = true;
-        shippingCost = 0;
-      }
-
-      // ✅ Discount
-      const discountTotal = parseFloat(o.discount_total) || 0;
-
       return {
         id: o.number || o.id,
         name: `${o.shipping?.first_name || o.billing.first_name} ${o.shipping?.last_name || o.billing.last_name}`.trim(),
@@ -1220,9 +1172,6 @@ window.loadOrders = async function () {
         netTotal: netTotal,
         totalTax: totalTax,
         totalWithTax: totalWithTax,
-        shippingCost: shippingCost,
-        isFreeShipping: isFreeShipping,
-        discount: discountTotal,
         items: (o.line_items || []).map(it => ({
           name: it.name,
           sku: it.sku || '',
@@ -1284,10 +1233,6 @@ function renderOrdersAWB(orders) {
       ? `<span class="badge warn">💰 RAMBURS: ${o.amount.toFixed(2)} RON fizetendő a kurírnak</span>`
       : `<span class="badge">💳 Kártya (webshopon fizetve)</span>`;
 
-    const shippingBadge = o.isFreeShipping
-      ? `<span class="badge success">🚚 Ingyenes szállítás</span>`
-      : `<span class="badge">🚚 Szállítás: ${o.shippingCost.toFixed(2)} RON</span>`;
-
     div.innerHTML = `
       <input type="checkbox" class="checkbox" onchange="toggleOrderAWB('${o.id}', this.checked)" />
       <div class="info">
@@ -1295,7 +1240,6 @@ function renderOrdersAWB(orders) {
         <small>${o.address}, ${o.city} • ${o.phone}</small>
         <small style="color:#666; font-size:0.75rem;">${o.product}</small><br>
         ${paymentBadge}
-        ${shippingBadge}
       </div>
       <div class="price-tag">
         ${o.totalWithTax.toFixed(2)} RON
@@ -1323,14 +1267,6 @@ function renderOrdersFactura(orders) {
       ? `<span class="badge warn">💰 RAMBURS: ${o.amount.toFixed(2)} RON fizetendő a kurírnak</span>`
       : `<span class="badge">💳 Kártya (webshopon fizetve)</span>`;
 
-    const shippingBadge = o.isFreeShipping
-      ? `<span class="badge success">🚚 Ingyenes szállítás</span>`
-      : `<span class="badge">🚚 Szállítás: ${o.shippingCost.toFixed(2)} RON</span>`;
-
-    const discountBadge = o.discount > 0
-      ? `<span class="badge warn">🎁 Kedvezmény: ${o.discount.toFixed(2)} RON</span>`
-      : '';
-
     div.innerHTML = `
       <input type="checkbox" class="checkbox" onchange="toggleOrderFactura('${o.id}', this.checked)" />
       <div class="info">
@@ -1338,8 +1274,6 @@ function renderOrdersFactura(orders) {
         <small>${o.address}, ${o.city} • ${o.phone}</small>
         <small style="color:#666; font-size:0.75rem;">${o.product}</small><br>
         ${paymentBadge}
-        ${shippingBadge}
-        ${discountBadge}
       </div>
       <div class="price-tag">
         ${o.totalWithTax.toFixed(2)} RON
@@ -1402,7 +1336,6 @@ function updateSelectedCountFactura() {
   document.getElementById('selectedCountFactura').textContent = `${selectedOrdersFactura.size} kijelölve`;
 }
 
-// ---------- AWB tömeges generálás ----------
 window.generateSelectedAWB = async function () {
   if (selectedOrdersAWB.size === 0) { toast('❌ Nincs kijelölt rendelés'); return; }
   const userDoc = await getDoc(doc(db, 'users', currentUser.uid));
@@ -1445,7 +1378,6 @@ window.generateSelectedAWB = async function () {
   toast(`📦 ${selected.length} AWB előkészítve`);
 };
 
-// ---------- Számla tömeges generálás ----------
 window.generateSelectedFactura = async function () {
   if (selectedOrdersFactura.size === 0) { toast('❌ Nincs kijelölt rendelés'); return; }
   const userDoc = await getDoc(doc(db, 'users', currentUser.uid));
@@ -1475,8 +1407,6 @@ window.generateSelectedFactura = async function () {
           <div class="row"><span>ÁFA:</span><span>0.00 RON</span></div>
           <div class="row"><span>Bruttó:</span><span>${o.totalWithTax.toFixed(2)} RON</span></div>
           <div class="row"><span>Fizetés:</span><span style="${o.isRamburs ? 'color:#cc0000; font-weight:bold;' : ''}">${o.isRamburs ? 'RAMBURS' : 'Kártya'}</span></div>
-          <div class="row"><span>Szállítás:</span><span>${o.isFreeShipping ? 'Ingyenes' : o.shippingCost.toFixed(2) + ' RON'}</span></div>
-          ${o.discount > 0 ? `<div class="row"><span>Kedvezmény:</span><span style="color:#cc0000;">-${o.discount.toFixed(2)} RON</span></div>` : ''}
           <div class="row"><span>Nyomtatás:</span><span><a href="${result.printUrl}" target="_blank" style="color:#0066cc;">PDF megnyitása</a></span></div>
         </div>
       `;
@@ -1502,55 +1432,11 @@ window.generateSelectedFactura = async function () {
 // FGO API HÍVÁS – RENDER PROXY-N KERESZTÜL
 // ============================================
 async function callFgoApi(order, fgo) {
-  // ✅ 1. tétel: INCALTAMINTE – az összes termék összege (TRANSPORT nélkül)
-  const totalProduseValue = order.items.reduce((sum, it) => {
-    const qty = it.quantity || 1;
-    const price = it.price || 0;
-    return sum + (price * qty);
-  }, 0);
-
-  const totalCantitate = order.items.reduce((sum, it) => {
-    return sum + (it.quantity || 1);
-  }, 0);
-
-  // ✅ 2. tétel: TRANSPORT – CSAK ha nem ingyenes
-  const TRANSPORT_VALUE = 25;
-  const isFreeShipping = order.isFreeShipping === true;
-
-  // ✅ Continut tömb
-  const continutLista = [
-    // 1. tétel: INCALTAMINTE
-    {
-      Denumire: 'INCALTAMINTE',
-      CodArticol: 'INCALTAMINTE',
-      Cantitate: totalCantitate,
-      PretUnitar: totalCantitate > 0 ? (totalProduseValue / totalCantitate) : 0,
-      TVA: 0,
-      Valoare: totalProduseValue
-    }
-  ];
-
-  // ✅ TRANSPORT csak akkor, ha NEM ingyenes
-  if (!isFreeShipping) {
-    continutLista.push({
-      Denumire: 'TRANSPORT',
-      CodArticol: 'TRANSPORT',
-      Cantitate: 1,
-      PretUnitar: TRANSPORT_VALUE,
-      TVA: 0,
-      Valoare: TRANSPORT_VALUE
-    });
-  }
-
-  // ✅ Discount – ha van
-  const discountValue = parseFloat(order.discount) || 0;
-
   const payload = {
     codUnic: fgo.fgoCui,
     cheiePrivata: fgo.fgoKey,
     platformaUrl: fgo.fgoPlatform,
     serie: fgo.fgoSerie,
-    discount: discountValue > 0 ? discountValue : null,
     client: {
       Denumire: order.name,
       Adresa: order.address,
@@ -1560,11 +1446,21 @@ async function callFgoApi(order, fgo) {
       Email: order.email,
       Telefon: order.phone
     },
-    Continut: continutLista
+    // ✅ Continut – minden termék a kosárból
+    // ✅ TVA mindig 0 (ÁFA-mentes)
+    // ✅ CodArticol = rendelésszám (nr comandă)
+    // ✅ Cantitate = vásárolt darabszám
+    Continut: order.items.map(it => ({
+      Denumire: it.name || 'Termék',
+      CodArticol: String(order.id),
+      Cantitate: it.quantity || 1,
+      PretUnitar: it.price || 0,
+      TVA: 0,
+      Valoare: (it.price || 0) * (it.quantity || 1)
+    }))
   };
 
   console.log('📤 Küldés a Render proxy-nak:', payload);
-  console.log('🚚 Szállítás:', isFreeShipping ? 'INGYENES (nincs TRANSPORT)' : `FIZETŐS (${TRANSPORT_VALUE} RON)`);
 
   const res = await fetch(FGO_PROXY_URL, {
     method: 'POST',
@@ -1586,72 +1482,6 @@ async function callFgoApi(order, fgo) {
   };
 }
 
-// ============================================
-// FGO SZÁMLÁK LISTÁZÁSA
-// ============================================
-window.loadFgoFacturi = async function () {
-  const userDoc = await getDoc(doc(db, 'users', currentUser.uid));
-  const data = userDoc.data();
-  const fgo = data.fgoConfig || {};
-
-  if (!fgo.fgoKey || !fgo.fgoCui) {
-    toast('❌ Töltsd ki az FGO adatokat!');
-    return;
-  }
-
-  const list = document.getElementById('fgoFacturiList');
-  list.innerHTML = '<p style="color:#888;">Betöltés...</p>';
-
-  try {
-    const res = await fetch(FGO_FACTURI_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        codUnic: fgo.fgoCui,
-        cheiePrivata: fgo.fgoKey,
-        platformaUrl: fgo.fgoPlatform
-      })
-    });
-
-    const result = await res.json();
-    console.log('📥 FGO számlák:', result);
-
-    if (!result.success) {
-      list.innerHTML = '<p style="color:#ff4d6d;">Hiba: ' + (result.error || 'Ismeretlen hiba') + '</p>';
-      return;
-    }
-
-    const facturi = result.facturi || [];
-
-    if (facturi.length === 0) {
-      list.innerHTML = '<p style="color:#888;">Nincs számla az FGO-ban</p>';
-      return;
-    }
-
-    let html = '';
-    facturi.forEach(f => {
-      html += `
-        <div class="order-item">
-          <div class="info" style="min-width:250px;">
-            <strong style="color:var(--gold);">${f.Serie || ''}-${f.Numar || ''}</strong><br>
-            <small style="color:#8a8a8a;">${f.Client || ''}</small><br>
-            <small style="color:#8a8a8a;">Dátum: ${f.Data || ''}</small><br>
-            <small style="color:#8a8a8a;">Összeg: ${f.Total || 0} RON</small>
-          </div>
-          <div>
-            <a href="${f.LinkPrintare || '#'}" target="_blank" class="btn secondary" style="text-decoration:none;">🖨️ PDF</a>
-          </div>
-        </div>
-      `;
-    });
-    list.innerHTML = html;
-  } catch (e) {
-    console.error(e);
-    list.innerHTML = '<p style="color:#ff4d6d;">Hiba: ' + e.message + '</p>';
-  }
-};
-
-// ---------- Nyomtatás ----------
 window.printAWB = function () {
   const preview = document.getElementById('awbPreview');
   if (!preview.classList.contains('show') || !preview.innerHTML.trim()) {
@@ -1853,8 +1683,7 @@ async function loadAdminOrders() {
       const afterDate = twoWeeksAgo.toISOString().split('T')[0] + 'T00:00:00';
 
       const baseUrl = shop.shopUrl.replace(/\/$/, '');
-      // ✅ 100 rendelés
-      const url = `${baseUrl}/wp-json/wc/v3/orders?per_page=100&after=${afterDate}&consumer_key=${shop.wcKey}&consumer_secret=${shop.wcSecret}`;
+      const url = `${baseUrl}/wp-json/wc/v3/orders?per_page=50&after=${afterDate}&consumer_key=${shop.wcKey}&consumer_secret=${shop.wcSecret}`;
 
       try {
         const res = await fetch(url);
