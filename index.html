@@ -463,10 +463,11 @@
 
   .awb-preview {
     background: #fafafa; color: #0a0a0a;
-    padding: 28px; border-radius: 2px;
+    padding: 0; border-radius: 2px;
     margin-top: 20px; font-family: 'Courier New', monospace;
     font-size: 0.85rem; display: none;
     border: 2px solid var(--gold);
+    overflow: hidden;
   }
   .awb-preview.show { display: block; }
   .awb-preview h4 {
@@ -477,6 +478,34 @@
   .awb-preview .row { display: flex; justify-content: space-between; margin: 5px 0; gap: 16px; }
   .awb-preview .row span:first-child { color: #666; }
   .awb-preview hr { margin: 12px 0; border: none; border-top: 1px dashed #ccc; }
+
+  /* FGO számla beágyazás */
+  .fgo-factura-wrap {
+    background: #fff;
+    margin-bottom: 24px;
+    page-break-after: always;
+    overflow: hidden;
+  }
+  .fgo-factura-wrap iframe {
+    display: block;
+    width: 100%;
+    height: 1100px;
+    border: none;
+    background: #fff;
+  }
+  .fgo-factura-link {
+    text-align: center;
+    padding: 10px;
+    background: #f5f5f5;
+    font-size: 11px;
+    color: #666;
+    font-family: 'Inter', sans-serif;
+  }
+  .fgo-factura-link a {
+    color: #0066cc;
+    font-weight: bold;
+    text-decoration: none;
+  }
 
   ::-webkit-scrollbar { width: 8px; }
   ::-webkit-scrollbar-track { background: #0a0a0a; }
@@ -491,6 +520,7 @@
     .topbar .user { display: none; }
     .toast { right: 16px; left: 16px; bottom: 16px; }
     .tab { padding: 12px 16px; font-size: 0.7rem; letter-spacing: 2px; }
+    .fgo-factura-wrap iframe { height: 800px; }
   }
 </style>
 </head>
@@ -631,11 +661,15 @@
       </div>
 
       <div class="card">
-        <h3>🧾 Számla előnézet</h3>
-        <div class="awb-preview" id="facturaPreview"></div>
-        <div class="btn-row">
-          <button class="btn secondary" onclick="printFactura()">🖨️ Kijelöltek nyomtatása</button>
-          <button class="btn" onclick="printAllFactura()">🖨️ ÖSSZES számla nyomtatása</button>
+        <h3>🧾 Számla előnézet — FGO számla</h3>
+        <div class="awb-preview" id="facturaPreview" style="background:#fff; padding:0;"></div>
+        <div class="btn-row" style="margin-top:20px;">
+          <button class="btn" onclick="printFactura()" style="font-size:0.9rem; padding:16px 32px;">
+            🖨️ SZÁMLÁK NYOMTATÁSA
+          </button>
+          <button class="btn secondary" onclick="window.scrollTo({top:0, behavior:'smooth'})">
+            ⬆️ Vissza a tetejére
+          </button>
         </div>
       </div>
     </div>
@@ -759,8 +793,6 @@ setPersistence(auth, browserLocalPersistence).catch((err) => {
 });
 
 const ADMIN_EMAIL = 'yoaeeyoaee@gmail.com';
-
-// ✅ JAVÍTOTT RENDER URL
 const FGO_PROXY_URL = 'https://zen3hub-3.onrender.com/api/fgo/emitere';
 const ORDERS_PER_PAGE = 100;
 
@@ -1111,6 +1143,9 @@ window.saveFgoConfig = async function () {
   toast('💾 FGO adatok mentve');
 };
 
+// ============================================
+// RENDELÉSEK BETÖLTÉSE — 100 rendelés
+// ============================================
 window.loadOrders = async function () {
   const userDoc = await getDoc(doc(db, 'users', currentUser.uid));
   const data = userDoc.data();
@@ -1154,6 +1189,11 @@ window.loadOrders = async function () {
       const totalTax = parseFloat(o.total_tax) || 0;
       const netTotal = totalWithTax - totalTax;
 
+      const shippingTotal = parseFloat(o.shipping_total) || 0;
+      const discountTotal = parseFloat(o.discount_total) || 0;
+      const shippingTitle = o.shipping_lines?.[0]?.method_title || 'TRANSPORT';
+      const couponCode = o.coupon_lines?.[0]?.code || '';
+
       return {
         id: o.number || o.id,
         name: `${o.shipping?.first_name || o.billing.first_name} ${o.shipping?.last_name || o.billing.last_name}`.trim(),
@@ -1175,6 +1215,10 @@ window.loadOrders = async function () {
         netTotal: netTotal,
         totalTax: totalTax,
         totalWithTax: totalWithTax,
+        shippingTotal: shippingTotal,
+        shippingTitle: shippingTotal > 0 ? 'TRANSPORT' : 'TRANSPORT GRATUIT',
+        discountTotal: discountTotal,
+        couponCode: couponCode,
         items: (o.line_items || []).map(it => ({
           name: it.name,
           sku: it.sku || '',
@@ -1236,13 +1280,22 @@ function renderOrdersAWB(orders) {
       ? `<span class="badge warn">💰 RAMBURS: ${o.amount.toFixed(2)} RON fizetendő a kurírnak</span>`
       : `<span class="badge">💳 Kártya (webshopon fizetve)</span>`;
 
+    const discountBadge = o.discountTotal > 0
+      ? ` <span class="badge warn">🏷️ -${o.discountTotal.toFixed(2)} RON</span>`
+      : '';
+
+    const shippingBadge = o.shippingTotal > 0
+      ? `<span class="badge">🚚 Szállítás: ${o.shippingTotal.toFixed(2)} RON</span>`
+      : `<span class="badge success">🚚 Ingyenes szállítás</span>`;
+
     div.innerHTML = `
       <input type="checkbox" class="checkbox" onchange="toggleOrderAWB('${o.id}', this.checked)" />
       <div class="info">
         <strong>#${o.id}</strong> — ${o.name}<br>
         <small>${o.address}, ${o.city} • ${o.phone}</small>
         <small style="color:#666; font-size:0.75rem;">${o.product}</small><br>
-        ${paymentBadge}
+        ${paymentBadge} ${discountBadge}<br>
+        ${shippingBadge}
       </div>
       <div class="price-tag">
         ${o.totalWithTax.toFixed(2)} RON
@@ -1270,13 +1323,22 @@ function renderOrdersFactura(orders) {
       ? `<span class="badge warn">💰 RAMBURS: ${o.amount.toFixed(2)} RON fizetendő a kurírnak</span>`
       : `<span class="badge">💳 Kártya (webshopon fizetve)</span>`;
 
+    const discountBadge = o.discountTotal > 0
+      ? ` <span class="badge warn">🏷️ -${o.discountTotal.toFixed(2)} RON</span>`
+      : '';
+
+    const shippingBadge = o.shippingTotal > 0
+      ? `<span class="badge">🚚 Szállítás: ${o.shippingTotal.toFixed(2)} RON</span>`
+      : `<span class="badge success">🚚 Ingyenes szállítás</span>`;
+
     div.innerHTML = `
       <input type="checkbox" class="checkbox" onchange="toggleOrderFactura('${o.id}', this.checked)" />
       <div class="info">
         <strong>#${o.id}</strong> — ${o.name}<br>
         <small>${o.address}, ${o.city} • ${o.phone}</small>
         <small style="color:#666; font-size:0.75rem;">${o.product}</small><br>
-        ${paymentBadge}
+        ${paymentBadge} ${discountBadge}<br>
+        ${shippingBadge}
       </div>
       <div class="price-tag">
         ${o.totalWithTax.toFixed(2)} RON
@@ -1381,6 +1443,9 @@ window.generateSelectedAWB = async function () {
   toast(`📦 ${selected.length} AWB előkészítve`);
 };
 
+// ============================================
+// SZÁMLA GENERÁLÁS — FGO számla 1:1 megjelenítés
+// ============================================
 window.generateSelectedFactura = async function () {
   if (selectedOrdersFactura.size === 0) { toast('❌ Nincs kijelölt rendelés'); return; }
   const userDoc = await getDoc(doc(db, 'users', currentUser.uid));
@@ -1394,7 +1459,7 @@ window.generateSelectedFactura = async function () {
 
   const selected = currentOrders.filter(o => selectedOrdersFactura.has(String(o.id)));
 
-  let html = `<h4>🧾 Számlák — ${selected.length} rendelés</h4>`;
+  let html = '';
   let successCount = 0;
   let errorCount = 0;
 
@@ -1402,23 +1467,37 @@ window.generateSelectedFactura = async function () {
     try {
       const result = await callFgoApi(o, fgo);
       successCount++;
-      html += `
-        <div style="margin-bottom:20px; padding-bottom:15px; page-break-after: always; border-bottom:1px dashed #ccc;">
-          <div class="row"><span><b>#${o.id}</b></span><span>${o.name}</span></div>
-          <div class="row"><span>Számlaszám:</span><span style="color:#0a0a0a; font-weight:bold;">${result.serie}-${result.numar}</span></div>
-          <div class="row"><span>Nettó:</span><span>${o.netTotal.toFixed(2)} RON</span></div>
-          <div class="row"><span>ÁFA:</span><span>0.00 RON</span></div>
-          <div class="row"><span>Bruttó:</span><span>${o.totalWithTax.toFixed(2)} RON</span></div>
-          <div class="row"><span>Fizetés:</span><span style="${o.isRamburs ? 'color:#cc0000; font-weight:bold;' : ''}">${o.isRamburs ? 'RAMBURS' : 'Kártya'}</span></div>
-          <div class="row"><span>Nyomtatás:</span><span><a href="${result.printUrl}" target="_blank" style="color:#0066cc;">PDF megnyitása</a></span></div>
-        </div>
-      `;
+
+      if (result.pdfUrl && result.pdfUrl.trim().length > 0) {
+        // ✅ 1:1 FGO számla — beágyazott PDF
+        html += `
+          <div class="fgo-factura-wrap">
+            <iframe 
+              src="${result.pdfUrl}#toolbar=1&navpanes=0&scrollbar=1&view=FitH" 
+              type="application/pdf"
+            ></iframe>
+            <div class="fgo-factura-link">
+              Ha a számla nem jelenik meg: 
+              <a href="${result.pdfUrl}" target="_blank">kattints ide</a>
+              &nbsp;·&nbsp; Számlaszám: <b>${result.serie}-${result.numar}</b>
+              &nbsp;·&nbsp; Rendelés: <b>#${o.id}</b>
+            </div>
+          </div>
+        `;
+      } else {
+        html += `
+          <div style="margin-bottom:20px; padding:20px; border:1px dashed #cc0000; color:#cc0000; background:#fff5f5;">
+            <div><b>#${o.id}</b> — ${o.name}</div>
+            <div>⚠️ Az FGO nem adott PDF linket. Számlaszám: ${result.serie}-${result.numar}</div>
+          </div>
+        `;
+      }
     } catch (e) {
       errorCount++;
       html += `
-        <div style="margin-bottom:20px; padding-bottom:15px; border-bottom:1px dashed #ccc; color:#cc0000;">
-          <div class="row"><span><b>#${o.id}</b></span><span>${o.name}</span></div>
-          <div class="row"><span>HIBA:</span><span>${e.message}</span></div>
+        <div style="margin-bottom:20px; padding:20px; border:1px dashed #cc0000; color:#cc0000; background:#fff5f5;">
+          <div><b>#${o.id}</b> — ${o.name}</div>
+          <div>HIBA: ${e.message}</div>
         </div>
       `;
     }
@@ -1432,9 +1511,47 @@ window.generateSelectedFactura = async function () {
 };
 
 // ============================================
-// FGO API HÍVÁS – RENDER PROXY-N KERESZTÜL
+// FGO API HÍVÁS
 // ============================================
 async function callFgoApi(order, fgo) {
+  // Termékek összeállítása
+  const termekek = order.items.map(it => ({
+    Denumire: it.name || 'INCALTAMINTE',
+    Um: 'Bucata',
+    CodArticol: String(order.id),
+    Cantitate: it.quantity || 1,
+    PretUnitar: it.price || 0,
+    CotaTVA: 0,
+    TVA: 0,
+    Valoare: (it.price || 0) * (it.quantity || 1)
+  }));
+
+  // TRANSPORT hozzáadása
+  termekek.push({
+    Denumire: order.shippingTotal > 0 ? 'TRANSPORT' : 'TRANSPORT GRATUIT',
+    Um: '',
+    CodArticol: '',
+    Cantitate: 1,
+    PretUnitar: order.shippingTotal || 0,
+    CotaTVA: 0,
+    TVA: 0,
+    Valoare: order.shippingTotal || 0
+  });
+
+  // DISCOUNT hozzáadása (csak ha van)
+  if (order.discountTotal > 0) {
+    termekek.push({
+      Denumire: 'discount' + (order.couponCode ? ' ' + order.couponCode : ''),
+      Um: 'Unitate',
+      CodArticol: '',
+      Cantitate: -1,
+      PretUnitar: order.discountTotal,
+      CotaTVA: 0,
+      TVA: 0,
+      Valoare: -order.discountTotal
+    });
+  }
+
   const payload = {
     codUnic: fgo.fgoCui,
     cheiePrivata: fgo.fgoKey,
@@ -1449,18 +1566,10 @@ async function callFgoApi(order, fgo) {
       Email: order.email,
       Telefon: order.phone
     },
-    Continut: order.items.map(it => ({
-      Denumire: it.name || 'Termék',
-      CodArticol: String(order.id),
-      Cantitate: it.quantity || 1,
-      PretUnitar: it.price || 0,
-      TVA: 0,
-      Valoare: (it.price || 0) * (it.quantity || 1)
-    }))
+    Continut: termekek
   };
 
   console.log('📤 Küldés a Render proxy-nak:', payload);
-  console.log('📡 Cél URL:', FGO_PROXY_URL);
 
   const res = await fetch(FGO_PROXY_URL, {
     method: 'POST',
@@ -1478,10 +1587,85 @@ async function callFgoApi(order, fgo) {
   return {
     serie: result.serie,
     numar: result.numar,
-    printUrl: result.printUrl
+    pdfUrl: result.pdfUrl || ''
   };
 }
 
+// ============================================
+// NYOMTATÁS — Beágyazott FGO PDF-ek nyomtatása
+// ============================================
+window.printFactura = function () {
+  const preview = document.getElementById('facturaPreview');
+  if (!preview.classList.contains('show') || !preview.innerHTML.trim()) {
+    toast('❌ Nincs számla előnézet');
+    return;
+  }
+
+  const win = window.open('', '', 'width=1000,height=800');
+  win.document.write(`
+    <html>
+      <head>
+        <title>Számlák — Zen3Hub</title>
+        <style>
+          @media print {
+            body { margin: 0; padding: 0; }
+            .fgo-factura-wrap { 
+              page-break-after: always; 
+              overflow: visible !important;
+            }
+            .fgo-factura-wrap:last-child { page-break-after: auto; }
+            iframe { 
+              width: 100% !important; 
+              height: auto !important;
+              min-height: 1100px !important;
+            }
+            .fgo-factura-link { display: none !important; }
+          }
+          body { 
+            margin: 0; 
+            padding: 0; 
+            background: #fff;
+            font-family: Arial, sans-serif;
+          }
+          .fgo-factura-wrap {
+            width: 100%;
+            margin: 0;
+            padding: 0;
+          }
+          iframe {
+            display: block;
+            width: 100%;
+            height: 1100px;
+            border: none;
+          }
+          .fgo-factura-link {
+            text-align: center;
+            padding: 8px;
+            background: #f5f5f5;
+            font-size: 11px;
+            color: #666;
+          }
+          .fgo-factura-link a { color: #0066cc; }
+        </style>
+      </head>
+      <body>${preview.innerHTML}</body>
+    </html>
+  `);
+  win.document.close();
+
+  setTimeout(() => {
+    win.focus();
+    win.print();
+  }, 2000);
+};
+
+window.printAllFactura = function () {
+  window.printFactura();
+};
+
+// ============================================
+// AWB NYOMTATÁS
+// ============================================
 window.printAWB = function () {
   const preview = document.getElementById('awbPreview');
   if (!preview.classList.contains('show') || !preview.innerHTML.trim()) {
@@ -1496,22 +1680,6 @@ window.printAllAWB = function () {
     toast('❌ Nincs elkészített AWB'); return;
   }
   printHtml(preview.innerHTML, 'Osszes_AWB');
-};
-
-window.printFactura = function () {
-  const preview = document.getElementById('facturaPreview');
-  if (!preview.classList.contains('show') || !preview.innerHTML.trim()) {
-    toast('❌ Nincs számla előnézet'); return;
-  }
-  printHtml(preview.innerHTML, 'Szamla');
-};
-
-window.printAllFactura = function () {
-  const preview = document.getElementById('facturaPreview');
-  if (!preview.classList.contains('show') || !preview.innerHTML.trim()) {
-    toast('❌ Nincs elkészített számla'); return;
-  }
-  printHtml(preview.innerHTML, 'Osszes_Szamla');
 };
 
 function printHtml(html, title) {
@@ -1591,7 +1759,6 @@ window.toast = function (msg) {
 // ============================================
 // ADMIN PANEL
 // ============================================
-
 window.loadAdminData = async function () {
   if (currentUser?.email !== ADMIN_EMAIL) {
     toast('❌ Nincs jogosultságod');
