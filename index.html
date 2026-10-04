@@ -760,6 +760,7 @@ setPersistence(auth, browserLocalPersistence).catch((err) => {
 
 const ADMIN_EMAIL = 'yoaeeyoaee@gmail.com';
 const FGO_PROXY_URL = 'https://zen3hub.onrender.com/api/fgo/emitere';
+const ORDERS_PER_PAGE = 100; // ✅ 100 rendelés lekérése
 
 let isSignup = false;
 let currentUser = null;
@@ -1108,6 +1109,9 @@ window.saveFgoConfig = async function () {
   toast('💾 FGO adatok mentve');
 };
 
+// ============================================
+// RENDELÉSEK BETÖLTÉSE — 100 rendelés
+// ============================================
 window.loadOrders = async function () {
   const userDoc = await getDoc(doc(db, 'users', currentUser.uid));
   const data = userDoc.data();
@@ -1121,7 +1125,8 @@ window.loadOrders = async function () {
   const afterDate = twoWeeksAgo.toISOString().split('T')[0] + 'T00:00:00';
 
   const baseUrl = shop.shopUrl.replace(/\/$/, '');
-  const url = `${baseUrl}/wp-json/wc/v3/orders?per_page=50&after=${afterDate}&consumer_key=${shop.wcKey}&consumer_secret=${shop.wcSecret}`;
+  // ✅ per_page=100 — 100 rendelés lekérése egyszerre
+  const url = `${baseUrl}/wp-json/wc/v3/orders?per_page=${ORDERS_PER_PAGE}&after=${afterDate}&orderby=date&order=desc&consumer_key=${shop.wcKey}&consumer_secret=${shop.wcSecret}`;
 
   try {
     const res = await fetch(url);
@@ -1196,7 +1201,7 @@ window.loadOrders = async function () {
     updateSelectedCountAWB();
     updateSelectedCountFactura();
 
-    toast(`✅ ${currentOrders.length} rendelés (utolsó 2 hét)`);
+    toast(`✅ ${currentOrders.length} rendelés betöltve (max ${ORDERS_PER_PAGE})`);
   } catch (e) {
     console.error(e);
     toast('❌ Hiba: ' + e.message);
@@ -1683,7 +1688,8 @@ async function loadAdminOrders() {
       const afterDate = twoWeeksAgo.toISOString().split('T')[0] + 'T00:00:00';
 
       const baseUrl = shop.shopUrl.replace(/\/$/, '');
-      const url = `${baseUrl}/wp-json/wc/v3/orders?per_page=50&after=${afterDate}&consumer_key=${shop.wcKey}&consumer_secret=${shop.wcSecret}`;
+      // ✅ Admin panelen is 100 rendelés
+      const url = `${baseUrl}/wp-json/wc/v3/orders?per_page=${ORDERS_PER_PAGE}&after=${afterDate}&orderby=date&order=desc&consumer_key=${shop.wcKey}&consumer_secret=${shop.wcSecret}`;
 
       try {
         const res = await fetch(url);
