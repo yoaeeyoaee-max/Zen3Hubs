@@ -613,6 +613,76 @@
     width: 17px; height: 17px;
     accent-color: var(--white); cursor: pointer;
   }
+
+  /* ============ SEARCH BAR ============ */
+  .search-wrap {
+    position: relative;
+    margin: 20px 0 8px;
+    display: none;
+  }
+  .search-wrap.show { display: block; animation: fadeUpSoft 0.5s var(--ease); }
+  .search-wrap::before {
+    content: '⌕';
+    position: absolute;
+    left: 18px; top: 50%;
+    transform: translateY(-50%);
+    color: var(--white-mute);
+    font-size: 1.15rem;
+    pointer-events: none;
+    transition: color 0.3s var(--ease);
+  }
+  .search-wrap:focus-within::before { color: var(--white); }
+  .search-input {
+    width: 100%;
+    padding: 14px 44px 14px 46px;
+    background: rgba(255,255,255,0.02);
+    border: 1px solid var(--line);
+    border-radius: 2px;
+    color: var(--white);
+    font-size: 0.88rem;
+    font-family: 'Inter', sans-serif;
+    font-weight: 300;
+    letter-spacing: 0.02em;
+    outline: none;
+    transition: all 0.4s var(--ease);
+  }
+  .search-input:hover { border-color: var(--line-strong); background: rgba(255,255,255,0.03); }
+  .search-input:focus {
+    border-color: var(--white);
+    background: rgba(255,255,255,0.04);
+    box-shadow: 0 0 0 3px rgba(255,255,255,0.04), 0 8px 20px rgba(0,0,0,0.4);
+  }
+  .search-input::placeholder { color: var(--white-faint); font-weight: 300; }
+  .search-clear {
+    position: absolute;
+    right: 12px; top: 50%;
+    transform: translateY(-50%);
+    width: 26px; height: 26px;
+    border-radius: 2px;
+    background: transparent;
+    border: 1px solid transparent;
+    color: var(--white-mute);
+    font-size: 0.9rem;
+    cursor: pointer;
+    display: none;
+    align-items: center; justify-content: center;
+    transition: all 0.3s var(--ease);
+  }
+  .search-clear.show { display: flex; }
+  .search-clear:hover {
+    color: var(--white);
+    border-color: var(--line-strong);
+    background: rgba(255,255,255,0.04);
+  }
+  .search-hint {
+    font-size: 0.65rem;
+    color: var(--white-mute);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+    font-weight: 400;
+  }
+
   .orders-list { margin-top: 16px; }
   .order-item {
     display: flex; align-items: center;
@@ -659,6 +729,15 @@
     letter-spacing: 0.1em; margin-top: 4px;
     font-family: 'Inter', sans-serif; font-weight: 300;
   }
+  .no-results {
+    text-align: center;
+    padding: 40px 20px;
+    color: var(--white-mute);
+    font-size: 0.85rem;
+    letter-spacing: 0.1em;
+    font-weight: 300;
+  }
+  .no-results b { color: var(--white); font-weight: 500; }
 
   /* ============ BADGES ============ */
   .badge {
@@ -888,6 +967,14 @@
         <button class="btn" onclick="loadOrders()">Rendelések letöltése</button>
         <button class="btn secondary" onclick="clearOrders()">Lista törlése</button>
 
+        <div class="search-wrap" id="searchWrapAWB">
+          <div class="search-hint">Keresés rendelések között</div>
+          <input type="text" class="search-input" id="searchAWB"
+                 placeholder="Név, rendelésszám, telefon, város, ár, ramburs…"
+                 oninput="applySearchAWB(this.value)" />
+          <button class="search-clear" id="searchClearAWB" onclick="clearSearchAWB()">✕</button>
+        </div>
+
         <div class="orders-header" id="ordersHeader" style="display:none; margin-top:24px;">
           <label class="select-all">
             <input type="checkbox" id="selectAll" onchange="toggleSelectAll(this)" />
@@ -919,6 +1006,14 @@
         <h3>📥 Rendelések (utolsó 2 hét) — Számlához</h3>
         <button class="btn" onclick="loadOrders()">Rendelések letöltése</button>
         <button class="btn secondary" onclick="clearOrders()">Lista törlése</button>
+
+        <div class="search-wrap" id="searchWrapFactura">
+          <div class="search-hint">Keresés rendelések között</div>
+          <input type="text" class="search-input" id="searchFactura"
+                 placeholder="Név, rendelésszám, telefon, város, ár, ramburs…"
+                 oninput="applySearchFactura(this.value)" />
+          <button class="search-clear" id="searchClearFactura" onclick="clearSearchFactura()">✕</button>
+        </div>
 
         <div class="orders-header" id="ordersHeaderFactura" style="display:none; margin-top:24px;">
           <label class="select-all">
@@ -1093,11 +1188,34 @@ let isSignup = false;
 let currentUser = null;
 let currentUserData = null;
 let currentAccountIndex = 0;
-let currentOrders = [];
-let selectedOrdersAWB = new Set();
-let selectedOrdersFactura = new Set();
 let landingDone = false;
 let pendingPayment = null;
+
+// ============================================
+// AL-ACCOUNTONKÉNTI RENDELÉS TÁROLÁS
+// ============================================
+// accountOrders[idx] = [rendelések]
+// accountSelectedAWB[idx] = Set(orderId)
+// accountSelectedFactura[idx] = Set(orderId)
+// accountSearchAWB[idx] = string
+// accountSearchFactura[idx] = string
+let accountOrders = {};
+let accountSelectedAWB = {};
+let accountSelectedFactura = {};
+let accountSearchAWB = {};
+let accountSearchFactura = {};
+
+function getOrdersForCurrent() {
+  return accountOrders[currentAccountIndex] || [];
+}
+function getSelectedAWB() {
+  if (!accountSelectedAWB[currentAccountIndex]) accountSelectedAWB[currentAccountIndex] = new Set();
+  return accountSelectedAWB[currentAccountIndex];
+}
+function getSelectedFactura() {
+  if (!accountSelectedFactura[currentAccountIndex]) accountSelectedFactura[currentAccountIndex] = new Set();
+  return accountSelectedFactura[currentAccountIndex];
+}
 
 function hideLanding(instant = false) {
   if (landingDone) return;
@@ -1254,6 +1372,13 @@ onAuthStateChanged(auth, async (user) => {
     currentUserData = data;
     currentAccountIndex = data.activeAccountIndex || 0;
 
+    // Új belépésnél töröljük az összes al-account gyorsítótárát
+    accountOrders = {};
+    accountSelectedAWB = {};
+    accountSelectedFactura = {};
+    accountSearchAWB = {};
+    accountSearchFactura = {};
+
     if (user.email === ADMIN_EMAIL) {
       document.getElementById('adminBtn').style.display = 'flex';
       document.getElementById('adminTabBtn').style.display = 'inline-block';
@@ -1266,6 +1391,11 @@ onAuthStateChanged(auth, async (user) => {
   } else {
     currentUser = null;
     currentUserData = null;
+    accountOrders = {};
+    accountSelectedAWB = {};
+    accountSelectedFactura = {};
+    accountSearchAWB = {};
+    accountSearchFactura = {};
     document.getElementById('dashboard').classList.remove('show');
     document.getElementById('auth').style.display = '';
     document.getElementById('auth').classList.add('show');
@@ -1352,6 +1482,7 @@ async function showDashboard(data) {
 
   renderAccounts(data.accounts);
   fillSettingsForm();
+  refreshOrdersView();
 }
 
 function fillSettingsForm() {
@@ -1386,6 +1517,55 @@ function fillSettingsForm() {
   document.getElementById('fgoPlatform').value = fgo.fgoPlatform || '';
 }
 
+// ============================================
+// ÚJ: Az aktuális al-account rendeléseinek újrarajzolása
+// ============================================
+function refreshOrdersView() {
+  const orders = getOrdersForCurrent();
+  const hasOrders = orders.length > 0;
+
+  // Search bar
+  const searchWrapAWB = document.getElementById('searchWrapAWB');
+  const searchWrapFactura = document.getElementById('searchWrapFactura');
+
+  // Keresési érték visszaállítása az adott al-accounthoz
+  const searchValAWB = accountSearchAWB[currentAccountIndex] || '';
+  const searchValFactura = accountSearchFactura[currentAccountIndex] || '';
+  document.getElementById('searchAWB').value = searchValAWB;
+  document.getElementById('searchFactura').value = searchValFactura;
+
+  if (hasOrders) {
+    searchWrapAWB.classList.add('show');
+    searchWrapFactura.classList.add('show');
+    document.getElementById('searchClearAWB').classList.toggle('show', searchValAWB.length > 0);
+    document.getElementById('searchClearFactura').classList.toggle('show', searchValFactura.length > 0);
+
+    document.getElementById('ordersHeader').style.display = 'flex';
+    document.getElementById('actionRow').style.display = 'flex';
+    document.getElementById('ordersHeaderFactura').style.display = 'flex';
+    document.getElementById('actionRowFactura').style.display = 'flex';
+  } else {
+    searchWrapAWB.classList.remove('show');
+    searchWrapFactura.classList.remove('show');
+    document.getElementById('ordersHeader').style.display = 'none';
+    document.getElementById('actionRow').style.display = 'none';
+    document.getElementById('ordersHeaderFactura').style.display = 'none';
+    document.getElementById('actionRowFactura').style.display = 'none';
+  }
+
+  // Listák újrarajzolása szűrővel
+  renderOrdersAWB(filterOrders(orders, searchValAWB));
+  renderOrdersFactura(filterOrders(orders, searchValFactura));
+  updateSelectedCountAWB();
+  updateSelectedCountFactura();
+
+  // "Összes kijelölése" checkbox visszaállítása
+  const selectAllAWB = document.getElementById('selectAll');
+  const selectAllFactura = document.getElementById('selectAllFactura');
+  if (selectAllAWB) selectAllAWB.checked = false;
+  if (selectAllFactura) selectAllFactura.checked = false;
+}
+
 window.toggleSidebar = function () {
   document.getElementById('sidebar').classList.toggle('open');
   document.getElementById('overlay').classList.toggle('show');
@@ -1404,6 +1584,7 @@ function renderAccounts(accounts) {
       await persistAccounts();
       renderAccounts(accounts);
       fillSettingsForm();
+      refreshOrdersView(); // ← ÚJ: azonnal frissíti a listát
       toast(`Átváltva: ${acc.name}`);
       toggleSidebar();
     };
@@ -1425,6 +1606,7 @@ window.addSubAccount = async function () {
   await persistAccounts();
   renderAccounts(accounts);
   fillSettingsForm();
+  refreshOrdersView();
   toast('✅ Új al-account hozzáadva (külön beállításokkal)');
 };
 
@@ -1444,13 +1626,61 @@ window.deleteCurrentAccount = async function () {
   const accounts = currentUserData.accounts || [];
   if (accounts.length <= 1) { toast('❌ Legalább 1 account kell'); return; }
   if (!confirm('Biztosan törlöd ezt az al-accountot?')) return;
-  accounts.splice(currentAccountIndex, 1);
+
+  const deletedIdx = currentAccountIndex;
+
+  // Töröljük a törölt al-account gyorsítótárát
+  delete accountOrders[deletedIdx];
+  delete accountSelectedAWB[deletedIdx];
+  delete accountSelectedFactura[deletedIdx];
+  delete accountSearchAWB[deletedIdx];
+  delete accountSearchFactura[deletedIdx];
+
+  // Shift: az összes utána következő indexet eggyel feljebb toljuk
+  const shiftedOrders = {};
+  const shiftedAWB = {};
+  const shiftedFactura = {};
+  const shiftedSearchAWB = {};
+  const shiftedSearchFactura = {};
+  Object.keys(accountOrders).forEach(k => {
+    const idx = parseInt(k);
+    if (idx < deletedIdx) shiftedOrders[idx] = accountOrders[k];
+    else if (idx > deletedIdx) shiftedOrders[idx - 1] = accountOrders[k];
+  });
+  Object.keys(accountSelectedAWB).forEach(k => {
+    const idx = parseInt(k);
+    if (idx < deletedIdx) shiftedAWB[idx] = accountSelectedAWB[k];
+    else if (idx > deletedIdx) shiftedAWB[idx - 1] = accountSelectedAWB[k];
+  });
+  Object.keys(accountSelectedFactura).forEach(k => {
+    const idx = parseInt(k);
+    if (idx < deletedIdx) shiftedFactura[idx] = accountSelectedFactura[k];
+    else if (idx > deletedIdx) shiftedFactura[idx - 1] = accountSelectedFactura[k];
+  });
+  Object.keys(accountSearchAWB).forEach(k => {
+    const idx = parseInt(k);
+    if (idx < deletedIdx) shiftedSearchAWB[idx] = accountSearchAWB[k];
+    else if (idx > deletedIdx) shiftedSearchAWB[idx - 1] = accountSearchAWB[k];
+  });
+  Object.keys(accountSearchFactura).forEach(k => {
+    const idx = parseInt(k);
+    if (idx < deletedIdx) shiftedSearchFactura[idx] = accountSearchFactura[k];
+    else if (idx > deletedIdx) shiftedSearchFactura[idx - 1] = accountSearchFactura[k];
+  });
+  accountOrders = shiftedOrders;
+  accountSelectedAWB = shiftedAWB;
+  accountSelectedFactura = shiftedFactura;
+  accountSearchAWB = shiftedSearchAWB;
+  accountSearchFactura = shiftedSearchFactura;
+
+  accounts.splice(deletedIdx, 1);
   currentAccountIndex = 0;
   currentUserData.accounts = accounts;
   currentUserData.activeAccountIndex = 0;
   await persistAccounts();
   renderAccounts(accounts);
   fillSettingsForm();
+  refreshOrdersView();
   toast('🗑️ Al-account törölve');
 };
 
@@ -1534,7 +1764,7 @@ window.loadOrders = async function () {
 
     const skipped = rawOrders.length - orders.length;
 
-    currentOrders = orders.map(o => {
+    const mapped = orders.map(o => {
       const hasPaidDate = o.date_paid !== null && o.date_paid !== undefined && o.date_paid !== '';
       const paymentMethod = (o.payment_method || '').toLowerCase();
       const paymentTitle = o.payment_method_title || '';
@@ -1596,19 +1826,17 @@ window.loadOrders = async function () {
       };
     });
 
-    selectedOrdersAWB.clear();
-    selectedOrdersFactura.clear();
-    renderOrdersAWB(currentOrders);
-    renderOrdersFactura(currentOrders);
-    document.getElementById('ordersHeader').style.display = 'flex';
-    document.getElementById('actionRow').style.display = 'flex';
-    document.getElementById('ordersHeaderFactura').style.display = 'flex';
-    document.getElementById('actionRowFactura').style.display = 'flex';
-    updateSelectedCountAWB();
-    updateSelectedCountFactura();
+    // CSAK az aktuális al-accounthoz mentjük
+    accountOrders[currentAccountIndex] = mapped;
+    accountSelectedAWB[currentAccountIndex] = new Set();
+    accountSelectedFactura[currentAccountIndex] = new Set();
+    accountSearchAWB[currentAccountIndex] = '';
+    accountSearchFactura[currentAccountIndex] = '';
+
+    refreshOrdersView();
 
     const skipMsg = skipped > 0 ? ` (${skipped} anulált/törölt kihagyva)` : '';
-    toast(`✅ ${currentOrders.length} érvényes rendelés betöltve${skipMsg}`);
+    toast(`✅ ${mapped.length} érvényes rendelés betöltve${skipMsg}`);
   } catch (e) {
     console.error(e);
     toast('❌ Hiba: ' + e.message);
@@ -1616,28 +1844,122 @@ window.loadOrders = async function () {
 };
 
 window.clearOrders = function () {
-  currentOrders = [];
-  selectedOrdersAWB.clear();
-  selectedOrdersFactura.clear();
-  document.getElementById('ordersList').innerHTML = '';
-  document.getElementById('ordersListFactura').innerHTML = '';
-  document.getElementById('ordersHeader').style.display = 'none';
-  document.getElementById('actionRow').style.display = 'none';
-  document.getElementById('ordersHeaderFactura').style.display = 'none';
-  document.getElementById('actionRowFactura').style.display = 'none';
-  toast('🗑️ Lista törölve');
+  accountOrders[currentAccountIndex] = [];
+  accountSelectedAWB[currentAccountIndex] = new Set();
+  accountSelectedFactura[currentAccountIndex] = new Set();
+  accountSearchAWB[currentAccountIndex] = '';
+  accountSearchFactura[currentAccountIndex] = '';
+  refreshOrdersView();
+  toast('🗑️ Lista törölve (ehhez az al-accounthoz)');
 };
+
+// ============================================
+// KERESÉS
+// ============================================
+function filterOrders(orders, query) {
+  if (!query || !query.trim()) return orders;
+  const q = query.trim().toLowerCase();
+
+  return orders.filter(o => {
+    const haystack = [
+      String(o.id),
+      '#' + o.id,
+      o.name,
+      o.phone,
+      o.email,
+      o.address,
+      o.city,
+      o.state,
+      o.product,
+      o.paymentTitle,
+      o.paymentMethod,
+      o.isRamburs ? 'ramburs' : 'kártya',
+      o.isRamburs ? 'fizetendo' : 'fizetve',
+      o.totalWithTax.toFixed(2),
+      String(o.totalWithTax),
+      o.netTotal.toFixed(2),
+      o.totalTax.toFixed(2),
+      o.couponCode || ''
+    ]
+      .filter(Boolean)
+      .join(' ')
+      .toLowerCase();
+
+    return haystack.includes(q);
+  });
+}
+
+window.applySearchAWB = function (value) {
+  accountSearchAWB[currentAccountIndex] = value;
+  document.getElementById('searchClearAWB').classList.toggle('show', value.length > 0);
+  renderOrdersAWB(filterOrders(getOrdersForCurrent(), value));
+  updateSelectedCountAWB();
+  // Kijelölések szinkronban maradnak, csak a látható elemek checkbox-át állítjuk
+  syncVisibleCheckboxesAWB();
+};
+
+window.clearSearchAWB = function () {
+  accountSearchAWB[currentAccountIndex] = '';
+  document.getElementById('searchAWB').value = '';
+  document.getElementById('searchClearAWB').classList.remove('show');
+  renderOrdersAWB(filterOrders(getOrdersForCurrent(), ''));
+  updateSelectedCountAWB();
+  syncVisibleCheckboxesAWB();
+};
+
+window.applySearchFactura = function (value) {
+  accountSearchFactura[currentAccountIndex] = value;
+  document.getElementById('searchClearFactura').classList.toggle('show', value.length > 0);
+  renderOrdersFactura(filterOrders(getOrdersForCurrent(), value));
+  updateSelectedCountFactura();
+  syncVisibleCheckboxesFactura();
+};
+
+window.clearSearchFactura = function () {
+  accountSearchFactura[currentAccountIndex] = '';
+  document.getElementById('searchFactura').value = '';
+  document.getElementById('searchClearFactura').classList.remove('show');
+  renderOrdersFactura(filterOrders(getOrdersForCurrent(), ''));
+  updateSelectedCountFactura();
+  syncVisibleCheckboxesFactura();
+};
+
+function syncVisibleCheckboxesAWB() {
+  const selected = getSelectedAWB();
+  document.querySelectorAll('.order-item[data-type="awb"]').forEach(el => {
+    const id = el.dataset.orderId;
+    const cb = el.querySelector('.checkbox');
+    if (cb) cb.checked = selected.has(id);
+    el.classList.toggle('selected', selected.has(id));
+  });
+}
+function syncVisibleCheckboxesFactura() {
+  const selected = getSelectedFactura();
+  document.querySelectorAll('.order-item[data-type="factura"]').forEach(el => {
+    const id = el.dataset.orderId;
+    const cb = el.querySelector('.checkbox');
+    if (cb) cb.checked = selected.has(id);
+    el.classList.toggle('selected', selected.has(id));
+  });
+}
 
 function renderOrdersAWB(orders) {
   const list = document.getElementById('ordersList');
   list.innerHTML = '';
+  const selected = getSelectedAWB();
+  const query = accountSearchAWB[currentAccountIndex] || '';
+
   if (!orders.length) {
-    list.innerHTML = '<p style="color:#888; text-align:center; padding:20px;">Nincs érvényes rendelés az utolsó 2 hétből</p>';
+    if (getOrdersForCurrent().length === 0) {
+      list.innerHTML = '<p style="color:#888; text-align:center; padding:20px;">Nincs érvényes rendelés az utolsó 2 hétből</p>';
+    } else {
+      list.innerHTML = `<p class="no-results">Nincs találat erre: <b>${escapeHtml(query)}</b></p>`;
+    }
     return;
   }
   orders.forEach(o => {
     const div = document.createElement('div');
-    div.className = 'order-item';
+    div.className = 'order-item' + (selected.has(String(o.id)) ? ' selected' : '');
     div.dataset.orderId = o.id;
     div.dataset.type = 'awb';
 
@@ -1654,7 +1976,7 @@ function renderOrdersAWB(orders) {
       : `<span class="badge success">🚚 Ingyenes szállítás</span>`;
 
     div.innerHTML = `
-      <input type="checkbox" class="checkbox" onchange="toggleOrderAWB('${o.id}', this.checked)" />
+      <input type="checkbox" class="checkbox" ${selected.has(String(o.id)) ? 'checked' : ''} onchange="toggleOrderAWB('${o.id}', this.checked)" />
       <div class="info">
         <strong>#${o.id}</strong> — ${o.name}<br>
         <small>${o.address}, ${o.city} • ${o.phone}</small>
@@ -1674,13 +1996,20 @@ function renderOrdersAWB(orders) {
 function renderOrdersFactura(orders) {
   const list = document.getElementById('ordersListFactura');
   list.innerHTML = '';
+  const selected = getSelectedFactura();
+  const query = accountSearchFactura[currentAccountIndex] || '';
+
   if (!orders.length) {
-    list.innerHTML = '<p style="color:#888; text-align:center; padding:20px;">Nincs érvényes rendelés az utolsó 2 hétből</p>';
+    if (getOrdersForCurrent().length === 0) {
+      list.innerHTML = '<p style="color:#888; text-align:center; padding:20px;">Nincs érvényes rendelés az utolsó 2 hétből</p>';
+    } else {
+      list.innerHTML = `<p class="no-results">Nincs találat erre: <b>${escapeHtml(query)}</b></p>`;
+    }
     return;
   }
   orders.forEach(o => {
     const div = document.createElement('div');
-    div.className = 'order-item';
+    div.className = 'order-item' + (selected.has(String(o.id)) ? ' selected' : '');
     div.dataset.orderId = o.id;
     div.dataset.type = 'factura';
 
@@ -1697,7 +2026,7 @@ function renderOrdersFactura(orders) {
       : `<span class="badge success">🚚 Ingyenes szállítás</span>`;
 
     div.innerHTML = `
-      <input type="checkbox" class="checkbox" onchange="toggleOrderFactura('${o.id}', this.checked)" />
+      <input type="checkbox" class="checkbox" ${selected.has(String(o.id)) ? 'checked' : ''} onchange="toggleOrderFactura('${o.id}', this.checked)" />
       <div class="info">
         <strong>#${o.id}</strong> — ${o.name}<br>
         <small>${o.address}, ${o.city} • ${o.phone}</small>
@@ -1714,21 +2043,29 @@ function renderOrdersFactura(orders) {
   });
 }
 
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"']/g, c => ({
+    '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+  }[c]));
+}
+
 window.toggleOrderAWB = function (orderId, checked) {
-  if (checked) selectedOrdersAWB.add(orderId);
-  else selectedOrdersAWB.delete(orderId);
+  const selected = getSelectedAWB();
+  if (checked) selected.add(String(orderId));
+  else selected.delete(String(orderId));
   updateSelectedCountAWB();
   const item = document.querySelector(`.order-item[data-order-id="${orderId}"][data-type="awb"]`);
   if (item) item.classList.toggle('selected', checked);
 };
 
 window.toggleSelectAll = function (checkbox) {
+  const selected = getSelectedAWB();
   const all = document.querySelectorAll('.order-item[data-type="awb"] .checkbox');
   all.forEach(cb => {
     cb.checked = checkbox.checked;
-    const orderId = cb.closest('.order-item').dataset.orderId;
-    if (checkbox.checked) selectedOrdersAWB.add(orderId);
-    else selectedOrdersAWB.delete(orderId);
+    const orderId = String(cb.closest('.order-item').dataset.orderId);
+    if (checkbox.checked) selected.add(orderId);
+    else selected.delete(orderId);
   });
   document.querySelectorAll('.order-item[data-type="awb"]').forEach(el => {
     el.classList.toggle('selected', checkbox.checked);
@@ -1737,24 +2074,27 @@ window.toggleSelectAll = function (checkbox) {
 };
 
 function updateSelectedCountAWB() {
-  document.getElementById('selectedCount').textContent = `${selectedOrdersAWB.size} kijelölve`;
+  const selected = getSelectedAWB();
+  document.getElementById('selectedCount').textContent = `${selected.size} kijelölve`;
 }
 
 window.toggleOrderFactura = function (orderId, checked) {
-  if (checked) selectedOrdersFactura.add(orderId);
-  else selectedOrdersFactura.delete(orderId);
+  const selected = getSelectedFactura();
+  if (checked) selected.add(String(orderId));
+  else selected.delete(String(orderId));
   updateSelectedCountFactura();
   const item = document.querySelector(`.order-item[data-order-id="${orderId}"][data-type="factura"]`);
   if (item) item.classList.toggle('selected', checked);
 };
 
 window.toggleSelectAllFactura = function (checkbox) {
+  const selected = getSelectedFactura();
   const all = document.querySelectorAll('.order-item[data-type="factura"] .checkbox');
   all.forEach(cb => {
     cb.checked = checkbox.checked;
-    const orderId = cb.closest('.order-item').dataset.orderId;
-    if (checkbox.checked) selectedOrdersFactura.add(orderId);
-    else selectedOrdersFactura.delete(orderId);
+    const orderId = String(cb.closest('.order-item').dataset.orderId);
+    if (checkbox.checked) selected.add(orderId);
+    else selected.delete(orderId);
   });
   document.querySelectorAll('.order-item[data-type="factura"]').forEach(el => {
     el.classList.toggle('selected', checkbox.checked);
@@ -1763,14 +2103,16 @@ window.toggleSelectAllFactura = function (checkbox) {
 };
 
 function updateSelectedCountFactura() {
-  document.getElementById('selectedCountFactura').textContent = `${selectedOrdersFactura.size} kijelölve`;
+  const selected = getSelectedFactura();
+  document.getElementById('selectedCountFactura').textContent = `${selected.size} kijelölve`;
 }
 
 // ============================================
 // AWB — valódi DPD AWB generálás
 // ============================================
 window.generateSelectedAWB = async function () {
-  if (selectedOrdersAWB.size === 0) { toast('❌ Nincs kijelölt rendelés'); return; }
+  const selected = getSelectedAWB();
+  if (selected.size === 0) { toast('❌ Nincs kijelölt rendelés'); return; }
   const acc = getActiveAccount();
   const exp = acc.expeditor || {};
   const dpd = acc.dpdConfig || {};
@@ -1779,13 +2121,14 @@ window.generateSelectedAWB = async function () {
   if (!dpd.dpdUser) { toast('❌ Töltsd ki a DPD adatokat!'); return; }
   if (!dpd.dpdClientId) { toast('❌ Töltsd ki a DPD ClientID-t!'); return; }
 
-  requestPayment('awb', selectedOrdersAWB.size);
+  requestPayment('awb', selected.size);
 };
 
 async function buildAWBPreview() {
   const acc = getActiveAccount();
   const dpd = acc.dpdConfig || {};
-  const selected = currentOrders.filter(o => selectedOrdersAWB.has(String(o.id)));
+  const selectedSet = getSelectedAWB();
+  const selected = getOrdersForCurrent().filter(o => selectedSet.has(String(o.id)));
 
   let html = `<h4>📦 DPD AWB — ${selected.length} rendelés</h4>`;
   let successCount = 0;
@@ -1885,7 +2228,8 @@ window.printDPDLabels = async function (shipmentId, parcelsEncoded) {
 // SZÁMLA — valódi FGO számla
 // ============================================
 window.generateSelectedFactura = async function () {
-  if (selectedOrdersFactura.size === 0) { toast('❌ Nincs kijelölt rendelés'); return; }
+  const selected = getSelectedFactura();
+  if (selected.size === 0) { toast('❌ Nincs kijelölt rendelés'); return; }
   const acc = getActiveAccount();
   const fgo = acc.fgoConfig || {};
 
@@ -1894,13 +2238,14 @@ window.generateSelectedFactura = async function () {
     return;
   }
 
-  requestPayment('factura', selectedOrdersFactura.size);
+  requestPayment('factura', selected.size);
 };
 
 async function buildFacturaPreview() {
   const acc = getActiveAccount();
   const fgo = acc.fgoConfig || {};
-  const selected = currentOrders.filter(o => selectedOrdersFactura.has(String(o.id)));
+  const selectedSet = getSelectedFactura();
+  const selected = getOrdersForCurrent().filter(o => selectedSet.has(String(o.id)));
 
   let html = '';
   let successCount = 0;
