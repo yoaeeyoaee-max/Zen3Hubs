@@ -26,30 +26,52 @@
   * { margin: 0; padding: 0; box-sizing: border-box; }
   html, body {
     font-family: 'Inter', sans-serif;
-    background: var(--black); color: var(--white-soft);
+    background: #000; color: var(--white-soft);
     min-height: 100vh; overflow-x: hidden;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     letter-spacing: 0.01em;
   }
-  body::before {
-    content: ''; position: fixed; inset: 0;
-    background:
-      radial-gradient(ellipse 80% 60% at 50% 0%, rgba(255,255,255,0.035) 0%, transparent 60%),
-      radial-gradient(ellipse 60% 50% at 50% 100%, rgba(255,255,255,0.02) 0%, transparent 60%);
-    pointer-events: none; z-index: 0;
+
+  /* ============ CSILLAGOS HÁTTÉR ============ */
+  #starfield {
+    position: fixed; inset: 0;
+    width: 100vw; height: 100vh;
+    z-index: 0; pointer-events: none;
+    background: #000;
   }
-  body::after {
-    content: ''; position: fixed; inset: 0;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.4'/%3E%3C/svg%3E");
-    opacity: 0.025; pointer-events: none; z-index: 0; mix-blend-mode: screen;
+  /* Tejút-szerű ködős sáv */
+  #starfield::before {
+    content: ''; position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse 90% 25% at 50% 55%, rgba(255,255,255,0.055) 0%, transparent 70%),
+      radial-gradient(ellipse 60% 18% at 40% 60%, rgba(255,255,255,0.035) 0%, transparent 60%),
+      radial-gradient(ellipse 70% 20% at 65% 50%, rgba(255,255,255,0.03) 0%, transparent 65%);
+    filter: blur(2px);
+    animation: milkyWayDrift 60s ease-in-out infinite alternate;
+  }
+  @keyframes milkyWayDrift {
+    from { transform: translateX(-2%) translateY(-1%); opacity: 0.85; }
+    to   { transform: translateX(2%) translateY(1%); opacity: 1; }
+  }
+  /* Finom vignetta a szélekre */
+  #starfield::after {
+    content: ''; position: absolute; inset: 0;
+    background: radial-gradient(ellipse 90% 80% at 50% 50%, transparent 40%, rgba(0,0,0,0.7) 100%);
+    pointer-events: none;
+  }
+
+  /* A tartalom legyen a csillagok felett */
+  #landing, #auth, #dashboard {
+    position: relative;
+    z-index: 2;
   }
 
   /* ============ LANDING ============ */
   #landing {
     position: fixed; inset: 0;
     display: flex; align-items: center; justify-content: center;
-    background: #000; z-index: 1000;
+    background: transparent; z-index: 1000;
     transition: opacity 1.4s var(--ease), transform 1.4s var(--ease), filter 1.4s var(--ease);
   }
   #landing.shrink {
@@ -116,11 +138,11 @@
   #auth {
     display: none; min-height: 100vh;
     align-items: center; justify-content: center;
-    padding: 24px; position: relative; z-index: 1;
+    padding: 24px;
   }
   #auth.show { display: flex; }
   .auth-box {
-    background: linear-gradient(160deg, rgba(20,20,20,0.9), rgba(8,8,8,0.98));
+    background: linear-gradient(160deg, rgba(20,20,20,0.82), rgba(8,8,8,0.95));
     border: 1px solid var(--line-strong);
     border-radius: 2px; padding: 64px 52px;
     width: 100%; max-width: 440px; position: relative;
@@ -129,7 +151,7 @@
       0 0 0 1px rgba(255,255,255,0.02) inset,
       0 1px 0 rgba(255,255,255,0.06) inset;
     animation: authIn 1s var(--ease) both;
-    backdrop-filter: blur(20px);
+    backdrop-filter: blur(20px) saturate(120%);
   }
   @keyframes authIn {
     from { opacity: 0; transform: translateY(28px) scale(0.98); filter: blur(8px); }
@@ -248,7 +270,7 @@
   /* ============ PAY MODAL ============ */
   .pay-modal {
     position: fixed; inset: 0;
-    background: rgba(0,0,0,0.9);
+    background: rgba(0,0,0,0.85);
     backdrop-filter: blur(16px) saturate(120%);
     display: none; align-items: center; justify-content: center;
     padding: 24px; z-index: 500;
@@ -257,12 +279,13 @@
   @keyframes modalFade { from { opacity: 0; } to { opacity: 1; } }
 
   .pay-modal-box {
-    background: linear-gradient(160deg, rgba(20,20,20,0.98), rgba(8,8,8,0.99));
+    background: linear-gradient(160deg, rgba(20,20,20,0.95), rgba(8,8,8,0.98));
     border: 1px solid var(--line-strong);
     border-radius: 2px; padding: 52px 44px;
     max-width: 480px; width: 100%; text-align: center;
     position: relative; box-shadow: 0 50px 120px rgba(0,0,0,0.95);
     animation: modalIn 0.7s var(--ease);
+    backdrop-filter: blur(20px);
   }
   @keyframes modalIn {
     from { opacity: 0; transform: translateY(32px) scale(0.96); filter: blur(10px); }
@@ -346,13 +369,13 @@
   .back-link:hover { color: var(--white); letter-spacing: 0.28em; }
 
   /* ============ DASHBOARD ============ */
-  #dashboard { display: none; min-height: 100vh; position: relative; z-index: 1; }
+  #dashboard { display: none; min-height: 100vh; }
   #dashboard.show { display: block; animation: dashIn 0.8s var(--ease); }
   @keyframes dashIn { from { opacity: 0; } to { opacity: 1; } }
 
   .topbar {
     display: flex; align-items: center; justify-content: space-between;
-    padding: 22px 36px; background: rgba(0,0,0,0.7);
+    padding: 22px 36px; background: rgba(0,0,0,0.55);
     border-bottom: 1px solid var(--line);
     position: sticky; top: 0; z-index: 50;
     backdrop-filter: blur(24px) saturate(120%);
@@ -386,10 +409,11 @@
   .sidebar {
     position: fixed; top: 0; left: -360px;
     width: 340px; height: 100vh;
-    background: linear-gradient(180deg, #0a0a0a 0%, #050505 100%);
+    background: linear-gradient(180deg, rgba(10,10,10,0.95) 0%, rgba(5,5,5,0.98) 100%);
     border-right: 1px solid var(--line-strong);
     z-index: 200; transition: left 0.7s var(--ease);
     padding: 36px 26px; overflow-y: auto;
+    backdrop-filter: blur(20px);
   }
   .sidebar.open { left: 0; box-shadow: 40px 0 80px rgba(0,0,0,0.6); }
   .sidebar .brand-side {
@@ -511,11 +535,12 @@
 
   /* ============ CARDS ============ */
   .card {
-    background: linear-gradient(160deg, rgba(16,16,16,0.7), rgba(8,8,8,0.9));
+    background: linear-gradient(160deg, rgba(16,16,16,0.55), rgba(8,8,8,0.75));
     border: 1px solid var(--line);
     border-radius: 2px; padding: 40px;
     margin-bottom: 24px; transition: all 0.6s var(--ease);
     position: relative; overflow: hidden;
+    backdrop-filter: blur(12px) saturate(120%);
   }
   .card::before {
     content: ''; position: absolute; top: 0; left: 0;
@@ -692,6 +717,7 @@
     font-size: 0.88rem; gap: 18px; flex-wrap: wrap;
     transition: all 0.4s var(--ease);
     position: relative; overflow: hidden;
+    backdrop-filter: blur(4px);
   }
   .order-item::before {
     content: ''; position: absolute; left: 0; top: 0;
@@ -771,7 +797,7 @@
   /* ============ TOAST ============ */
   .toast {
     position: fixed; bottom: 36px; right: 36px;
-    background: linear-gradient(160deg, #141414, #080808);
+    background: linear-gradient(160deg, rgba(20,20,20,0.95), rgba(8,8,8,0.98));
     border: 1px solid var(--line-strong);
     border-left: 2px solid var(--white);
     padding: 18px 26px; border-radius: 2px;
@@ -865,6 +891,9 @@
 </style>
 </head>
 <body>
+
+<!-- CSILLAGOS HÁTTÉR -->
+<canvas id="starfield"></canvas>
 
 <!-- LANDING -->
 <div id="landing">
@@ -1194,11 +1223,6 @@ let pendingPayment = null;
 // ============================================
 // AL-ACCOUNTONKÉNTI RENDELÉS TÁROLÁS
 // ============================================
-// accountOrders[idx] = [rendelések]
-// accountSelectedAWB[idx] = Set(orderId)
-// accountSelectedFactura[idx] = Set(orderId)
-// accountSearchAWB[idx] = string
-// accountSearchFactura[idx] = string
 let accountOrders = {};
 let accountSelectedAWB = {};
 let accountSelectedFactura = {};
@@ -1372,7 +1396,6 @@ onAuthStateChanged(auth, async (user) => {
     currentUserData = data;
     currentAccountIndex = data.activeAccountIndex || 0;
 
-    // Új belépésnél töröljük az összes al-account gyorsítótárát
     accountOrders = {};
     accountSelectedAWB = {};
     accountSelectedFactura = {};
@@ -1517,18 +1540,13 @@ function fillSettingsForm() {
   document.getElementById('fgoPlatform').value = fgo.fgoPlatform || '';
 }
 
-// ============================================
-// ÚJ: Az aktuális al-account rendeléseinek újrarajzolása
-// ============================================
 function refreshOrdersView() {
   const orders = getOrdersForCurrent();
   const hasOrders = orders.length > 0;
 
-  // Search bar
   const searchWrapAWB = document.getElementById('searchWrapAWB');
   const searchWrapFactura = document.getElementById('searchWrapFactura');
 
-  // Keresési érték visszaállítása az adott al-accounthoz
   const searchValAWB = accountSearchAWB[currentAccountIndex] || '';
   const searchValFactura = accountSearchFactura[currentAccountIndex] || '';
   document.getElementById('searchAWB').value = searchValAWB;
@@ -1553,13 +1571,11 @@ function refreshOrdersView() {
     document.getElementById('actionRowFactura').style.display = 'none';
   }
 
-  // Listák újrarajzolása szűrővel
   renderOrdersAWB(filterOrders(orders, searchValAWB));
   renderOrdersFactura(filterOrders(orders, searchValFactura));
   updateSelectedCountAWB();
   updateSelectedCountFactura();
 
-  // "Összes kijelölése" checkbox visszaállítása
   const selectAllAWB = document.getElementById('selectAll');
   const selectAllFactura = document.getElementById('selectAllFactura');
   if (selectAllAWB) selectAllAWB.checked = false;
@@ -1584,7 +1600,7 @@ function renderAccounts(accounts) {
       await persistAccounts();
       renderAccounts(accounts);
       fillSettingsForm();
-      refreshOrdersView(); // ← ÚJ: azonnal frissíti a listát
+      refreshOrdersView();
       toast(`Átváltva: ${acc.name}`);
       toggleSidebar();
     };
@@ -1629,14 +1645,12 @@ window.deleteCurrentAccount = async function () {
 
   const deletedIdx = currentAccountIndex;
 
-  // Töröljük a törölt al-account gyorsítótárát
   delete accountOrders[deletedIdx];
   delete accountSelectedAWB[deletedIdx];
   delete accountSelectedFactura[deletedIdx];
   delete accountSearchAWB[deletedIdx];
   delete accountSearchFactura[deletedIdx];
 
-  // Shift: az összes utána következő indexet eggyel feljebb toljuk
   const shiftedOrders = {};
   const shiftedAWB = {};
   const shiftedFactura = {};
@@ -1826,7 +1840,6 @@ window.loadOrders = async function () {
       };
     });
 
-    // CSAK az aktuális al-accounthoz mentjük
     accountOrders[currentAccountIndex] = mapped;
     accountSelectedAWB[currentAccountIndex] = new Set();
     accountSelectedFactura[currentAccountIndex] = new Set();
@@ -1894,7 +1907,6 @@ window.applySearchAWB = function (value) {
   document.getElementById('searchClearAWB').classList.toggle('show', value.length > 0);
   renderOrdersAWB(filterOrders(getOrdersForCurrent(), value));
   updateSelectedCountAWB();
-  // Kijelölések szinkronban maradnak, csak a látható elemek checkbox-át állítjuk
   syncVisibleCheckboxesAWB();
 };
 
@@ -2752,6 +2764,85 @@ async function loadAdminOrders() {
     list.innerHTML = '<p style="color:#ff4d6d;">Hiba: ' + e.message + '</p>';
   }
 }
+
+// ============================================
+// CSILLAGOS HÁTTÉR — Canvas animáció
+// ============================================
+(function initStarfield() {
+  const canvas = document.getElementById('starfield');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  let stars = [];
+  let w = 0, h = 0;
+  let dpr = Math.min(window.devicePixelRatio || 1, 2);
+  let animationId;
+
+  function resize() {
+    w = window.innerWidth;
+    h = window.innerHeight;
+    canvas.width = w * dpr;
+    canvas.height = h * dpr;
+    canvas.style.width = w + 'px';
+    canvas.style.height = h + 'px';
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    createStars();
+  }
+
+  function createStars() {
+    // Sűrűség: kb. 1 csillag / 1500 pixel
+    const count = Math.floor((w * h) / 1500);
+    stars = [];
+    for (let i = 0; i < count; i++) {
+      stars.push({
+        x: Math.random() * w,
+        y: Math.random() * h,
+        r: Math.random() * 0.9 + 0.15,
+        baseAlpha: Math.random() * 0.6 + 0.25,
+        alpha: 0,
+        phase: Math.random() * Math.PI * 2,
+        speed: Math.random() * 0.015 + 0.005,
+        // néhány csillag lassan "pislákol" és/vagy mozog
+        drift: Math.random() * 0.05 + 0.01
+      });
+    }
+  }
+
+  function draw(t) {
+    ctx.clearRect(0, 0, w, h);
+
+    // Csillagok
+    for (let i = 0; i < stars.length; i++) {
+      const s = stars[i];
+      // Finom pulzálás
+      s.alpha = s.baseAlpha + Math.sin(t * s.speed + s.phase) * 0.25;
+      if (s.alpha < 0.05) s.alpha = 0.05;
+      if (s.alpha > 1) s.alpha = 1;
+
+      // Nagyon lassú sodródás jobbra
+      s.x += s.drift * 0.02;
+      if (s.x > w + 2) s.x = -2;
+
+      ctx.beginPath();
+      ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(255,255,255,${s.alpha})`;
+      ctx.fill();
+
+      // A legnagyobb csillagoknak finom glow
+      if (s.r > 0.75) {
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, s.r * 3, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(255,255,255,${s.alpha * 0.08})`;
+        ctx.fill();
+      }
+    }
+
+    animationId = requestAnimationFrame(draw);
+  }
+
+  window.addEventListener('resize', resize);
+  resize();
+  animationId = requestAnimationFrame(draw);
+})();
 </script>
 </body>
 </html>
