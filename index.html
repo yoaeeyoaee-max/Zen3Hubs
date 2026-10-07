@@ -55,40 +55,25 @@
   * { margin: 0; padding: 0; box-sizing: border-box; }
   html, body {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
-    background: var(--bg);
-    color: var(--fg);
-    min-height: 100vh;
-    font-size: 14px;
-    line-height: 1.5;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+    background: var(--bg); color: var(--fg);
+    min-height: 100vh; font-size: 14px; line-height: 1.5;
+    -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;
   }
   body { overflow-x: hidden; }
   button, input, select, textarea { font-family: inherit; font-size: inherit; }
   a { color: inherit; text-decoration: none; }
-
-  /* ============ UTIL ============ */
   .hidden { display: none !important; }
-  .flex { display: flex; }
-  .items-center { align-items: center; }
-  .justify-between { justify-content: space-between; }
-  .gap-1 { gap: 4px; } .gap-2 { gap: 8px; } .gap-3 { gap: 12px; } .gap-4 { gap: 16px; }
   .truncate { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
   /* ============ AUTH ============ */
   #authScreen {
-    min-height: 100vh;
-    display: flex; align-items: center; justify-content: center;
-    padding: 24px;
-    background: var(--bg-soft);
+    min-height: 100vh; display: flex; align-items: center; justify-content: center;
+    padding: 24px; background: var(--bg-soft);
   }
   .auth-card {
     width: 100%; max-width: 420px;
-    background: var(--bg);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-card);
-    padding: 40px 32px;
+    background: var(--bg); border: 1px solid var(--border);
+    border-radius: var(--radius-card); padding: 40px 32px;
     box-shadow: var(--shadow-card);
   }
   .auth-logo {
@@ -96,63 +81,37 @@
     text-align: center; margin-bottom: 6px;
   }
   .auth-logo span { color: var(--primary); }
-  .auth-sub {
-    text-align: center; font-size: 13px; color: var(--fg-muted);
-    margin-bottom: 32px;
-  }
-  .auth-title {
-    font-size: 20px; font-weight: 600; letter-spacing: -0.01em;
-    margin-bottom: 4px;
-  }
+  .auth-sub { text-align: center; font-size: 13px; color: var(--fg-muted); margin-bottom: 32px; }
+  .auth-title { font-size: 20px; font-weight: 600; letter-spacing: -0.01em; margin-bottom: 4px; }
   .auth-desc { font-size: 13px; color: var(--fg-muted); margin-bottom: 24px; }
   .field { margin-bottom: 14px; }
-  .field label {
-    display: block; font-size: 13px; font-weight: 500;
-    margin-bottom: 6px; color: var(--fg);
-  }
+  .field label { display: block; font-size: 13px; font-weight: 500; margin-bottom: 6px; color: var(--fg); }
   .field input {
-    width: 100%; height: 40px;
-    padding: 0 12px;
-    border: 1px solid var(--border);
-    border-radius: var(--radius-btn);
-    background: var(--bg);
-    color: var(--fg);
-    outline: none;
+    width: 100%; height: 40px; padding: 0 12px;
+    border: 1px solid var(--border); border-radius: var(--radius-btn);
+    background: var(--bg); color: var(--fg); outline: none;
     transition: border 0.15s, box-shadow 0.15s;
   }
   .field input:hover { border-color: var(--border-strong); }
-  .field input:focus {
-    border-color: var(--primary);
-    box-shadow: 0 0 0 3px rgb(99 102 241 / 0.12);
-  }
+  .field input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgb(99 102 241 / 0.12); }
   .checkbox-row {
     display: flex; align-items: center; gap: 8px;
-    margin: 16px 0 20px;
-    font-size: 13px; color: var(--fg-muted);
-    cursor: pointer;
+    margin: 16px 0 20px; font-size: 13px; color: var(--fg-muted); cursor: pointer;
   }
   .checkbox-row input { width: 16px; height: 16px; accent-color: var(--primary); cursor: pointer; }
-  .auth-switch {
-    text-align: center; margin-top: 20px;
-    font-size: 13px; color: var(--fg-muted);
-  }
+  .auth-switch { text-align: center; margin-top: 20px; font-size: 13px; color: var(--fg-muted); }
   .auth-switch span { color: var(--primary); font-weight: 500; cursor: pointer; }
   .auth-switch span:hover { text-decoration: underline; }
 
   /* ============ BUTTONS ============ */
   .btn {
-    display: inline-flex; align-items: center; justify-content: center;
-    gap: 6px;
+    display: inline-flex; align-items: center; justify-content: center; gap: 6px;
     height: 40px; padding: 0 16px;
-    border: 1px solid transparent;
-    border-radius: var(--radius-btn);
-    background: var(--primary);
-    color: #fff;
-    font-size: 13px; font-weight: 500;
-    cursor: pointer;
-    transition: background 0.15s, border 0.15s, transform 0.1s;
-    white-space: nowrap;
-    user-select: none;
+    border: 1px solid transparent; border-radius: var(--radius-btn);
+    background: var(--primary); color: #fff;
+    font-size: 13px; font-weight: 500; cursor: pointer;
+    transition: background 0.15s, transform 0.1s;
+    white-space: nowrap; user-select: none;
   }
   .btn:hover { background: var(--primary-hover); }
   .btn:active { transform: translateY(1px); }
@@ -160,210 +119,197 @@
   .btn.block { width: 100%; }
   .btn.sm { height: 32px; padding: 0 12px; font-size: 12.5px; }
   .btn.lg { height: 44px; padding: 0 20px; font-size: 14px; }
-  .btn.secondary {
-    background: var(--bg);
-    color: var(--fg);
-    border-color: var(--border);
-  }
+  .btn.secondary { background: var(--bg); color: var(--fg); border-color: var(--border); }
   .btn.secondary:hover { background: var(--bg-soft); border-color: var(--border-strong); }
-  .btn.ghost {
-    background: transparent; color: var(--fg-muted); border-color: transparent;
-  }
+  .btn.ghost { background: transparent; color: var(--fg-muted); border-color: transparent; }
   .btn.ghost:hover { background: var(--bg-soft); color: var(--fg); }
-  .btn.danger {
-    background: var(--danger); color: #fff;
-  }
+  .btn.danger { background: var(--danger); color: #fff; }
   .btn.danger:hover { background: #DC2626; }
   .btn-icon {
     width: 36px; height: 36px; padding: 0;
     border-radius: var(--radius-btn);
     display: inline-flex; align-items: center; justify-content: center;
     background: transparent; border: none; cursor: pointer;
-    color: var(--fg-muted);
-    transition: background 0.15s, color 0.15s;
+    color: var(--fg-muted); transition: background 0.15s, color 0.15s;
   }
   .btn-icon:hover { background: var(--bg-soft); color: var(--fg); }
-  .btn-icon.danger:hover { background: var(--danger-soft); color: var(--danger); }
   .btn-icon svg { width: 16px; height: 16px; }
 
-  /* ============ APP LAYOUT ============ */
-  #app {
-    display: none;
-    min-height: 100vh;
-  }
+  /* ============ APP ============ */
+  #app { display: none; min-height: 100vh; }
   #app.show { display: flex; }
 
-  /* Sidebar */
   .sidebar {
-    width: 240px;
-    min-height: 100vh;
-    background: var(--sidebar);
-    color: var(--sidebar-fg);
+    width: 240px; min-height: 100vh;
+    background: var(--sidebar); color: var(--sidebar-fg);
     display: flex; flex-direction: column;
-    position: fixed; top: 0; left: 0;
-    z-index: 100;
+    position: fixed; top: 0; left: 0; z-index: 100;
     transition: transform 0.3s var(--ease);
   }
   .sidebar-logo {
-    height: 64px;
-    display: flex; align-items: center;
-    padding: 0 20px;
-    border-bottom: 1px solid rgba(255,255,255,0.06);
+    height: 64px; display: flex; align-items: center;
+    padding: 0 20px; border-bottom: 1px solid rgba(255,255,255,0.06);
     font-size: 18px; font-weight: 600; letter-spacing: -0.02em;
   }
   .sidebar-logo span { color: var(--primary); }
   .sidebar-nav {
-    flex: 1;
-    padding: 12px;
-    display: flex; flex-direction: column; gap: 2px;
+    flex: 1; padding: 12px; display: flex; flex-direction: column; gap: 2px;
     overflow-y: auto;
   }
   .nav-section {
     font-size: 11px; font-weight: 600; text-transform: uppercase;
-    letter-spacing: 0.06em;
-    color: var(--sidebar-muted);
-    padding: 16px 12px 8px;
-    opacity: 0.7;
+    letter-spacing: 0.06em; color: var(--sidebar-muted);
+    padding: 16px 12px 8px; opacity: 0.7;
   }
   .nav-item {
     display: flex; align-items: center; gap: 12px;
     height: 38px; padding: 0 12px;
-    border-radius: var(--radius-btn);
-    color: var(--sidebar-muted);
-    font-size: 13.5px; font-weight: 450;
-    cursor: pointer;
+    border-radius: var(--radius-btn); color: var(--sidebar-muted);
+    font-size: 13.5px; font-weight: 450; cursor: pointer;
     transition: background 0.15s, color 0.15s;
-    border: none; background: transparent;
-    width: 100%; text-align: left;
+    border: none; background: transparent; width: 100%; text-align: left;
   }
   .nav-item:hover { background: var(--sidebar-hover); color: #fff; }
-  .nav-item.active {
-    background: rgba(99,102,241,0.15);
-    color: #fff;
-  }
-  .nav-item.active .nav-icon { color: #A5B4FC; }
+  .nav-item.active { background: rgba(99,102,241,0.15); color: #fff; }
   .nav-icon { width: 16px; height: 16px; flex-shrink: 0; color: var(--sidebar-muted); }
   .nav-item:hover .nav-icon { color: #fff; }
   .nav-item.active .nav-icon { color: #A5B4FC; }
 
+  /* Sidebar user + account menu */
   .sidebar-user {
-    padding: 12px;
-    border-top: 1px solid rgba(255,255,255,0.06);
-    display: flex; align-items: center; gap: 10px;
+    padding: 12px; border-top: 1px solid rgba(255,255,255,0.06);
+    position: relative;
   }
+  .sidebar-user-btn {
+    display: flex; align-items: center; gap: 10px;
+    width: 100%; padding: 6px 8px;
+    background: transparent; border: none;
+    border-radius: var(--radius-btn); cursor: pointer;
+    transition: background 0.15s; text-align: left;
+  }
+  .sidebar-user-btn:hover { background: var(--sidebar-hover); }
   .user-avatar {
-    width: 32px; height: 32px;
-    border-radius: 50%;
-    background: rgba(99,102,241,0.2);
-    color: #A5B4FC;
+    width: 32px; height: 32px; border-radius: 50%;
+    background: rgba(99,102,241,0.2); color: #A5B4FC;
     display: flex; align-items: center; justify-content: center;
-    font-size: 12px; font-weight: 600;
-    flex-shrink: 0;
+    font-size: 12px; font-weight: 600; flex-shrink: 0;
   }
   .user-meta { flex: 1; min-width: 0; }
   .user-email {
     font-size: 12px; font-weight: 500; color: #fff;
     overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
   }
-  .user-account { font-size: 11px; color: var(--sidebar-muted); }
+  .user-account {
+    font-size: 11px; color: var(--sidebar-muted);
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  }
+  .user-chevron {
+    width: 14px; height: 14px; color: var(--sidebar-muted);
+    transition: transform 0.2s; flex-shrink: 0;
+  }
+  .sidebar-user-btn.open .user-chevron { transform: rotate(180deg); }
 
-  /* Main */
+  .account-menu {
+    position: absolute; bottom: calc(100% + 4px);
+    left: 12px; right: 12px;
+    background: #1E293B;
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: var(--radius-card);
+    box-shadow: 0 10px 30px -10px rgba(0,0,0,0.6);
+    padding: 6px;
+    opacity: 0; pointer-events: none;
+    transform: translateY(8px) scale(0.98);
+    transition: opacity 0.18s, transform 0.18s;
+    z-index: 10; max-height: 340px; overflow-y: auto;
+  }
+  .account-menu.open { opacity: 1; pointer-events: auto; transform: translateY(0) scale(1); }
+  .account-menu-label {
+    font-size: 10.5px; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 0.06em;
+    color: var(--sidebar-muted); padding: 8px 10px 6px;
+  }
+  .account-menu-item {
+    display: flex; align-items: center; gap: 8px;
+    padding: 8px 10px; border-radius: var(--radius-sm);
+    font-size: 13px; color: var(--sidebar-fg); cursor: pointer;
+    transition: background 0.12s;
+    border: none; background: transparent; width: 100%; text-align: left;
+  }
+  .account-menu-item:hover { background: rgba(255,255,255,0.06); }
+  .account-menu-item.active { background: rgba(99,102,241,0.2); color: #fff; }
+  .account-menu-item .check {
+    width: 14px; height: 14px; margin-left: auto; color: #A5B4FC;
+  }
+  .account-menu-divider { height: 1px; background: rgba(255,255,255,0.06); margin: 6px 4px; }
+  .account-menu-item.add { color: #A5B4FC; font-weight: 500; }
+  .account-menu-item.add:hover { background: rgba(99,102,241,0.15); }
+  .acc-dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--sidebar-muted); flex-shrink: 0;
+  }
+  .account-menu-item.active .acc-dot { background: #A5B4FC; box-shadow: 0 0 8px #A5B4FC; }
+
   .main-wrap {
-    flex: 1;
-    margin-left: 240px;
-    min-width: 0;
-    display: flex; flex-direction: column;
-    min-height: 100vh;
+    flex: 1; margin-left: 240px; min-width: 0;
+    display: flex; flex-direction: column; min-height: 100vh;
   }
   .topbar {
-    height: 64px;
-    display: flex; align-items: center; gap: 16px;
-    padding: 0 24px;
-    background: rgba(255,255,255,0.8);
+    height: 64px; display: flex; align-items: center; gap: 16px;
+    padding: 0 24px; background: rgba(255,255,255,0.8);
     backdrop-filter: blur(12px);
     border-bottom: 1px solid var(--border);
     position: sticky; top: 0; z-index: 50;
   }
   [data-theme="dark"] .topbar { background: rgba(15,23,42,0.8); }
-  .topbar-title {
-    font-size: 15px; font-weight: 600; letter-spacing: -0.01em;
-  }
+  .topbar-title { font-size: 15px; font-weight: 600; letter-spacing: -0.01em; }
   .topbar-search {
     display: flex; align-items: center; gap: 8px;
     height: 36px; padding: 0 12px;
-    background: var(--bg-soft);
-    border: 1px solid var(--border);
+    background: var(--bg-soft); border: 1px solid var(--border);
     border-radius: var(--radius-btn);
-    color: var(--fg-muted);
-    font-size: 13px;
-    cursor: pointer;
-    transition: border 0.15s, background 0.15s;
-    min-width: 260px;
+    color: var(--fg-muted); font-size: 13px; cursor: pointer;
+    transition: border 0.15s, background 0.15s; min-width: 260px;
   }
   .topbar-search:hover { border-color: var(--border-strong); background: var(--bg); }
   .topbar-search kbd {
-    margin-left: auto;
-    font-family: inherit;
-    font-size: 11px;
-    background: var(--bg);
-    border: 1px solid var(--border);
-    padding: 1px 6px;
-    border-radius: 4px;
-    color: var(--fg-dim);
+    margin-left: auto; font-family: inherit; font-size: 11px;
+    background: var(--bg); border: 1px solid var(--border);
+    padding: 1px 6px; border-radius: 4px; color: var(--fg-dim);
   }
   .topbar-actions { display: flex; align-items: center; gap: 8px; }
   .icon-btn {
     width: 36px; height: 36px;
     display: inline-flex; align-items: center; justify-content: center;
     background: transparent; border: none; cursor: pointer;
-    border-radius: var(--radius-btn);
-    color: var(--fg-muted);
+    border-radius: var(--radius-btn); color: var(--fg-muted);
     transition: background 0.15s, color 0.15s;
   }
   .icon-btn:hover { background: var(--bg-soft); color: var(--fg); }
   .icon-btn svg { width: 16px; height: 16px; }
 
-  .main-content {
-    padding: 24px;
-    flex: 1;
-  }
+  .main-content { padding: 24px; flex: 1; }
   .mobile-menu-btn { display: none; }
 
-  /* ============ CARDS ============ */
   .card {
-    background: var(--bg);
-    border: 1px solid var(--border);
+    background: var(--bg); border: 1px solid var(--border);
     border-radius: var(--radius-card);
-    box-shadow: var(--shadow-card);
-    overflow: hidden;
+    box-shadow: var(--shadow-card); overflow: hidden;
   }
   .card-header {
-    padding: 20px;
-    border-bottom: 1px solid var(--border);
-    display: flex; align-items: center; justify-content: space-between;
-    gap: 12px;
+    padding: 20px; border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: space-between; gap: 12px;
   }
-  .card-title {
-    font-size: 14px; font-weight: 600; letter-spacing: -0.01em;
-  }
-  .card-subtitle {
-    font-size: 12.5px; color: var(--fg-muted);
-    margin-top: 2px;
-  }
+  .card-title { font-size: 14px; font-weight: 600; letter-spacing: -0.01em; }
+  .card-subtitle { font-size: 12.5px; color: var(--fg-muted); margin-top: 2px; }
   .card-body { padding: 20px; }
 
-  /* ============ STAT CARDS ============ */
   .stats-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 16px;
-    margin-bottom: 24px;
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: 16px; margin-bottom: 24px;
   }
   .stat-card {
-    background: var(--bg);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-card);
-    padding: 20px;
+    background: var(--bg); border: 1px solid var(--border);
+    border-radius: var(--radius-card); padding: 20px;
     box-shadow: var(--shadow-card);
     transition: box-shadow 0.2s var(--ease);
   }
@@ -372,45 +318,28 @@
   .stat-label { font-size: 13px; color: var(--fg-muted); font-weight: 450; }
   .stat-value {
     font-size: 28px; font-weight: 600; letter-spacing: -0.03em;
-    margin-top: 8px;
-    line-height: 1.1;
+    margin-top: 8px; line-height: 1.1;
   }
   .stat-hint { font-size: 11.5px; color: var(--fg-dim); margin-top: 4px; }
   .stat-icon {
-    width: 40px; height: 40px;
-    border-radius: 10px;
-    background: var(--primary-soft);
-    color: var(--primary);
-    display: flex; align-items: center; justify-content: center;
-    flex-shrink: 0;
+    width: 40px; height: 40px; border-radius: 10px;
+    background: var(--primary-soft); color: var(--primary);
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
   }
   .stat-icon svg { width: 18px; height: 18px; }
 
-  /* ============ TABLE ============ */
   .table-wrap { overflow-x: auto; }
-  table.tbl {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 13.5px;
-  }
+  table.tbl { width: 100%; border-collapse: collapse; font-size: 13.5px; }
   .tbl thead th {
-    height: 40px;
-    padding: 0 16px;
-    text-align: left;
-    font-size: 11.5px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.04em;
-    color: var(--fg-muted);
-    background: var(--bg-soft);
-    border-bottom: 1px solid var(--border);
-    white-space: nowrap;
+    height: 40px; padding: 0 16px; text-align: left;
+    font-size: 11.5px; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 0.04em;
+    color: var(--fg-muted); background: var(--bg-soft);
+    border-bottom: 1px solid var(--border); white-space: nowrap;
   }
   .tbl tbody td {
-    height: 56px;
-    padding: 0 16px;
-    border-bottom: 1px solid var(--border);
-    vertical-align: middle;
+    height: 56px; padding: 0 16px;
+    border-bottom: 1px solid var(--border); vertical-align: middle;
   }
   .tbl tbody tr { transition: background 0.1s; }
   .tbl tbody tr:hover { background: var(--bg-soft); }
@@ -421,72 +350,44 @@
   }
   .tbl tbody tr:hover .actions { opacity: 1; }
 
-  /* ============ BADGES ============ */
   .badge {
     display: inline-flex; align-items: center; gap: 4px;
-    height: 22px; padding: 0 8px;
-    border-radius: 999px;
+    height: 22px; padding: 0 8px; border-radius: 999px;
     font-size: 11.5px; font-weight: 500;
-    border: 1px solid var(--border);
-    background: var(--bg-soft);
-    color: var(--fg-muted);
-    white-space: nowrap;
+    border: 1px solid var(--border); background: var(--bg-soft);
+    color: var(--fg-muted); white-space: nowrap;
   }
   .badge.primary { background: var(--primary-soft); color: var(--primary); border-color: transparent; }
   .badge.success { background: var(--success-soft); color: var(--success); border-color: transparent; }
   .badge.warning { background: var(--warning-soft); color: var(--warning); border-color: transparent; }
   .badge.danger { background: var(--danger-soft); color: var(--danger); border-color: transparent; }
 
-  /* ============ INPUTS ============ */
   .input {
-    width: 100%; height: 40px;
-    padding: 0 12px;
-    background: var(--bg);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-btn);
-    color: var(--fg);
-    outline: none;
-    font-size: 13.5px;
+    width: 100%; height: 40px; padding: 0 12px;
+    background: var(--bg); border: 1px solid var(--border);
+    border-radius: var(--radius-btn); color: var(--fg);
+    outline: none; font-size: 13.5px;
     transition: border 0.15s, box-shadow 0.15s;
   }
   .input:hover { border-color: var(--border-strong); }
-  .input:focus {
-    border-color: var(--primary);
-    box-shadow: 0 0 0 3px rgb(99 102 241 / 0.12);
-  }
+  .input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgb(99 102 241 / 0.12); }
   .input::placeholder { color: var(--fg-dim); }
   .input.sm { height: 34px; font-size: 13px; }
-  .label {
-    display: block;
-    font-size: 13px; font-weight: 500;
-    margin-bottom: 6px;
-    color: var(--fg);
-  }
+  .label { display: block; font-size: 13px; font-weight: 500; margin-bottom: 6px; color: var(--fg); }
 
-  /* ============ FILTERS ============ */
   .filters {
     display: flex; align-items: center; gap: 12px;
-    padding: 14px 20px;
-    border-bottom: 1px solid var(--border);
-    flex-wrap: wrap;
-    background: var(--bg);
+    padding: 14px 20px; border-bottom: 1px solid var(--border);
+    flex-wrap: wrap; background: var(--bg);
   }
   .filters .input { max-width: 280px; }
   .filters-spacer { flex: 1; }
 
-  /* ============ EMPTY / SKELETON ============ */
-  .empty {
-    padding: 60px 24px;
-    text-align: center;
-    display: flex; flex-direction: column; align-items: center;
-  }
+  .empty { padding: 60px 24px; text-align: center; display: flex; flex-direction: column; align-items: center; }
   .empty-icon {
-    width: 56px; height: 56px;
-    border-radius: 50%;
-    background: var(--bg-soft);
-    color: var(--fg-dim);
-    display: flex; align-items: center; justify-content: center;
-    margin-bottom: 16px;
+    width: 56px; height: 56px; border-radius: 50%;
+    background: var(--bg-soft); color: var(--fg-dim);
+    display: flex; align-items: center; justify-content: center; margin-bottom: 16px;
   }
   .empty-icon svg { width: 24px; height: 24px; }
   .empty h3 { font-size: 15px; font-weight: 600; margin-bottom: 4px; }
@@ -498,94 +399,62 @@
     background: linear-gradient(90deg, transparent, rgba(255,255,255,0.6), transparent);
     animation: shimmer 1.6s infinite;
   }
-  [data-theme="dark"] .skeleton::after {
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.04), transparent);
-  }
   @keyframes shimmer { 100% { transform: translateX(100%); } }
 
-  /* ============ SHEET (slide-over) ============ */
   .sheet-overlay {
     position: fixed; inset: 0;
-    background: rgba(15,23,42,0.5);
-    backdrop-filter: blur(2px);
-    z-index: 200;
-    opacity: 0; pointer-events: none;
-    transition: opacity 0.25s;
+    background: rgba(15,23,42,0.5); backdrop-filter: blur(2px);
+    z-index: 200; opacity: 0; pointer-events: none; transition: opacity 0.25s;
   }
   .sheet-overlay.open { opacity: 1; pointer-events: auto; }
   .sheet {
     position: fixed; top: 0; right: 0;
     width: 100%; max-width: 560px; height: 100vh;
-    background: var(--bg);
-    z-index: 201;
+    background: var(--bg); z-index: 201;
     display: flex; flex-direction: column;
     transform: translateX(100%);
     transition: transform 0.35s var(--ease);
     box-shadow: -20px 0 40px rgba(15,23,42,0.1);
   }
   .sheet.open { transform: translateX(0); }
-  .sheet-header {
-    padding: 20px 24px;
-    border-bottom: 1px solid var(--border);
-  }
+  .sheet-header { padding: 20px 24px; border-bottom: 1px solid var(--border); }
   .sheet-title { font-size: 16px; font-weight: 600; letter-spacing: -0.01em; }
   .sheet-desc { font-size: 13px; color: var(--fg-muted); margin-top: 3px; }
-  .sheet-body {
-    flex: 1; overflow-y: auto;
-    padding: 24px;
-  }
+  .sheet-body { flex: 1; overflow-y: auto; padding: 24px; }
   .sheet-footer {
-    padding: 16px 24px;
-    border-top: 1px solid var(--border);
-    display: flex; justify-content: flex-end; gap: 8px;
-    background: var(--bg);
+    padding: 16px 24px; border-top: 1px solid var(--border);
+    display: flex; justify-content: flex-end; gap: 8px; background: var(--bg);
   }
   .sheet-close {
     position: absolute; top: 20px; right: 20px;
-    width: 32px; height: 32px;
-    border-radius: var(--radius-btn);
-    background: transparent; border: none;
-    color: var(--fg-muted); cursor: pointer;
+    width: 32px; height: 32px; border-radius: var(--radius-btn);
+    background: transparent; border: none; color: var(--fg-muted); cursor: pointer;
     display: flex; align-items: center; justify-content: center;
     transition: background 0.15s, color 0.15s;
   }
   .sheet-close:hover { background: var(--bg-soft); color: var(--fg); }
-
-  .form-section {
-    margin-bottom: 24px;
-  }
+  .form-section { margin-bottom: 24px; }
   .form-section-title {
     font-size: 11.5px; font-weight: 600;
     text-transform: uppercase; letter-spacing: 0.06em;
-    color: var(--fg-muted);
-    margin-bottom: 12px;
+    color: var(--fg-muted); margin-bottom: 12px;
   }
-  .form-grid-2 {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 14px;
-  }
+  .form-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
   .form-full { grid-column: 1 / -1; }
 
-  /* ============ TOAST ============ */
   .toast-wrap {
-    position: fixed; top: 20px; right: 20px;
-    z-index: 300;
-    display: flex; flex-direction: column; gap: 8px;
-    pointer-events: none;
+    position: fixed; top: 20px; right: 20px; z-index: 300;
+    display: flex; flex-direction: column; gap: 8px; pointer-events: none;
   }
   .toast {
     min-width: 280px; max-width: 380px;
-    padding: 12px 16px;
-    background: var(--bg);
+    padding: 12px 16px; background: var(--bg);
     border: 1px solid var(--border);
     border-left: 3px solid var(--primary);
     border-radius: var(--radius-btn);
     box-shadow: var(--shadow-elevated);
-    font-size: 13.5px;
-    color: var(--fg);
-    pointer-events: auto;
-    animation: toastIn 0.3s var(--ease);
+    font-size: 13.5px; color: var(--fg);
+    pointer-events: auto; animation: toastIn 0.3s var(--ease);
     display: flex; align-items: flex-start; gap: 10px;
   }
   .toast.success { border-left-color: var(--success); }
@@ -596,109 +465,82 @@
   .toast.error svg { color: var(--danger); }
   .toast.warning svg { color: var(--warning); }
   .toast.info svg { color: var(--primary); }
-  @keyframes toastIn {
-    from { transform: translateX(100%); opacity: 0; }
-    to { transform: translateX(0); opacity: 1; }
-  }
+  @keyframes toastIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
 
-  /* ============ CMD+K ============ */
   .cmd-overlay {
-    position: fixed; inset: 0;
-    background: rgba(15,23,42,0.5);
-    backdrop-filter: blur(4px);
-    z-index: 400;
-    display: none;
-    align-items: flex-start; justify-content: center;
-    padding-top: 15vh;
+    position: fixed; inset: 0; background: rgba(15,23,42,0.5);
+    backdrop-filter: blur(4px); z-index: 400; display: none;
+    align-items: flex-start; justify-content: center; padding-top: 15vh;
   }
   .cmd-overlay.open { display: flex; animation: fadeIn 0.15s; }
   @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
   .cmd-panel {
-    width: 100%; max-width: 560px;
-    background: var(--bg);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-card);
-    box-shadow: var(--shadow-elevated);
-    overflow: hidden;
+    width: 100%; max-width: 560px; background: var(--bg);
+    border: 1px solid var(--border); border-radius: var(--radius-card);
+    box-shadow: var(--shadow-elevated); overflow: hidden;
     animation: cmdIn 0.2s var(--ease);
   }
-  @keyframes cmdIn {
-    from { transform: translateY(-8px) scale(0.98); opacity: 0; }
-    to { transform: translateY(0) scale(1); opacity: 1; }
-  }
+  @keyframes cmdIn { from { transform: translateY(-8px) scale(0.98); opacity: 0; } to { transform: translateY(0) scale(1); opacity: 1; } }
   .cmd-input {
-    width: 100%; height: 52px;
-    padding: 0 18px;
-    background: transparent;
-    border: none; border-bottom: 1px solid var(--border);
-    color: var(--fg);
-    font-size: 15px;
-    outline: none;
+    width: 100%; height: 52px; padding: 0 18px;
+    background: transparent; border: none; border-bottom: 1px solid var(--border);
+    color: var(--fg); font-size: 15px; outline: none;
   }
   .cmd-list { max-height: 340px; overflow-y: auto; padding: 6px; }
   .cmd-group-title {
     font-size: 11px; font-weight: 600; text-transform: uppercase;
-    letter-spacing: 0.06em;
-    color: var(--fg-muted);
-    padding: 10px 12px 6px;
+    letter-spacing: 0.06em; color: var(--fg-muted); padding: 10px 12px 6px;
   }
   .cmd-item {
     display: flex; align-items: center; gap: 10px;
-    padding: 10px 12px;
-    border-radius: var(--radius-sm);
-    font-size: 13.5px;
-    cursor: pointer;
-    color: var(--fg);
+    padding: 10px 12px; border-radius: var(--radius-sm);
+    font-size: 13.5px; cursor: pointer; color: var(--fg);
   }
   .cmd-item:hover, .cmd-item.active { background: var(--bg-soft); }
   .cmd-item svg { width: 15px; height: 15px; color: var(--fg-muted); }
   .cmd-empty { padding: 32px; text-align: center; color: var(--fg-muted); font-size: 13px; }
 
-  /* ============ AWB PREVIEW / FACTURA ============ */
   .awb-preview {
     background: #fff; color: #000;
-    border: 1px solid var(--border);
-    border-radius: var(--radius-card);
-    padding: 24px;
-    margin-top: 16px;
-    display: none;
-    font-family: 'Inter', sans-serif;
-    font-size: 13px;
+    border: 1px solid var(--border); border-radius: var(--radius-card);
+    padding: 24px; margin-top: 16px; display: none; font-size: 13px;
   }
   .awb-preview.show { display: block; }
   .awb-preview h4 {
     font-size: 14px; font-weight: 600;
-    margin-bottom: 14px; padding-bottom: 10px;
-    border-bottom: 1px solid #E5E7EB;
+    margin-bottom: 14px; padding-bottom: 10px; border-bottom: 1px solid #E5E7EB;
   }
   .awb-preview .row { display: flex; justify-content: space-between; padding: 6px 0; }
   .awb-preview .row span:first-child { color: #64748B; }
   .fgo-factura-wrap {
-    background: #fff;
-    margin-bottom: 16px;
-    border: 1px solid var(--border);
-    border-radius: var(--radius-card);
-    overflow: hidden;
+    background: #fff; margin-bottom: 16px;
+    border: 1px solid var(--border); border-radius: var(--radius-card); overflow: hidden;
   }
-  .fgo-factura-wrap iframe {
-    display: block; width: 100%; height: 800px;
-    border: none; background: #fff;
-  }
+  .fgo-factura-wrap iframe { display: block; width: 100%; height: 800px; border: none; background: #fff; }
   .fgo-factura-link {
-    padding: 10px; background: #F8FAFC;
-    font-size: 11px; color: #64748B; text-align: center;
-    border-top: 1px solid var(--border);
+    padding: 10px; background: #F8FAFC; font-size: 11px; color: #64748B;
+    text-align: center; border-top: 1px solid var(--border);
   }
 
-  /* ============ RESPONSIVE ============ */
-  @media (max-width: 900px) {
-    .stats-grid { grid-template-columns: repeat(2, 1fr); }
+  .progress-box {
+    margin-bottom: 16px; padding: 14px 18px;
+    background: var(--primary-soft); border-radius: 12px; font-size: 13px;
   }
+  .progress-box.done { background: var(--success-soft); color: var(--success); font-weight: 500; }
+  .progress-head { display: flex; justify-content: space-between; margin-bottom: 8px; }
+  .progress-track {
+    height: 4px; background: rgba(99,102,241,0.2);
+    border-radius: 999px; overflow: hidden;
+  }
+  .progress-bar {
+    height: 100%; background: var(--primary);
+    width: 0%; transition: width 0.3s;
+  }
+  .progress-hint { margin-top: 8px; font-size: 11.5px; color: var(--fg-muted); }
+
+  @media (max-width: 900px) { .stats-grid { grid-template-columns: repeat(2, 1fr); } }
   @media (max-width: 768px) {
-    .sidebar {
-      transform: translateX(-100%);
-      box-shadow: 20px 0 60px rgba(15,23,42,0.2);
-    }
+    .sidebar { transform: translateX(-100%); box-shadow: 20px 0 60px rgba(15,23,42,0.2); }
     .sidebar.open { transform: translateX(0); }
     .main-wrap { margin-left: 0; }
     .mobile-menu-btn { display: inline-flex; }
@@ -711,8 +553,6 @@
     .toast-wrap { left: 12px; right: 12px; }
     .toast { min-width: 0; max-width: 100%; }
   }
-
-  /* ============ DARK MODE TOGGLE ICONS ============ */
   .icon-sun, .icon-moon { transition: transform 0.2s, opacity 0.2s; }
   [data-theme="dark"] .icon-sun { display: none; }
   [data-theme="light"] .icon-moon, :root:not([data-theme="dark"]) .icon-moon { display: none; }
@@ -726,12 +566,9 @@
   <div class="auth-card">
     <div class="auth-logo">Zen3<span>Hub</span></div>
     <div class="auth-sub">Logistics Platform</div>
-
     <div id="authError" style="display:none; padding:10px 12px; background:var(--danger-soft); color:var(--danger); border-radius:var(--radius-btn); font-size:13px; margin-bottom:16px;"></div>
-
     <h1 class="auth-title" id="authTitle">Bejelentkezés</h1>
     <p class="auth-desc" id="authDesc">Üdv újra! Add meg az adataidat.</p>
-
     <div class="field">
       <label>Email</label>
       <input type="email" id="email" placeholder="te@ceg.hu" autocomplete="email" />
@@ -740,14 +577,11 @@
       <label>Jelszó</label>
       <input type="password" id="password" placeholder="••••••••" autocomplete="current-password" />
     </div>
-
     <label class="checkbox-row">
       <input type="checkbox" id="rememberMe" checked />
       Emlékezz rám
     </label>
-
     <button class="btn block lg" id="authBtn" onclick="handleAuth()">Bejelentkezés</button>
-
     <div class="auth-switch">
       <span id="switchText" onclick="toggleAuthMode()">Nincs fiókod? Regisztrálj</span>
     </div>
@@ -756,10 +590,8 @@
 
 <!-- ================= APP ================= -->
 <div id="app">
-  <!-- Sidebar -->
   <aside class="sidebar" id="sidebar">
     <div class="sidebar-logo">Zen3<span>Hub</span></div>
-
     <nav class="sidebar-nav">
       <button class="nav-item active" data-tab="dashboard" onclick="switchTab('dashboard')">
         <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg>
@@ -773,7 +605,6 @@
         <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="15" y2="17"/></svg>
         <span>Számlák eFactura</span>
       </button>
-
       <div class="nav-section">Beállítások</div>
       <button class="nav-item" data-tab="curier" onclick="switchTab('curier')">
         <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"/><path d="M15 18H9"/><path d="M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.624l-3.48-4.35A1 1 0 0 0 17.52 8H14"/><circle cx="17" cy="18" r="2"/><circle cx="7" cy="18" r="2"/></svg>
@@ -787,7 +618,6 @@
         <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M12 7v5l4 2"/></svg>
         <span>Előzmények</span>
       </button>
-
       <div id="adminNavWrap" style="display:none;">
         <div class="nav-section">Admin</div>
         <button class="nav-item" data-tab="admin" onclick="switchTab('admin')">
@@ -796,40 +626,49 @@
         </button>
       </div>
     </nav>
-
     <div class="sidebar-user">
-      <div class="user-avatar" id="userAvatar">U</div>
-      <div class="user-meta">
-        <div class="user-email" id="sidebarEmail">user@email.com</div>
-        <div class="user-account" id="sidebarAccount">Fő account</div>
-      </div>
-      <button class="btn-icon" title="Kijelentkezés" onclick="logout()" style="color: var(--sidebar-muted);">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+      <button class="sidebar-user-btn" id="sidebarUserBtn" onclick="toggleAccountMenu(event)">
+        <div class="user-avatar" id="userAvatar">U</div>
+        <div class="user-meta">
+          <div class="user-email" id="sidebarEmail">user@email.com</div>
+          <div class="user-account" id="sidebarAccount">Fő account</div>
+        </div>
+        <svg class="user-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
       </button>
+      <div class="account-menu" id="accountMenu">
+        <div class="account-menu-label">Fiókok</div>
+        <div id="accountMenuList"></div>
+        <div class="account-menu-divider"></div>
+        <button class="account-menu-item add" onclick="addSubAccount()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          Új al-account
+        </button>
+        <div class="account-menu-divider"></div>
+        <button class="account-menu-item" onclick="logout()" style="color:#F87171;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+          Kijelentkezés
+        </button>
+      </div>
     </div>
   </aside>
 
-  <!-- Main -->
   <div class="main-wrap">
     <header class="topbar">
       <button class="icon-btn mobile-menu-btn" onclick="toggleSidebar()">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
       </button>
-
       <div class="topbar-title" id="pageTitle">Dashboard</div>
-
       <div class="topbar-search" onclick="openCmdK()">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
         <span>Keresés...</span>
         <kbd>⌘K</kbd>
       </div>
-
       <div class="topbar-actions">
         <button class="icon-btn" onclick="toggleTheme()" title="Téma">
           <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>
           <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
         </button>
-        <button class="btn sm" onclick="openSheet('awb')" id="quickAwbBtn">
+        <button class="btn sm" onclick="openSheet('awb')">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
           AWB generálása
         </button>
@@ -838,7 +677,7 @@
 
     <main class="main-content">
 
-      <!-- ============ DASHBOARD ============ -->
+      <!-- DASHBOARD -->
       <div class="tab-page" id="page-dashboard">
         <div class="stats-grid">
           <div class="stat-card">
@@ -902,9 +741,7 @@
           <div class="table-wrap">
             <table class="tbl">
               <thead>
-                <tr>
-                  <th>Rendelés</th><th>Ügyfél</th><th>Futár</th><th>AWB szám</th><th>Státusz</th><th>Dátum</th>
-                </tr>
+                <tr><th>Rendelés</th><th>Ügyfél</th><th>Futár</th><th>AWB szám</th><th>Státusz</th><th>Dátum</th></tr>
               </thead>
               <tbody id="recentAwbBody">
                 <tr><td colspan="6" style="text-align:center; padding:40px; color:var(--fg-muted);">
@@ -916,18 +753,11 @@
         </div>
       </div>
 
-      <!-- ============ AWB ============ -->
+      <!-- AWB -->
       <div class="tab-page hidden" id="page-awb">
         <div class="card">
           <div class="filters">
-            <input type="text" class="input sm" id="searchAWB" placeholder="Keresés rendelés, ügyfél, AWB..." oninput="applySearchAWB(this.value)" style="max-width:300px;" />
-            <select class="input sm" id="filterStatusAWB" onchange="applySearchAWB(document.getElementById('searchAWB').value)" style="max-width:150px;">
-              <option value="">Minden státusz</option>
-              <option value="created">Létrehozva</option>
-              <option value="pending">Függőben</option>
-              <option value="delivered">Kézbesítve</option>
-              <option value="failed">Hiba</option>
-            </select>
+            <input type="text" class="input sm" id="searchAWB" placeholder="Keresés rendelés, ügyfél..." oninput="applySearchAWB(this.value)" style="max-width:300px;" />
             <div class="filters-spacer"></div>
             <button class="btn secondary sm" onclick="loadOrders()">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
@@ -941,7 +771,7 @@
               <thead>
                 <tr>
                   <th style="width:40px;"><input type="checkbox" id="selectAllAWB" onchange="toggleSelectAll(this)" style="accent-color:var(--primary);"></th>
-                  <th>Rendelés</th><th>Ügyfél</th><th>Cím</th><th>Termék</th><th>Fizetés</th><th style="text-align:right;">Összeg</th><th style="width:120px;"></th>
+                  <th>Rendelés</th><th>Ügyfél</th><th>Cím</th><th>Termék</th><th>Fizetés</th><th style="text-align:right;">Összeg</th>
                 </tr>
               </thead>
               <tbody id="ordersList"></tbody>
@@ -953,7 +783,7 @@
           <div class="card-header">
             <div>
               <div class="card-title">AWB előnézet</div>
-              <div class="card-subtitle">DPD csomagszámok</div>
+              <div class="card-subtitle">DPD csomagszámok · egyszerre max 5 darab</div>
             </div>
             <div style="display:flex; gap:8px;">
               <button class="btn secondary sm" onclick="printAWB()">Nyomtatás</button>
@@ -966,17 +796,11 @@
         </div>
       </div>
 
-      <!-- ============ FACTURA ============ -->
+      <!-- FACTURA -->
       <div class="tab-page hidden" id="page-factura">
         <div class="card">
           <div class="filters">
-            <input type="text" class="input sm" id="searchFactura" placeholder="Keresés rendelés, ügyfél, számlaszám..." oninput="applySearchFactura(this.value)" style="max-width:300px;" />
-            <select class="input sm" id="filterStatusFactura" onchange="applySearchFactura(document.getElementById('searchFactura').value)" style="max-width:150px;">
-              <option value="">Minden státusz</option>
-              <option value="sent">Elküldve</option>
-              <option value="validated">Validálva</option>
-              <option value="error">Hiba</option>
-            </select>
+            <input type="text" class="input sm" id="searchFactura" placeholder="Keresés rendelés, ügyfél..." oninput="applySearchFactura(this.value)" style="max-width:300px;" />
             <div class="filters-spacer"></div>
             <button class="btn secondary sm" onclick="loadOrders()">Rendelések letöltése</button>
             <button class="btn secondary sm" onclick="clearOrders()">Törlés</button>
@@ -987,7 +811,7 @@
               <thead>
                 <tr>
                   <th style="width:40px;"><input type="checkbox" id="selectAllFactura" onchange="toggleSelectAllFactura(this)" style="accent-color:var(--primary);"></th>
-                  <th>Rendelés</th><th>Ügyfél</th><th>Cím</th><th>Termék</th><th>Fizetés</th><th style="text-align:right;">Összeg</th><th style="width:120px;"></th>
+                  <th>Rendelés</th><th>Ügyfél</th><th>Cím</th><th>Termék</th><th>Fizetés</th><th style="text-align:right;">Összeg</th>
                 </tr>
               </thead>
               <tbody id="ordersListFactura"></tbody>
@@ -999,7 +823,7 @@
           <div class="card-header">
             <div>
               <div class="card-title">Számla előnézet</div>
-              <div class="card-subtitle">FGO eFactura</div>
+              <div class="card-subtitle">FGO eFactura · egyszerre max 5 darab</div>
             </div>
             <button class="btn sm" onclick="printFactura()">Számlák nyomtatása</button>
           </div>
@@ -1009,7 +833,7 @@
         </div>
       </div>
 
-      <!-- ============ CURIER ============ -->
+      <!-- CURIER -->
       <div class="tab-page hidden" id="page-curier">
         <div class="card" style="max-width:720px;">
           <div class="card-header">
@@ -1033,14 +857,14 @@
                 <input class="input" id="dpdClientId" placeholder="pl. 39884336000" />
               </div>
             </div>
-            <div style="margin-top:20px; display:flex; gap:8px;">
+            <div style="margin-top:20px;">
               <button class="btn" onclick="saveDpdConfig()">Mentés</button>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- ============ COMPANIE ============ -->
+      <!-- COMPANIE -->
       <div class="tab-page hidden" id="page-companie">
         <div class="card" style="max-width:720px;">
           <div class="card-header">
@@ -1080,7 +904,6 @@
                 <input class="input" id="expStreet" placeholder="Str. Exemplu nr. 10" />
               </div>
             </div>
-
             <div style="margin-top:20px; display:flex; gap:8px;">
               <button class="btn" onclick="saveAccountName(); saveExpeditor();">Mentés</button>
               <button class="btn secondary" onclick="deleteCurrentAccount()">Al-account törlése</button>
@@ -1149,7 +972,7 @@
         </div>
       </div>
 
-      <!-- ============ ISTORIC ============ -->
+      <!-- ISTORIC -->
       <div class="tab-page hidden" id="page-istoric">
         <div class="card">
           <div class="card-header">
@@ -1170,7 +993,7 @@
         </div>
       </div>
 
-      <!-- ============ ADMIN ============ -->
+      <!-- ADMIN -->
       <div class="tab-page hidden" id="page-admin">
         <div class="card">
           <div class="card-header">
@@ -1193,7 +1016,7 @@
   </div>
 </div>
 
-<!-- ============ SHEET (AWB generálás) ============ -->
+<!-- SHEET -->
 <div class="sheet-overlay" id="sheetOverlay" onclick="closeSheet()"></div>
 <div class="sheet" id="sheet">
   <button class="sheet-close" onclick="closeSheet()">
@@ -1207,60 +1030,38 @@
     <div class="form-section">
       <div class="form-section-title">Címzett</div>
       <div class="form-grid-2">
-        <div>
-          <label class="label">Név</label>
-          <input class="input" id="sheetName" placeholder="Popescu Ion" />
-        </div>
-        <div>
-          <label class="label">Telefon</label>
-          <input class="input" id="sheetPhone" placeholder="07xxxxxxxx" />
-        </div>
-        <div class="form-full">
-          <label class="label">Utca, házszám</label>
-          <input class="input" id="sheetAddress" placeholder="Str. Exemplu nr. 10" />
-        </div>
-        <div>
-          <label class="label">Város</label>
-          <input class="input" id="sheetCity" placeholder="București" />
-        </div>
-        <div>
-          <label class="label">Megye</label>
-          <input class="input" id="sheetCounty" placeholder="Ilfov" />
-        </div>
+        <div><label class="label">Név</label><input class="input" placeholder="Popescu Ion" /></div>
+        <div><label class="label">Telefon</label><input class="input" placeholder="07xxxxxxxx" /></div>
+        <div class="form-full"><label class="label">Utca, házszám</label><input class="input" placeholder="Str. Exemplu nr. 10" /></div>
+        <div><label class="label">Város</label><input class="input" placeholder="București" /></div>
+        <div><label class="label">Megye</label><input class="input" placeholder="Ilfov" /></div>
       </div>
     </div>
     <div class="form-section">
       <div class="form-section-title">Csomag</div>
       <div class="form-grid-2">
-        <div>
-          <label class="label">Súly (kg)</label>
-          <input class="input" id="sheetWeight" type="number" placeholder="1" value="1" />
-        </div>
-        <div>
-          <label class="label">Ramburs (RON)</label>
-          <input class="input" id="sheetCod" type="number" placeholder="0" value="0" />
-        </div>
+        <div><label class="label">Súly (kg)</label><input class="input" type="number" value="1" /></div>
+        <div><label class="label">Ramburs (RON)</label><input class="input" type="number" value="0" /></div>
       </div>
     </div>
   </div>
   <div class="sheet-footer">
     <button class="btn secondary" onclick="closeSheet()">Mégse</button>
-    <button class="btn" onclick="submitSheetAwb()">AWB generálása</button>
+    <button class="btn" onclick="closeSheet(); switchTab('awb');">Ugrás az AWB fülre</button>
   </div>
 </div>
 
-<!-- ============ TOAST ============ -->
 <div class="toast-wrap" id="toastWrap"></div>
 
-<!-- ============ CMD+K ============ -->
+<!-- CMD+K -->
 <div class="cmd-overlay" id="cmdOverlay" onclick="if(event.target===this) closeCmdK()">
   <div class="cmd-panel">
-    <input class="cmd-input" id="cmdInput" placeholder="Ugrás oldalra, keresés..." oninput="filterCmd(this.value)" />
+    <input class="cmd-input" id="cmdInput" placeholder="Ugrás oldalra..." oninput="filterCmd(this.value)" />
     <div class="cmd-list" id="cmdList"></div>
   </div>
 </div>
 
-<!-- ============ FIREBASE ============ -->
+<!-- FIREBASE -->
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import {
@@ -1284,23 +1085,31 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
-
 setPersistence(auth, browserLocalPersistence).catch(() => {});
 
 const ADMIN_EMAIL = 'yoaeeyoaee@gmail.com';
 const FGO_PROXY_URL = 'https://zen3hub-3.onrender.com/api/fgo/emitere';
 const DPD_PROXY_URL = 'https://zen3hub-3.onrender.com/api/dpd/create-shipment';
-const DPD_PRINT_URL = 'https://zen3hub-3.onrender.com/api/dpd/print';
 const ORDERS_PER_PAGE = 100;
 const BLOCKED_ORDER_STATUSES = ['cancelled', 'refunded', 'failed', 'trash'];
-const PAY_IBAN = 'RO82REVO0000131362903124';
-const PAY_PER_ITEM = 1;
+
+// ============================================
+// BATCH FELDOLGOZÁS — egyszerre csak 5 darab
+// ============================================
+const BATCH_SIZE = 5;          // egyszerre ennyi AWB/számla
+const BATCH_DELAY_MS = 1500;   // csomagok közti szünet
+
+function chunkArray(arr, size) {
+  const out = [];
+  for (let i = 0; i < arr.length; i += size) out.push(arr.slice(i, i + size));
+  return out;
+}
+const sleep = (ms) => new Promise(r => setTimeout(r, ms));
 
 let isSignup = false;
 let currentUser = null;
 let currentUserData = null;
 let currentAccountIndex = 0;
-let pendingPayment = null;
 
 let accountOrders = {};
 let accountSelectedAWB = {};
@@ -1316,6 +1125,10 @@ function getSelectedAWB() {
 function getSelectedFactura() {
   if (!accountSelectedFactura[currentAccountIndex]) accountSelectedFactura[currentAccountIndex] = new Set();
   return accountSelectedFactura[currentAccountIndex];
+}
+
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 }
 
 // ===== TOAST =====
@@ -1336,7 +1149,7 @@ window.toast = function (msg, type = 'info') {
     el.style.opacity = '0';
     el.style.transform = 'translateX(20px)';
     setTimeout(() => el.remove(), 300);
-  }, 3500);
+  }, 4000);
 };
 
 // ===== THEME =====
@@ -1351,7 +1164,7 @@ window.toggleTheme = function () {
   document.documentElement.setAttribute('data-theme', saved);
 })();
 
-// ===== AUTH MODE =====
+// ===== AUTH =====
 window.toggleAuthMode = function () {
   isSignup = !isSignup;
   document.getElementById('authTitle').textContent = isSignup ? 'Fiók létrehozása' : 'Bejelentkezés';
@@ -1378,9 +1191,7 @@ window.handleAuth = async function () {
   } catch (e) {}
 
   if (isSignup) {
-    if (email === ADMIN_EMAIL) {
-      errEl.textContent = 'Ez az email admin fiókhoz tartozik.'; errEl.style.display = 'block'; return;
-    }
+    if (email === ADMIN_EMAIL) { errEl.textContent = 'Ez az email admin fiókhoz tartozik.'; errEl.style.display = 'block'; return; }
     try {
       const cred = await createUserWithEmailAndPassword(auth, email, password);
       await setDoc(doc(db, 'users', cred.user.uid), {
@@ -1399,9 +1210,8 @@ window.handleAuth = async function () {
       errEl.textContent = map[e.code] || e.message; errEl.style.display = 'block';
     }
   } else {
-    try {
-      await signInWithEmailAndPassword(auth, email, password);
-    } catch (e) {
+    try { await signInWithEmailAndPassword(auth, email, password); }
+    catch (e) {
       const map = {
         'auth/user-not-found': 'Nincs ilyen fiók.',
         'auth/wrong-password': 'Hibás jelszó.',
@@ -1440,6 +1250,7 @@ onAuthStateChanged(auth, async (user) => {
 
     currentUserData = data;
     currentAccountIndex = data.activeAccountIndex || 0;
+
     accountOrders = {}; accountSelectedAWB = {}; accountSelectedFactura = {};
     accountSearchAWB = {}; accountSearchFactura = {};
 
@@ -1447,8 +1258,8 @@ onAuthStateChanged(auth, async (user) => {
       document.getElementById('adminNavWrap').style.display = 'block';
     }
 
-    fillSettingsForm();
     updateSidebarAccount();
+    fillSettingsForm();
     refreshOrdersView();
   } else {
     currentUser = null; currentUserData = null;
@@ -1464,26 +1275,21 @@ window.logout = async function () { await signOut(auth); toast('Kijelentkezve', 
 
 // ===== TABS =====
 window.switchTab = function (tab) {
-  if (tab === 'admin' && currentUser?.email !== ADMIN_EMAIL) {
-    toast('Nincs jogosultságod', 'error'); return;
-  }
+  if (tab === 'admin' && currentUser?.email !== ADMIN_EMAIL) { toast('Nincs jogosultságod', 'error'); return; }
   document.querySelectorAll('.nav-item').forEach(n => n.classList.toggle('active', n.dataset.tab === tab));
   document.querySelectorAll('.tab-page').forEach(p => p.classList.add('hidden'));
   const page = document.getElementById('page-' + tab);
   if (page) page.classList.remove('hidden');
   const titles = {
     dashboard: 'Dashboard', awb: 'AWB-k', factura: 'Számlák eFactura',
-    curier: 'Futár beállítások', companie: 'Cég beállítások',
-    istoric: 'Előzmények', admin: 'Admin panel'
+    curier: 'Futár beállítások', companie: 'Cég beállítások', istoric: 'Előzmények', admin: 'Admin panel'
   };
   document.getElementById('pageTitle').textContent = titles[tab] || 'Dashboard';
   document.getElementById('sidebar').classList.remove('open');
   if (tab === 'admin') loadAdminData();
 };
 
-window.toggleSidebar = function () {
-  document.getElementById('sidebar').classList.toggle('open');
-};
+window.toggleSidebar = function () { document.getElementById('sidebar').classList.toggle('open'); };
 
 // ===== SHEET =====
 window.openSheet = function () {
@@ -1494,52 +1300,84 @@ window.closeSheet = function () {
   document.getElementById('sheetOverlay').classList.remove('open');
   document.getElementById('sheet').classList.remove('open');
 };
-window.submitSheetAwb = function () {
-  toast('Ez a funkció a következő verzióban érkezik. Használd az AWB fület.', 'info');
-  closeSheet();
+
+// ===== AL-ACCOUNT MENU =====
+window.toggleAccountMenu = function (e) {
+  e.stopPropagation();
+  const menu = document.getElementById('accountMenu');
+  const btn = document.getElementById('sidebarUserBtn');
+  const isOpen = !menu.classList.contains('open');
+  if (isOpen) {
+    renderAccountMenu();
+    menu.classList.add('open');
+    btn.classList.add('open');
+  } else {
+    menu.classList.remove('open');
+    btn.classList.remove('open');
+  }
 };
 
-// ===== CMD+K =====
-const cmdItems = [
-  { icon: '<rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/>', label: 'Dashboard', tab: 'dashboard' },
-  { icon: '<path d="m7.5 4.27 9 5.15"/><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/>', label: 'AWB-k', tab: 'awb' },
-  { icon: '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/>', label: 'Számlák eFactura', tab: 'factura' },
-  { icon: '<path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"/><circle cx="17" cy="18" r="2"/><circle cx="7" cy="18" r="2"/>', label: 'Futár beállítások', tab: 'curier' },
-  { icon: '<path d="M3 21h18"/><path d="M5 21V7l8-4v18"/>', label: 'Cég beállítások', tab: 'companie' },
-  { icon: '<path d="M3 12a9 9 0 1 0 9-9"/>', label: 'Előzmények', tab: 'istoric' }
-];
+document.addEventListener('click', (e) => {
+  const menu = document.getElementById('accountMenu');
+  const btn = document.getElementById('sidebarUserBtn');
+  if (!menu || !btn) return;
+  if (!menu.contains(e.target) && !btn.contains(e.target)) {
+    menu.classList.remove('open');
+    btn.classList.remove('open');
+  }
+});
 
-window.openCmdK = function () {
-  document.getElementById('cmdOverlay').classList.add('open');
-  document.getElementById('cmdInput').value = '';
-  filterCmd('');
-  setTimeout(() => document.getElementById('cmdInput').focus(), 50);
-};
-window.closeCmdK = function () {
-  document.getElementById('cmdOverlay').classList.remove('open');
-};
-window.filterCmd = function (q) {
-  const list = document.getElementById('cmdList');
-  const filtered = cmdItems.filter(i => i.label.toLowerCase().includes(q.toLowerCase()));
-  if (!filtered.length) {
-    list.innerHTML = '<div class="cmd-empty">Nincs találat</div>';
+function renderAccountMenu() {
+  const list = document.getElementById('accountMenuList');
+  if (!list) return;
+  const accounts = currentUserData?.accounts || [];
+  list.innerHTML = accounts.map((acc, i) => `
+    <button class="account-menu-item ${i === currentAccountIndex ? 'active' : ''}" onclick="selectAccount(${i})">
+      <span class="acc-dot"></span>
+      <span class="truncate" style="flex:1; min-width:0;">${escapeHtml(acc.name || 'Account ' + i)}</span>
+      ${i === currentAccountIndex ? '<svg class="check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>' : ''}
+    </button>
+  `).join('');
+}
+
+window.selectAccount = async function (idx) {
+  if (idx === currentAccountIndex) {
+    document.getElementById('accountMenu').classList.remove('open');
+    document.getElementById('sidebarUserBtn').classList.remove('open');
     return;
   }
-  list.innerHTML = '<div class="cmd-group-title">Oldalak</div>' + filtered.map(i =>
-    `<div class="cmd-item" onclick="switchTab('${i.tab}'); closeCmdK();">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${i.icon}</svg>
-      ${i.label}
-    </div>`
-  ).join('');
+  currentAccountIndex = idx;
+  if (currentUserData) currentUserData.activeAccountIndex = idx;
+  await persistAccounts();
+  updateSidebarAccount();
+  fillSettingsForm();
+  refreshOrdersView();
+  document.getElementById('accountMenu').classList.remove('open');
+  document.getElementById('sidebarUserBtn').classList.remove('open');
+  const acc = getActiveAccount();
+  toast(`Átváltva: ${acc.name}`, 'success');
 };
-document.addEventListener('keydown', (e) => {
-  if (e.key === 'k' && (e.metaKey || e.ctrlKey)) {
-    e.preventDefault();
-    if (document.getElementById('cmdOverlay').classList.contains('open')) closeCmdK();
-    else openCmdK();
-  }
-  if (e.key === 'Escape') { closeCmdK(); closeSheet(); }
-});
+
+window.addSubAccount = async function () {
+  if (!currentUserData) return;
+  const accounts = currentUserData.accounts || [];
+  if (accounts.length >= 6) { toast('Maximum 6 account', 'warning'); return; }
+  accounts.push({
+    name: `Al-account ${accounts.length}`,
+    expeditor: {}, shopConfig: {}, dpdConfig: {}, fgoConfig: {}
+  });
+  currentUserData.accounts = accounts;
+  currentAccountIndex = accounts.length - 1;
+  currentUserData.activeAccountIndex = currentAccountIndex;
+  await persistAccounts();
+  updateSidebarAccount();
+  fillSettingsForm();
+  refreshOrdersView();
+  document.getElementById('accountMenu').classList.remove('open');
+  document.getElementById('sidebarUserBtn').classList.remove('open');
+  toast('Új al-account hozzáadva', 'success');
+  switchTab('companie');
+};
 
 // ===== ACCOUNT =====
 function getActiveAccount() {
@@ -1555,7 +1393,9 @@ async function persistAccounts() {
   });
 }
 function updateSidebarAccount() {
-  document.getElementById('sidebarAccount').textContent = getActiveAccount().name || 'Fő account';
+  const acc = getActiveAccount();
+  document.getElementById('sidebarAccount').textContent = acc.name || 'Fő account';
+  renderAccountMenu();
 }
 function fillSettingsForm() {
   const acc = getActiveAccount();
@@ -1635,12 +1475,34 @@ window.deleteCurrentAccount = async function () {
   const accounts = currentUserData.accounts || [];
   if (accounts.length <= 1) { toast('Legalább 1 account kell', 'warning'); return; }
   if (!confirm('Biztosan törlöd ezt az al-accountot?')) return;
-  accounts.splice(currentAccountIndex, 1);
+  const deletedIdx = currentAccountIndex;
+  delete accountOrders[deletedIdx];
+  delete accountSelectedAWB[deletedIdx];
+  delete accountSelectedFactura[deletedIdx];
+  delete accountSearchAWB[deletedIdx];
+  delete accountSearchFactura[deletedIdx];
+  const shift = (obj) => {
+    const out = {};
+    Object.keys(obj).forEach(k => {
+      const idx = parseInt(k);
+      if (idx < deletedIdx) out[idx] = obj[k];
+      else if (idx > deletedIdx) out[idx - 1] = obj[k];
+    });
+    return out;
+  };
+  accountOrders = shift(accountOrders);
+  accountSelectedAWB = shift(accountSelectedAWB);
+  accountSelectedFactura = shift(accountSelectedFactura);
+  accountSearchAWB = shift(accountSearchAWB);
+  accountSearchFactura = shift(accountSearchFactura);
+  accounts.splice(deletedIdx, 1);
   currentAccountIndex = 0;
   currentUserData.accounts = accounts;
   currentUserData.activeAccountIndex = 0;
   await persistAccounts();
   updateSidebarAccount();
+  fillSettingsForm();
+  refreshOrdersView();
   toast('Al-account törölve', 'success');
 };
 
@@ -1659,8 +1521,8 @@ window.loadOrders = async function () {
 
   const tbody = document.getElementById('ordersList');
   const tbodyF = document.getElementById('ordersListFactura');
-  if (tbody) tbody.innerHTML = '<tr><td colspan="8" style="padding:20px;"><div class="skeleton" style="height:20px;"></div></td></tr>';
-  if (tbodyF) tbodyF.innerHTML = '<tr><td colspan="8" style="padding:20px;"><div class="skeleton" style="height:20px;"></div></td></tr>';
+  if (tbody) tbody.innerHTML = '<tr><td colspan="7" style="padding:20px;"><div class="skeleton" style="height:20px;"></div></td></tr>';
+  if (tbodyF) tbodyF.innerHTML = '<tr><td colspan="7" style="padding:20px;"><div class="skeleton" style="height:20px;"></div></td></tr>';
 
   try {
     const res = await fetch(url);
@@ -1689,16 +1551,12 @@ window.loadOrders = async function () {
         city: o.shipping?.city || o.billing.city,
         state: o.shipping?.state || o.billing.state,
         country: o.shipping?.country || o.billing.country,
-        isRamburs,
-        amount: isRamburs ? totalWithTax : 0,
-        netTotal: totalWithTax - totalTax,
-        totalTax,
-        totalWithTax,
+        isRamburs, amount: isRamburs ? totalWithTax : 0,
+        netTotal: totalWithTax - totalTax, totalTax, totalWithTax,
         shippingTotal: parseFloat(o.shipping_total) || 0,
         discountTotal: parseFloat(o.discount_total) || 0,
         items: (o.line_items || []).map(it => ({
-          name: it.name, sku: it.sku || '', quantity: it.quantity,
-          price: parseFloat(it.price) || 0
+          name: it.name, sku: it.sku || '', quantity: it.quantity, price: parseFloat(it.price) || 0
         })),
         product: o.line_items?.[0]?.name || 'TERMÉK',
         raw: o
@@ -1711,7 +1569,6 @@ window.loadOrders = async function () {
     accountSearchAWB[currentAccountIndex] = '';
     accountSearchFactura[currentAccountIndex] = '';
     refreshOrdersView();
-
     toast(`${mapped.length} rendelés betöltve${skipped ? ` (${skipped} kihagyva)` : ''}`, 'success');
     document.getElementById('statOrders').textContent = mapped.length;
   } catch (e) {
@@ -1734,8 +1591,6 @@ function refreshOrdersView() {
   const qf = accountSearchFactura[currentAccountIndex] || '';
   renderOrdersAWB(filterOrders(orders, qa));
   renderOrdersFactura(filterOrders(orders, qf));
-  updateSelectedCountAWB();
-  updateSelectedCountFactura();
 }
 
 function filterOrders(orders, query) {
@@ -1754,12 +1609,10 @@ function filterOrders(orders, query) {
 window.applySearchAWB = function (value) {
   accountSearchAWB[currentAccountIndex] = value;
   renderOrdersAWB(filterOrders(getOrdersForCurrent(), value));
-  updateSelectedCountAWB();
 };
 window.applySearchFactura = function (value) {
   accountSearchFactura[currentAccountIndex] = value;
   renderOrdersFactura(filterOrders(getOrdersForCurrent(), value));
-  updateSelectedCountFactura();
 };
 
 function renderOrdersAWB(orders) {
@@ -1767,11 +1620,11 @@ function renderOrdersAWB(orders) {
   if (!tbody) return;
   const selected = getSelectedAWB();
   if (!orders.length) {
-    tbody.innerHTML = `<tr><td colspan="8">
+    tbody.innerHTML = `<tr><td colspan="7">
       <div class="empty">
         <div class="empty-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m7.5 4.27 9 5.15"/><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/></svg></div>
         <h3>Nincs rendelés</h3>
-        <p>Töltsd le a rendeléseket a WooCommerce-ből a jobb felső gombbal.</p>
+        <p>Töltsd le a rendeléseket a WooCommerce-ből.</p>
       </div>
     </td></tr>`;
     return;
@@ -1781,27 +1634,16 @@ function renderOrdersAWB(orders) {
       <td><input type="checkbox" ${selected.has(String(o.id)) ? 'checked' : ''} onchange="toggleOrderAWB('${o.id}', this.checked)" style="accent-color:var(--primary);"></td>
       <td><strong style="font-weight:600;">#${o.id}</strong></td>
       <td>
-        <div style="font-weight:500;">${o.name}</div>
-        <div style="font-size:12px; color:var(--fg-muted);">${o.phone || '–'}</div>
+        <div style="font-weight:500;">${escapeHtml(o.name)}</div>
+        <div style="font-size:12px; color:var(--fg-muted);">${escapeHtml(o.phone) || '–'}</div>
       </td>
       <td>
-        <div style="font-size:13px;">${o.address || '–'}</div>
-        <div style="font-size:12px; color:var(--fg-muted);">${o.city || ''}</div>
+        <div style="font-size:13px;">${escapeHtml(o.address) || '–'}</div>
+        <div style="font-size:12px; color:var(--fg-muted);">${escapeHtml(o.city) || ''}</div>
       </td>
-      <td style="font-size:12.5px; color:var(--fg-muted); max-width:180px;" class="truncate">${o.product || '–'}</td>
-      <td>
-        ${o.isRamburs
-          ? `<span class="badge warning">Ramburs</span>`
-          : `<span class="badge success">Fizetve</span>`}
-      </td>
-      <td style="text-align:right; font-weight:600; font-variant-numeric:tabular-nums;">${o.totalWithTax.toFixed(2)} RON</td>
-      <td>
-        <div class="actions">
-          <button class="btn-icon" title="AWB" onclick="toast('AWB generálás a következő lépésben', 'info')">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
-          </button>
-        </div>
-      </td>
+      <td style="font-size:12.5px; color:var(--fg-muted); max-width:180px;" class="truncate">${escapeHtml(o.product) || '–'}</td>
+      <td>${o.isRamburs ? '<span class="badge warning">Ramburs</span>' : '<span class="badge success">Fizetve</span>'}</td>
+      <td style="text-align:right; font-weight:600;">${o.totalWithTax.toFixed(2)} RON</td>
     </tr>
   `).join('');
 }
@@ -1811,7 +1653,7 @@ function renderOrdersFactura(orders) {
   if (!tbody) return;
   const selected = getSelectedFactura();
   if (!orders.length) {
-    tbody.innerHTML = `<tr><td colspan="8">
+    tbody.innerHTML = `<tr><td colspan="7">
       <div class="empty">
         <div class="empty-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
         <h3>Nincs rendelés</h3>
@@ -1825,27 +1667,16 @@ function renderOrdersFactura(orders) {
       <td><input type="checkbox" ${selected.has(String(o.id)) ? 'checked' : ''} onchange="toggleOrderFactura('${o.id}', this.checked)" style="accent-color:var(--primary);"></td>
       <td><strong style="font-weight:600;">#${o.id}</strong></td>
       <td>
-        <div style="font-weight:500;">${o.name}</div>
-        <div style="font-size:12px; color:var(--fg-muted);">${o.phone || '–'}</div>
+        <div style="font-weight:500;">${escapeHtml(o.name)}</div>
+        <div style="font-size:12px; color:var(--fg-muted);">${escapeHtml(o.phone) || '–'}</div>
       </td>
       <td>
-        <div style="font-size:13px;">${o.address || '–'}</div>
-        <div style="font-size:12px; color:var(--fg-muted);">${o.city || ''}</div>
+        <div style="font-size:13px;">${escapeHtml(o.address) || '–'}</div>
+        <div style="font-size:12px; color:var(--fg-muted);">${escapeHtml(o.city) || ''}</div>
       </td>
-      <td style="font-size:12.5px; color:var(--fg-muted); max-width:180px;" class="truncate">${o.product || '–'}</td>
-      <td>
-        ${o.isRamburs
-          ? `<span class="badge warning">Ramburs</span>`
-          : `<span class="badge success">Fizetve</span>`}
-      </td>
-      <td style="text-align:right; font-weight:600; font-variant-numeric:tabular-nums;">${o.totalWithTax.toFixed(2)} RON</td>
-      <td>
-        <div class="actions">
-          <button class="btn-icon" title="Számla" onclick="toast('Számla kiállítás a következő lépésben', 'info')">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
-          </button>
-        </div>
-      </td>
+      <td style="font-size:12.5px; color:var(--fg-muted); max-width:180px;" class="truncate">${escapeHtml(o.product) || '–'}</td>
+      <td>${o.isRamburs ? '<span class="badge warning">Ramburs</span>' : '<span class="badge success">Fizetve</span>'}</td>
+      <td style="text-align:right; font-weight:600;">${o.totalWithTax.toFixed(2)} RON</td>
     </tr>
   `).join('');
 }
@@ -1853,24 +1684,18 @@ function renderOrdersFactura(orders) {
 window.toggleOrderAWB = function (id, checked) {
   const s = getSelectedAWB();
   if (checked) s.add(String(id)); else s.delete(String(id));
-  updateSelectedCountAWB();
 };
 window.toggleOrderFactura = function (id, checked) {
   const s = getSelectedFactura();
   if (checked) s.add(String(id)); else s.delete(String(id));
-  updateSelectedCountFactura();
 };
 window.toggleSelectAll = function (cb) {
   const s = getSelectedAWB();
-  document.querySelectorAll('#ordersList .checkbox, #ordersList input[type=checkbox]').forEach((el, idx) => {
-    if (idx === 0) return; // skip header
-  });
   document.querySelectorAll('#ordersList input[type=checkbox]').forEach(el => {
     el.checked = cb.checked;
     const id = el.closest('tr')?.dataset.orderId;
     if (id) { if (cb.checked) s.add(String(id)); else s.delete(String(id)); }
   });
-  updateSelectedCountAWB();
 };
 window.toggleSelectAllFactura = function (cb) {
   const s = getSelectedFactura();
@@ -1879,20 +1704,17 @@ window.toggleSelectAllFactura = function (cb) {
     const id = el.closest('tr')?.dataset.orderId;
     if (id) { if (cb.checked) s.add(String(id)); else s.delete(String(id)); }
   });
-  updateSelectedCountFactura();
 };
-function updateSelectedCountAWB() {}
-function updateSelectedCountFactura() {}
 
-// ===== AWB / FACTURA GENERÁLÁS =====
+// ============================================
+// AWB — 5-ös batch feldolgozás
+// ============================================
 window.generateSelectedAWB = async function () {
   const s = getSelectedAWB();
   if (s.size === 0) { toast('Nincs kijelölt rendelés', 'warning'); return; }
   const acc = getActiveAccount();
   if (!acc.expeditor?.name) { toast('Töltsd ki az expedíciós adatokat!', 'warning'); return; }
   if (!acc.dpdConfig?.dpdUser) { toast('Töltsd ki a DPD adatokat!', 'warning'); return; }
-  toast(`${s.size} AWB generálása...`, 'info');
-  // A valódi DPD AWB generálás a meglévő logika szerint fut
   await buildAWBPreview();
 };
 
@@ -1901,34 +1723,94 @@ async function buildAWBPreview() {
   const dpd = acc.dpdConfig || {};
   const selectedSet = getSelectedAWB();
   const selected = getOrdersForCurrent().filter(o => selectedSet.has(String(o.id)));
-  let html = `<h4>DPD AWB — ${selected.length} rendelés</h4>`;
-  let ok = 0, err = 0;
-  for (const o of selected) {
-    try {
-      const res = await fetch(DPD_PROXY_URL, {
-        method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ dpdUser: dpd.dpdUser, dpdPassword: dpd.dpdPass, clientSystemId: dpd.dpdClientId, order: o })
-      });
-      const result = await res.json();
-      if (!result.success) throw new Error(result.error || 'DPD hiba');
-      ok++;
-      html += `<div style="margin-bottom:14px; padding-bottom:12px; border-bottom:1px solid #E5E7EB;">
-        <div class="row"><span>#${o.id}</span><span>${o.name}</span></div>
-        <div class="row"><span>Telefon:</span><span>${o.phone}</span></div>
-        <div class="row"><span>Cím:</span><span>${o.address}, ${o.city}</span></div>
-        <div class="row"><span>AWB:</span><span style="font-weight:600;">${result.barcode || result.shipmentId}</span></div>
-      </div>`;
-    } catch (e) {
-      err++;
-      html += `<div style="margin-bottom:14px; color:#EF4444;"><b>#${o.id}</b> – ${e.message}</div>`;
-    }
-  }
+
   const preview = document.getElementById('awbPreview');
   preview.classList.add('show');
-  preview.innerHTML = html;
+
+  const total = selected.length;
+  const batches = chunkArray(selected, BATCH_SIZE);
+  const progressId = 'awbProgress_' + Date.now();
+
+  preview.innerHTML = `
+    <h4>DPD AWB — ${total} rendelés</h4>
+    <div id="${progressId}" class="progress-box">
+      <div class="progress-head">
+        <span>Feldolgozás folyamatban...</span>
+        <span id="${progressId}_count">0 / ${total}</span>
+      </div>
+      <div class="progress-track"><div id="${progressId}_bar" class="progress-bar"></div></div>
+      <div class="progress-hint">Egyszerre max ${BATCH_SIZE} darab készül, hogy pontos legyen és ne legyen hiba.</div>
+    </div>
+    <div id="${progressId}_results"></div>
+  `;
+
+  const resultsEl = document.getElementById(progressId + '_results');
+  const countEl = document.getElementById(progressId + '_count');
+  const barEl = document.getElementById(progressId + '_bar');
+
+  let ok = 0, err = 0;
+
+  for (let bi = 0; bi < batches.length; bi++) {
+    const batch = batches[bi];
+    const batchResults = await Promise.allSettled(batch.map(async (o) => {
+      try {
+        const res = await fetch(DPD_PROXY_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            dpdUser: dpd.dpdUser,
+            dpdPassword: dpd.dpdPass,
+            clientSystemId: dpd.dpdClientId,
+            order: o
+          })
+        });
+        const result = await res.json();
+        if (!result.success) throw new Error(result.error || 'DPD hiba');
+        return { ok: true, order: o, result };
+      } catch (e) {
+        return { ok: false, order: o, error: e.message };
+      }
+    }));
+
+    for (const r of batchResults) {
+      const val = r.value || r.reason;
+      if (val.ok) {
+        ok++;
+        resultsEl.insertAdjacentHTML('beforeend', `
+          <div style="margin-bottom:14px; padding-bottom:12px; border-bottom:1px solid #E5E7EB;">
+            <div class="row"><span><b>#${val.order.id}</b></span><span>${escapeHtml(val.order.name)}</span></div>
+            <div class="row"><span>Telefon:</span><span>${escapeHtml(val.order.phone)}</span></div>
+            <div class="row"><span>Cím:</span><span>${escapeHtml(val.order.address)}, ${escapeHtml(val.order.city)}</span></div>
+            <div class="row"><span>AWB:</span><span style="font-weight:600;">${val.result.barcode || val.result.shipmentId}</span></div>
+            <div class="row"><span>Ramburs:</span><span>${val.order.isRamburs ? val.order.amount.toFixed(2) + ' RON' : '–'}</span></div>
+          </div>
+        `);
+      } else {
+        err++;
+        resultsEl.insertAdjacentHTML('beforeend', `
+          <div style="margin-bottom:14px; padding:12px; background:#FEF2F2; border-radius:8px; color:#EF4444;">
+            <b>#${val.order.id}</b> — ${escapeHtml(val.order.name)}<br>
+            <small>Hiba: ${escapeHtml(val.error)}</small>
+          </div>
+        `);
+      }
+    }
+
+    const done = Math.min((bi + 1) * BATCH_SIZE, total);
+    countEl.textContent = `${done} / ${total}`;
+    barEl.style.width = `${(done / total) * 100}%`;
+
+    if (bi < batches.length - 1) await sleep(BATCH_DELAY_MS);
+  }
+
+  document.getElementById(progressId).className = 'progress-box done';
+  document.getElementById(progressId).innerHTML = `✓ Kész — ${ok} sikeres, ${err} hiba`;
   toast(`${ok} AWB kész, ${err} hiba`, err ? 'warning' : 'success');
 }
 
+// ============================================
+// SZÁMLA — 5-ös batch feldolgozás
+// ============================================
 window.generateSelectedFactura = async function () {
   const s = getSelectedFactura();
   if (s.size === 0) { toast('Nincs kijelölt rendelés', 'warning'); return; }
@@ -1942,46 +1824,111 @@ async function buildFacturaPreview() {
   const fgo = acc.fgoConfig || {};
   const selectedSet = getSelectedFactura();
   const selected = getOrdersForCurrent().filter(o => selectedSet.has(String(o.id)));
-  let html = '';
-  let ok = 0, err = 0;
-  for (const o of selected) {
-    try {
-      const payload = {
-        codUnic: fgo.fgoCui, cheiePrivata: fgo.fgoKey,
-        platformaUrl: fgo.fgoPlatform, serie: fgo.fgoSerie,
-        client: { Tip: 'PF', Denumire: o.name, Adresa: o.address, Localitate: o.city,
-          Judet: o.state, Tara: 'România', Email: o.email, Telefon: o.phone },
-        Continut: o.items.map(it => ({
-          Denumire: it.name, UM: 'BUC', CodArticol: String(o.id),
-          NrProduse: it.quantity, PretUnitar: it.price, CotaTVA: 0, TVA: 0,
-          Valoare: it.price * it.quantity
-        })),
-        Discount: 0, DiscountProcent: 0, DiscountTip: 'valoare'
-      };
-      const res = await fetch(FGO_PROXY_URL, {
-        method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
-      });
-      const result = await res.json();
-      if (!result.success) throw new Error(result.error || 'FGO hiba');
-      ok++;
-      if (result.pdfUrl) {
-        html += `<div class="fgo-factura-wrap"><iframe src="${result.pdfUrl}"></iframe>
-          <div class="fgo-factura-link">Számlaszám: <b>${result.serie}-${result.numar}</b> · Rendelés: <b>#${o.id}</b></div></div>`;
-      } else {
-        html += `<div style="padding:16px; background:#FEF2F2; color:#EF4444; border-radius:8px; margin-bottom:12px;">
-          #${o.id} – Az FGO nem adott PDF linket. Számlaszám: <b>${result.serie}-${result.numar}</b>
-        </div>`;
-      }
-    } catch (e) {
-      err++;
-      html += `<div style="padding:16px; background:#FEF2F2; color:#EF4444; border-radius:8px; margin-bottom:12px;">
-        #${o.id} – Hiba: ${e.message}
-      </div>`;
-    }
-  }
+
   const preview = document.getElementById('facturaPreview');
-  preview.innerHTML = html;
+  const total = selected.length;
+  const batches = chunkArray(selected, BATCH_SIZE);
+  const progressId = 'fgoProgress_' + Date.now();
+
+  preview.innerHTML = `
+    <div id="${progressId}" class="progress-box">
+      <div class="progress-head">
+        <span style="font-weight:500;">Számlák generálása...</span>
+        <span id="${progressId}_count">0 / ${total}</span>
+      </div>
+      <div class="progress-track"><div id="${progressId}_bar" class="progress-bar"></div></div>
+      <div class="progress-hint">Egyszerre max ${BATCH_SIZE} számla készül az FGO-nál, hogy pontos legyen és ne legyen hiba.</div>
+    </div>
+    <div id="${progressId}_results"></div>
+  `;
+
+  const resultsEl = document.getElementById(progressId + '_results');
+  const countEl = document.getElementById(progressId + '_count');
+  const barEl = document.getElementById(progressId + '_bar');
+
+  let ok = 0, err = 0;
+
+  for (let bi = 0; bi < batches.length; bi++) {
+    const batch = batches[bi];
+    const batchResults = await Promise.allSettled(batch.map(async (o) => {
+      try {
+        const payload = {
+          codUnic: fgo.fgoCui,
+          cheiePrivata: fgo.fgoKey,
+          platformaUrl: fgo.fgoPlatform,
+          serie: fgo.fgoSerie,
+          client: {
+            Tip: 'PF', Denumire: o.name, Adresa: o.address,
+            Localitate: o.city, Judet: o.state, Tara: 'România',
+            Email: o.email, Telefon: o.phone
+          },
+          Continut: o.items.map(it => ({
+            Denumire: it.name, UM: 'BUC', CodArticol: String(o.id),
+            NrProduse: it.quantity, PretUnitar: it.price,
+            CotaTVA: 0, TVA: 0, Valoare: it.price * it.quantity
+          })),
+          Discount: 0, DiscountProcent: 0, DiscountTip: 'valoare'
+        };
+        const res = await fetch(FGO_PROXY_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        const result = await res.json();
+        if (!result.success) throw new Error(result.error || 'FGO hiba');
+        return { ok: true, order: o, result };
+      } catch (e) {
+        return { ok: false, order: o, error: e.message };
+      }
+    }));
+
+    for (const r of batchResults) {
+      const val = r.value || r.reason;
+      if (val.ok) {
+        ok++;
+        const sz = val.result.numar ? `${val.result.serie}-${val.result.numar}` : `${val.result.serie}-`;
+        if (val.result.pdfUrl && val.result.pdfUrl.trim().length > 0) {
+          resultsEl.insertAdjacentHTML('beforeend', `
+            <div class="fgo-factura-wrap">
+              <iframe src="${val.result.pdfUrl}#toolbar=1&navpanes=0&scrollbar=1&view=FitH" type="application/pdf"></iframe>
+              <div class="fgo-factura-link">
+                Ha a számla nem jelenik meg: <a href="${val.result.pdfUrl}" target="_blank">kattints ide</a>
+                &nbsp;·&nbsp; Számlaszám: <b>${sz}</b>
+                &nbsp;·&nbsp; Rendelés: <b>#${val.order.id}</b>
+                &nbsp;·&nbsp; Vásárló: <b>${escapeHtml(val.order.name)}</b>
+              </div>
+            </div>
+          `);
+        } else {
+          resultsEl.insertAdjacentHTML('beforeend', `
+            <div style="margin-bottom:16px; padding:16px; background:#FEF2F2; color:#EF4444; border-radius:12px;">
+              <b>#${val.order.id}</b> — ${escapeHtml(val.order.name)}<br>
+              <small>Az FGO nem adott PDF linket. Számlaszám: <b>${sz}</b></small>
+            </div>
+          `);
+        }
+      } else {
+        err++;
+        const sz = `${fgo.fgoSerie || 'SCN'}-`;
+        resultsEl.insertAdjacentHTML('beforeend', `
+          <div style="margin-bottom:16px; padding:16px; background:#FEF2F2; color:#EF4444; border-radius:12px;">
+            <b>#${val.order.id}</b> — ${escapeHtml(val.order.name)}<br>
+            <small>Hiba: ${escapeHtml(val.error)}</small><br>
+            <small>Számlaszám: ${sz}</small>
+          </div>
+        `);
+      }
+    }
+
+    const done = Math.min((bi + 1) * BATCH_SIZE, total);
+    countEl.textContent = `${done} / ${total}`;
+    barEl.style.width = `${(done / total) * 100}%`;
+
+    if (bi < batches.length - 1) await sleep(BATCH_DELAY_MS);
+  }
+
+  document.getElementById(progressId).className = 'progress-box done';
+  document.getElementById(progressId).innerHTML = `✓ Kész — ${ok} számla sikeres, ${err} hiba`;
   toast(`${ok} számla kész, ${err} hiba`, err ? 'warning' : 'success');
 }
 
@@ -2003,6 +1950,44 @@ window.printFactura = function () {
   w.document.close();
   setTimeout(() => { w.focus(); w.print(); }, 1500);
 };
+
+// ===== CMD+K =====
+const cmdItems = [
+  { icon: '<rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/>', label: 'Dashboard', tab: 'dashboard' },
+  { icon: '<path d="m7.5 4.27 9 5.15"/><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/>', label: 'AWB-k', tab: 'awb' },
+  { icon: '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/>', label: 'Számlák eFactura', tab: 'factura' },
+  { icon: '<path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"/><circle cx="17" cy="18" r="2"/><circle cx="7" cy="18" r="2"/>', label: 'Futár beállítások', tab: 'curier' },
+  { icon: '<path d="M3 21h18"/><path d="M5 21V7l8-4v18"/>', label: 'Cég beállítások', tab: 'companie' },
+  { icon: '<path d="M3 12a9 9 0 1 0 9-9"/>', label: 'Előzmények', tab: 'istoric' }
+];
+window.openCmdK = function () {
+  document.getElementById('cmdOverlay').classList.add('open');
+  document.getElementById('cmdInput').value = '';
+  filterCmd('');
+  setTimeout(() => document.getElementById('cmdInput').focus(), 50);
+};
+window.closeCmdK = function () {
+  document.getElementById('cmdOverlay').classList.remove('open');
+};
+window.filterCmd = function (q) {
+  const list = document.getElementById('cmdList');
+  const filtered = cmdItems.filter(i => i.label.toLowerCase().includes(q.toLowerCase()));
+  if (!filtered.length) { list.innerHTML = '<div class="cmd-empty">Nincs találat</div>'; return; }
+  list.innerHTML = '<div class="cmd-group-title">Oldalak</div>' + filtered.map(i =>
+    `<div class="cmd-item" onclick="switchTab('${i.tab}'); closeCmdK();">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${i.icon}</svg>
+      ${i.label}
+    </div>`
+  ).join('');
+};
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'k' && (e.metaKey || e.ctrlKey)) {
+    e.preventDefault();
+    if (document.getElementById('cmdOverlay').classList.contains('open')) closeCmdK();
+    else openCmdK();
+  }
+  if (e.key === 'Escape') { closeCmdK(); closeSheet(); }
+});
 
 // ===== ADMIN =====
 window.loadAdminData = async function () {
@@ -2061,8 +2046,7 @@ async function loadAdminOrders() {
   } catch (e) { list.innerHTML = '<p style="color:var(--danger);">Hiba: ' + e.message + '</p>'; }
 }
 
-// ===== START =====
-console.log('Zen3Hub ready');
+console.log('Zen3Hub ready · batch size:', BATCH_SIZE);
 </script>
 </body>
 </html>
