@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Eauto — Logistics Platform</title>
+<title>Zen3Hub — Logistics Platform</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -32,32 +32,24 @@
     --radius-card: 12px;
     --radius-btn: 8px;
     --radius-sm: 6px;
-    --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.04);
     --shadow-card: 0 1px 3px 0 rgb(0 0 0 / 0.05), 0 1px 2px -1px rgb(0 0 0 / 0.05);
     --shadow-elevated: 0 10px 30px -10px rgb(15 23 42 / 0.15), 0 4px 12px -4px rgb(15 23 42 / 0.08);
     --ease: cubic-bezier(0.22, 1, 0.36, 1);
   }
   [data-theme="dark"] {
-    --bg: #0F172A;
-    --bg-soft: #0B1220;
-    --fg: #F8FAFC;
-    --fg-muted: #94A3B8;
-    --fg-dim: #64748B;
-    --border: #1E293B;
-    --border-strong: #334155;
-    --primary-soft: #1E1B4B;
-    --success-soft: #064E3B;
-    --warning-soft: #451A03;
-    --danger-soft: #450A0A;
-    --sidebar: #0B1220;
-    --sidebar-hover: #1E293B;
+    --bg: #0F172A; --bg-soft: #0B1220; --fg: #F8FAFC;
+    --fg-muted: #94A3B8; --fg-dim: #64748B;
+    --border: #1E293B; --border-strong: #334155;
+    --primary-soft: #1E1B4B; --success-soft: #064E3B;
+    --warning-soft: #451A03; --danger-soft: #450A0A;
+    --sidebar: #0B1220; --sidebar-hover: #1E293B;
   }
   * { margin: 0; padding: 0; box-sizing: border-box; }
   html, body {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
     background: var(--bg); color: var(--fg);
     min-height: 100vh; font-size: 14px; line-height: 1.5;
-    -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;
+    -webkit-font-smoothing: antialiased;
   }
   body { overflow-x: hidden; }
   button, input, select, textarea { font-family: inherit; font-size: inherit; }
@@ -71,37 +63,126 @@
     padding: 24px; background: var(--bg-soft);
   }
   .auth-card {
-    width: 100%; max-width: 420px;
+    width: 100%; max-width: 440px;
     background: var(--bg); border: 1px solid var(--border);
     border-radius: var(--radius-card); padding: 40px 32px;
     box-shadow: var(--shadow-card);
   }
-  .auth-logo {
-    font-size: 24px; font-weight: 700; letter-spacing: -0.02em;
-    text-align: center; margin-bottom: 6px;
-  }
+  .auth-logo { font-size: 24px; font-weight: 700; letter-spacing: -0.02em; text-align: center; margin-bottom: 6px; }
   .auth-logo span { color: var(--primary); }
-  .auth-sub { text-align: center; font-size: 13px; color: var(--fg-muted); margin-bottom: 32px; }
+  .auth-sub { text-align: center; font-size: 13px; color: var(--fg-muted); margin-bottom: 24px; }
   .auth-title { font-size: 20px; font-weight: 600; letter-spacing: -0.01em; margin-bottom: 4px; }
   .auth-desc { font-size: 13px; color: var(--fg-muted); margin-bottom: 24px; }
   .field { margin-bottom: 14px; }
   .field label { display: block; font-size: 13px; font-weight: 500; margin-bottom: 6px; color: var(--fg); }
-  .field input {
+  .field input, .field select {
     width: 100%; height: 40px; padding: 0 12px;
     border: 1px solid var(--border); border-radius: var(--radius-btn);
     background: var(--bg); color: var(--fg); outline: none;
     transition: border 0.15s, box-shadow 0.15s;
   }
-  .field input:hover { border-color: var(--border-strong); }
-  .field input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgb(99 102 241 / 0.12); }
+  .field input:hover, .field select:hover { border-color: var(--border-strong); }
+  .field input:focus, .field select:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgb(99 102 241 / 0.12); }
   .checkbox-row {
-    display: flex; align-items: center; gap: 8px;
+    display: flex; align-items: flex-start; gap: 8px;
     margin: 16px 0 20px; font-size: 13px; color: var(--fg-muted); cursor: pointer;
+    line-height: 1.5;
   }
-  .checkbox-row input { width: 16px; height: 16px; accent-color: var(--primary); cursor: pointer; }
+  .checkbox-row input { width: 16px; height: 16px; accent-color: var(--primary); cursor: pointer; flex-shrink: 0; margin-top: 2px; }
+  .checkbox-row a { color: var(--primary); text-decoration: underline; }
   .auth-switch { text-align: center; margin-top: 20px; font-size: 13px; color: var(--fg-muted); }
   .auth-switch span { color: var(--primary); font-weight: 500; cursor: pointer; }
   .auth-switch span:hover { text-decoration: underline; }
+  .auth-bottom-bar {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-top: 24px; padding-top: 20px;
+    border-top: 1px solid var(--border);
+    gap: 8px; flex-wrap: wrap;
+  }
+  .auth-bottom-btn {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 6px 10px;
+    background: transparent; border: 1px solid var(--border);
+    border-radius: var(--radius-btn); color: var(--fg-muted);
+    font-size: 12px; font-weight: 500; cursor: pointer;
+    transition: all 0.15s;
+  }
+  .auth-bottom-btn:hover { border-color: var(--border-strong); color: var(--fg); background: var(--bg-soft); }
+  .auth-bottom-btn svg { width: 14px; height: 14px; }
+  .lang-switcher {
+    display: inline-flex; align-items: center; gap: 2px;
+    padding: 2px; background: var(--bg-soft);
+    border: 1px solid var(--border); border-radius: var(--radius-btn);
+  }
+  .lang-switcher button {
+    padding: 4px 10px; background: transparent; border: none;
+    border-radius: 5px; color: var(--fg-muted); font-size: 12px; font-weight: 600;
+    cursor: pointer; transition: all 0.15s;
+  }
+  .lang-switcher button:hover { color: var(--fg); }
+  .lang-switcher button.active {
+    background: var(--bg); color: var(--fg);
+    box-shadow: 0 1px 2px rgba(15,23,42,0.06);
+  }
+
+  /* Signup steps */
+  .signup-steps {
+    display: flex; align-items: center; justify-content: center;
+    gap: 8px; margin-bottom: 24px;
+  }
+  .signup-step {
+    width: 28px; height: 28px; border-radius: 50%;
+    background: var(--bg-soft); border: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; font-weight: 600; color: var(--fg-muted);
+    transition: all 0.2s;
+  }
+  .signup-step.active { background: var(--primary); border-color: var(--primary); color: #fff; }
+  .signup-step.done { background: var(--success); border-color: var(--success); color: #fff; }
+  .signup-step-line { width: 24px; height: 1px; background: var(--border); }
+  .signup-step-line.done { background: var(--success); }
+
+  .plan-grid { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
+  .plan-card {
+    padding: 16px; border: 2px solid var(--border);
+    border-radius: var(--radius-card); cursor: pointer;
+    transition: all 0.15s;
+    display: flex; align-items: flex-start; gap: 12px;
+    position: relative;
+  }
+  .plan-card:hover { border-color: var(--border-strong); background: var(--bg-soft); }
+  .plan-card.selected { border-color: var(--primary); background: var(--primary-soft); }
+  .plan-radio {
+    width: 18px; height: 18px; border-radius: 50%;
+    border: 2px solid var(--border-strong); flex-shrink: 0; margin-top: 2px;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.15s;
+  }
+  .plan-card.selected .plan-radio { border-color: var(--primary); }
+  .plan-card.selected .plan-radio::after {
+    content: ''; width: 8px; height: 8px; border-radius: 50%; background: var(--primary);
+  }
+  .plan-content { flex: 1; min-width: 0; }
+  .plan-header { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 4px; }
+  .plan-name { font-size: 15px; font-weight: 600; letter-spacing: -0.01em; }
+  .plan-price { font-size: 16px; font-weight: 700; color: var(--primary); }
+  .plan-price small { font-size: 11px; color: var(--fg-muted); font-weight: 500; }
+  .plan-desc { font-size: 12.5px; color: var(--fg-muted); line-height: 1.5; }
+  .plan-badge {
+    display: inline-block; padding: 2px 8px; border-radius: 999px;
+    font-size: 10px; font-weight: 600; text-transform: uppercase;
+    letter-spacing: 0.04em; margin-left: 6px;
+  }
+  .plan-badge.popular { background: var(--primary); color: #fff; }
+
+  .beta-banner {
+    padding: 12px 14px; background: var(--warning-soft);
+    border: 1px solid rgba(245,158,11,0.3);
+    border-radius: var(--radius-btn);
+    font-size: 12.5px; color: #92400E; margin-bottom: 16px;
+    display: flex; gap: 10px; align-items: flex-start;
+  }
+  .beta-banner svg { width: 16px; height: 16px; flex-shrink: 0; margin-top: 1px; }
 
   /* ============ BUTTONS ============ */
   .btn {
@@ -138,7 +219,6 @@
   /* ============ APP ============ */
   #app { display: none; min-height: 100vh; }
   #app.show { display: flex; }
-
   .sidebar {
     width: 240px; min-height: 100vh;
     background: var(--sidebar); color: var(--sidebar-fg);
@@ -152,10 +232,7 @@
     font-size: 18px; font-weight: 600; letter-spacing: -0.02em;
   }
   .sidebar-logo span { color: var(--primary); }
-  .sidebar-nav {
-    flex: 1; padding: 12px; display: flex; flex-direction: column; gap: 2px;
-    overflow-y: auto;
-  }
+  .sidebar-nav { flex: 1; padding: 12px; display: flex; flex-direction: column; gap: 2px; overflow-y: auto; }
   .nav-section {
     font-size: 11px; font-weight: 600; text-transform: uppercase;
     letter-spacing: 0.06em; color: var(--sidebar-muted);
@@ -175,7 +252,6 @@
   .nav-item:hover .nav-icon { color: #fff; }
   .nav-item.active .nav-icon { color: #A5B4FC; }
 
-  /* Sidebar user + account menu */
   .sidebar-user {
     padding: 12px; border-top: 1px solid rgba(255,255,255,0.06);
     position: relative;
@@ -220,7 +296,7 @@
     opacity: 0; pointer-events: none;
     transform: translateY(8px) scale(0.98);
     transition: opacity 0.18s, transform 0.18s;
-    z-index: 10; max-height: 340px; overflow-y: auto;
+    z-index: 10; max-height: 400px; overflow-y: auto;
   }
   .account-menu.open { opacity: 1; pointer-events: auto; transform: translateY(0) scale(1); }
   .account-menu-label {
@@ -237,22 +313,24 @@
   }
   .account-menu-item:hover { background: rgba(255,255,255,0.06); }
   .account-menu-item.active { background: rgba(99,102,241,0.2); color: #fff; }
-  .account-menu-item .check {
-    width: 14px; height: 14px; margin-left: auto; color: #A5B4FC;
-  }
+  .account-menu-item .check { width: 14px; height: 14px; margin-left: auto; color: #A5B4FC; }
   .account-menu-divider { height: 1px; background: rgba(255,255,255,0.06); margin: 6px 4px; }
   .account-menu-item.add { color: #A5B4FC; font-weight: 500; }
   .account-menu-item.add:hover { background: rgba(99,102,241,0.15); }
-  .acc-dot {
-    width: 6px; height: 6px; border-radius: 50%;
-    background: var(--sidebar-muted); flex-shrink: 0;
-  }
+  .account-menu-item.subscription { color: #FBBF24; font-weight: 500; }
+  .account-menu-item.subscription:hover { background: rgba(251,191,36,0.1); }
+  .acc-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--sidebar-muted); flex-shrink: 0; }
   .account-menu-item.active .acc-dot { background: #A5B4FC; box-shadow: 0 0 8px #A5B4FC; }
-
-  .main-wrap {
-    flex: 1; margin-left: 240px; min-width: 0;
-    display: flex; flex-direction: column; min-height: 100vh;
+  .plan-tag {
+    display: inline-block; padding: 2px 6px; border-radius: 4px;
+    font-size: 9.5px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.04em; margin-left: auto;
   }
+  .plan-tag.standard { background: rgba(148,163,184,0.2); color: #CBD5E1; }
+  .plan-tag.premium { background: rgba(99,102,241,0.25); color: #A5B4FC; }
+  .plan-tag.elite { background: rgba(251,191,36,0.2); color: #FBBF24; }
+
+  .main-wrap { flex: 1; margin-left: 240px; min-width: 0; display: flex; flex-direction: column; min-height: 100vh; }
   .topbar {
     height: 64px; display: flex; align-items: center; gap: 16px;
     padding: 0 24px; background: rgba(255,255,255,0.8);
@@ -286,7 +364,6 @@
   }
   .icon-btn:hover { background: var(--bg-soft); color: var(--fg); }
   .icon-btn svg { width: 16px; height: 16px; }
-
   .main-content { padding: 24px; flex: 1; }
   .mobile-menu-btn { display: none; }
 
@@ -303,10 +380,7 @@
   .card-subtitle { font-size: 12.5px; color: var(--fg-muted); margin-top: 2px; }
   .card-body { padding: 20px; }
 
-  .stats-grid {
-    display: grid; grid-template-columns: repeat(4, 1fr);
-    gap: 16px; margin-bottom: 24px;
-  }
+  .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 24px; }
   .stat-card {
     background: var(--bg); border: 1px solid var(--border);
     border-radius: var(--radius-card); padding: 20px;
@@ -316,10 +390,7 @@
   .stat-card:hover { box-shadow: var(--shadow-elevated); }
   .stat-top { display: flex; align-items: flex-start; justify-content: space-between; }
   .stat-label { font-size: 13px; color: var(--fg-muted); font-weight: 450; }
-  .stat-value {
-    font-size: 28px; font-weight: 600; letter-spacing: -0.03em;
-    margin-top: 8px; line-height: 1.1;
-  }
+  .stat-value { font-size: 28px; font-weight: 600; letter-spacing: -0.03em; margin-top: 8px; line-height: 1.1; }
   .stat-hint { font-size: 11.5px; color: var(--fg-dim); margin-top: 4px; }
   .stat-icon {
     width: 40px; height: 40px; border-radius: 10px;
@@ -344,11 +415,6 @@
   .tbl tbody tr { transition: background 0.1s; }
   .tbl tbody tr:hover { background: var(--bg-soft); }
   .tbl tbody tr:last-child td { border-bottom: none; }
-  .tbl .actions {
-    display: flex; align-items: center; justify-content: flex-end; gap: 2px;
-    opacity: 0; transition: opacity 0.15s;
-  }
-  .tbl tbody tr:hover .actions { opacity: 1; }
 
   .badge {
     display: inline-flex; align-items: center; gap: 4px;
@@ -374,6 +440,7 @@
   .input::placeholder { color: var(--fg-dim); }
   .input.sm { height: 34px; font-size: 13px; }
   .label { display: block; font-size: 13px; font-weight: 500; margin-bottom: 6px; color: var(--fg); }
+  textarea.input { height: auto; padding: 12px; line-height: 1.6; resize: vertical; font-family: inherit; }
 
   .filters {
     display: flex; align-items: center; gap: 12px;
@@ -433,6 +500,7 @@
     transition: background 0.15s, color 0.15s;
   }
   .sheet-close:hover { background: var(--bg-soft); color: var(--fg); }
+
   .form-section { margin-bottom: 24px; }
   .form-section-title {
     font-size: 11.5px; font-weight: 600;
@@ -442,8 +510,49 @@
   .form-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
   .form-full { grid-column: 1 / -1; }
 
+  /* Modal (Manage Subscription) */
+  .modal-overlay {
+    position: fixed; inset: 0;
+    background: rgba(15,23,42,0.6); backdrop-filter: blur(4px);
+    z-index: 500; display: none;
+    align-items: center; justify-content: center; padding: 24px;
+  }
+  .modal-overlay.open { display: flex; }
+  .modal {
+    width: 100%; max-width: 640px; max-height: 90vh;
+    background: var(--bg); border: 1px solid var(--border);
+    border-radius: var(--radius-card);
+    box-shadow: var(--shadow-elevated);
+    display: flex; flex-direction: column;
+    overflow: hidden;
+  }
+  .modal-header {
+    padding: 20px 24px; border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .modal-title { font-size: 16px; font-weight: 600; letter-spacing: -0.01em; }
+  .modal-body { flex: 1; overflow-y: auto; padding: 24px; }
+  .modal-footer {
+    padding: 16px 24px; border-top: 1px solid var(--border);
+    display: flex; justify-content: flex-end; gap: 8px;
+  }
+
+  /* Terms box */
+  .terms-box {
+    max-height: 320px; overflow-y: auto;
+    padding: 16px; background: var(--bg-soft);
+    border: 1px solid var(--border); border-radius: var(--radius-btn);
+    font-size: 12.5px; line-height: 1.6;
+    color: var(--fg-muted);
+    white-space: pre-wrap;
+    font-family: 'Inter', sans-serif;
+  }
+  .terms-box h1, .terms-box h2, .terms-box h3 { color: var(--fg); }
+  .terms-box strong { color: var(--fg); }
+  .terms-box p { margin-bottom: 10px; }
+
   .toast-wrap {
-    position: fixed; top: 20px; right: 20px; z-index: 300;
+    position: fixed; top: 20px; right: 20px; z-index: 700;
     display: flex; flex-direction: column; gap: 8px; pointer-events: none;
   }
   .toast {
@@ -532,11 +641,21 @@
     height: 4px; background: rgba(99,102,241,0.2);
     border-radius: 999px; overflow: hidden;
   }
-  .progress-bar {
-    height: 100%; background: var(--primary);
-    width: 0%; transition: width 0.3s;
-  }
+  .progress-bar { height: 100%; background: var(--primary); width: 0%; transition: width 0.3s; }
   .progress-hint { margin-top: 8px; font-size: 11.5px; color: var(--fg-muted); }
+
+  .usage-bar {
+    padding: 12px 16px; background: var(--bg-soft);
+    border: 1px solid var(--border); border-radius: var(--radius-btn);
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 12px;
+  }
+  .usage-bar.over { background: var(--danger-soft); border-color: rgba(239,68,68,0.3); color: var(--danger); }
+  .usage-bar.warn { background: var(--warning-soft); border-color: rgba(245,158,11,0.3); color: #92400E; }
+
+  /* Reset */
+  .auth-step { display: none; }
+  .auth-step.active { display: block; animation: fadeIn 0.25s var(--ease); }
 
   @media (max-width: 900px) { .stats-grid { grid-template-columns: repeat(2, 1fr); } }
   @media (max-width: 768px) {
@@ -564,26 +683,133 @@
 <!-- ================= AUTH ================= -->
 <div id="authScreen">
   <div class="auth-card">
-    <div class="auth-logo">Eauto</div>
-    <div class="auth-sub">Logistics Platform</div>
-    <div id="authError" style="display:none; padding:10px 12px; background:var(--danger-soft); color:var(--danger); border-radius:var(--radius-btn); font-size:13px; margin-bottom:16px;"></div>
-    <h1 class="auth-title" id="authTitle">Bejelentkezés</h1>
-    <p class="auth-desc" id="authDesc">Üdv újra! Add meg az adataidat.</p>
-    <div class="field">
-      <label>Email</label>
-      <input type="email" id="email" placeholder="te@ceg.hu" autocomplete="email" />
+    <div class="auth-logo">Zen3<span>Hub</span></div>
+    <div class="auth-sub" data-i18n="auth_sub">Logistics Platform</div>
+
+    <!-- STEP 1: LOGIN -->
+    <div class="auth-step active" id="step-login">
+      <h1 class="auth-title" data-i18n="login_title">Bejelentkezés</h1>
+      <p class="auth-desc" data-i18n="login_desc">Üdv újra! Add meg az adataidat.</p>
+      <div id="loginError" style="display:none; padding:10px 12px; background:var(--danger-soft); color:var(--danger); border-radius:var(--radius-btn); font-size:13px; margin-bottom:16px;"></div>
+      <div class="field"><label data-i18n="email">Email</label><input type="email" id="loginEmail" placeholder="te@ceg.hu" autocomplete="email" /></div>
+      <div class="field"><label data-i18n="password">Jelszó</label><input type="password" id="loginPassword" placeholder="••••••••" autocomplete="current-password" /></div>
+      <label class="checkbox-row"><input type="checkbox" id="rememberMe" checked /><span data-i18n="remember_me">Emlékezz rám</span></label>
+      <button class="btn block lg" onclick="handleLogin()" data-i18n="login_btn">Bejelentkezés</button>
+      <div class="auth-switch"><span onclick="showStep('signup-credentials')" data-i18n="no_account">Nincs fiókod? Regisztrálj</span></div>
     </div>
-    <div class="field">
-      <label>Jelszó</label>
-      <input type="password" id="password" placeholder="••••••••" autocomplete="current-password" />
+
+    <!-- STEP 2: SIGNUP - credentials -->
+    <div class="auth-step" id="step-signup-credentials">
+      <div class="signup-steps">
+        <div class="signup-step active">1</div>
+        <div class="signup-step-line"></div>
+        <div class="signup-step">2</div>
+        <div class="signup-step-line"></div>
+        <div class="signup-step">3</div>
+      </div>
+      <h1 class="auth-title" data-i18n="signup_title">Fiók létrehozása</h1>
+      <p class="auth-desc" data-i18n="signup_desc">Add meg az email címed és jelszavad.</p>
+      <div id="signupError" style="display:none; padding:10px 12px; background:var(--danger-soft); color:var(--danger); border-radius:var(--radius-btn); font-size:13px; margin-bottom:16px;"></div>
+      <div class="field"><label data-i18n="email">Email</label><input type="email" id="signupEmail" placeholder="te@ceg.hu" autocomplete="email" /></div>
+      <div class="field"><label data-i18n="password">Jelszó</label><input type="password" id="signupPassword" placeholder="•••••••• (min. 6)" autocomplete="new-password" /></div>
+      <div class="field"><label data-i18n="password_confirm">Jelszó megerősítés</label><input type="password" id="signupPassword2" placeholder="••••••••" autocomplete="new-password" /></div>
+      <button class="btn block lg" onclick="signupStep1()" data-i18n="next">Tovább</button>
+      <div class="auth-switch"><span onclick="showStep('login')" data-i18n="have_account">Már van fiókod? Jelentkezz be</span></div>
     </div>
-    <label class="checkbox-row">
-      <input type="checkbox" id="rememberMe" checked />
-      Emlékezz rám
-    </label>
-    <button class="btn block lg" id="authBtn" onclick="handleAuth()">Bejelentkezés</button>
-    <div class="auth-switch">
-      <span id="switchText" onclick="toggleAuthMode()">Nincs fiókod? Regisztrálj</span>
+
+    <!-- STEP 3: SIGNUP - plan -->
+    <div class="auth-step" id="step-signup-plan">
+      <div class="signup-steps">
+        <div class="signup-step done">✓</div>
+        <div class="signup-step-line done"></div>
+        <div class="signup-step active">2</div>
+        <div class="signup-step-line"></div>
+        <div class="signup-step">3</div>
+      </div>
+      <h1 class="auth-title" data-i18n="choose_plan">Válassz előfizetést</h1>
+      <p class="auth-desc" data-i18n="choose_plan_desc">7 napos ingyenes próbaidő minden csomagnál.</p>
+      <div class="plan-grid" id="planGrid">
+        <div class="plan-card" data-plan="standard" onclick="selectPlan('standard')">
+          <div class="plan-radio"></div>
+          <div class="plan-content">
+            <div class="plan-header">
+              <div class="plan-name">Standard</div>
+              <div class="plan-price">50 <small>lei/hó</small></div>
+            </div>
+            <div class="plan-desc" data-i18n="plan_standard_desc">Heti 50 számla · 100 AWB</div>
+          </div>
+        </div>
+        <div class="plan-card" data-plan="premium" onclick="selectPlan('premium')">
+          <div class="plan-radio"></div>
+          <div class="plan-content">
+            <div class="plan-header">
+              <div class="plan-name">Premium <span class="plan-badge popular" data-i18n="popular">Népszerű</span></div>
+              <div class="plan-price">200 <small>lei/hó</small></div>
+            </div>
+            <div class="plan-desc" data-i18n="plan_premium_desc">Heti 200 számla · 200 AWB</div>
+          </div>
+        </div>
+        <div class="plan-card" data-plan="elite" onclick="selectPlan('elite')">
+          <div class="plan-radio"></div>
+          <div class="plan-content">
+            <div class="plan-header">
+              <div class="plan-name">Elite</div>
+              <div class="plan-price">400 <small>lei/hó</small></div>
+            </div>
+            <div class="plan-desc" data-i18n="plan_elite_desc">Korlátlan számla és AWB</div>
+          </div>
+        </div>
+      </div>
+      <button class="btn block lg" onclick="signupStep2()" data-i18n="next">Tovább</button>
+      <div class="auth-switch"><span onclick="showStep('signup-credentials')" data-i18n="back">← Vissza</span></div>
+    </div>
+
+    <!-- STEP 4: SIGNUP - payment -->
+    <div class="auth-step" id="step-signup-payment">
+      <div class="signup-steps">
+        <div class="signup-step done">✓</div>
+        <div class="signup-step-line done"></div>
+        <div class="signup-step done">✓</div>
+        <div class="signup-step-line done"></div>
+        <div class="signup-step active">3</div>
+      </div>
+      <h1 class="auth-title" data-i18n="payment_title">Fizetési adatok</h1>
+      <p class="auth-desc" data-i18n="payment_desc">Debit kártya megadása</p>
+      <div class="beta-banner">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        <div><b data-i18n="beta_warning">Beta verzió.</b> <span data-i18n="beta_warning_text">A kártya adatait nem dolgozzuk fel, nem történik valódi fizetés.</span></div>
+      </div>
+      <div class="field"><label data-i18n="card_holder">Kártyabirtokos neve</label><input type="text" id="cardHolder" placeholder="POPESCU ION" /></div>
+      <div class="field"><label data-i18n="card_number">Kártyaszám</label><input type="text" id="cardNumber" placeholder="4242 4242 4242 4242" maxlength="19" oninput="formatCard(this)" /></div>
+      <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+        <div class="field"><label data-i18n="card_expiry">Lejárat</label><input type="text" id="cardExpiry" placeholder="MM/YY" maxlength="5" oninput="formatExpiry(this)" /></div>
+        <div class="field"><label data-i18n="card_cvv">CVV</label><input type="text" id="cardCvv" placeholder="123" maxlength="4" /></div>
+      </div>
+      <label class="checkbox-row">
+        <input type="checkbox" id="acceptTerms" />
+        <span><span data-i18n="accept_terms">Elfogadom a</span> <a onclick="openTermsModal(event)" data-i18n="terms_link">Termeni și Condiții</a></span>
+      </label>
+      <button class="btn block lg" onclick="signupStep3()" data-i18n="signup_complete">Regisztráció befejezése</button>
+      <div class="auth-switch"><span onclick="showStep('signup-plan')" data-i18n="back">← Vissza</span></div>
+    </div>
+
+    <!-- Auth bottom bar: Support + Reclamație + Language -->
+    <div class="auth-bottom-bar">
+      <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+        <button class="auth-bottom-btn" onclick="openSupport()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          <span data-i18n="support">Support</span>
+        </button>
+        <button class="auth-bottom-btn" onclick="openReclamatie()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          <span data-i18n="reclamatie">Reclamație</span>
+        </button>
+      </div>
+      <div class="lang-switcher">
+        <button onclick="setLang('ro')" data-lang="ro">RO</button>
+        <button onclick="setLang('en')" data-lang="en">EN</button>
+        <button onclick="setLang('hu')" data-lang="hu">HU</button>
+      </div>
     </div>
   </div>
 </div>
@@ -591,35 +817,35 @@
 <!-- ================= APP ================= -->
 <div id="app">
   <aside class="sidebar" id="sidebar">
-    <div class="sidebar-logo">Eauto</div>
+    <div class="sidebar-logo">Zen3<span>Hub</span></div>
     <nav class="sidebar-nav">
       <button class="nav-item active" data-tab="dashboard" onclick="switchTab('dashboard')">
         <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg>
-        <span>Dashboard</span>
+        <span data-i18n="nav_dashboard">Dashboard</span>
       </button>
       <button class="nav-item" data-tab="awb" onclick="switchTab('awb')">
-        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m7.5 4.27 9 5.15"/><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/></svg>
-        <span>AWB-k</span>
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m7.5 4.27 9 5.15"/><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/></svg>
+        <span data-i18n="nav_awb">AWB-k</span>
       </button>
       <button class="nav-item" data-tab="factura" onclick="switchTab('factura')">
-        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="15" y2="17"/></svg>
-        <span>Számlák eFactura</span>
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        <span data-i18n="nav_factura">Számlák</span>
       </button>
-      <div class="nav-section">Beállítások</div>
+      <div class="nav-section" data-i18n="nav_settings">Beállítások</div>
       <button class="nav-item" data-tab="curier" onclick="switchTab('curier')">
-        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"/><path d="M15 18H9"/><path d="M19 18h2a1 1 0 0 0 1-1v-3.65a1 1 0 0 0-.22-.624l-3.48-4.35A1 1 0 0 0 17.52 8H14"/><circle cx="17" cy="18" r="2"/><circle cx="7" cy="18" r="2"/></svg>
-        <span>Futár beállítások</span>
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"/><circle cx="17" cy="18" r="2"/><circle cx="7" cy="18" r="2"/></svg>
+        <span data-i18n="nav_curier">Futár</span>
       </button>
       <button class="nav-item" data-tab="companie" onclick="switchTab('companie')">
-        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M5 21V7l8-4v18"/><path d="M19 21V11l-6-4"/><path d="M9 9v.01"/><path d="M9 12v.01"/><path d="M9 15v.01"/><path d="M9 18v.01"/></svg>
-        <span>Cég beállítások</span>
-      </button>
-      <button class="nav-item" data-tab="istoric" onclick="switchTab('istoric')">
-        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M12 7v5l4 2"/></svg>
-        <span>Előzmények</span>
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M5 21V7l8-4v18"/></svg>
+        <span data-i18n="nav_companie">Cég</span>
       </button>
       <div id="adminNavWrap" style="display:none;">
         <div class="nav-section">Admin</div>
+        <button class="nav-item" data-tab="terms-admin" onclick="switchTab('terms-admin')">
+          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          <span>Termeni &amp; Condiții</span>
+        </button>
         <button class="nav-item" data-tab="admin" onclick="switchTab('admin')">
           <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 4 6v6c0 5 3.5 9 8 10 4.5-1 8-5 8-10V6z"/></svg>
           <span>Admin panel</span>
@@ -636,17 +862,30 @@
         <svg class="user-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
       </button>
       <div class="account-menu" id="accountMenu">
-        <div class="account-menu-label">Fiókok</div>
+        <div class="account-menu-label" data-i18n="accounts_label">Fiókok</div>
         <div id="accountMenuList"></div>
         <div class="account-menu-divider"></div>
         <button class="account-menu-item add" onclick="addSubAccount()">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-          Új al-account
+          <span data-i18n="new_subaccount">Új al-account</span>
+        </button>
+        <button class="account-menu-item subscription" onclick="openManageSubscription()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+          <span data-i18n="manage_subscription">Manage Subscription</span>
+        </button>
+        <div class="account-menu-divider"></div>
+        <button class="account-menu-item" onclick="openSupport()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          <span data-i18n="support">Support</span>
+        </button>
+        <button class="account-menu-item" onclick="openReclamatie()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          <span data-i18n="reclamatie">Reclamație</span>
         </button>
         <div class="account-menu-divider"></div>
         <button class="account-menu-item" onclick="logout()" style="color:#F87171;">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
-          Kijelentkezés
+          <span data-i18n="logout">Kijelentkezés</span>
         </button>
       </div>
     </div>
@@ -660,17 +899,13 @@
       <div class="topbar-title" id="pageTitle">Dashboard</div>
       <div class="topbar-search" onclick="openCmdK()">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-        <span>Keresés...</span>
+        <span data-i18n="search">Keresés...</span>
         <kbd>⌘K</kbd>
       </div>
       <div class="topbar-actions">
-        <button class="icon-btn" onclick="toggleTheme()" title="Téma">
+        <button class="icon-btn" onclick="toggleTheme()" title="Theme">
           <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>
           <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
-        </button>
-        <button class="btn sm" onclick="openSheet('awb')">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-          AWB generálása
         </button>
       </div>
     </header>
@@ -679,13 +914,14 @@
 
       <!-- DASHBOARD -->
       <div class="tab-page" id="page-dashboard">
+        <div id="usageWarning" style="display:none; margin-bottom:16px;"></div>
         <div class="stats-grid">
           <div class="stat-card">
             <div class="stat-top">
               <div>
-                <div class="stat-label">Mai rendelések</div>
+                <div class="stat-label" data-i18n="stat_orders">Mai rendelések</div>
                 <div class="stat-value" id="statOrders">0</div>
-                <div class="stat-hint">Utolsó 24 óra</div>
+                <div class="stat-hint" data-i18n="stat_orders_hint">Utolsó 24 óra</div>
               </div>
               <div class="stat-icon">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>
@@ -695,9 +931,9 @@
           <div class="stat-card">
             <div class="stat-top">
               <div>
-                <div class="stat-label">Ma generált AWB-k</div>
+                <div class="stat-label" data-i18n="stat_awb">Heti AWB-k</div>
                 <div class="stat-value" id="statAwb">0</div>
-                <div class="stat-hint">DPD / Cargus</div>
+                <div class="stat-hint" id="statAwbLimit">— / —</div>
               </div>
               <div class="stat-icon">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m7.5 4.27 9 5.15"/><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/></svg>
@@ -707,9 +943,9 @@
           <div class="stat-card">
             <div class="stat-top">
               <div>
-                <div class="stat-label">ANAF-ba küldött számlák</div>
+                <div class="stat-label" data-i18n="stat_factura">Heti számlák</div>
                 <div class="stat-value" id="statFacturi">0</div>
-                <div class="stat-hint">SPV szinkron</div>
+                <div class="stat-hint" id="statFacturaLimit">— / —</div>
               </div>
               <div class="stat-icon">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
@@ -719,116 +955,67 @@
           <div class="stat-card">
             <div class="stat-top">
               <div>
-                <div class="stat-label">Hibák</div>
-                <div class="stat-value" id="statErrors">0</div>
-                <div class="stat-hint">Utolsó 7 nap</div>
+                <div class="stat-label" data-i18n="stat_plan">Előfizetés</div>
+                <div class="stat-value" id="statPlan" style="font-size:22px;">Standard</div>
+                <div class="stat-hint" id="statPlanHint">50 lei/hó</div>
               </div>
-              <div class="stat-icon" style="background: var(--danger-soft); color: var(--danger);">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+              <div class="stat-icon" style="background: rgba(251,191,36,0.15); color: #F59E0B;">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 4 6v6c0 5 3.5 9 8 10 4.5-1 8-5 8-10V6z"/></svg>
               </div>
             </div>
-          </div>
-        </div>
-
-        <div class="card">
-          <div class="card-header">
-            <div>
-              <div class="card-title">Legutóbbi AWB-k</div>
-              <div class="card-subtitle">Utolsó 5 generált csomagszám</div>
-            </div>
-            <button class="btn secondary sm" onclick="switchTab('awb')">Összes</button>
-          </div>
-          <div class="table-wrap">
-            <table class="tbl">
-              <thead>
-                <tr><th>Rendelés</th><th>Ügyfél</th><th>Futár</th><th>AWB szám</th><th>Státusz</th><th>Dátum</th></tr>
-              </thead>
-              <tbody id="recentAwbBody">
-                <tr><td colspan="6" style="text-align:center; padding:40px; color:var(--fg-muted);">
-                  Még nincs AWB. <button class="btn ghost sm" onclick="openSheet('awb')" style="text-decoration:underline; color:var(--primary);">Generálj egyet</button>
-                </td></tr>
-              </tbody>
-            </table>
           </div>
         </div>
       </div>
 
       <!-- AWB -->
       <div class="tab-page hidden" id="page-awb">
+        <div id="usageWarningAWB" style="display:none; margin-bottom:16px;"></div>
         <div class="card">
           <div class="filters">
-            <input type="text" class="input sm" id="searchAWB" placeholder="Keresés rendelés, ügyfél..." oninput="applySearchAWB(this.value)" style="max-width:300px;" />
+            <input type="text" class="input sm" id="searchAWB" placeholder="Keresés..." oninput="applySearchAWB(this.value)" style="max-width:300px;" />
             <div class="filters-spacer"></div>
             <button class="btn secondary sm" onclick="loadOrders()">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-              Rendelések letöltése
+              <span data-i18n="load_orders">Rendelések letöltése</span>
             </button>
-            <button class="btn secondary sm" onclick="clearOrders()">Törlés</button>
-            <button class="btn sm" onclick="generateSelectedAWB()">AWB generálása</button>
+            <button class="btn secondary sm" onclick="clearOrders()" data-i18n="clear">Törlés</button>
+            <button class="btn sm" onclick="generateSelectedAWB()" data-i18n="generate_awb">AWB generálása</button>
           </div>
           <div class="table-wrap">
             <table class="tbl">
               <thead>
                 <tr>
                   <th style="width:40px;"><input type="checkbox" id="selectAllAWB" onchange="toggleSelectAll(this)" style="accent-color:var(--primary);"></th>
-                  <th>Rendelés</th><th>Ügyfél</th><th>Cím</th><th>Termék</th><th>Fizetés</th><th style="text-align:right;">Összeg</th>
+                  <th data-i18n="col_order">Rendelés</th><th data-i18n="col_customer">Ügyfél</th><th data-i18n="col_address">Cím</th><th data-i18n="col_product">Termék</th><th data-i18n="col_payment">Fizetés</th><th style="text-align:right;" data-i18n="col_amount">Összeg</th>
                 </tr>
               </thead>
               <tbody id="ordersList"></tbody>
             </table>
           </div>
         </div>
-
-        <div class="card" style="margin-top:16px;">
-          <div class="card-header">
-            <div>
-              <div class="card-title">AWB előnézet</div>
-              <div class="card-subtitle">DPD csomagszámok · egyszerre max 5 darab</div>
-            </div>
-            <div style="display:flex; gap:8px;">
-              <button class="btn secondary sm" onclick="printAWB()">Nyomtatás</button>
-              <button class="btn secondary sm" onclick="printAllAWB()">Összes</button>
-            </div>
-          </div>
-          <div class="card-body">
-            <div class="awb-preview" id="awbPreview"></div>
-          </div>
-        </div>
       </div>
 
       <!-- FACTURA -->
       <div class="tab-page hidden" id="page-factura">
+        <div id="usageWarningFactura" style="display:none; margin-bottom:16px;"></div>
         <div class="card">
           <div class="filters">
-            <input type="text" class="input sm" id="searchFactura" placeholder="Keresés rendelés, ügyfél..." oninput="applySearchFactura(this.value)" style="max-width:300px;" />
+            <input type="text" class="input sm" id="searchFactura" placeholder="Keresés..." oninput="applySearchFactura(this.value)" style="max-width:300px;" />
             <div class="filters-spacer"></div>
-            <button class="btn secondary sm" onclick="loadOrders()">Rendelések letöltése</button>
-            <button class="btn secondary sm" onclick="clearOrders()">Törlés</button>
-            <button class="btn sm" onclick="generateSelectedFactura()">Számla kiállítása</button>
+            <button class="btn secondary sm" onclick="loadOrders()" data-i18n="load_orders">Rendelések letöltése</button>
+            <button class="btn secondary sm" onclick="clearOrders()" data-i18n="clear">Törlés</button>
+            <button class="btn sm" onclick="generateSelectedFactura()" data-i18n="generate_factura">Számla kiállítása</button>
           </div>
           <div class="table-wrap">
             <table class="tbl">
               <thead>
                 <tr>
                   <th style="width:40px;"><input type="checkbox" id="selectAllFactura" onchange="toggleSelectAllFactura(this)" style="accent-color:var(--primary);"></th>
-                  <th>Rendelés</th><th>Ügyfél</th><th>Cím</th><th>Termék</th><th>Fizetés</th><th style="text-align:right;">Összeg</th>
+                  <th data-i18n="col_order">Rendelés</th><th data-i18n="col_customer">Ügyfél</th><th data-i18n="col_address">Cím</th><th data-i18n="col_product">Termék</th><th data-i18n="col_payment">Fizetés</th><th style="text-align:right;" data-i18n="col_amount">Összeg</th>
                 </tr>
               </thead>
               <tbody id="ordersListFactura"></tbody>
             </table>
-          </div>
-        </div>
-
-        <div class="card" style="margin-top:16px;">
-          <div class="card-header">
-            <div>
-              <div class="card-title">Számla előnézet</div>
-              <div class="card-subtitle">FGO eFactura · egyszerre max 5 darab</div>
-            </div>
-            <button class="btn sm" onclick="printFactura()">Számlák nyomtatása</button>
-          </div>
-          <div class="card-body">
-            <div id="facturaPreview"></div>
           </div>
         </div>
       </div>
@@ -836,30 +1023,14 @@
       <!-- CURIER -->
       <div class="tab-page hidden" id="page-curier">
         <div class="card" style="max-width:720px;">
-          <div class="card-header">
-            <div>
-              <div class="card-title">Futár beállítások</div>
-              <div class="card-subtitle">DPD kapcsolat</div>
-            </div>
-          </div>
+          <div class="card-header"><div><div class="card-title" data-i18n="curier_title">Futár beállítások</div><div class="card-subtitle">DPD</div></div></div>
           <div class="card-body">
             <div class="form-grid-2">
-              <div class="form-full">
-                <label class="label">DPD felhasználó</label>
-                <input class="input" id="dpdUser" placeholder="pl. 200932364" />
-              </div>
-              <div class="form-full">
-                <label class="label">DPD jelszó</label>
-                <input class="input" id="dpdPass" type="password" placeholder="••••••••" />
-              </div>
-              <div class="form-full">
-                <label class="label">DPD ClientID</label>
-                <input class="input" id="dpdClientId" placeholder="pl. 39884336000" />
-              </div>
+              <div class="form-full"><label class="label">DPD user</label><input class="input" id="dpdUser" /></div>
+              <div class="form-full"><label class="label">DPD password</label><input class="input" id="dpdPass" type="password" /></div>
+              <div class="form-full"><label class="label">DPD ClientID</label><input class="input" id="dpdClientId" /></div>
             </div>
-            <div style="margin-top:20px;">
-              <button class="btn" onclick="saveDpdConfig()">Mentés</button>
-            </div>
+            <div style="margin-top:20px;"><button class="btn" onclick="saveDpdConfig()" data-i18n="save">Mentés</button></div>
           </div>
         </div>
       </div>
@@ -867,127 +1038,62 @@
       <!-- COMPANIE -->
       <div class="tab-page hidden" id="page-companie">
         <div class="card" style="max-width:720px;">
-          <div class="card-header">
-            <div>
-              <div class="card-title">Cég beállítások</div>
-              <div class="card-subtitle">Expedíciós adatok + al-account</div>
-            </div>
-          </div>
+          <div class="card-header"><div><div class="card-title" data-i18n="company_title">Cég beállítások</div></div></div>
           <div class="card-body">
             <div class="form-grid-2">
-              <div class="form-full">
-                <label class="label">Al-account neve</label>
-                <input class="input" id="accountName" placeholder="Pl. Daniela Margarit" />
-              </div>
-              <div class="form-full">
-                <label class="label">Név / Cég</label>
-                <input class="input" id="expName" placeholder="Popescu Ion / SC Exemplu SRL" />
-              </div>
-              <div>
-                <label class="label">Telefonszám</label>
-                <input class="input" id="expPhone" placeholder="07xxxxxxxx" />
-              </div>
-              <div>
-                <label class="label">Email</label>
-                <input class="input" id="expEmail" placeholder="expeditor@email.com" />
-              </div>
-              <div>
-                <label class="label">Ország</label>
-                <input class="input" id="expCountry" value="România" />
-              </div>
-              <div>
-                <label class="label">Város</label>
-                <input class="input" id="expCity" placeholder="București" />
-              </div>
-              <div class="form-full">
-                <label class="label">Utca, házszám</label>
-                <input class="input" id="expStreet" placeholder="Str. Exemplu nr. 10" />
-              </div>
+              <div class="form-full"><label class="label" data-i18n="account_name">Al-account neve</label><input class="input" id="accountName" /></div>
+              <div class="form-full"><label class="label" data-i18n="company_name">Név / Cég</label><input class="input" id="expName" /></div>
+              <div><label class="label" data-i18n="phone">Telefon</label><input class="input" id="expPhone" /></div>
+              <div><label class="label">Email</label><input class="input" id="expEmail" /></div>
+              <div><label class="label" data-i18n="country">Ország</label><input class="input" id="expCountry" value="România" /></div>
+              <div><label class="label" data-i18n="city">Város</label><input class="input" id="expCity" /></div>
+              <div class="form-full"><label class="label" data-i18n="street">Utca</label><input class="input" id="expStreet" /></div>
             </div>
             <div style="margin-top:20px; display:flex; gap:8px;">
-              <button class="btn" onclick="saveAccountName(); saveExpeditor();">Mentés</button>
-              <button class="btn secondary" onclick="deleteCurrentAccount()">Al-account törlése</button>
+              <button class="btn" onclick="saveAccountName(); saveExpeditor();" data-i18n="save">Mentés</button>
+              <button class="btn secondary" onclick="deleteCurrentAccount()" data-i18n="delete_account">Al-account törlése</button>
             </div>
           </div>
         </div>
-
         <div class="card" style="max-width:720px; margin-top:16px;">
-          <div class="card-header">
-            <div>
-              <div class="card-title">WooCommerce kapcsolat</div>
-              <div class="card-subtitle">Webshop API</div>
-            </div>
-          </div>
+          <div class="card-header"><div><div class="card-title">WooCommerce</div></div></div>
           <div class="card-body">
             <div class="form-grid-2">
-              <div class="form-full">
-                <label class="label">Webshop URL</label>
-                <input class="input" id="shopUrl" placeholder="https://effeto.ro" />
-              </div>
-              <div class="form-full">
-                <label class="label">Consumer Key</label>
-                <input class="input" id="wcKey" placeholder="ck_..." />
-              </div>
-              <div class="form-full">
-                <label class="label">Consumer Secret</label>
-                <input class="input" id="wcSecret" type="password" placeholder="cs_..." />
-              </div>
+              <div class="form-full"><label class="label">Webshop URL</label><input class="input" id="shopUrl" placeholder="https://effeto.ro" /></div>
+              <div class="form-full"><label class="label">Consumer Key</label><input class="input" id="wcKey" placeholder="ck_..." /></div>
+              <div class="form-full"><label class="label">Consumer Secret</label><input class="input" id="wcSecret" type="password" placeholder="cs_..." /></div>
             </div>
-            <div style="margin-top:20px;">
-              <button class="btn" onclick="saveShopConfig()">Mentés</button>
-            </div>
+            <div style="margin-top:20px;"><button class="btn" onclick="saveShopConfig()" data-i18n="save">Mentés</button></div>
           </div>
         </div>
-
         <div class="card" style="max-width:720px; margin-top:16px;">
-          <div class="card-header">
-            <div>
-              <div class="card-title">FGO Számlázás</div>
-              <div class="card-subtitle">eFactura API</div>
-            </div>
-          </div>
+          <div class="card-header"><div><div class="card-title">FGO eFactura</div></div></div>
           <div class="card-body">
             <div class="form-grid-2">
-              <div>
-                <label class="label">Cheie Privată</label>
-                <input class="input" id="fgoKey" type="password" placeholder="FGO API kulcs" />
-              </div>
-              <div>
-                <label class="label">CUI</label>
-                <input class="input" id="fgoCui" placeholder="39884336" />
-              </div>
-              <div>
-                <label class="label">Serie</label>
-                <input class="input" id="fgoSerie" placeholder="SCN" />
-              </div>
-              <div>
-                <label class="label">Platforma URL</label>
-                <input class="input" id="fgoPlatform" placeholder="https://effeto.ro/" />
-              </div>
+              <div><label class="label">Cheie Privată</label><input class="input" id="fgoKey" type="password" /></div>
+              <div><label class="label">CUI</label><input class="input" id="fgoCui" /></div>
+              <div><label class="label">Serie</label><input class="input" id="fgoSerie" /></div>
+              <div><label class="label">Platforma URL</label><input class="input" id="fgoPlatform" /></div>
             </div>
-            <div style="margin-top:20px;">
-              <button class="btn" onclick="saveFgoConfig()">Mentés</button>
-            </div>
+            <div style="margin-top:20px;"><button class="btn" onclick="saveFgoConfig()" data-i18n="save">Mentés</button></div>
           </div>
         </div>
       </div>
 
-      <!-- ISTORIC -->
-      <div class="tab-page hidden" id="page-istoric">
+      <!-- TERMS ADMIN -->
+      <div class="tab-page hidden" id="page-terms-admin">
         <div class="card">
           <div class="card-header">
             <div>
-              <div class="card-title">Előzmények</div>
-              <div class="card-subtitle">Minden generált AWB és számla</div>
+              <div class="card-title">Termeni și Condiții</div>
+              <div class="card-subtitle" data-i18n="terms_admin_desc">Szerkeszd a szöveget — minden felhasználó látni fogja.</div>
             </div>
           </div>
           <div class="card-body">
-            <div class="empty">
-              <div class="empty-icon">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg>
-              </div>
-              <h3>Hamarosan</h3>
-              <p>Az előzmények oldal a következő frissítésben érkezik.</p>
+            <textarea class="input" id="termsAdminText" style="min-height:520px; font-family: monospace; font-size: 12.5px; line-height: 1.7;"></textarea>
+            <div style="margin-top:16px; display:flex; gap:8px;">
+              <button class="btn" onclick="saveTermsAdmin()" data-i18n="save">Mentés</button>
+              <button class="btn secondary" onclick="resetTermsAdmin()" data-i18n="reset">Visszaállítás</button>
             </div>
           </div>
         </div>
@@ -997,17 +1103,12 @@
       <div class="tab-page hidden" id="page-admin">
         <div class="card">
           <div class="card-header">
-            <div>
-              <div class="card-title">Admin panel</div>
-              <div class="card-subtitle">Felhasználók és rendelések</div>
-            </div>
-            <button class="btn sm" onclick="loadAdminData()">Frissítés</button>
+            <div><div class="card-title">Admin panel</div></div>
+            <button class="btn sm" onclick="loadAdminData()" data-i18n="refresh">Frissítés</button>
           </div>
           <div class="card-body">
             <h3 style="font-size:13px; font-weight:600; margin-bottom:12px;">Felhasználók</h3>
             <div id="adminUsersList"></div>
-            <h3 style="font-size:13px; font-weight:600; margin:24px 0 12px;">Rendelések</h3>
-            <div id="adminOrdersList"></div>
           </div>
         </div>
       </div>
@@ -1016,47 +1117,100 @@
   </div>
 </div>
 
-<!-- SHEET -->
-<div class="sheet-overlay" id="sheetOverlay" onclick="closeSheet()"></div>
-<div class="sheet" id="sheet">
-  <button class="sheet-close" onclick="closeSheet()">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-  </button>
-  <div class="sheet-header">
-    <div class="sheet-title">AWB generálása</div>
-    <div class="sheet-desc">Add meg a csomag adatait. A rendszer validálja a címzettet és a futárt.</div>
-  </div>
-  <div class="sheet-body">
-    <div class="form-section">
-      <div class="form-section-title">Címzett</div>
-      <div class="form-grid-2">
-        <div><label class="label">Név</label><input class="input" placeholder="Popescu Ion" /></div>
-        <div><label class="label">Telefon</label><input class="input" placeholder="07xxxxxxxx" /></div>
-        <div class="form-full"><label class="label">Utca, házszám</label><input class="input" placeholder="Str. Exemplu nr. 10" /></div>
-        <div><label class="label">Város</label><input class="input" placeholder="București" /></div>
-        <div><label class="label">Megye</label><input class="input" placeholder="Ilfov" /></div>
-      </div>
+<!-- ============ MANAGE SUBSCRIPTION MODAL ============ -->
+<div class="modal-overlay" id="subModalOverlay" onclick="if(event.target===this) closeManageSubscription()">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title" data-i18n="manage_subscription">Manage Subscription</div>
+      <button class="sheet-close" style="position:static;" onclick="closeManageSubscription()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
     </div>
-    <div class="form-section">
-      <div class="form-section-title">Csomag</div>
-      <div class="form-grid-2">
-        <div><label class="label">Súly (kg)</label><input class="input" type="number" value="1" /></div>
-        <div><label class="label">Ramburs (RON)</label><input class="input" type="number" value="0" /></div>
+    <div class="modal-body">
+      <div id="subCurrentInfo" style="padding:14px 16px; background:var(--primary-soft); border-radius:12px; margin-bottom:20px; font-size:13px;">
+        <b data-i18n="current_plan">Aktív előfizetésed:</b> <span id="subCurrentPlan">Standard</span>
       </div>
+
+      <div class="form-section-title" data-i18n="choose_plan">Válassz előfizetést</div>
+      <div class="plan-grid" id="subPlanGrid">
+        <div class="plan-card" data-plan="standard" onclick="selectSubPlan('standard')">
+          <div class="plan-radio"></div>
+          <div class="plan-content">
+            <div class="plan-header">
+              <div class="plan-name">Standard</div>
+              <div class="plan-price">50 <small>lei/hó</small></div>
+            </div>
+            <div class="plan-desc" data-i18n="plan_standard_desc">Heti 50 számla · 100 AWB</div>
+          </div>
+        </div>
+        <div class="plan-card" data-plan="premium" onclick="selectSubPlan('premium')">
+          <div class="plan-radio"></div>
+          <div class="plan-content">
+            <div class="plan-header">
+              <div class="plan-name">Premium</div>
+              <div class="plan-price">200 <small>lei/hó</small></div>
+            </div>
+            <div class="plan-desc" data-i18n="plan_premium_desc">Heti 200 számla · 200 AWB</div>
+          </div>
+        </div>
+        <div class="plan-card" data-plan="elite" onclick="selectSubPlan('elite')">
+          <div class="plan-radio"></div>
+          <div class="plan-content">
+            <div class="plan-header">
+              <div class="plan-name">Elite</div>
+              <div class="plan-price">400 <small>lei/hó</small></div>
+            </div>
+            <div class="plan-desc" data-i18n="plan_elite_desc">Korlátlan számla és AWB</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="beta-banner">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        <div><b data-i18n="beta_warning">Beta verzió.</b> <span data-i18n="beta_warning_text">A kártya adatait nem dolgozzuk fel, nem történik valódi fizetés.</span></div>
+      </div>
+
+      <div class="form-section-title" data-i18n="payment_title">Fizetési adatok</div>
+      <div class="field"><label data-i18n="card_holder">Kártyabirtokos neve</label><input type="text" id="subCardHolder" placeholder="POPESCU ION" /></div>
+      <div class="field"><label data-i18n="card_number">Kártyaszám</label><input type="text" id="subCardNumber" placeholder="4242 4242 4242 4242" maxlength="19" oninput="formatCard(this)" /></div>
+      <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+        <div class="field"><label data-i18n="card_expiry">Lejárat</label><input type="text" id="subCardExpiry" placeholder="MM/YY" maxlength="5" oninput="formatExpiry(this)" /></div>
+        <div class="field"><label data-i18n="card_cvv">CVV</label><input type="text" id="subCardCvv" placeholder="123" maxlength="4" /></div>
+      </div>
+
+      <div class="form-section-title" style="margin-top:24px;">Termeni și Condiții</div>
+      <div class="terms-box" id="subTermsBox">—</div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn secondary" onclick="closeManageSubscription()" data-i18n="cancel">Mégse</button>
+      <button class="btn" onclick="saveSubscription()" data-i18n="change_plan">Előfizetés módosítása</button>
     </div>
   </div>
-  <div class="sheet-footer">
-    <button class="btn secondary" onclick="closeSheet()">Mégse</button>
-    <button class="btn" onclick="closeSheet(); switchTab('awb');">Ugrás az AWB fülre</button>
+</div>
+
+<!-- ============ TERMS VIEW MODAL ============ -->
+<div class="modal-overlay" id="termsModalOverlay" onclick="if(event.target===this) closeTermsModal()">
+  <div class="modal" style="max-width:720px;">
+    <div class="modal-header">
+      <div class="modal-title">Termeni și Condiții</div>
+      <button class="sheet-close" style="position:static;" onclick="closeTermsModal()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="terms-box" id="termsModalBox" style="max-height: 60vh;"></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn" onclick="closeTermsModal()" data-i18n="close">Bezárás</button>
+    </div>
   </div>
 </div>
 
 <div class="toast-wrap" id="toastWrap"></div>
 
-<!-- CMD+K -->
 <div class="cmd-overlay" id="cmdOverlay" onclick="if(event.target===this) closeCmdK()">
   <div class="cmd-panel">
-    <input class="cmd-input" id="cmdInput" placeholder="Ugrás oldalra..." oninput="filterCmd(this.value)" />
+    <input class="cmd-input" id="cmdInput" placeholder="Ugrás..." oninput="filterCmd(this.value)" />
     <div class="cmd-list" id="cmdList"></div>
   </div>
 </div>
@@ -1081,7 +1235,6 @@ const firebaseConfig = {
   messagingSenderId: "519133159248",
   appId: "1:519133159248:web:d4de9485446686703f9655"
 };
-
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
@@ -1092,25 +1245,460 @@ const FGO_PROXY_URL = 'https://zen3hub-3.onrender.com/api/fgo/emitere';
 const DPD_PROXY_URL = 'https://zen3hub-3.onrender.com/api/dpd/create-shipment';
 const ORDERS_PER_PAGE = 100;
 const BLOCKED_ORDER_STATUSES = ['cancelled', 'refunded', 'failed', 'trash'];
+const SUPPORT_EMAIL = 'electricautomatiks@gmail.com';
+const ANPC_URL = 'https://anpc.ro/ce-este-sal/';
+
+const BATCH_SIZE = 5;
+const BATCH_DELAY_MS = 1500;
 
 // ============================================
-// BATCH FELDOLGOZÁS — egyszerre csak 5 darab
+// PLAN LIMITS (heti)
 // ============================================
-const BATCH_SIZE = 5;          // egyszerre ennyi AWB/számla
-const BATCH_DELAY_MS = 1500;   // csomagok közti szünet
+const PLAN_LIMITS = {
+  standard: { awb: 100, factura: 50, price: 50, name: 'Standard' },
+  premium:  { awb: 200, factura: 200, price: 200, name: 'Premium' },
+  elite:    { awb: Infinity, factura: Infinity, price: 400, name: 'Elite' }
+};
 
-function chunkArray(arr, size) {
-  const out = [];
-  for (let i = 0; i < arr.length; i += size) out.push(arr.slice(i, i + size));
-  return out;
+// ============================================
+// NYELVI RENDSZER
+// ============================================
+const TRANSLATIONS = {
+  ro: {
+    auth_sub: 'Platformă Logistică',
+    login_title: 'Autentificare',
+    login_desc: 'Bine ai revenit! Introdu datele.',
+    email: 'Email', password: 'Parolă',
+    remember_me: 'Ține-mă minte',
+    login_btn: 'Autentificare',
+    no_account: 'Nu ai cont? Înregistrează-te',
+    signup_title: 'Creare cont',
+    signup_desc: 'Introdu emailul și parola.',
+    password_confirm: 'Confirmare parolă',
+    next: 'Continuă', back: '← Înapoi',
+    choose_plan: 'Alege abonamentul',
+    choose_plan_desc: '7 zile gratuit la toate pachetele.',
+    plan_standard_desc: '50 facturi · 100 AWB pe săptămână',
+    plan_premium_desc: '200 facturi · 200 AWB pe săptămână',
+    plan_elite_desc: 'Nelimitat facturi și AWB',
+    popular: 'Popular',
+    payment_title: 'Date de plată',
+    payment_desc: 'Introdu cardul debit',
+    card_holder: 'Nume titular', card_number: 'Număr card',
+    card_expiry: 'Expirare', card_cvv: 'CVV',
+    accept_terms: 'Accept', terms_link: 'Termenii și Condițiile',
+    signup_complete: 'Finalizare înregistrare',
+    beta_warning: 'Versiune beta.',
+    beta_warning_text: 'Datele cardului nu sunt procesate, nu se efectuează plată reală.',
+    support: 'Suport', reclamatie: 'Reclamație',
+    have_account: 'Ai deja cont? Autentifică-te',
+    nav_dashboard: 'Dashboard', nav_awb: 'AWB-uri', nav_factura: 'Facturi',
+    nav_settings: 'Setări', nav_curier: 'Curier', nav_companie: 'Companie',
+    accounts_label: 'Conturi',
+    new_subaccount: 'Sub-cont nou',
+    manage_subscription: 'Gestionează abonamentul',
+    logout: 'Deconectare',
+    search: 'Caută...',
+    stat_orders: 'Comenzi azi', stat_orders_hint: 'Ultimele 24 ore',
+    stat_awb: 'AWB-uri săptămâna', stat_factura: 'Facturi săptămâna',
+    stat_plan: 'Abonament',
+    load_orders: 'Descarcă comenzi', clear: 'Șterge',
+    generate_awb: 'Generează AWB', generate_factura: 'Emite facturi',
+    col_order: 'Comandă', col_customer: 'Client', col_address: 'Adresă',
+    col_product: 'Produs', col_payment: 'Plată', col_amount: 'Sumă',
+    curier_title: 'Setări curier', company_title: 'Setări companie',
+    account_name: 'Nume sub-cont', company_name: 'Nume / Companie',
+    phone: 'Telefon', country: 'Țară', city: 'Oraș', street: 'Stradă',
+    save: 'Salvează', delete_account: 'Șterge sub-cont',
+    current_plan: 'Abonament activ:',
+    change_plan: 'Schimbă abonamentul',
+    cancel: 'Anulează', close: 'Închide',
+    refresh: 'Reîncarcă',
+    terms_admin_desc: 'Editează textul — toți utilizatorii îl vor vedea.',
+    reset: 'Reset',
+    limit_reached: 'Limita săptămânală atinsă',
+    limit_text: 'Ai atins limita de {type} pentru planul {plan}. Upgrade pentru mai mult.',
+    confirm_terms: 'Trebuie să accepți Termenii și Condițiile.'
+  },
+  en: {
+    auth_sub: 'Logistics Platform',
+    login_title: 'Sign In',
+    login_desc: 'Welcome back! Enter your credentials.',
+    email: 'Email', password: 'Password',
+    remember_me: 'Remember me',
+    login_btn: 'Sign In',
+    no_account: "Don't have an account? Sign up",
+    signup_title: 'Create account',
+    signup_desc: 'Enter your email and password.',
+    password_confirm: 'Confirm password',
+    next: 'Continue', back: '← Back',
+    choose_plan: 'Choose subscription',
+    choose_plan_desc: '7-day free trial on all plans.',
+    plan_standard_desc: '50 invoices · 100 AWB per week',
+    plan_premium_desc: '200 invoices · 200 AWB per week',
+    plan_elite_desc: 'Unlimited invoices and AWB',
+    popular: 'Popular',
+    payment_title: 'Payment details',
+    payment_desc: 'Enter debit card',
+    card_holder: 'Card holder', card_number: 'Card number',
+    card_expiry: 'Expiry', card_cvv: 'CVV',
+    accept_terms: 'I accept the', terms_link: 'Terms & Conditions',
+    signup_complete: 'Complete registration',
+    beta_warning: 'Beta version.',
+    beta_warning_text: 'Card data is not processed, no real payment occurs.',
+    support: 'Support', reclamatie: 'Complaint',
+    have_account: 'Already have an account? Sign in',
+    nav_dashboard: 'Dashboard', nav_awb: 'AWB', nav_factura: 'Invoices',
+    nav_settings: 'Settings', nav_curier: 'Courier', nav_companie: 'Company',
+    accounts_label: 'Accounts',
+    new_subaccount: 'New sub-account',
+    manage_subscription: 'Manage Subscription',
+    logout: 'Sign out',
+    search: 'Search...',
+    stat_orders: 'Orders today', stat_orders_hint: 'Last 24 hours',
+    stat_awb: 'AWB this week', stat_factura: 'Invoices this week',
+    stat_plan: 'Subscription',
+    load_orders: 'Load orders', clear: 'Clear',
+    generate_awb: 'Generate AWB', generate_factura: 'Issue invoices',
+    col_order: 'Order', col_customer: 'Customer', col_address: 'Address',
+    col_product: 'Product', col_payment: 'Payment', col_amount: 'Amount',
+    curier_title: 'Courier settings', company_title: 'Company settings',
+    account_name: 'Sub-account name', company_name: 'Name / Company',
+    phone: 'Phone', country: 'Country', city: 'City', street: 'Street',
+    save: 'Save', delete_account: 'Delete sub-account',
+    current_plan: 'Current plan:',
+    change_plan: 'Change subscription',
+    cancel: 'Cancel', close: 'Close',
+    refresh: 'Refresh',
+    terms_admin_desc: 'Edit the text — all users will see it.',
+    reset: 'Reset',
+    limit_reached: 'Weekly limit reached',
+    limit_text: 'You reached the {type} limit for the {plan} plan. Upgrade for more.',
+    confirm_terms: 'You must accept the Terms & Conditions.'
+  },
+  hu: {
+    auth_sub: 'Logisztikai Platform',
+    login_title: 'Bejelentkezés',
+    login_desc: 'Üdv újra! Add meg az adataidat.',
+    email: 'Email', password: 'Jelszó',
+    remember_me: 'Emlékezz rám',
+    login_btn: 'Bejelentkezés',
+    no_account: 'Nincs fiókod? Regisztrálj',
+    signup_title: 'Fiók létrehozása',
+    signup_desc: 'Add meg az email címed és jelszavad.',
+    password_confirm: 'Jelszó megerősítés',
+    next: 'Tovább', back: '← Vissza',
+    choose_plan: 'Válassz előfizetést',
+    choose_plan_desc: '7 napos ingyenes próbaidő minden csomagnál.',
+    plan_standard_desc: 'Heti 50 számla · 100 AWB',
+    plan_premium_desc: 'Heti 200 számla · 200 AWB',
+    plan_elite_desc: 'Korlátlan számla és AWB',
+    popular: 'Népszerű',
+    payment_title: 'Fizetési adatok',
+    payment_desc: 'Debit kártya megadása',
+    card_holder: 'Kártyabirtokos neve', card_number: 'Kártyaszám',
+    card_expiry: 'Lejárat', card_cvv: 'CVV',
+    accept_terms: 'Elfogadom a', terms_link: 'Termeni și Condiții',
+    signup_complete: 'Regisztráció befejezése',
+    beta_warning: 'Beta verzió.',
+    beta_warning_text: 'A kártya adatait nem dolgozzuk fel, nem történik valódi fizetés.',
+    support: 'Support', reclamatie: 'Reclamație',
+    have_account: 'Már van fiókod? Jelentkezz be',
+    nav_dashboard: 'Dashboard', nav_awb: 'AWB-k', nav_factura: 'Számlák',
+    nav_settings: 'Beállítások', nav_curier: 'Futár', nav_companie: 'Cég',
+    accounts_label: 'Fiókok',
+    new_subaccount: 'Új al-account',
+    manage_subscription: 'Manage Subscription',
+    logout: 'Kijelentkezés',
+    search: 'Keresés...',
+    stat_orders: 'Mai rendelések', stat_orders_hint: 'Utolsó 24 óra',
+    stat_awb: 'Heti AWB-k', stat_factura: 'Heti számlák',
+    stat_plan: 'Előfizetés',
+    load_orders: 'Rendelések letöltése', clear: 'Törlés',
+    generate_awb: 'AWB generálása', generate_factura: 'Számla kiállítása',
+    col_order: 'Rendelés', col_customer: 'Ügyfél', col_address: 'Cím',
+    col_product: 'Termék', col_payment: 'Fizetés', col_amount: 'Összeg',
+    curier_title: 'Futár beállítások', company_title: 'Cég beállítások',
+    account_name: 'Al-account neve', company_name: 'Név / Cég',
+    phone: 'Telefon', country: 'Ország', city: 'Város', street: 'Utca',
+    save: 'Mentés', delete_account: 'Al-account törlése',
+    current_plan: 'Aktív előfizetésed:',
+    change_plan: 'Előfizetés módosítása',
+    cancel: 'Mégse', close: 'Bezárás',
+    refresh: 'Frissítés',
+    terms_admin_desc: 'Szerkeszd a szöveget — minden felhasználó látni fogja.',
+    reset: 'Visszaállítás',
+    limit_reached: 'Heti limit elérve',
+    limit_text: 'Elérted a {type} limitet a {plan} csomagnál. Válts nagyobbra!',
+    confirm_terms: 'El kell fogadnod a Termeni și Condiții-t.'
+  }
+};
+
+let currentLang = localStorage.getItem('zen3-lang') || 'hu';
+
+window.setLang = function (lang) {
+  currentLang = lang;
+  localStorage.setItem('zen3-lang', lang);
+  applyTranslations();
+  document.querySelectorAll('.lang-switcher button').forEach(b => {
+    b.classList.toggle('active', b.dataset.lang === lang);
+  });
+};
+
+function t(key) {
+  return (TRANSLATIONS[currentLang] && TRANSLATIONS[currentLang][key]) || key;
 }
-const sleep = (ms) => new Promise(r => setTimeout(r, ms));
 
-let isSignup = false;
+function applyTranslations() {
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.dataset.i18n;
+    const val = t(key);
+    if (val) el.textContent = val;
+  });
+  document.querySelectorAll('.lang-switcher button').forEach(b => {
+    b.classList.toggle('active', b.dataset.lang === currentLang);
+  });
+}
+
+// ============================================
+// DEFAULT TERMS
+// ============================================
+const DEFAULT_TERMS = `TERMENI ȘI CONDIȚII
+
+Ultima actualizare: 8 octombrie 2026
+
+1. Informații generale
+Prezentele Termeni și Condiții reglementează utilizarea platformei Eauto, disponibilă la https://awb-si-facturi.vercel.app, operată de Milan web S.R.L.
+Contact: electricautomatiks@gmail.com
+
+2. Descrierea serviciului
+Eauto este o platformă software destinată gestionării operațiunilor de logistică și facturare. Oferă generare AWB, gestionare comenzi, integrare curierat, generare facturi, integrare SPV, integrare WooCommerce.
+
+3. Contul utilizatorului
+Utilizatorul este responsabil pentru furnizarea informațiilor corecte, păstrarea confidențialității datelor de autentificare și toate activitățile din cont.
+
+4. Abonamente
+STANDARD — 50 lei/lună (50 facturi + 100 AWB / săptămână)
+PREMIUM — 200 lei/lună (200 facturi + 200 AWB / săptămână)
+ELITE — 400 lei/lună (nelimitat)
+
+5. Perioada de testare gratuită
+7 zile gratuite. După expirare, abonamentul devine plătit automat.
+
+6. Plăți și reînnoire
+Abonamentele sunt lunare și se reînnoiesc automat.
+
+7. Anularea abonamentului
+Utilizatorul poate solicita anularea. Abonamentul rămâne activ până la expirarea perioadei plătite.
+
+8. Dreptul de retragere
+Conform legislației aplicabile pentru consumatori.
+
+9. Utilizarea Platformei
+Interzisă utilizarea ilegală, accesul neautorizat, copierea software-ului.
+
+10. Datele introduse de utilizator
+Utilizatorul este responsabil pentru datele introduse.
+
+11. Protecția datelor (GDPR)
+Prelucrarea se face conform Regulamentului (UE) 2016/679.
+
+12. Integrarea cu servicii terțe
+DPD, Cargus, WooCommerce, FGO, SPV.
+
+13. Disponibilitatea serviciului
+Nu garantăm funcționare neîntreruptă.
+
+14. Limitarea răspunderii
+Nu răspundem pentru date introduse incorect sau probleme ale terților.
+
+15. Proprietatea intelectuală
+Toate elementele aparțin Milan web S.R.L.
+
+16. Suspendarea contului
+În caz de încălcare, contul poate fi suspendat.
+
+17. Modificarea Termenilor
+Ne rezervăm dreptul de a modifica.
+
+18. Reclamații și contact
+electricautomatiks@gmail.com
+
+19. Legea aplicabilă
+Legislația română.
+
+20. Acceptarea Termenilor
+Prin crearea contului, accepți acești termeni.
+
+Milan web S.R.L.
+Email: electricautomatiks@gmail.com
+Platformă: Eauto`;
+
+let globalTerms = DEFAULT_TERMS;
+
+async function loadGlobalTerms() {
+  try {
+    const docRef = doc(db, 'settings', 'terms');
+    const snap = await getDoc(docRef);
+    if (snap.exists() && snap.data().text) {
+      globalTerms = snap.data().text;
+    }
+  } catch (e) { console.warn('Terms load error:', e); }
+  document.querySelectorAll('.terms-box').forEach(el => { el.textContent = globalTerms; });
+}
+
+// ============================================
+// SUPPORT / RECLAMATIE
+// ============================================
+window.openSupport = function () {
+  const subject = encodeURIComponent('Zen3Hub Support Request');
+  const url = `https://mail.google.com/mail/?view=cm&fs=1&to=${SUPPORT_EMAIL}&su=${subject}`;
+  window.open(url, '_blank');
+};
+
+window.openReclamatie = function () {
+  window.open(ANPC_URL, '_blank');
+};
+
+// ============================================
+// TERMS MODAL
+// ============================================
+window.openTermsModal = function (e) {
+  if (e) e.preventDefault();
+  document.getElementById('termsModalOverlay').classList.add('open');
+  document.getElementById('termsModalBox').textContent = globalTerms;
+};
+window.closeTermsModal = function () {
+  document.getElementById('termsModalOverlay').classList.remove('open');
+};
+
+// ============================================
+// AUTH STEPS
+// ============================================
+let selectedPlan = 'standard';
+
+window.showStep = function (stepId) {
+  document.querySelectorAll('.auth-step').forEach(s => s.classList.remove('active'));
+  document.getElementById('step-' + stepId).classList.add('active');
+  document.querySelectorAll('#loginError, #signupError').forEach(e => e.style.display = 'none');
+};
+
+let signupData = { email: '', password: '' };
+
+window.signupStep1 = function () {
+  const email = document.getElementById('signupEmail').value.trim();
+  const password = document.getElementById('signupPassword').value;
+  const password2 = document.getElementById('signupPassword2').value;
+  const errEl = document.getElementById('signupError');
+  errEl.style.display = 'none';
+
+  if (!email || !password) { errEl.textContent = 'Töltsd ki az összes mezőt!'; errEl.style.display = 'block'; return; }
+  if (password.length < 6) { errEl.textContent = 'A jelszó legalább 6 karakter legyen!'; errEl.style.display = 'block'; return; }
+  if (password !== password2) { errEl.textContent = 'A jelszavak nem egyeznek!'; errEl.style.display = 'block'; return; }
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(email)) { errEl.textContent = 'Érvénytelen email cím!'; errEl.style.display = 'block'; return; }
+
+  signupData.email = email;
+  signupData.password = password;
+  showStep('signup-plan');
+};
+
+window.selectPlan = function (plan) {
+  selectedPlan = plan;
+  document.querySelectorAll('#planGrid .plan-card').forEach(c => {
+    c.classList.toggle('selected', c.dataset.plan === plan);
+  });
+};
+
+window.signupStep2 = function () {
+  showStep('signup-payment');
+};
+
+window.signupStep3 = async function () {
+  const errEl = document.getElementById('signupError');
+  errEl.style.display = 'none';
+
+  if (!document.getElementById('acceptTerms').checked) {
+    // Ugrás vissza payment step-re és ott jelezzük
+    showStep('signup-payment');
+    errEl.textContent = t('confirm_terms');
+    errEl.style.display = 'block';
+    // Görgessünk a checkbox-hoz
+    document.getElementById('acceptTerms').scrollIntoView({ behavior: 'smooth', block: 'center' });
+    return;
+  }
+
+  if (signupData.email === ADMIN_EMAIL) {
+    showStep('signup-payment');
+    errEl.textContent = 'Ez az email admin fiókhoz tartozik.';
+    errEl.style.display = 'block';
+    return;
+  }
+
+  try {
+    const cred = await createUserWithEmailAndPassword(auth, signupData.email, signupData.password);
+    await setDoc(doc(db, 'users', cred.user.uid), {
+      email: signupData.email,
+      plan: selectedPlan,
+      accounts: [{ name: 'Fő account', expeditor: {}, shopConfig: {}, dpdConfig: {}, fgoConfig: {} }],
+      activeAccountIndex: 0,
+      createdAt: new Date().toISOString(),
+      termsAcceptedAt: new Date().toISOString()
+    });
+    toast('Fiók létrehozva!', 'success');
+  } catch (e) {
+    const map = {
+      'auth/email-already-in-use': 'Ez az email már regisztrálva van.',
+      'auth/weak-password': 'A jelszó túl gyenge.',
+      'auth/invalid-email': 'Érvénytelen email cím.'
+    };
+    showStep('signup-payment');
+    errEl.textContent = map[e.code] || e.message;
+    errEl.style.display = 'block';
+  }
+};
+
+window.handleLogin = async function () {
+  const email = document.getElementById('loginEmail').value.trim();
+  const password = document.getElementById('loginPassword').value;
+  const errEl = document.getElementById('loginError');
+  const remember = document.getElementById('rememberMe').checked;
+  errEl.style.display = 'none';
+
+  if (!email || !password) { errEl.textContent = 'Töltsd ki az összes mezőt!'; errEl.style.display = 'block'; return; }
+
+  try {
+    await setPersistence(auth, remember ? browserLocalPersistence : browserSessionPersistence);
+    await signInWithEmailAndPassword(auth, email, password);
+  } catch (e) {
+    const map = {
+      'auth/user-not-found': 'Nincs ilyen fiók.',
+      'auth/wrong-password': 'Hibás jelszó.',
+      'auth/invalid-credential': 'Hibás email vagy jelszó.',
+      'auth/too-many-requests': 'Túl sok próbálkozás.'
+    };
+    errEl.textContent = map[e.code] || e.message;
+    errEl.style.display = 'block';
+  }
+};
+
+// Card formatting
+window.formatCard = function (el) {
+  let v = el.value.replace(/\s+/g, '').replace(/\D/g, '').slice(0, 16);
+  el.value = v.replace(/(.{4})/g, '$1 ').trim();
+};
+window.formatExpiry = function (el) {
+  let v = el.value.replace(/\D/g, '').slice(0, 4);
+  if (v.length >= 2) v = v.slice(0, 2) + '/' + v.slice(2);
+  el.value = v;
+};
+
+// ============================================
+// STATE
+// ============================================
 let currentUser = null;
 let currentUserData = null;
 let currentAccountIndex = 0;
-
 let accountOrders = {};
 let accountSelectedAWB = {};
 let accountSelectedFactura = {};
@@ -1129,6 +1717,10 @@ function getSelectedFactura() {
 
 function escapeHtml(s) {
   return String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+}
+const sleep = (ms) => new Promise(r => setTimeout(r, ms));
+function chunkArray(arr, size) {
+  const out = []; for (let i = 0; i < arr.length; i += size) out.push(arr.slice(i, i + size)); return out;
 }
 
 // ===== TOAST =====
@@ -1164,65 +1756,9 @@ window.toggleTheme = function () {
   document.documentElement.setAttribute('data-theme', saved);
 })();
 
-// ===== AUTH =====
-window.toggleAuthMode = function () {
-  isSignup = !isSignup;
-  document.getElementById('authTitle').textContent = isSignup ? 'Fiók létrehozása' : 'Bejelentkezés';
-  document.getElementById('authDesc').textContent = isSignup ? 'Add meg az adataidat a regisztrációhoz.' : 'Üdv újra! Add meg az adataidat.';
-  document.getElementById('authBtn').textContent = isSignup ? 'Regisztráció' : 'Bejelentkezés';
-  document.getElementById('switchText').textContent = isSignup ? 'Már van fiókod? Jelentkezz be' : 'Nincs fiókod? Regisztrálj';
-  document.getElementById('authError').style.display = 'none';
-};
-
-window.handleAuth = async function () {
-  const email = document.getElementById('email').value.trim();
-  const password = document.getElementById('password').value;
-  const errEl = document.getElementById('authError');
-  const remember = document.getElementById('rememberMe').checked;
-  errEl.style.display = 'none';
-
-  if (!email || !password) { errEl.textContent = 'Töltsd ki az összes mezőt!'; errEl.style.display = 'block'; return; }
-  if (password.length < 6) { errEl.textContent = 'A jelszó legalább 6 karakter legyen!'; errEl.style.display = 'block'; return; }
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  if (!emailRegex.test(email)) { errEl.textContent = 'Érvénytelen email cím!'; errEl.style.display = 'block'; return; }
-
-  try {
-    await setPersistence(auth, remember ? browserLocalPersistence : browserSessionPersistence);
-  } catch (e) {}
-
-  if (isSignup) {
-    if (email === ADMIN_EMAIL) { errEl.textContent = 'Ez az email admin fiókhoz tartozik.'; errEl.style.display = 'block'; return; }
-    try {
-      const cred = await createUserWithEmailAndPassword(auth, email, password);
-      await setDoc(doc(db, 'users', cred.user.uid), {
-        email,
-        accounts: [{ name: 'Fő account', expeditor: {}, shopConfig: {}, dpdConfig: {}, fgoConfig: {} }],
-        activeAccountIndex: 0,
-        createdAt: new Date().toISOString()
-      });
-      toast('Fiók létrehozva!', 'success');
-    } catch (e) {
-      const map = {
-        'auth/email-already-in-use': 'Ez az email már regisztrálva van.',
-        'auth/weak-password': 'A jelszó túl gyenge.',
-        'auth/invalid-email': 'Érvénytelen email cím.'
-      };
-      errEl.textContent = map[e.code] || e.message; errEl.style.display = 'block';
-    }
-  } else {
-    try { await signInWithEmailAndPassword(auth, email, password); }
-    catch (e) {
-      const map = {
-        'auth/user-not-found': 'Nincs ilyen fiók.',
-        'auth/wrong-password': 'Hibás jelszó.',
-        'auth/invalid-credential': 'Hibás email vagy jelszó.',
-        'auth/too-many-requests': 'Túl sok próbálkozás.'
-      };
-      errEl.textContent = map[e.code] || e.message; errEl.style.display = 'block';
-    }
-  }
-};
-
+// ============================================
+// AUTH STATE
+// ============================================
 onAuthStateChanged(auth, async (user) => {
   if (user) {
     currentUser = user;
@@ -1233,21 +1769,20 @@ onAuthStateChanged(auth, async (user) => {
 
     const userDoc = await getDoc(doc(db, 'users', user.uid));
     let data = userDoc.data();
-
     if (!data) {
       data = {
         email: user.email,
-        isAdmin: user.email === ADMIN_EMAIL,
+        plan: 'standard',
         accounts: [{ name: 'Fő account', expeditor: {}, shopConfig: {}, dpdConfig: {}, fgoConfig: {} }],
         activeAccountIndex: 0,
         createdAt: new Date().toISOString()
       };
       await setDoc(doc(db, 'users', user.uid), data);
     }
+    if (!data.plan) data.plan = 'standard';
     if (!data.accounts) {
       data.accounts = [{ name: 'Fő account', expeditor: data.expeditor || {}, shopConfig: data.shopConfig || {}, dpdConfig: data.dpdConfig || {}, fgoConfig: data.fgoConfig || {} }];
     }
-
     currentUserData = data;
     currentAccountIndex = data.activeAccountIndex || 0;
 
@@ -1261,6 +1796,9 @@ onAuthStateChanged(auth, async (user) => {
     updateSidebarAccount();
     fillSettingsForm();
     refreshOrdersView();
+    updatePlanDisplay();
+    await loadGlobalTerms();
+    await refreshUsageStats();
   } else {
     currentUser = null; currentUserData = null;
     accountOrders = {}; accountSelectedAWB = {}; accountSelectedFactura = {};
@@ -1268,40 +1806,176 @@ onAuthStateChanged(auth, async (user) => {
     document.getElementById('authScreen').style.display = 'flex';
     document.getElementById('app').classList.remove('show');
     document.getElementById('adminNavWrap').style.display = 'none';
+    showStep('login');
   }
 });
 
 window.logout = async function () { await signOut(auth); toast('Kijelentkezve', 'info'); };
 
-// ===== TABS =====
+// ============================================
+// PLAN + USAGE
+// ============================================
+function getWeekKey() {
+  const d = new Date();
+  const onejan = new Date(d.getFullYear(), 0, 1);
+  const week = Math.ceil((((d - onejan) / 86400000) + onejan.getDay() + 1) / 7);
+  return `${d.getFullYear()}-W${String(week).padStart(2, '0')}`;
+}
+
+async function getUsage() {
+  if (!currentUser) return { awb: 0, factura: 0 };
+  const weekKey = getWeekKey();
+  const snap = await getDoc(doc(db, 'usage', currentUser.uid + '_' + weekKey));
+  if (snap.exists()) {
+    const data = snap.data();
+    return { awb: data.awb || 0, factura: data.factura || 0 };
+  }
+  return { awb: 0, factura: 0 };
+}
+
+async function incrementUsage(type, count) {
+  if (!currentUser) return;
+  const weekKey = getWeekKey();
+  const ref = doc(db, 'usage', currentUser.uid + '_' + weekKey);
+  const snap = await getDoc(ref);
+  const data = snap.exists() ? snap.data() : { awb: 0, factura: 0 };
+  data[type] = (data[type] || 0) + count;
+  data.updatedAt = new Date().toISOString();
+  await setDoc(ref, data);
+}
+
+async function canGenerate(type, count) {
+  const plan = currentUserData?.plan || 'standard';
+  const limits = PLAN_LIMITS[plan];
+  const limit = limits[type];
+  if (limit === Infinity) return { ok: true, remaining: Infinity, limit };
+  const usage = await getUsage();
+  const remaining = limit - usage[type];
+  return { ok: remaining >= count, remaining, limit, used: usage[type] };
+}
+
+async function refreshUsageStats() {
+  if (!currentUser) return;
+  const usage = await getUsage();
+  const plan = currentUserData?.plan || 'standard';
+  const limits = PLAN_LIMITS[plan];
+
+  document.getElementById('statAwb').textContent = usage.awb;
+  document.getElementById('statFacturi').textContent = usage.factura;
+
+  const awbLimitEl = document.getElementById('statAwbLimit');
+  const facLimitEl = document.getElementById('statFacturaLimit');
+  if (limits.awb === Infinity) {
+    awbLimitEl.textContent = '∞ korlátlan';
+    facLimitEl.textContent = '∞ korlátlan';
+  } else {
+    awbLimitEl.textContent = `${usage.awb} / ${limits.awb} ezen a héten`;
+    facLimitEl.textContent = `${usage.factura} / ${limits.factura} ezen a héten`;
+  }
+
+  // Usage warning box
+  const warnBox = document.getElementById('usageWarning');
+  if (limits.awb !== Infinity) {
+    const awbPct = usage.awb / limits.awb;
+    const facPct = usage.factura / limits.factura;
+    if (awbPct >= 0.8 || facPct >= 0.8) {
+      warnBox.style.display = 'block';
+      warnBox.className = 'usage-bar warn';
+      warnBox.innerHTML = `
+        <div><b>⚠️ ${t('limit_reached')}</b> — AWB: ${usage.awb}/${limits.awb}, Számla: ${usage.factura}/${limits.factura}</div>
+      `;
+    } else {
+      warnBox.style.display = 'none';
+    }
+  } else {
+    warnBox.style.display = 'none';
+  }
+}
+
+function updatePlanDisplay() {
+  const plan = currentUserData?.plan || 'standard';
+  const limits = PLAN_LIMITS[plan];
+  document.getElementById('statPlan').textContent = limits.name;
+  document.getElementById('statPlanHint').textContent = limits.price + ' lei/hó';
+}
+
+// ============================================
+// MANAGE SUBSCRIPTION
+// ============================================
+let subSelectedPlan = null;
+
+window.openManageSubscription = async function () {
+  if (!currentUserData) return;
+  document.getElementById('accountMenu').classList.remove('open');
+  document.getElementById('sidebarUserBtn').classList.remove('open');
+
+  const currentPlan = currentUserData.plan || 'standard';
+  subSelectedPlan = currentPlan;
+
+  document.getElementById('subCurrentPlan').textContent = PLAN_LIMITS[currentPlan].name + ' — ' + PLAN_LIMITS[currentPlan].price + ' lei/hó';
+
+  document.querySelectorAll('#subPlanGrid .plan-card').forEach(c => {
+    c.classList.toggle('selected', c.dataset.plan === currentPlan);
+  });
+
+  document.getElementById('subTermsBox').textContent = globalTerms;
+
+  document.getElementById('subModalOverlay').classList.add('open');
+};
+
+window.closeManageSubscription = function () {
+  document.getElementById('subModalOverlay').classList.remove('open');
+};
+
+window.selectSubPlan = function (plan) {
+  subSelectedPlan = plan;
+  document.querySelectorAll('#subPlanGrid .plan-card').forEach(c => {
+    c.classList.toggle('selected', c.dataset.plan === plan);
+  });
+};
+
+window.saveSubscription = async function () {
+  if (!currentUser || !subSelectedPlan) return;
+  const old = currentUserData.plan || 'standard';
+  if (old === subSelectedPlan) {
+    toast('Ez már az aktív csomagod.', 'info');
+    closeManageSubscription();
+    return;
+  }
+  await updateDoc(doc(db, 'users', currentUser.uid), { plan: subSelectedPlan });
+  currentUserData.plan = subSelectedPlan;
+  updatePlanDisplay();
+  await refreshUsageStats();
+  closeManageSubscription();
+  toast(`Előfizetés módosítva: ${PLAN_LIMITS[subSelectedPlan].name}`, 'success');
+};
+
+// ============================================
+// TABS
+// ============================================
 window.switchTab = function (tab) {
-  if (tab === 'admin' && currentUser?.email !== ADMIN_EMAIL) { toast('Nincs jogosultságod', 'error'); return; }
+  if ((tab === 'admin' || tab === 'terms-admin') && currentUser?.email !== ADMIN_EMAIL) {
+    toast('Nincs jogosultságod', 'error'); return;
+  }
   document.querySelectorAll('.nav-item').forEach(n => n.classList.toggle('active', n.dataset.tab === tab));
   document.querySelectorAll('.tab-page').forEach(p => p.classList.add('hidden'));
   const page = document.getElementById('page-' + tab);
   if (page) page.classList.remove('hidden');
   const titles = {
-    dashboard: 'Dashboard', awb: 'AWB-k', factura: 'Számlák eFactura',
-    curier: 'Futár beállítások', companie: 'Cég beállítások', istoric: 'Előzmények', admin: 'Admin panel'
+    dashboard: 'Dashboard', awb: 'AWB-k', factura: 'Számlák',
+    curier: 'Futár', companie: 'Cég', 'terms-admin': 'Termeni & Condiții', admin: 'Admin panel'
   };
   document.getElementById('pageTitle').textContent = titles[tab] || 'Dashboard';
   document.getElementById('sidebar').classList.remove('open');
   if (tab === 'admin') loadAdminData();
+  if (tab === 'terms-admin') document.getElementById('termsAdminText').value = globalTerms;
 };
 
 window.toggleSidebar = function () { document.getElementById('sidebar').classList.toggle('open'); };
 
-// ===== SHEET =====
-window.openSheet = function () {
-  document.getElementById('sheetOverlay').classList.add('open');
-  document.getElementById('sheet').classList.add('open');
-};
-window.closeSheet = function () {
-  document.getElementById('sheetOverlay').classList.remove('open');
-  document.getElementById('sheet').classList.remove('open');
-};
-
-// ===== AL-ACCOUNT MENU =====
+// ============================================
+// AL-ACCOUNT
+// ============================================
 window.toggleAccountMenu = function (e) {
   e.stopPropagation();
   const menu = document.getElementById('accountMenu');
@@ -1316,7 +1990,6 @@ window.toggleAccountMenu = function (e) {
     btn.classList.remove('open');
   }
 };
-
 document.addEventListener('click', (e) => {
   const menu = document.getElementById('accountMenu');
   const btn = document.getElementById('sidebarUserBtn');
@@ -1354,8 +2027,7 @@ window.selectAccount = async function (idx) {
   refreshOrdersView();
   document.getElementById('accountMenu').classList.remove('open');
   document.getElementById('sidebarUserBtn').classList.remove('open');
-  const acc = getActiveAccount();
-  toast(`Átváltva: ${acc.name}`, 'success');
+  toast(`Átváltva: ${getActiveAccount().name}`, 'success');
 };
 
 window.addSubAccount = async function () {
@@ -1379,7 +2051,6 @@ window.addSubAccount = async function () {
   switchTab('companie');
 };
 
-// ===== ACCOUNT =====
 function getActiveAccount() {
   if (!currentUserData?.accounts?.length) {
     return { name: 'Fő account', expeditor: {}, shopConfig: {}, dpdConfig: {}, fgoConfig: {} };
@@ -1475,27 +2146,7 @@ window.deleteCurrentAccount = async function () {
   const accounts = currentUserData.accounts || [];
   if (accounts.length <= 1) { toast('Legalább 1 account kell', 'warning'); return; }
   if (!confirm('Biztosan törlöd ezt az al-accountot?')) return;
-  const deletedIdx = currentAccountIndex;
-  delete accountOrders[deletedIdx];
-  delete accountSelectedAWB[deletedIdx];
-  delete accountSelectedFactura[deletedIdx];
-  delete accountSearchAWB[deletedIdx];
-  delete accountSearchFactura[deletedIdx];
-  const shift = (obj) => {
-    const out = {};
-    Object.keys(obj).forEach(k => {
-      const idx = parseInt(k);
-      if (idx < deletedIdx) out[idx] = obj[k];
-      else if (idx > deletedIdx) out[idx - 1] = obj[k];
-    });
-    return out;
-  };
-  accountOrders = shift(accountOrders);
-  accountSelectedAWB = shift(accountSelectedAWB);
-  accountSelectedFactura = shift(accountSelectedFactura);
-  accountSearchAWB = shift(accountSearchAWB);
-  accountSearchFactura = shift(accountSearchFactura);
-  accounts.splice(deletedIdx, 1);
+  accounts.splice(currentAccountIndex, 1);
   currentAccountIndex = 0;
   currentUserData.accounts = accounts;
   currentUserData.activeAccountIndex = 0;
@@ -1506,7 +2157,30 @@ window.deleteCurrentAccount = async function () {
   toast('Al-account törölve', 'success');
 };
 
-// ===== ORDERS =====
+// ============================================
+// ADMIN - TERMS SAVE
+// ============================================
+window.saveTermsAdmin = async function () {
+  if (currentUser?.email !== ADMIN_EMAIL) { toast('Nincs jogosultságod', 'error'); return; }
+  const text = document.getElementById('termsAdminText').value.trim();
+  if (!text) { toast('Nem lehet üres', 'warning'); return; }
+  try {
+    await setDoc(doc(db, 'settings', 'terms'), { text, updatedAt: new Date().toISOString(), updatedBy: currentUser.email });
+    globalTerms = text;
+    document.querySelectorAll('.terms-box').forEach(el => { el.textContent = globalTerms; });
+    toast('Termeni și Condiții mentve', 'success');
+  } catch (e) {
+    toast('Hiba: ' + e.message, 'error');
+  }
+};
+window.resetTermsAdmin = function () {
+  document.getElementById('termsAdminText').value = DEFAULT_TERMS;
+  toast('Alapértelmezett visszaállítva (még nem mentve)', 'info');
+};
+
+// ============================================
+// ORDERS
+// ============================================
 window.loadOrders = async function () {
   const acc = getActiveAccount();
   const shop = acc.shopConfig || {};
@@ -1620,27 +2294,15 @@ function renderOrdersAWB(orders) {
   if (!tbody) return;
   const selected = getSelectedAWB();
   if (!orders.length) {
-    tbody.innerHTML = `<tr><td colspan="7">
-      <div class="empty">
-        <div class="empty-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m7.5 4.27 9 5.15"/><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/></svg></div>
-        <h3>Nincs rendelés</h3>
-        <p>Töltsd le a rendeléseket a WooCommerce-ből.</p>
-      </div>
-    </td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="7"><div class="empty"><div class="empty-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m7.5 4.27 9 5.15"/><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/></svg></div><h3>Nincs rendelés</h3><p>Töltsd le a rendeléseket.</p></div></td></tr>`;
     return;
   }
   tbody.innerHTML = orders.map(o => `
     <tr data-order-id="${o.id}" data-type="awb">
       <td><input type="checkbox" ${selected.has(String(o.id)) ? 'checked' : ''} onchange="toggleOrderAWB('${o.id}', this.checked)" style="accent-color:var(--primary);"></td>
       <td><strong style="font-weight:600;">#${o.id}</strong></td>
-      <td>
-        <div style="font-weight:500;">${escapeHtml(o.name)}</div>
-        <div style="font-size:12px; color:var(--fg-muted);">${escapeHtml(o.phone) || '–'}</div>
-      </td>
-      <td>
-        <div style="font-size:13px;">${escapeHtml(o.address) || '–'}</div>
-        <div style="font-size:12px; color:var(--fg-muted);">${escapeHtml(o.city) || ''}</div>
-      </td>
+      <td><div style="font-weight:500;">${escapeHtml(o.name)}</div><div style="font-size:12px; color:var(--fg-muted);">${escapeHtml(o.phone) || '–'}</div></td>
+      <td><div style="font-size:13px;">${escapeHtml(o.address) || '–'}</div><div style="font-size:12px; color:var(--fg-muted);">${escapeHtml(o.city) || ''}</div></td>
       <td style="font-size:12.5px; color:var(--fg-muted); max-width:180px;" class="truncate">${escapeHtml(o.product) || '–'}</td>
       <td>${o.isRamburs ? '<span class="badge warning">Ramburs</span>' : '<span class="badge success">Fizetve</span>'}</td>
       <td style="text-align:right; font-weight:600;">${o.totalWithTax.toFixed(2)} RON</td>
@@ -1653,27 +2315,15 @@ function renderOrdersFactura(orders) {
   if (!tbody) return;
   const selected = getSelectedFactura();
   if (!orders.length) {
-    tbody.innerHTML = `<tr><td colspan="7">
-      <div class="empty">
-        <div class="empty-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
-        <h3>Nincs rendelés</h3>
-        <p>Töltsd le a rendeléseket a WooCommerce-ből.</p>
-      </div>
-    </td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="7"><div class="empty"><div class="empty-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div><h3>Nincs rendelés</h3><p>Töltsd le a rendeléseket.</p></div></td></tr>`;
     return;
   }
   tbody.innerHTML = orders.map(o => `
     <tr data-order-id="${o.id}" data-type="factura">
       <td><input type="checkbox" ${selected.has(String(o.id)) ? 'checked' : ''} onchange="toggleOrderFactura('${o.id}', this.checked)" style="accent-color:var(--primary);"></td>
       <td><strong style="font-weight:600;">#${o.id}</strong></td>
-      <td>
-        <div style="font-weight:500;">${escapeHtml(o.name)}</div>
-        <div style="font-size:12px; color:var(--fg-muted);">${escapeHtml(o.phone) || '–'}</div>
-      </td>
-      <td>
-        <div style="font-size:13px;">${escapeHtml(o.address) || '–'}</div>
-        <div style="font-size:12px; color:var(--fg-muted);">${escapeHtml(o.city) || ''}</div>
-      </td>
+      <td><div style="font-weight:500;">${escapeHtml(o.name)}</div><div style="font-size:12px; color:var(--fg-muted);">${escapeHtml(o.phone) || '–'}</div></td>
+      <td><div style="font-size:13px;">${escapeHtml(o.address) || '–'}</div><div style="font-size:12px; color:var(--fg-muted);">${escapeHtml(o.city) || ''}</div></td>
       <td style="font-size:12.5px; color:var(--fg-muted); max-width:180px;" class="truncate">${escapeHtml(o.product) || '–'}</td>
       <td>${o.isRamburs ? '<span class="badge warning">Ramburs</span>' : '<span class="badge success">Fizetve</span>'}</td>
       <td style="text-align:right; font-weight:600;">${o.totalWithTax.toFixed(2)} RON</td>
@@ -1707,7 +2357,7 @@ window.toggleSelectAllFactura = function (cb) {
 };
 
 // ============================================
-// AWB — 5-ös batch feldolgozás
+// AWB GENERATION
 // ============================================
 window.generateSelectedAWB = async function () {
   const s = getSelectedAWB();
@@ -1715,6 +2365,14 @@ window.generateSelectedAWB = async function () {
   const acc = getActiveAccount();
   if (!acc.expeditor?.name) { toast('Töltsd ki az expedíciós adatokat!', 'warning'); return; }
   if (!acc.dpdConfig?.dpdUser) { toast('Töltsd ki a DPD adatokat!', 'warning'); return; }
+
+  const check = await canGenerate('awb', s.size);
+  if (!check.ok) {
+    const planName = PLAN_LIMITS[currentUserData.plan].name;
+    toast(t('limit_text').replace('{type}', 'AWB').replace('{plan}', planName), 'error');
+    return;
+  }
+
   await buildAWBPreview();
 };
 
@@ -1734,12 +2392,9 @@ async function buildAWBPreview() {
   preview.innerHTML = `
     <h4>DPD AWB — ${total} rendelés</h4>
     <div id="${progressId}" class="progress-box">
-      <div class="progress-head">
-        <span>Feldolgozás folyamatban...</span>
-        <span id="${progressId}_count">0 / ${total}</span>
-      </div>
+      <div class="progress-head"><span>Feldolgozás folyamatban...</span><span id="${progressId}_count">0 / ${total}</span></div>
       <div class="progress-track"><div id="${progressId}_bar" class="progress-bar"></div></div>
-      <div class="progress-hint">Egyszerre max ${BATCH_SIZE} darab készül, hogy pontos legyen és ne legyen hiba.</div>
+      <div class="progress-hint">Egyszerre max ${BATCH_SIZE} darab készül.</div>
     </div>
     <div id="${progressId}_results"></div>
   `;
@@ -1749,27 +2404,18 @@ async function buildAWBPreview() {
   const barEl = document.getElementById(progressId + '_bar');
 
   let ok = 0, err = 0;
-
   for (let bi = 0; bi < batches.length; bi++) {
     const batch = batches[bi];
     const batchResults = await Promise.allSettled(batch.map(async (o) => {
       try {
         const res = await fetch(DPD_PROXY_URL, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            dpdUser: dpd.dpdUser,
-            dpdPassword: dpd.dpdPass,
-            clientSystemId: dpd.dpdClientId,
-            order: o
-          })
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ dpdUser: dpd.dpdUser, dpdPassword: dpd.dpdPass, clientSystemId: dpd.dpdClientId, order: o })
         });
         const result = await res.json();
         if (!result.success) throw new Error(result.error || 'DPD hiba');
         return { ok: true, order: o, result };
-      } catch (e) {
-        return { ok: false, order: o, error: e.message };
-      }
+      } catch (e) { return { ok: false, order: o, error: e.message }; }
     }));
 
     for (const r of batchResults) {
@@ -1782,40 +2428,50 @@ async function buildAWBPreview() {
             <div class="row"><span>Telefon:</span><span>${escapeHtml(val.order.phone)}</span></div>
             <div class="row"><span>Cím:</span><span>${escapeHtml(val.order.address)}, ${escapeHtml(val.order.city)}</span></div>
             <div class="row"><span>AWB:</span><span style="font-weight:600;">${val.result.barcode || val.result.shipmentId}</span></div>
-            <div class="row"><span>Ramburs:</span><span>${val.order.isRamburs ? val.order.amount.toFixed(2) + ' RON' : '–'}</span></div>
           </div>
         `);
       } else {
         err++;
         resultsEl.insertAdjacentHTML('beforeend', `
           <div style="margin-bottom:14px; padding:12px; background:#FEF2F2; border-radius:8px; color:#EF4444;">
-            <b>#${val.order.id}</b> — ${escapeHtml(val.order.name)}<br>
-            <small>Hiba: ${escapeHtml(val.error)}</small>
+            <b>#${val.order.id}</b> — ${escapeHtml(val.order.name)}<br><small>Hiba: ${escapeHtml(val.error)}</small>
           </div>
         `);
       }
     }
-
     const done = Math.min((bi + 1) * BATCH_SIZE, total);
     countEl.textContent = `${done} / ${total}`;
     barEl.style.width = `${(done / total) * 100}%`;
-
     if (bi < batches.length - 1) await sleep(BATCH_DELAY_MS);
   }
 
   document.getElementById(progressId).className = 'progress-box done';
   document.getElementById(progressId).innerHTML = `✓ Kész — ${ok} sikeres, ${err} hiba`;
+
+  if (ok > 0) {
+    await incrementUsage('awb', ok);
+    await refreshUsageStats();
+  }
+
   toast(`${ok} AWB kész, ${err} hiba`, err ? 'warning' : 'success');
 }
 
 // ============================================
-// SZÁMLA — 5-ös batch feldolgozás
+// FACTURA GENERATION
 // ============================================
 window.generateSelectedFactura = async function () {
   const s = getSelectedFactura();
   if (s.size === 0) { toast('Nincs kijelölt rendelés', 'warning'); return; }
   const acc = getActiveAccount();
   if (!acc.fgoConfig?.fgoKey || !acc.fgoConfig?.fgoCui) { toast('Töltsd ki az FGO adatokat!', 'warning'); return; }
+
+  const check = await canGenerate('factura', s.size);
+  if (!check.ok) {
+    const planName = PLAN_LIMITS[currentUserData.plan].name;
+    toast(t('limit_text').replace('{type}', 'számla').replace('{plan}', planName), 'error');
+    return;
+  }
+
   await buildFacturaPreview();
 };
 
@@ -1832,12 +2488,9 @@ async function buildFacturaPreview() {
 
   preview.innerHTML = `
     <div id="${progressId}" class="progress-box">
-      <div class="progress-head">
-        <span style="font-weight:500;">Számlák generálása...</span>
-        <span id="${progressId}_count">0 / ${total}</span>
-      </div>
+      <div class="progress-head"><span style="font-weight:500;">Számlák generálása...</span><span id="${progressId}_count">0 / ${total}</span></div>
       <div class="progress-track"><div id="${progressId}_bar" class="progress-bar"></div></div>
-      <div class="progress-hint">Egyszerre max ${BATCH_SIZE} számla készül az FGO-nál, hogy pontos legyen és ne legyen hiba.</div>
+      <div class="progress-hint">Egyszerre max ${BATCH_SIZE} számla készül.</div>
     </div>
     <div id="${progressId}_results"></div>
   `;
@@ -1847,39 +2500,29 @@ async function buildFacturaPreview() {
   const barEl = document.getElementById(progressId + '_bar');
 
   let ok = 0, err = 0;
-
   for (let bi = 0; bi < batches.length; bi++) {
     const batch = batches[bi];
     const batchResults = await Promise.allSettled(batch.map(async (o) => {
       try {
         const payload = {
-          codUnic: fgo.fgoCui,
-          cheiePrivata: fgo.fgoKey,
-          platformaUrl: fgo.fgoPlatform,
-          serie: fgo.fgoSerie,
-          client: {
-            Tip: 'PF', Denumire: o.name, Adresa: o.address,
-            Localitate: o.city, Judet: o.state, Tara: 'România',
-            Email: o.email, Telefon: o.phone
-          },
+          codUnic: fgo.fgoCui, cheiePrivata: fgo.fgoKey,
+          platformaUrl: fgo.fgoPlatform, serie: fgo.fgoSerie,
+          client: { Tip: 'PF', Denumire: o.name, Adresa: o.address, Localitate: o.city, Judet: o.state, Tara: 'România', Email: o.email, Telefon: o.phone },
           Continut: o.items.map(it => ({
             Denumire: it.name, UM: 'BUC', CodArticol: String(o.id),
-            NrProduse: it.quantity, PretUnitar: it.price,
-            CotaTVA: 0, TVA: 0, Valoare: it.price * it.quantity
+            NrProduse: it.quantity, PretUnitar: it.price, CotaTVA: 0, TVA: 0,
+            Valoare: it.price * it.quantity
           })),
           Discount: 0, DiscountProcent: 0, DiscountTip: 'valoare'
         };
         const res = await fetch(FGO_PROXY_URL, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(payload)
         });
         const result = await res.json();
         if (!result.success) throw new Error(result.error || 'FGO hiba');
         return { ok: true, order: o, result };
-      } catch (e) {
-        return { ok: false, order: o, error: e.message };
-      }
+      } catch (e) { return { ok: false, order: o, error: e.message }; }
     }));
 
     for (const r of batchResults) {
@@ -1891,74 +2534,51 @@ async function buildFacturaPreview() {
           resultsEl.insertAdjacentHTML('beforeend', `
             <div class="fgo-factura-wrap">
               <iframe src="${val.result.pdfUrl}#toolbar=1&navpanes=0&scrollbar=1&view=FitH" type="application/pdf"></iframe>
-              <div class="fgo-factura-link">
-                Ha a számla nem jelenik meg: <a href="${val.result.pdfUrl}" target="_blank">kattints ide</a>
-                &nbsp;·&nbsp; Számlaszám: <b>${sz}</b>
-                &nbsp;·&nbsp; Rendelés: <b>#${val.order.id}</b>
-                &nbsp;·&nbsp; Vásárló: <b>${escapeHtml(val.order.name)}</b>
-              </div>
+              <div class="fgo-factura-link">Számlaszám: <b>${sz}</b> · Rendelés: <b>#${val.order.id}</b></div>
             </div>
           `);
         } else {
           resultsEl.insertAdjacentHTML('beforeend', `
             <div style="margin-bottom:16px; padding:16px; background:#FEF2F2; color:#EF4444; border-radius:12px;">
-              <b>#${val.order.id}</b> — ${escapeHtml(val.order.name)}<br>
-              <small>Az FGO nem adott PDF linket. Számlaszám: <b>${sz}</b></small>
+              <b>#${val.order.id}</b> — ${escapeHtml(val.order.name)}<br><small>Az FGO nem adott PDF linket. Számlaszám: <b>${sz}</b></small>
             </div>
           `);
         }
       } else {
         err++;
-        const sz = `${fgo.fgoSerie || 'SCN'}-`;
         resultsEl.insertAdjacentHTML('beforeend', `
           <div style="margin-bottom:16px; padding:16px; background:#FEF2F2; color:#EF4444; border-radius:12px;">
-            <b>#${val.order.id}</b> — ${escapeHtml(val.order.name)}<br>
-            <small>Hiba: ${escapeHtml(val.error)}</small><br>
-            <small>Számlaszám: ${sz}</small>
+            <b>#${val.order.id}</b> — ${escapeHtml(val.order.name)}<br><small>Hiba: ${escapeHtml(val.error)}</small>
           </div>
         `);
       }
     }
-
     const done = Math.min((bi + 1) * BATCH_SIZE, total);
     countEl.textContent = `${done} / ${total}`;
     barEl.style.width = `${(done / total) * 100}%`;
-
     if (bi < batches.length - 1) await sleep(BATCH_DELAY_MS);
   }
 
   document.getElementById(progressId).className = 'progress-box done';
   document.getElementById(progressId).innerHTML = `✓ Kész — ${ok} számla sikeres, ${err} hiba`;
+
+  if (ok > 0) {
+    await incrementUsage('factura', ok);
+    await refreshUsageStats();
+  }
+
   toast(`${ok} számla kész, ${err} hiba`, err ? 'warning' : 'success');
 }
 
-// ===== NYOMTATÁS =====
-window.printAWB = function () {
-  const el = document.getElementById('awbPreview');
-  if (!el.classList.contains('show')) { toast('Nincs AWB előnézet', 'warning'); return; }
-  const w = window.open('', '', 'width=900,height=700');
-  w.document.write(`<html><head><title>AWB</title><style>body{font-family:Inter,sans-serif;padding:24px;}</style></head><body>${el.innerHTML}</body></html>`);
-  w.document.close();
-  setTimeout(() => { w.focus(); w.print(); }, 400);
-};
-window.printAllAWB = window.printAWB;
-window.printFactura = function () {
-  const el = document.getElementById('facturaPreview');
-  if (!el.innerHTML.trim()) { toast('Nincs számla előnézet', 'warning'); return; }
-  const w = window.open('', '', 'width=1000,height=800');
-  w.document.write(`<html><head><title>Számlák</title><style>body{margin:0;}iframe{width:100%;height:1100px;border:none;}</style></head><body>${el.innerHTML}</body></html>`);
-  w.document.close();
-  setTimeout(() => { w.focus(); w.print(); }, 1500);
-};
-
-// ===== CMD+K =====
+// ============================================
+// CMD+K
+// ============================================
 const cmdItems = [
-  { icon: '<rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/>', label: 'Dashboard', tab: 'dashboard' },
-  { icon: '<path d="m7.5 4.27 9 5.15"/><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/>', label: 'AWB-k', tab: 'awb' },
-  { icon: '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/>', label: 'Számlák eFactura', tab: 'factura' },
-  { icon: '<path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"/><circle cx="17" cy="18" r="2"/><circle cx="7" cy="18" r="2"/>', label: 'Futár beállítások', tab: 'curier' },
-  { icon: '<path d="M3 21h18"/><path d="M5 21V7l8-4v18"/>', label: 'Cég beállítások', tab: 'companie' },
-  { icon: '<path d="M3 12a9 9 0 1 0 9-9"/>', label: 'Előzmények', tab: 'istoric' }
+  { label: 'Dashboard', tab: 'dashboard' },
+  { label: 'AWB-k', tab: 'awb' },
+  { label: 'Számlák', tab: 'factura' },
+  { label: 'Futár', tab: 'curier' },
+  { label: 'Cég', tab: 'companie' }
 ];
 window.openCmdK = function () {
   document.getElementById('cmdOverlay').classList.add('open');
@@ -1973,11 +2593,8 @@ window.filterCmd = function (q) {
   const list = document.getElementById('cmdList');
   const filtered = cmdItems.filter(i => i.label.toLowerCase().includes(q.toLowerCase()));
   if (!filtered.length) { list.innerHTML = '<div class="cmd-empty">Nincs találat</div>'; return; }
-  list.innerHTML = '<div class="cmd-group-title">Oldalak</div>' + filtered.map(i =>
-    `<div class="cmd-item" onclick="switchTab('${i.tab}'); closeCmdK();">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${i.icon}</svg>
-      ${i.label}
-    </div>`
+  list.innerHTML = filtered.map(i =>
+    `<div class="cmd-item" onclick="switchTab('${i.tab}'); closeCmdK();">${i.label}</div>`
   ).join('');
 };
 document.addEventListener('keydown', (e) => {
@@ -1986,16 +2603,14 @@ document.addEventListener('keydown', (e) => {
     if (document.getElementById('cmdOverlay').classList.contains('open')) closeCmdK();
     else openCmdK();
   }
-  if (e.key === 'Escape') { closeCmdK(); closeSheet(); }
+  if (e.key === 'Escape') { closeCmdK(); closeTermsModal(); closeManageSubscription(); }
 });
 
-// ===== ADMIN =====
+// ============================================
+// ADMIN
+// ============================================
 window.loadAdminData = async function () {
   if (currentUser?.email !== ADMIN_EMAIL) { toast('Nincs jogosultságod', 'error'); return; }
-  await loadAdminUsers();
-  await loadAdminOrders();
-};
-async function loadAdminUsers() {
   const list = document.getElementById('adminUsersList');
   list.innerHTML = '<div class="skeleton" style="height:60px;"></div>';
   try {
@@ -2003,50 +2618,21 @@ async function loadAdminUsers() {
     if (snap.empty) { list.innerHTML = '<p style="color:var(--fg-muted); font-size:13px;">Nincs felhasználó</p>'; return; }
     list.innerHTML = snap.docs.map(d => {
       const u = d.data();
+      const planName = PLAN_LIMITS[u.plan || 'standard']?.name || 'Standard';
       return `<div style="padding:12px; border:1px solid var(--border); border-radius:8px; margin-bottom:8px;">
         <div style="font-weight:600;">${u.email || '–'}</div>
-        <div style="font-size:12px; color:var(--fg-muted); margin-top:2px;">UID: ${d.id} · Accountok: ${(u.accounts||[]).length}</div>
+        <div style="font-size:12px; color:var(--fg-muted); margin-top:2px;">Plan: <b>${planName}</b> · Accountok: ${(u.accounts||[]).length} · UID: ${d.id.slice(0,8)}...</div>
       </div>`;
     }).join('');
   } catch (e) { list.innerHTML = '<p style="color:var(--danger);">Hiba: ' + e.message + '</p>'; }
 }
-async function loadAdminOrders() {
-  const list = document.getElementById('adminOrdersList');
-  list.innerHTML = '<div class="skeleton" style="height:100px;"></div>';
-  try {
-    const snap = await getDocs(collection(db, 'users'));
-    let html = '';
-    for (const ud of snap.docs) {
-      const u = ud.data();
-      for (const acc of (u.accounts || [])) {
-        const shop = acc.shopConfig || {};
-        if (!shop.shopUrl || !shop.wcKey || !shop.wcSecret) continue;
-        const twoWeeksAgo = new Date(); twoWeeksAgo.setDate(twoWeeksAgo.getDate() - 14);
-        const afterDate = twoWeeksAgo.toISOString().split('T')[0] + 'T00:00:00';
-        const baseUrl = shop.shopUrl.replace(/\/$/, '');
-        const url = `${baseUrl}/wp-json/wc/v3/orders?per_page=${ORDERS_PER_PAGE}&after=${afterDate}&consumer_key=${shop.wcKey}&consumer_secret=${shop.wcSecret}`;
-        try {
-          const res = await fetch(url);
-          if (!res.ok) continue;
-          const orders = await res.json();
-          if (!Array.isArray(orders)) continue;
-          const valid = orders.filter(o => !BLOCKED_ORDER_STATUSES.includes((o.status||'').toLowerCase()));
-          html += `<h4 style="font-size:13px; margin:16px 0 8px;">${u.email} · ${acc.name || 'Fő account'}</h4>`;
-          valid.slice(0, 20).forEach(o => {
-            const total = parseFloat(o.total) || 0;
-            html += `<div style="padding:10px 12px; border:1px solid var(--border); border-radius:8px; margin-bottom:6px; display:flex; justify-content:space-between;">
-              <span>#${o.number || o.id} — ${o.billing?.first_name || ''} ${o.billing?.last_name || ''}</span>
-              <span style="font-weight:600;">${total.toFixed(2)} RON</span>
-            </div>`;
-          });
-        } catch (e) {}
-      }
-    }
-    list.innerHTML = html || '<p style="color:var(--fg-muted); font-size:13px;">Nincs rendelés</p>';
-  } catch (e) { list.innerHTML = '<p style="color:var(--danger);">Hiba: ' + e.message + '</p>'; }
-}
 
-console.log('Zen3Hub ready · batch size:', BATCH_SIZE);
+// ============================================
+// INIT
+// ============================================
+applyTranslations();
+loadGlobalTerms();
+console.log('Zen3Hub ready · plan:', currentUserData?.plan || 'n/a');
 </script>
 </body>
 </html>
