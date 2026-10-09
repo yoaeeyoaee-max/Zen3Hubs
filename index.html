@@ -454,6 +454,9 @@
   .usage-bar.over { background: var(--danger-soft); border-color: rgba(239,68,68,0.3); color: var(--danger); }
   .usage-bar.warn { background: var(--warning-soft); border-color: rgba(245,158,11,0.3); color: #92400E; }
 
+  .auth-or { display:flex; align-items:center; gap:12px; margin:16px 0; font-size:12px; color:var(--fg-muted); text-transform:uppercase; letter-spacing:0.06em; }
+  .auth-or::before, .auth-or::after { content:''; flex:1; height:1px; background:var(--border); }
+  .google-btn { gap:10px; font-weight:600; }
   .auth-step { display: none; }
   .auth-step.active { display: block; }
 
@@ -705,6 +708,8 @@
       <div class="field"><label data-i18n="password">Jelszó</label><input type="password" id="loginPassword" placeholder="••••••••" autocomplete="current-password" /></div>
       <label class="checkbox-row"><input type="checkbox" id="rememberMe" checked /><span data-i18n="remember_me">Emlékezz rám</span></label>
       <button class="btn block lg" onclick="handleLogin()" data-i18n="login_btn">Bejelentkezés</button>
+      <div class="auth-or"><span data-i18n="or_word">vagy</span></div>
+      <button class="btn secondary block lg google-btn" onclick="handleGoogle('login')"><svg viewBox="0 0 48 48" style="width:18px;height:18px;"><path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9.1 3.6l6.8-6.8C35.8 2.4 30.3 0 24 0 14.6 0 6.5 5.4 2.6 13.2l7.9 6.1C12.4 13.6 17.7 9.5 24 9.5z"/><path fill="#4285F4" d="M46.5 24.5c0-1.6-.1-3.1-.4-4.5H24v9h12.7c-.6 3-2.3 5.5-4.8 7.2l7.5 5.8c4.4-4.1 7.1-10.1 7.1-17.5z"/><path fill="#FBBC05" d="M10.5 28.7c-.5-1.5-.8-3-.8-4.7s.3-3.2.8-4.7l-7.9-6.1C.9 16.4 0 20.1 0 24s.9 7.6 2.6 10.8l7.9-6.1z"/><path fill="#34A853" d="M24 48c6.5 0 11.9-2.1 15.9-5.8l-7.5-5.8c-2.1 1.4-4.8 2.3-8.4 2.3-6.3 0-11.6-4.1-13.5-9.8l-7.9 6.1C6.5 42.6 14.6 48 24 48z"/></svg><span data-i18n="continue_google">Folytatás Google-lel</span></button>
       <div class="auth-switch"><span onclick="showStep('signup-credentials')" data-i18n="no_account">Nincs fiókod? Regisztrálj</span></div>
     </div>
 
@@ -723,6 +728,8 @@
       <div class="field"><label data-i18n="password">Jelszó</label><input type="password" id="signupPassword" placeholder="•••••••• (min. 6)" autocomplete="new-password" /></div>
       <div class="field"><label data-i18n="password_confirm">Jelszó megerősítés</label><input type="password" id="signupPassword2" placeholder="••••••••" autocomplete="new-password" /></div>
       <button class="btn block lg" onclick="signupStep1()" data-i18n="next">Tovább</button>
+      <div class="auth-or"><span data-i18n="or_word">vagy</span></div>
+      <button class="btn secondary block lg google-btn" onclick="handleGoogle('signup')"><svg viewBox="0 0 48 48" style="width:18px;height:18px;"><path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9.1 3.6l6.8-6.8C35.8 2.4 30.3 0 24 0 14.6 0 6.5 5.4 2.6 13.2l7.9 6.1C12.4 13.6 17.7 9.5 24 9.5z"/><path fill="#4285F4" d="M46.5 24.5c0-1.6-.1-3.1-.4-4.5H24v9h12.7c-.6 3-2.3 5.5-4.8 7.2l7.5 5.8c4.4-4.1 7.1-10.1 7.1-17.5z"/><path fill="#FBBC05" d="M10.5 28.7c-.5-1.5-.8-3-.8-4.7s.3-3.2.8-4.7l-7.9-6.1C.9 16.4 0 20.1 0 24s.9 7.6 2.6 10.8l7.9-6.1z"/><path fill="#34A853" d="M24 48c6.5 0 11.9-2.1 15.9-5.8l-7.5-5.8c-2.1 1.4-4.8 2.3-8.4 2.3-6.3 0-11.6-4.1-13.5-9.8l-7.9 6.1C6.5 42.6 14.6 48 24 48z"/></svg><span data-i18n="continue_google">Folytatás Google-lel</span></button>
       <div class="auth-switch"><span onclick="showStep('login')" data-i18n="have_account">Már van fiókod? Jelentkezz be</span></div>
     </div>
 
@@ -931,6 +938,7 @@
         <div class="card">
           <div class="filters">
             <input type="text" class="input sm" id="searchFactura" placeholder="Keresés..." oninput="applySearchFactura(this.value)" style="max-width:300px;" />
+            <select class="input sm" id="facturaUseSelect" style="max-width:220px;" title="Számlázó"></select>
             <div class="filters-spacer"></div>
             <button class="btn secondary sm" onclick="loadOrders()" data-i18n="load_orders">Rendelések letöltése</button>
             <button class="btn secondary sm" onclick="clearOrders()" data-i18n="clear">Törlés</button>
@@ -969,8 +977,10 @@
               <div class="form-grid-2">
                 <div class="form-full"><label class="label" data-i18n="courier_user">Felhasználó / Ügyfélkód</label><input class="input" id="courierUser" /></div>
                 <div class="form-full"><label class="label" data-i18n="courier_password">Jelszó / API kulcs</label><input class="input" id="courierPassword" type="password" /></div>
-                <div class="form-full"><label class="label">Client ID</label><input class="input" id="courierClientId" /></div>
+                <div class="form-full"><label class="label" id="courierClientIdLabel">Client ID</label><input class="input" id="courierClientId" /></div>
+                <div class="form-full" id="courierExtraWrap" style="display:none;"><label class="label" id="courierExtraLabel">Extra</label><input class="input" id="courierExtra" /></div>
               </div>
+              <p id="courierHint" style="margin-top:12px; font-size:12.5px; color:var(--fg-muted); line-height:1.6;"></p>
               <div style="margin-top:20px; display:flex; gap:8px;">
                 <button class="btn" onclick="saveCourierConfig()" data-i18n="save">Mentés</button>
                 <button class="btn secondary" onclick="deleteCourierConfig()" data-i18n="delete">Törlés</button>
@@ -1003,11 +1013,13 @@
             </div>
             <div id="facturaConfigFields" style="display:none;">
               <div class="form-grid-2">
-                <div class="form-full"><label class="label">API Kulcs / Cheie Privată</label><input class="input" id="facturaApiKey" type="password" /></div>
+                <div class="form-full" id="facturaEmailWrap" style="display:none;"><label class="label" id="facturaEmailLabel">Email / Client ID</label><input class="input" id="facturaEmail" /></div>
+                <div class="form-full"><label class="label" id="facturaApiKeyLabel">API Kulcs / Cheie Privată</label><input class="input" id="facturaApiKey" type="password" /></div>
                 <div class="form-full"><label class="label">CUI / Cod Unic</label><input class="input" id="facturaCui" /></div>
                 <div class="form-full"><label class="label">Serie</label><input class="input" id="facturaSerie" /></div>
-                <div class="form-full"><label class="label">Platforma URL</label><input class="input" id="facturaPlatformUrl" /></div>
+                <div class="form-full" id="facturaPlatformWrap"><label class="label">Platforma URL</label><input class="input" id="facturaPlatformUrl" /></div>
               </div>
+              <p id="facturaHint" style="margin-top:12px; font-size:12.5px; color:var(--fg-muted); line-height:1.6;"></p>
               <div style="margin-top:20px; display:flex; gap:8px;">
                 <button class="btn" onclick="saveFacturaConfig()" data-i18n="save">Mentés</button>
                 <button class="btn secondary" onclick="deleteFacturaConfig()" data-i18n="delete">Törlés</button>
@@ -1235,7 +1247,7 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/fireba
 import {
   getAuth, setPersistence, browserLocalPersistence, browserSessionPersistence,
   createUserWithEmailAndPassword, signInWithEmailAndPassword,
-  onAuthStateChanged, signOut
+  onAuthStateChanged, signOut, GoogleAuthProvider, signInWithPopup
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 import { getFirestore, doc, setDoc, getDoc, updateDoc, collection, getDocs }
   from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
@@ -1281,6 +1293,27 @@ const COURIERS = {
   sameday: { name: 'SameDay' },
   'sameday-box': { name: 'SameDay Box' },
   gls: { name: 'GLS' }
+};
+
+// Szolgáltatónként eltérő mezők / súgó szövegek
+const COURIER_FIELD_META = {
+  dpd:          { clientId: 'Client ID (DPD ügyfél ID)', hint: 'DPD API felhasználónév és jelszó.' },
+  'dpd-box':    { clientId: 'Client ID (DPD ügyfél ID)', hint: 'Ugyanazok az adatok, mint a DPD-nél. A rendelésből kiolvasott pickup point / automata ID kell hozzá.' },
+  fancourier:   { clientId: 'Client ID (FAN ügyfélazonosító, kötelező)', hint: 'FanCourier API felhasználónév és jelszó + a FAN ügyfélazonosító (clientId).' },
+  fanbox:       { clientId: 'Client ID (FAN ügyfélazonosító, kötelező)', hint: 'Mint a FanCourier, de a rendelésben benne kell lennie a kiválasztott Fanbox automatának.' },
+  cargus:       { clientId: 'Client ID (nem használt)', extra: 'Subscription Key (kötelező)', hint: 'Cargus API felhasználónév + jelszó, és az Azure API Management Subscription Key.' },
+  sameday:      { clientId: 'Client ID (nem használt)', extra: 'Service ID (opcionális)', hint: 'SameDay API felhasználónév és jelszó. A Service ID-t üresen hagyhatod, automatikusan keresi.' },
+  'sameday-box':{ clientId: 'Client ID (nem használt)', extra: 'Service ID (opcionális)', hint: 'Mint a SameDay, de a rendelésben benne kell lennie az easybox automata ID-nak.' },
+  gls:          { clientId: 'Ügyfélszám (ClientNumber, kötelező)', hint: 'MyGLS belépési email + jelszó, és a GLS ügyfélszám.' }
+};
+const FACTURA_FIELD_META = {
+  fgo:        { hint: 'FGO: Cheie Privată, CUI, Serie és Platforma URL.', platform: true },
+  smartbill:  { email: 'SmartBill belépési email', apiKey: 'API token (SmartBill → Contul meu → Integrări)', hint: 'CUI = cégazonosító, Serie = a SmartBillben létező számlasorozat neve.', platform: false },
+  oblio:      { email: 'Client ID (Oblio belépési email)', apiKey: 'Client Secret (Oblio → Setări → Date cont)', hint: 'CUI = cégazonosító, Serie = az Oblioban létező számlasorozat neve.', platform: false },
+  'facturis-online': { hint: 'Ehhez a szolgáltatóhoz nincs publikus API dokumentáció, ezért a számlázás egyelőre nem működik vele.', platform: true },
+  fiscalio:   { hint: 'Ehhez a szolgáltatóhoz nincs publikus API dokumentáció, ezért a számlázás egyelőre nem működik vele.', platform: true },
+  facturescu: { hint: 'Ehhez a szolgáltatóhoz nincs publikus API dokumentáció, ezért a számlázás egyelőre nem működik vele.', platform: true },
+  'efactura-direct': { hint: 'Közvetlen ANAF SPV integráció még nincs implementálva.', platform: true }
 };
 
 const FACTURA_PROVIDERS = {
@@ -1380,7 +1413,8 @@ const TRANSLATIONS = {
     cancel_confirm_note: 'Dacă vrei să te abonezi din nou, alege din nou pachetul.',
     cancel_confirm_btn: 'Da, anulează',
     subscription_cancelled_toast: 'Abonament anulat. Activ până la sfârșitul perioadei.',
-    subscription_resumed: 'Abonament reactivat cu succes.'
+    subscription_resumed: 'Abonament reactivat cu succes.',
+    continue_google: 'Continuă cu Google', or_word: 'sau'
   },
   en: {
     auth_sub: 'Logistics Platform',
@@ -1465,7 +1499,8 @@ const TRANSLATIONS = {
     cancel_confirm_note: 'If you want to subscribe again, just choose a plan.',
     cancel_confirm_btn: 'Yes, cancel',
     subscription_cancelled_toast: 'Subscription cancelled. Active until the end of the period.',
-    subscription_resumed: 'Subscription resumed successfully.'
+    subscription_resumed: 'Subscription resumed successfully.',
+    continue_google: 'Continue with Google', or_word: 'or'
   },
   hu: {
     auth_sub: 'Logisztikai Platform',
@@ -1550,7 +1585,8 @@ const TRANSLATIONS = {
     cancel_confirm_note: 'Ha újra elő akarsz fizetni, egyszerűen válaszd ki újra a csomagot.',
     cancel_confirm_btn: 'Igen, lemondom',
     subscription_cancelled_toast: 'Előfizetés lemondva. Aktív a periódus végéig.',
-    subscription_resumed: 'Előfizetés visszavonva.'
+    subscription_resumed: 'Előfizetés visszavonva.',
+    continue_google: 'Folytatás Google-lel', or_word: 'vagy'
   }
 };
 
@@ -1803,6 +1839,30 @@ window.signupStep3 = async function () {
       'auth/email-already-in-use': 'Ez az email már regisztrálva van.',
       'auth/weak-password': 'A jelszó túl gyenge.',
       'auth/invalid-email': 'Érvénytelen email cím.'
+    };
+    errEl.textContent = map[e.code] || e.message;
+    errEl.style.display = 'block';
+  }
+};
+
+window.handleGoogle = async function (mode) {
+  const errEl = document.getElementById(mode === 'signup' ? 'signupError' : 'loginError');
+  errEl.style.display = 'none';
+  try {
+    let remember = true;
+    const rm = document.getElementById('rememberMe');
+    if (mode === 'login' && rm) remember = rm.checked;
+    await setPersistence(auth, remember ? browserLocalPersistence : browserSessionPersistence);
+    const provider = new GoogleAuthProvider();
+    provider.setCustomParameters({ prompt: 'select_account' });
+    await signInWithPopup(auth, provider);
+  } catch (e) {
+    if (e.code === 'auth/popup-closed-by-user' || e.code === 'auth/cancelled-popup-request') return;
+    const map = {
+      'auth/popup-blocked': 'A böngésző blokkolta a felugró ablakot. Engedélyezd és próbáld újra.',
+      'auth/unauthorized-domain': 'Ez a domain nincs engedélyezve a Firebase-ben (Authentication → Settings → Authorized domains).',
+      'auth/operation-not-allowed': 'A Google bejelentkezés nincs bekapcsolva a Firebase-ben.',
+      'auth/account-exists-with-different-credential': 'Ezzel az emaillel már van jelszavas fiók. Lépj be jelszóval.'
     };
     errEl.textContent = map[e.code] || e.message;
     errEl.style.display = 'block';
@@ -2397,7 +2457,15 @@ window.onCourierProviderChange = function () {
   document.getElementById('courierUser').value = cfg.user || '';
   document.getElementById('courierPassword').value = cfg.password || '';
   document.getElementById('courierClientId').value = cfg.clientId || '';
+  document.getElementById('courierExtra').value = cfg.extra || '';
   document.getElementById('courierSavedIndicator').style.display = 'none';
+
+  const meta = COURIER_FIELD_META[provider] || {};
+  document.getElementById('courierClientIdLabel').textContent = meta.clientId || 'Client ID';
+  const extraWrap = document.getElementById('courierExtraWrap');
+  extraWrap.style.display = meta.extra ? 'block' : 'none';
+  document.getElementById('courierExtraLabel').textContent = meta.extra || 'Extra';
+  document.getElementById('courierHint').textContent = meta.hint || '';
   fields.style.display = 'block';
 };
 
@@ -2410,7 +2478,8 @@ window.saveCourierConfig = async function () {
   acc.courierConfigs[provider] = {
     user: document.getElementById('courierUser').value.trim(),
     password: document.getElementById('courierPassword').value.trim(),
-    clientId: document.getElementById('courierClientId').value.trim()
+    clientId: document.getElementById('courierClientId').value.trim(),
+    extra: document.getElementById('courierExtra').value.trim()
   };
   await persistAccounts();
   document.getElementById('courierSavedIndicator').style.display = 'block';
@@ -2476,10 +2545,18 @@ window.onFacturaProviderChange = function () {
   const configs = acc.facturaConfigs || {};
   const cfg = configs[provider] || {};
   document.getElementById('facturaApiKey').value = cfg.apiKey || '';
+  document.getElementById('facturaEmail').value = cfg.email || '';
   document.getElementById('facturaCui').value = cfg.cui || '';
   document.getElementById('facturaSerie').value = cfg.serie || '';
   document.getElementById('facturaPlatformUrl').value = cfg.platformUrl || '';
   document.getElementById('facturaSavedIndicator').style.display = 'none';
+
+  const meta = FACTURA_FIELD_META[provider] || {};
+  document.getElementById('facturaEmailWrap').style.display = meta.email ? 'block' : 'none';
+  document.getElementById('facturaEmailLabel').textContent = meta.email || 'Email / Client ID';
+  document.getElementById('facturaApiKeyLabel').textContent = meta.apiKey || 'API Kulcs / Cheie Privată';
+  document.getElementById('facturaPlatformWrap').style.display = meta.platform === false ? 'none' : 'block';
+  document.getElementById('facturaHint').textContent = meta.hint || '';
   fields.style.display = 'block';
 };
 
@@ -2491,6 +2568,7 @@ window.saveFacturaConfig = async function () {
   if (!acc.facturaConfigs) acc.facturaConfigs = {};
   acc.facturaConfigs[provider] = {
     apiKey: document.getElementById('facturaApiKey').value.trim(),
+    email: document.getElementById('facturaEmail').value.trim(),
     cui: document.getElementById('facturaCui').value.trim(),
     serie: document.getElementById('facturaSerie').value.trim(),
     platformUrl: document.getElementById('facturaPlatformUrl').value.trim()
@@ -2527,6 +2605,12 @@ function renderFacturaConfigList() {
   const acc = getActiveAccount();
   const configs = acc.facturaConfigs || {};
   const keys = Object.keys(configs);
+  const useSel = document.getElementById('facturaUseSelect');
+  if (useSel) {
+    const prev = useSel.value;
+    useSel.innerHTML = keys.map(k => `<option value="${k}">${FACTURA_PROVIDERS[k]?.name || k}</option>`).join('') || '<option value="">—</option>';
+    if (prev && configs[prev]) useSel.value = prev;
+  }
   if (!keys.length) { list.innerHTML = ''; return; }
   list.innerHTML = `
     <div class="form-section-title">Beállított számlázók</div>
@@ -2601,6 +2685,14 @@ window.resetTermsAdmin = function () {
   toast('Alapértelmezett visszaállítva (még nem mentve)', 'info');
 };
 
+// Automata / pickup point ID kiolvasása a WooCommerce rendelés meta adataiból (best effort)
+function extractLockerId(o) {
+  const metas = [...(o.meta_data || []), ...(o.shipping_lines || []).flatMap(s => s.meta_data || [])];
+  const hit = metas.find(m => /locker|pickup|pudo|easybox|fanbox|office|point/i.test(String(m.key || '')) &&
+    (typeof m.value === 'string' || typeof m.value === 'number') && String(m.value).trim() !== '');
+  return hit ? String(hit.value).trim() : '';
+}
+
 // ORDERS
 window.loadOrders = async function () {
   const acc = getActiveAccount();
@@ -2654,6 +2746,9 @@ window.loadOrders = async function () {
           name: it.name, sku: it.sku || '', quantity: it.quantity, price: parseFloat(it.price) || 0
         })),
         product: o.line_items?.[0]?.name || 'TERMÉK',
+        postcode: o.shipping?.postcode || o.billing.postcode || '',
+        vatRate: (totalWithTax - totalTax) > 0 ? Math.round((totalTax / (totalWithTax - totalTax)) * 100) : 0,
+        lockerId: extractLockerId(o),
         raw: o
       };
     });
@@ -2906,7 +3001,8 @@ window.generateSelectedFactura = async function () {
     toast('Nincs beállított számlázó! Menj a Facturare fülre.', 'warning');
     return;
   }
-  provider = configuredProviders[0];
+  const chosen = document.getElementById('facturaUseSelect')?.value;
+  provider = (chosen && facturaConfigs[chosen]) ? chosen : configuredProviders[0];
   const providerConfig = facturaConfigs[provider];
 
   const check = await canGenerate('factura', s.size);
@@ -2956,6 +3052,8 @@ async function buildFacturaPreview(provider, providerConfig) {
             NrProduse: it.quantity, PretUnitar: it.price, CotaTVA: 0, TVA: 0,
             Valoare: it.price * it.quantity
           })),
+          vatRate: o.vatRate || 0,
+          shipping: o.shippingTotal || 0,
           Discount: 0, DiscountProcent: 0, DiscountTip: 'valoare'
         };
         const res = await fetch(FGO_PROXY_URL, {
@@ -2973,10 +3071,17 @@ async function buildFacturaPreview(provider, providerConfig) {
       if (val.ok) {
         ok++;
         const sz = val.result.numar ? `${val.result.serie}-${val.result.numar}` : `${val.result.serie}-`;
-        if (val.result.pdfUrl && val.result.pdfUrl.trim().length > 0) {
+        let pdfSrc = (val.result.pdfUrl || '').trim();
+        if (!pdfSrc && val.result.pdfBase64) {
+          const bin = atob(val.result.pdfBase64);
+          const bytes = new Uint8Array(bin.length);
+          for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+          pdfSrc = URL.createObjectURL(new Blob([bytes], { type: 'application/pdf' }));
+        }
+        if (pdfSrc) {
           resultsEl.insertAdjacentHTML('beforeend', `
             <div class="fgo-factura-wrap">
-              <iframe src="${val.result.pdfUrl}#toolbar=1&navpanes=0&scrollbar=1&view=FitH" type="application/pdf"></iframe>
+              <iframe src="${pdfSrc}#toolbar=1&navpanes=0&scrollbar=1&view=FitH" type="application/pdf"></iframe>
               <div class="fgo-factura-link">Számlaszám: <b>${sz}</b> · Rendelés: <b>#${val.order.id}</b></div>
             </div>
           `);
