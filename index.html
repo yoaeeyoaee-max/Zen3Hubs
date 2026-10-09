@@ -790,6 +790,10 @@
         <div class="field"><label data-i18n="card_expiry">Lejárat</label><input type="text" id="cardExpiry" placeholder="MM/YY" maxlength="5" oninput="formatExpiry(this)" /></div>
         <div class="field"><label data-i18n="card_cvv">CVV</label><input type="text" id="cardCvv" placeholder="123" maxlength="4" /></div>
       </div>
+      <label class="checkbox-row" style="align-items:flex-start;">
+        <input type="checkbox" id="saveCard" style="margin-top:3px;" />
+        <span><b>Kártya mentése és automatikus havi megújítás</b><br><span style="font-size:12px; color:var(--fg-muted);">Béta: nem történik valódi terhelés. Csak a márkát, az utolsó 4 számjegyet és a lejáratot tároljuk, a teljes kártyaszámot és a CVV-t soha.</span></span>
+      </label>
       <label class="checkbox-row">
         <input type="checkbox" id="acceptTerms" />
         <span><span data-i18n="accept_terms">Elfogadom a</span> <a onclick="openTermsModal(event)" data-i18n="terms_link">Termeni și Condiții</a></span>
@@ -1071,6 +1075,7 @@
         <div class="card">
           <div class="card-header"><div><div class="card-title" data-i18n="manage_subscription">Manage Subscription</div><div class="card-subtitle" data-i18n="subscription_subtitle">Változtasd meg az előfizetésed</div></div></div>
           <div class="card-body">
+            <div id="subCardBox" style="padding:14px 16px; border:1px solid var(--border); border-radius:12px; margin-bottom:12px; font-size:13px;"></div>
             <div id="subCurrentInfoTab" style="padding:14px 16px; background:var(--primary-soft); border-radius:12px; margin-bottom:20px; font-size:13px;">
               <b data-i18n="current_plan">Aktív előfizetésed:</b> <span id="subCurrentPlanTab">Standard</span>
             </div>
@@ -2192,6 +2197,66 @@ const UI_TX = {
  "Maximum 6 account": {
   "ro": "Maximum 6 conturi",
   "en": "Maximum 6 accounts"
+ },
+ "Kártya mentése és automatikus havi megújítás": {
+  "ro": "Salvează cardul și reînnoire lunară automată",
+  "en": "Save card and renew automatically every month"
+ },
+ "Béta: nem történik valódi terhelés. Csak a márkát, az utolsó 4 számjegyet és a lejáratot tároljuk, a teljes kártyaszámot és a CVV-t soha.": {
+  "ro": "Beta: nu se efectuează nicio taxare reală. Stocăm doar marca, ultimele 4 cifre și data expirării, niciodată numărul complet sau CVV-ul.",
+  "en": "Beta: no real charge is made. We only store the brand, the last 4 digits and the expiry date, never the full card number or CVV."
+ },
+ "Adj meg érvényes kártyaszámot a mentéshez.": {
+  "ro": "Introdu un număr de card valid pentru salvare.",
+  "en": "Enter a valid card number to save it."
+ },
+ "A lejárat érvénytelen vagy lejárt.": {
+  "ro": "Data expirării este invalidă sau expirată.",
+  "en": "The expiry date is invalid or expired."
+ },
+ "Előfizetés automatikusan megújítva (béta, szimulált terhelés).": {
+  "ro": "Abonament reînnoit automat (beta, taxare simulată).",
+  "en": "Subscription renewed automatically (beta, simulated charge)."
+ },
+ "Nincs mentett kártya": {
+  "ro": "Niciun card salvat",
+  "en": "No saved card"
+ },
+ "Aktív eddig:": {
+  "ro": "Activ până la:",
+  "en": "Active until:"
+ },
+ "Mentett kártya": {
+  "ro": "Card salvat",
+  "en": "Saved card"
+ },
+ "Lejárat:": {
+  "ro": "Expirare:",
+  "en": "Expiry:"
+ },
+ "Lemondott előfizetésnél a megújítás szünetel.": {
+  "ro": "La un abonament anulat reînnoirea este suspendată.",
+  "en": "Renewal is paused for a cancelled subscription."
+ },
+ "Automatikus megújítás bekapcsolva": {
+  "ro": "Reînnoire automată activată",
+  "en": "Automatic renewal on"
+ },
+ "Következő terhelés:": {
+  "ro": "Următoarea taxare:",
+  "en": "Next charge:"
+ },
+ "Kártya törlése": {
+  "ro": "Șterge cardul",
+  "en": "Remove card"
+ },
+ "Biztosan törlöd a mentett kártyát?": {
+  "ro": "Sigur ștergi cardul salvat?",
+  "en": "Are you sure you want to remove the saved card?"
+ },
+ "Kártya törölve": {
+  "ro": "Card șters",
+  "en": "Card removed"
  }
 };
 const UI_PATTERNS = [["^\u2713 K\u00e9sz \u2014 (\\d+) sikeres, (\\d+) hiba$","✓ Gata — $1 reușite, $2 erori","✓ Done — $1 successful, $2 failed"],["^\u2713 K\u00e9sz \u2014 (\\d+) sz\u00e1mla sikeres, (\\d+) hiba$","✓ Gata — $1 facturi reușite, $2 erori","✓ Done — $1 invoices created, $2 failed"],["^(\\d+) AWB k\u00e9sz, (\\d+) hiba$","$1 AWB gata, $2 erori","$1 AWB done, $2 failed"],["^(\\d+) sz\u00e1mla k\u00e9sz, (\\d+) hiba$","$1 facturi gata, $2 erori","$1 invoices done, $2 failed"],["^(\\d+) rendel\u00e9s bet\u00f6ltve(?: \\((\\d+) kihagyva\\))?$","$1 comenzi încărcate","$1 orders loaded"],["^(.+) AWB \u2014 (\\d+) rendel\u00e9s \u00b7 (.+)$","$1 AWB — $2 comenzi · $3","$1 AWB — $2 orders · $3"],["^Hiba: (.*)$","Eroare: $1","Error: $1"],["^FanCourier: (.*)$","FanCourier: $1","FanCourier: $1"],["^(\\d+) / (\\d+) ezen a h\u00e9ten$","$1 / $2 săptămâna aceasta","$1 / $2 this week"],["^El\u0151fizet\u00e9s m\u00f3dos\u00edtva: (.+)$","Abonament modificat: $1","Subscription changed: $1"],["^\u00c1tv\u00e1ltva: (.+)$","Comutat la: $1","Switched to: $1"],["^Nincs be\u00e1ll\u00edtva a (.+) curier! Menj a Curier be\u00e1ll\u00edt\u00e1sokhoz\\.$","Curierul $1 nu este configurat! Mergi la setările Curier.","The $1 courier is not configured! Go to the Courier settings."],["^Sz\u00e1ml\u00e1k gener\u00e1l\u00e1sa \\((.+)\\)\\.\\.\\.$","Se generează facturile ($1)...","Generating invoices ($1)..."],["^Egyszerre max (\\d+) darab k\u00e9sz\u00fcl\\.$","Se generează maximum $1 odată.","At most $1 are created at a time."],["^Egyszerre max (\\d+) sz\u00e1mla k\u00e9sz\u00fcl\\.$","Se generează maximum $1 facturi odată.","At most $1 invoices are created at a time."],["^\u2014 AWB: (.+), Sz\u00e1mla: (.+)$","— AWB: $1, Factură: $2","— AWB: $1, Invoice: $2"],["^(\\d+) lei/h\u00f3$","$1 lei/lună","$1 lei/mo"],["^A\\(z\\) (.+) sz\u00e1ml\u00e1z\u00f3nak nincs publikusan el\u00e9rhet\u0151 API dokument\u00e1ci\u00f3ja.*$","Furnizorul $1 nu are documentație API publică, deci nu a putut fi implementat.","$1 has no public API documentation, so it could not be implemented."],["^A (.+) (k\u00f6vet\u00e9si|nyomtat\u00e1si) integr\u00e1ci\u00f3 m\u00e9g nincs implement\u00e1lva\\.$","Integrarea $1 nu este implementată încă.","The $1 integration is not implemented yet."],["^Ismeretlen curier: (.+)$","Curier necunoscut: $1","Unknown courier: $1"],["^Ismeretlen sz\u00e1ml\u00e1z\u00f3: (.+)$","Furnizor de facturare necunoscut: $1","Unknown invoicing provider: $1"],["^SameDay: a v\u00e1ros nem tal\u00e1lhat\u00f3 \\((.+)\\)\\.$","SameDay: orașul nu a fost găsit ($1).","SameDay: city not found ($1)."],["^SameDay: ismeretlen megye \\((.+)\\)\\.$","SameDay: județ necunoscut ($1).","SameDay: unknown county ($1)."],["^GLS nem JSON v\u00e1laszt adott \\(HTTP (\\d+)\\)\\.$","GLS nu a returnat JSON (HTTP $1).","GLS did not return JSON (HTTP $1)."]].map(([re, ro, en]) => [new RegExp(re), ro, en]);
@@ -2484,6 +2549,114 @@ window.cancelPendingSignup = async function () {
 
 window.signupStep2 = function () { showStep('signup-payment'); };
 
+
+// ============================================
+// BÉTA SZIMULÁLT FIZETÉS — kártya mentése + havi automatikus megújítás
+// Csak márka / utolsó 4 számjegy / lejárat kerül tárolásra. Teljes kártyaszám és CVV soha.
+// Valódi terhelés nincs: a megújítás csak a lejárati dátumot tolja ki.
+// ============================================
+function addOneMonth(d) {
+  const x = new Date(d.getTime());
+  const day = x.getDate();
+  x.setMonth(x.getMonth() + 1);
+  if (x.getDate() < day) x.setDate(0); // pl. jan 31 -> feb vége
+  return x;
+}
+function cardBrand(num) {
+  if (/^4/.test(num)) return 'Visa';
+  if (/^(5[1-5]|2[2-7])/.test(num)) return 'Mastercard';
+  if (/^3[47]/.test(num)) return 'Amex';
+  return 'Kártya';
+}
+// Visszaadja a mentendő kártya biztonságos adatait, vagy {error}
+function readCardForSave() {
+  const num = (document.getElementById('cardNumber')?.value || '').replace(/\D/g, '');
+  const exp = (document.getElementById('cardExpiry')?.value || '').trim();
+  const holder = (document.getElementById('cardHolder')?.value || '').trim();
+  if (num.length < 13 || num.length > 19) return { error: 'Adj meg érvényes kártyaszámot a mentéshez.' };
+  const m = exp.match(/^(\d{2})\/(\d{2})$/);
+  const mm = m ? parseInt(m[1], 10) : 0, yy = m ? 2000 + parseInt(m[2], 10) : 0;
+  const endOfMonth = m ? new Date(yy, mm, 0, 23, 59, 59) : null;
+  if (!m || mm < 1 || mm > 12 || endOfMonth < new Date()) return { error: 'A lejárat érvénytelen vagy lejárt.' };
+  return { brand: cardBrand(num), last4: num.slice(-4), expiry: exp, holder };
+}
+function clearCardInputs() {
+  ['cardHolder', 'cardNumber', 'cardExpiry', 'cardCvv'].forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
+  const sc = document.getElementById('saveCard'); if (sc) sc.checked = false;
+}
+// Az új fiók induló számlázási adatai (szimulált első havi díj)
+function buildInitialBilling(plan, card) {
+  const now = new Date();
+  const next = addOneMonth(now);
+  const out = {
+    paidUntil: next.toISOString(),
+    billingHistory: [{ date: now.toISOString(), plan, amount: PLAN_LIMITS[plan].price, simulated: true }]
+  };
+  if (card) {
+    out.billing = {
+      cardBrand: card.brand, cardLast4: card.last4, cardExpiry: card.expiry, cardHolder: card.holder,
+      autoRenew: true, savedAt: now.toISOString(), nextBillingDate: next.toISOString(), simulated: true
+    };
+  } else {
+    out.billing = null;
+  }
+  return out;
+}
+// Belépéskor: ha lejárt a hónap és van mentett kártya, "terheljük" (szimuláció) és kitoljuk egy hónappal
+async function processRenewal() {
+  const d = currentUserData;
+  if (!d || !currentUser) return;
+  const b = d.billing;
+  if (!b || !b.autoRenew || !b.cardLast4 || d.subscriptionCancelled) return;
+  let next = new Date(b.nextBillingDate || 0);
+  const now = new Date();
+  if (isNaN(next) || next > now) return;
+  const history = Array.isArray(d.billingHistory) ? d.billingHistory.slice() : [];
+  let count = 0;
+  while (next <= now && count < 12) {
+    history.push({ date: next.toISOString(), plan: d.plan, amount: PLAN_LIMITS[d.plan].price, simulated: true });
+    next = addOneMonth(next);
+    count++;
+  }
+  const billing = { ...b, nextBillingDate: next.toISOString() };
+  try {
+    await updateDoc(doc(db, 'users', currentUser.uid), { billing, billingHistory: history, paidUntil: next.toISOString() });
+    d.billing = billing; d.billingHistory = history; d.paidUntil = next.toISOString();
+    toast('Előfizetés automatikusan megújítva (béta, szimulált terhelés).', 'info');
+  } catch (e) { console.error('Megújítás hiba:', e); }
+}
+function renderCardBox() {
+  const box = document.getElementById('subCardBox');
+  if (!box) return;
+  const b = currentUserData?.billing;
+  const fmt = (iso) => { const d = new Date(iso); return isNaN(d) ? '–' : d.toLocaleDateString(currentLang === 'hu' ? 'hu-HU' : currentLang === 'ro' ? 'ro-RO' : 'en-GB'); };
+  if (!b || !b.cardLast4) {
+    box.innerHTML = '<b>Nincs mentett kártya</b>' + (currentUserData?.paidUntil ? '<div style="margin-top:6px; color:var(--fg-muted);"><span>Aktív eddig:</span> ' + fmt(currentUserData.paidUntil) + '</div>' : '');
+    return;
+  }
+  const paused = currentUserData.subscriptionCancelled;
+  box.innerHTML =
+    '<div style="display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap;">' +
+      '<div><b>Mentett kártya</b>: ' + escapeHtml(b.cardBrand) + ' •••• ' + escapeHtml(b.cardLast4) +
+      ' <span style="color:var(--fg-muted);">· <span>Lejárat:</span> ' + escapeHtml(b.cardExpiry) + '</span>' +
+      '<div style="margin-top:6px; color:var(--fg-muted);">' +
+        (paused ? '<span>Lemondott előfizetésnél a megújítás szünetel.</span>'
+                : '<span>Automatikus megújítás bekapcsolva</span> · <span>Következő terhelés:</span> ' + fmt(b.nextBillingDate)) +
+      '</div></div>' +
+      '<button class="btn secondary sm" onclick="removeSavedCard()">Kártya törlése</button>' +
+    '</div>';
+}
+window.removeSavedCard = async function () {
+  if (!currentUser || !currentUserData?.billing) return;
+  if (!confirm('Biztosan törlöd a mentett kártyát?')) return;
+  try {
+    await updateDoc(doc(db, 'users', currentUser.uid), { billing: null });
+    currentUserData.billing = null;
+    renderCardBox();
+    toast('Kártya törölve', 'info');
+  } catch (e) { toast('Hiba: ' + e.message, 'error'); }
+};
+
 window.signupStep3 = async function () {
   const errEl = document.getElementById('signupError');
   errEl.style.display = 'none';
@@ -2492,6 +2665,13 @@ window.signupStep3 = async function () {
     errEl.style.display = 'block';
     return;
   }
+  let savedCard = null;
+  if (document.getElementById('saveCard')?.checked) {
+    const c = readCardForSave();
+    if (c.error) { errEl.textContent = translateUiString(c.error); errEl.style.display = 'block'; return; }
+    savedCard = c;
+  }
+  const billingInit = buildInitialBilling(selectedPlan, savedCard);
   if (pendingNewUser) {
     try {
       await setDoc(doc(db, 'users', pendingNewUser.uid), {
@@ -2500,8 +2680,10 @@ window.signupStep3 = async function () {
         accounts: [{ name: 'Fő account', expeditor: {}, shopConfig: {}, courierConfigs: {}, facturaConfigs: {} }],
         activeAccountIndex: 0,
         createdAt: new Date().toISOString(),
-        termsAcceptedAt: new Date().toISOString()
+        termsAcceptedAt: new Date().toISOString(),
+        ...billingInit
       });
+      clearCardInputs();
       toast('Fiók létrehozva!', 'success');
       await window.__rerunAuth();
     } catch (e) {
@@ -2523,8 +2705,10 @@ window.signupStep3 = async function () {
       accounts: [{ name: 'Fő account', expeditor: {}, shopConfig: {}, courierConfigs: {}, facturaConfigs: {} }],
       activeAccountIndex: 0,
       createdAt: new Date().toISOString(),
-      termsAcceptedAt: new Date().toISOString()
+      termsAcceptedAt: new Date().toISOString(),
+      ...billingInit
     });
+    clearCardInputs();
     toast('Fiók létrehozva!', 'success');
   } catch (e) {
     const map = {
@@ -2697,6 +2881,7 @@ const authHandler = async (user) => {
       document.getElementById('adminNavWrap').style.display = 'block';
     }
 
+    await processRenewal();
     updateSidebarAccount();
     fillSettingsForm();
     fillCourierSettings();
@@ -2824,6 +3009,7 @@ function updateSubscriptionTab() {
   document.querySelectorAll('#subPlanGridTab .plan-card').forEach(c => {
     c.classList.toggle('selected', c.dataset.plan === plan);
   });
+  renderCardBox();
   const tb = document.getElementById('subTermsBoxTab');
   if (tb) tb.textContent = globalTerms;
 }
@@ -2867,6 +3053,7 @@ window.confirmCancelSubscription = async function () {
     currentUserData.activeUntil = activeUntil.toISOString();
     closeCancelModal();
     updateCancelSection();
+    renderCardBox();
     toast(t('subscription_cancelled_toast'), 'warning');
   } catch (e) {
     console.error(e);
@@ -2885,6 +3072,7 @@ window.resumeSubscription = async function () {
     currentUserData.cancelledAt = null;
     currentUserData.activeUntil = null;
     updateCancelSection();
+    renderCardBox();
     toast(t('subscription_resumed'), 'success');
   } catch (e) {
     console.error(e);
