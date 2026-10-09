@@ -585,7 +585,7 @@
       <div class="pricing-card">
         <h3>Standard</h3>
         <div class="desc" data-i18n="pricing_standard_desc">Pentru magazine mici și începători</div>
-        <div class="pricing-price"><span class="amount">50</span><span class="currency">lei</span><span class="period">/ lună</span></div>
+        <div class="pricing-price"><span class="amount">50</span><span class="currency">lei</span><span class="period">/ hó</span></div>
         <ul class="pricing-features">
           <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg><span data-i18n="pricing_standard_f1">50 AWB / săptămână</span></li>
           <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg><span data-i18n="pricing_standard_f2">50 facturi / săptămână</span></li>
@@ -598,7 +598,7 @@
         <div class="pricing-card-badge" data-i18n="pricing_popular">Popular</div>
         <h3>Premium</h3>
         <div class="desc" data-i18n="pricing_premium_desc">Pentru afaceri în creștere</div>
-        <div class="pricing-price"><span class="amount">200</span><span class="currency">lei</span><span class="period">/ lună</span></div>
+        <div class="pricing-price"><span class="amount">200</span><span class="currency">lei</span><span class="period">/ hó</span></div>
         <ul class="pricing-features">
           <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg><span data-i18n="pricing_premium_f1">200 AWB / săptămână</span></li>
           <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg><span data-i18n="pricing_premium_f2">200 facturi / săptămână</span></li>
@@ -610,7 +610,7 @@
       <div class="pricing-card">
         <h3>Elite</h3>
         <div class="desc" data-i18n="pricing_elite_desc">Pentru companii mari și echipe</div>
-        <div class="pricing-price"><span class="amount">400</span><span class="currency">lei</span><span class="period">/ lună</span></div>
+        <div class="pricing-price"><span class="amount">400</span><span class="currency">lei</span><span class="period">/ hó</span></div>
         <ul class="pricing-features">
           <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg><span data-i18n="pricing_elite_f1">AWB nelimitat</span></li>
           <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg><span data-i18n="pricing_elite_f2">Facturi nelimitate</span></li>
@@ -767,7 +767,7 @@
         </div>
       </div>
       <button class="btn block lg" onclick="signupStep2()" data-i18n="next">Tovább</button>
-      <div class="auth-switch"><span onclick="showStep('signup-credentials')" data-i18n="back">← Vissza</span></div>
+      <div class="auth-switch"><span onclick="if (window.cancelPendingSignup) { cancelPendingSignup(); } else { showStep('signup-credentials'); }" data-i18n="back">← Vissza</span></div>
     </div>
 
     <div class="auth-step" id="step-signup-payment">
@@ -1414,7 +1414,8 @@ const TRANSLATIONS = {
     cancel_confirm_btn: 'Da, anulează',
     subscription_cancelled_toast: 'Abonament anulat. Activ până la sfârșitul perioadei.',
     subscription_resumed: 'Abonament reactivat cu succes.',
-    continue_google: 'Continuă cu Google', or_word: 'sau'
+    continue_google: 'Continuă cu Google', or_word: 'sau',
+    have_account: "Ai deja cont? Autentifică-te"
   },
   en: {
     auth_sub: 'Logistics Platform',
@@ -1500,7 +1501,8 @@ const TRANSLATIONS = {
     cancel_confirm_btn: 'Yes, cancel',
     subscription_cancelled_toast: 'Subscription cancelled. Active until the end of the period.',
     subscription_resumed: 'Subscription resumed successfully.',
-    continue_google: 'Continue with Google', or_word: 'or'
+    continue_google: 'Continue with Google', or_word: 'or',
+    have_account: "Already have an account? Log in"
   },
   hu: {
     auth_sub: 'Logisztikai Platform',
@@ -1515,36 +1517,36 @@ const TRANSLATIONS = {
     plan_elite_desc: 'Korlátlan AWB és számla',
     popular: 'Népszerű', payment_title: 'Fizetési adatok', payment_desc: 'Debit kártya megadása',
     card_holder: 'Kártyabirtokos neve', card_number: 'Kártyaszám', card_expiry: 'Lejárat', card_cvv: 'CVV',
-    accept_terms: 'Elfogadom a', terms_link: 'Termeni și Condiții',
+    accept_terms: 'Elfogadom a', terms_link: "Felhasználási feltételek",
     signup_complete: 'Regisztráció befejezése',
     beta_warning: 'Beta verzió.',
     beta_warning_text: 'A kártya adatait nem dolgozzuk fel, nem történik valódi fizetés.',
     nav_login: 'Belépés', nav_signup: 'Regisztráció',
     nav_features: 'Funkciók', nav_pricing: 'Árak', nav_about: 'Rólunk', nav_contact: 'Kapcsolat',
-    hero_title: 'Platformă completă pentru facturare și AWB',
-    hero_subtitle: 'Generează AWB-uri și facturi în câteva secunde. Integrare cu DPD, WooCommerce și FGO eFactura.',
-    hero_cta: 'Începe gratuit 7 zile', hero_cta2: 'Vezi prețuri',
-    feat_awb_title: 'AWB automatikus', feat_awb_desc: 'Generează AWB-uri DPD-hez pár kattintással.',
-    feat_factura_title: 'Facturi e-Factura', feat_factura_desc: 'Emite facturi și trimite-le automat în SPV prin FGO.',
-    feat_fast_title: 'Rapid și simplu', feat_fast_desc: '5 secunde per AWB. Interfață modernă.',
-    pricing_title: 'Alege planul potrivit', pricing_subtitle: '7 zile gratuit. Fără card obligatoriu.',
-    pricing_standard_desc: 'Pentru magazine mici', pricing_premium_desc: 'Pentru afaceri în creștere', pricing_elite_desc: 'Pentru companii mari',
-    pricing_standard_f1: '50 AWB / săptămână', pricing_standard_f2: '50 facturi / săptămână',
-    pricing_standard_f3: 'Integrare DPD + WooCommerce', pricing_standard_f4: 'Suport email',
-    pricing_premium_f1: '200 AWB / săptămână', pricing_premium_f2: '200 facturi / săptămână',
-    pricing_premium_f3: 'Toate integrările Standard', pricing_premium_f4: 'Suport prioritar',
-    pricing_elite_f1: 'AWB nelimitat', pricing_elite_f2: 'Facturi nelimitate',
-    pricing_elite_f3: 'Toate integrările', pricing_elite_f4: 'Suport dedicat 24/7',
-    pricing_popular: 'Popular', pricing_cta: 'Începe gratuit',
-    about_title: 'Despre noi', about_text: 'Eauto este o platformă românească de logistică.',
-    footer_brand_desc: 'Platformă completă pentru facturare și AWB în România.',
+    hero_title: "Teljes platform számlázáshoz és AWB-hez",
+    hero_subtitle: "Készíts AWB-ket és számlákat másodpercek alatt. DPD, WooCommerce és FGO eFactura integráció.",
+    hero_cta: "Kezdd ingyen 7 napig", hero_cta2: "Árak megtekintése",
+    feat_awb_title: 'AWB automatikus', feat_awb_desc: "Készíts DPD AWB-ket néhány kattintással, közvetlenül a WooCommerce rendelésekből.",
+    feat_factura_title: "e-Factura számlák", feat_factura_desc: "Állíts ki számlákat, és küldd el automatikusan az SPV-be az FGO-n keresztül.",
+    feat_fast_title: "Gyors és egyszerű", feat_fast_desc: "5 másodperc AWB-nként. Modern felület, betanulás nélkül.",
+    pricing_title: "Válaszd ki a megfelelő csomagot", pricing_subtitle: "7 nap ingyen. Bankkártya nem kötelező.",
+    pricing_standard_desc: "Kisebb webshopoknak", pricing_premium_desc: "Növekvő vállalkozásoknak", pricing_elite_desc: "Nagy cégeknek és csapatoknak",
+    pricing_standard_f1: "50 AWB / hét", pricing_standard_f2: "50 számla / hét",
+    pricing_standard_f3: "DPD + WooCommerce integráció", pricing_standard_f4: 'Suport email',
+    pricing_premium_f1: "200 AWB / hét", pricing_premium_f2: "200 számla / hét",
+    pricing_premium_f3: "Minden Standard integráció", pricing_premium_f4: "Elsőbbségi támogatás",
+    pricing_elite_f1: "Korlátlan AWB", pricing_elite_f2: "Korlátlan számla",
+    pricing_elite_f3: "Minden integráció", pricing_elite_f4: "Dedikált 24/7 támogatás",
+    pricing_popular: 'Popular', pricing_cta: "Kezdd ingyen",
+    about_title: 'Despre noi', about_text: "Az Eauto egy román logisztikai platform, amely az online vállalkozók életét könnyíti meg.",
+    footer_brand_desc: "Teljes platform számlázáshoz és AWB-hez Romániában. Üzemeltető: Milan web S.R.L.",
     footer_product: 'Produs', footer_company: 'Companie', footer_legal: 'Legal',
-    ajutor: 'Ajutor', anpc: 'ANPC', back_home: 'Înapoi la pagina principală',
+    ajutor: 'Ajutor', anpc: 'ANPC', back_home: "Vissza a főoldalra",
     nav_dashboard: 'Dashboard', nav_awb: 'AWB-k', nav_factura: 'Számlák',
     nav_settings: 'Beállítások', nav_curier: 'Futár', nav_companie: 'Cég',
     nav_factura_settings: 'Számlázás',
     accounts_label: 'Fiókok', new_subaccount: 'Új al-account',
-    manage_subscription: 'Manage Subscription', logout: 'Kijelentkezés',
+    manage_subscription: "Előfizetés kezelése", logout: 'Kijelentkezés',
     language: 'Nyelv', search: 'Keresés...', logging_out: 'Kijelentkezés',
     stat_orders: 'Mai rendelések', stat_orders_hint: 'Utolsó 24 óra',
     stat_awb: 'Heti AWB-k', stat_factura: 'Heti számlák', stat_plan: 'Előfizetés',
@@ -1572,7 +1574,7 @@ const TRANSLATIONS = {
     terms_admin_desc: 'Szerkeszd a szöveget — minden felhasználó látni fogja.',
     limit_reached: 'Heti limit elérve',
     limit_text: 'Elérted a {type} limitet a {plan} csomagnál. Válts nagyobbra!',
-    confirm_terms: 'El kell fogadnod a Termeni și Condiții-t.',
+    confirm_terms: "El kell fogadnod a Felhasználási feltételeket.",
     send_message: 'Üzenet küldése',
     cancel_subscription_title: 'Előfizetés lemondása',
     cancel_subscription_desc: 'Ha lemondod, az előfizetésed aktív marad a hónap végéig. Nem újul meg automatikusan.',
@@ -1586,7 +1588,8 @@ const TRANSLATIONS = {
     cancel_confirm_btn: 'Igen, lemondom',
     subscription_cancelled_toast: 'Előfizetés lemondva. Aktív a periódus végéig.',
     subscription_resumed: 'Előfizetés visszavonva.',
-    continue_google: 'Folytatás Google-lel', or_word: 'vagy'
+    continue_google: 'Folytatás Google-lel', or_word: 'vagy',
+    have_account: "Már van fiókod? Jelentkezz be"
   }
 };
 
@@ -1614,7 +1617,662 @@ function applyTranslations() {
   document.querySelectorAll('.lang-switcher button, .footer-lang-switcher button, .acc-lang-switcher button').forEach(b => {
     b.classList.toggle('active', b.dataset.lang === currentLang);
   });
+  if (typeof localizeDom === 'function') localizeDom(document.body);
+  document.documentElement.lang = currentLang;
 }
+
+
+// ============================================
+// UI TEXT LAYER — minden megjelenő szöveg a kiválasztott nyelven
+// (a magyar szöveg a kulcs; ro/en fordítás innen jön)
+// ============================================
+const UI_TX = {
+ "Töltsd ki az összes mezőt!": {
+  "ro": "Completează toate câmpurile!",
+  "en": "Please fill in all fields!"
+ },
+ "A jelszó legalább 6 karakter legyen!": {
+  "ro": "Parola trebuie să aibă minim 6 caractere!",
+  "en": "Password must be at least 6 characters!"
+ },
+ "A jelszavak nem egyeznek!": {
+  "ro": "Parolele nu coincid!",
+  "en": "Passwords do not match!"
+ },
+ "Érvénytelen email cím!": {
+  "ro": "Adresă de email invalidă!",
+  "en": "Invalid email address!"
+ },
+ "Érvénytelen email cím.": {
+  "ro": "Adresă de email invalidă.",
+  "en": "Invalid email address."
+ },
+ "Fiók létrehozva!": {
+  "ro": "Cont creat!",
+  "en": "Account created!"
+ },
+ "Ez az email admin fiókhoz tartozik.": {
+  "ro": "Acest email aparține unui cont de administrator.",
+  "en": "This email belongs to an admin account."
+ },
+ "Ez az email már regisztrálva van.": {
+  "ro": "Acest email este deja înregistrat.",
+  "en": "This email is already registered."
+ },
+ "A jelszó túl gyenge.": {
+  "ro": "Parola este prea slabă.",
+  "en": "The password is too weak."
+ },
+ "A böngésző blokkolta a felugró ablakot. Engedélyezd és próbáld újra.": {
+  "ro": "Browserul a blocat fereastra pop-up. Permite-o și încearcă din nou.",
+  "en": "The browser blocked the pop-up. Allow it and try again."
+ },
+ "Ez a domain nincs engedélyezve a Firebase-ben (Authentication → Settings → Authorized domains).": {
+  "ro": "Acest domeniu nu este autorizat în Firebase (Authentication → Settings → Authorized domains).",
+  "en": "This domain is not authorized in Firebase (Authentication → Settings → Authorized domains)."
+ },
+ "A Google bejelentkezés nincs bekapcsolva a Firebase-ben.": {
+  "ro": "Autentificarea Google nu este activată în Firebase.",
+  "en": "Google sign-in is not enabled in Firebase."
+ },
+ "Ezzel az emaillel már van jelszavas fiók. Lépj be jelszóval.": {
+  "ro": "Există deja un cont cu parolă pentru acest email. Autentifică-te cu parola.",
+  "en": "An account with a password already exists for this email. Log in with your password."
+ },
+ "Nincs ilyen fiók.": {
+  "ro": "Nu există un astfel de cont.",
+  "en": "No such account."
+ },
+ "Hibás jelszó.": {
+  "ro": "Parolă greșită.",
+  "en": "Wrong password."
+ },
+ "Hibás email vagy jelszó.": {
+  "ro": "Email sau parolă greșită.",
+  "en": "Wrong email or password."
+ },
+ "Túl sok próbálkozás.": {
+  "ro": "Prea multe încercări.",
+  "en": "Too many attempts."
+ },
+ "∞ korlátlan": {
+  "ro": "∞ nelimitat",
+  "en": "∞ unlimited"
+ },
+ "Ez már az aktív csomagod.": {
+  "ro": "Acesta este deja planul tău activ.",
+  "en": "This is already your active plan."
+ },
+ "Nincs jogosultságod": {
+  "ro": "Nu ai permisiunea",
+  "en": "You do not have permission"
+ },
+ "Új al-account hozzáadva": {
+  "ro": "Subcont nou adăugat",
+  "en": "New sub-account added"
+ },
+ "Adj nevet az al-accountnak": {
+  "ro": "Dă un nume subcontului",
+  "en": "Give the sub-account a name"
+ },
+ "Név mentve": {
+  "ro": "Nume salvat",
+  "en": "Name saved"
+ },
+ "Expedíciós adatok mentve": {
+  "ro": "Datele expeditorului au fost salvate",
+  "en": "Sender details saved"
+ },
+ "WooCommerce adatok mentve": {
+  "ro": "Datele WooCommerce au fost salvate",
+  "en": "WooCommerce details saved"
+ },
+ "Legalább 1 account kell": {
+  "ro": "Este necesar cel puțin 1 cont",
+  "en": "At least 1 account is required"
+ },
+ "Biztosan törlöd ezt az al-accountot?": {
+  "ro": "Sigur ștergi acest subcont?",
+  "en": "Are you sure you want to delete this sub-account?"
+ },
+ "Al-account törölve": {
+  "ro": "Subcont șters",
+  "en": "Sub-account deleted"
+ },
+ "Válassz curiert": {
+  "ro": "Alege un curier",
+  "en": "Choose a courier"
+ },
+ "Curier konfiguráció mentve": {
+  "ro": "Configurația curierului a fost salvată",
+  "en": "Courier configuration saved"
+ },
+ "Törlöd ezt a curier konfigurációt?": {
+  "ro": "Ștergi această configurație de curier?",
+  "en": "Delete this courier configuration?"
+ },
+ "Curier konfiguráció törölve": {
+  "ro": "Configurația curierului a fost ștearsă",
+  "en": "Courier configuration deleted"
+ },
+ "Válassz számlázót": {
+  "ro": "Alege un furnizor de facturare",
+  "en": "Choose an invoicing provider"
+ },
+ "Számlázó konfiguráció mentve": {
+  "ro": "Configurația de facturare a fost salvată",
+  "en": "Invoicing configuration saved"
+ },
+ "Törlöd ezt a számlázó konfigurációt?": {
+  "ro": "Ștergi această configurație de facturare?",
+  "en": "Delete this invoicing configuration?"
+ },
+ "Számlázó konfiguráció törölve": {
+  "ro": "Configurația de facturare a fost ștearsă",
+  "en": "Invoicing configuration deleted"
+ },
+ "Homepage mentve": {
+  "ro": "Pagina principală a fost salvată",
+  "en": "Homepage saved"
+ },
+ "Visszaállítod az alapértelmezettre?": {
+  "ro": "Resetezi la valorile implicite?",
+  "en": "Reset to defaults?"
+ },
+ "Visszaállítva (még nem mentve)": {
+  "ro": "Resetat (încă nesalvat)",
+  "en": "Reset (not saved yet)"
+ },
+ "Nem lehet üres": {
+  "ro": "Nu poate fi gol",
+  "en": "Cannot be empty"
+ },
+ "Termeni și Condiții mentve": {
+  "ro": "Termenii și Condițiile au fost salvate",
+  "en": "Terms & Conditions saved"
+ },
+ "Alapértelmezett visszaállítva (még nem mentve)": {
+  "ro": "Valori implicite restaurate (încă nesalvate)",
+  "en": "Defaults restored (not saved yet)"
+ },
+ "Add meg a webshop URL-t!": {
+  "ro": "Introdu URL-ul magazinului!",
+  "en": "Enter the webshop URL!"
+ },
+ "Add meg a WooCommerce kulcsokat!": {
+  "ro": "Introdu cheile WooCommerce!",
+  "en": "Enter the WooCommerce keys!"
+ },
+ "Érvénytelen válasz": {
+  "ro": "Răspuns invalid",
+  "en": "Invalid response"
+ },
+ "Lista törölve": {
+  "ro": "Lista a fost ștearsă",
+  "en": "List cleared"
+ },
+ "Nincs kijelölt rendelés": {
+  "ro": "Nicio comandă selectată",
+  "en": "No order selected"
+ },
+ "Töltsd ki az expedíciós adatokat!": {
+  "ro": "Completează datele expeditorului!",
+  "en": "Fill in the sender details!"
+ },
+ "Nincs beállított futár! Menj a Beállítások → Curier részhez.": {
+  "ro": "Niciun curier configurat! Mergi la Setări → Curier.",
+  "en": "No courier configured! Go to Settings → Courier."
+ },
+ "Nincs beállított futár — Beállítások → Curier": {
+  "ro": "Niciun curier configurat — Setări → Curier",
+  "en": "No courier configured — Settings → Courier"
+ },
+ "Nincs beállított számlázó! Menj a Facturare fülre.": {
+  "ro": "Niciun furnizor de facturare configurat! Mergi la fila Facturare.",
+  "en": "No invoicing provider configured! Go to the Invoicing tab."
+ },
+ "Beállított curierek": {
+  "ro": "Curieri configurați",
+  "en": "Configured couriers"
+ },
+ "Beállított számlázók": {
+  "ro": "Furnizori de facturare configurați",
+  "en": "Configured invoicing providers"
+ },
+ "✓ Beállítva": {
+  "ro": "✓ Configurat",
+  "en": "✓ Configured"
+ },
+ "Nincs rendelés": {
+  "ro": "Nicio comandă",
+  "en": "No orders"
+ },
+ "Töltsd le a rendeléseket.": {
+  "ro": "Încarcă comenzile.",
+  "en": "Load your orders."
+ },
+ "Ramburs": {
+  "ro": "Ramburs",
+  "en": "Cash on delivery"
+ },
+ "Fizetve": {
+  "ro": "Plătit",
+  "en": "Paid"
+ },
+ "Feldolgozás folyamatban...": {
+  "ro": "Se procesează...",
+  "en": "Processing..."
+ },
+ "Telefon:": {
+  "ro": "Telefon:",
+  "en": "Phone:"
+ },
+ "Cím:": {
+  "ro": "Adresă:",
+  "en": "Address:"
+ },
+ "Felvétel:": {
+  "ro": "Ridicare:",
+  "en": "Pickup:"
+ },
+ "Számlaszám:": {
+  "ro": "Număr factură:",
+  "en": "Invoice number:"
+ },
+ "· Rendelés:": {
+  "ro": "· Comandă:",
+  "en": "· Order:"
+ },
+ "(nincs PDF)": {
+  "ro": "(fără PDF)",
+  "en": "(no PDF)"
+ },
+ "Nincs találat": {
+  "ro": "Niciun rezultat",
+  "en": "No results"
+ },
+ "Nincs felhasználó": {
+  "ro": "Niciun utilizator",
+  "en": "No users"
+ },
+ "⚠️ Lemondva": {
+  "ro": "⚠️ Anulat",
+  "en": "⚠️ Cancelled"
+ },
+ "Keresés...": {
+  "ro": "Caută...",
+  "en": "Search..."
+ },
+ "Ugrás...": {
+  "ro": "Mergi la...",
+  "en": "Go to..."
+ },
+ "Számlázó": {
+  "ro": "Furnizor facturare",
+  "en": "Invoicing provider"
+ },
+ "max 5 egyszerre": {
+  "ro": "max 5 odată",
+  "en": "max 5 at a time"
+ },
+ "— Válassz —": {
+  "ro": "— Alege —",
+  "en": "— Select —"
+ },
+ "Homepage szerkesztése": {
+  "ro": "Editare pagină principală",
+  "en": "Edit homepage"
+ },
+ "Minden változás azonnal élesedik": {
+  "ro": "Orice modificare se aplică imediat",
+  "en": "Every change goes live immediately"
+ },
+ "Hero szekció": {
+  "ro": "Secțiunea Hero",
+  "en": "Hero section"
+ },
+ "Hero kép URL": {
+  "ro": "URL imagine Hero",
+  "en": "Hero image URL"
+ },
+ "Hero cím": {
+  "ro": "Titlu Hero",
+  "en": "Hero title"
+ },
+ "Hero alcím": {
+  "ro": "Subtitlu Hero",
+  "en": "Hero subtitle"
+ },
+ "Cím": {
+  "ro": "Titlu",
+  "en": "Title"
+ },
+ "Szöveg": {
+  "ro": "Text",
+  "en": "Text"
+ },
+ "Kapcsolat (footer)": {
+  "ro": "Contact (footer)",
+  "en": "Contact (footer)"
+ },
+ "Telefon": {
+  "ro": "Telefon",
+  "en": "Phone"
+ },
+ "Felhasználók": {
+  "ro": "Utilizatori",
+  "en": "Users"
+ },
+ "lei/hó": {
+  "ro": "lei/lună",
+  "en": "lei/mo"
+ },
+ "/ hó": {
+  "ro": "/ lună",
+  "en": "/ mo"
+ },
+ "Hiányzó adatok": {
+  "ro": "Date lipsă",
+  "en": "Missing data"
+ },
+ "Hiányzó order adat": {
+  "ro": "Datele comenzii lipsesc",
+  "en": "Missing order data"
+ },
+ "Hiányzó client vagy Continut": {
+  "ro": "Lipsesc clientul sau conținutul facturii",
+  "en": "Missing client or invoice lines"
+ },
+ "Hiányzó: CUI, API kulcs vagy serie": {
+  "ro": "Lipsesc: CUI, cheie API sau serie",
+  "en": "Missing: CUI, API key or series"
+ },
+ "A rendeléshez nincs cím megadva!": {
+  "ro": "Comanda nu are adresă!",
+  "en": "The order has no address!"
+ },
+ "A rendeléshez nincs telefonszám megadva!": {
+  "ro": "Comanda nu are număr de telefon!",
+  "en": "The order has no phone number!"
+ },
+ "Hiányzó DPD user vagy password": {
+  "ro": "Utilizator sau parolă DPD lipsă",
+  "en": "Missing DPD user or password"
+ },
+ "Hiányzó FanCourier user vagy password": {
+  "ro": "Utilizator sau parolă FanCourier lipsă",
+  "en": "Missing FanCourier user or password"
+ },
+ "Hiányzó Cargus user vagy password": {
+  "ro": "Utilizator sau parolă Cargus lipsă",
+  "en": "Missing Cargus user or password"
+ },
+ "Hiányzó SameDay user vagy password": {
+  "ro": "Utilizator sau parolă SameDay lipsă",
+  "en": "Missing SameDay user or password"
+ },
+ "Hiányzó GLS user vagy password": {
+  "ro": "Utilizator sau parolă GLS lipsă",
+  "en": "Missing GLS user or password"
+ },
+ "FanCourier bejelentkezési hiba.": {
+  "ro": "Eroare de autentificare FanCourier.",
+  "en": "FanCourier login error."
+ },
+ "Cargus bejelentkezési hiba.": {
+  "ro": "Eroare de autentificare Cargus.",
+  "en": "Cargus login error."
+ },
+ "SameDay bejelentkezési hiba.": {
+  "ro": "Eroare de autentificare SameDay.",
+  "en": "SameDay login error."
+ },
+ "DPD nem JSON választ adott.": {
+  "ro": "DPD nu a returnat JSON.",
+  "en": "DPD did not return JSON."
+ },
+ "FGO nem JSON választ adott.": {
+  "ro": "FGO nu a returnat JSON.",
+  "en": "FGO did not return JSON."
+ },
+ "DPD nem adott vissza shipment ID-t.": {
+  "ro": "DPD nu a returnat ID-ul expediției.",
+  "en": "DPD did not return a shipment ID."
+ },
+ "DPD nyomtatási hiba": {
+  "ro": "Eroare la tipărirea DPD",
+  "en": "DPD print error"
+ },
+ "FanCourier: add meg a Client ID mezőben a FAN ügyfélazonosítót (clientId).": {
+  "ro": "FanCourier: introdu ID-ul clientului FAN în câmpul Client ID (clientId).",
+  "en": "FanCourier: enter the FAN client ID in the Client ID field (clientId)."
+ },
+ "GLS: add meg a Client ID mezőben az ügyfélszámot (ClientNumber).": {
+  "ro": "GLS: introdu numărul de client în câmpul Client ID (ClientNumber).",
+  "en": "GLS: enter the customer number in the Client ID field (ClientNumber)."
+ },
+ "Cargus: add meg a Subscription Key-t (Extra mező).": {
+  "ro": "Cargus: introdu Subscription Key (câmpul Extra).",
+  "en": "Cargus: enter the Subscription Key (Extra field)."
+ },
+ "Cargus: nincs felvételi pont (PickupLocation) a fiókban.": {
+  "ro": "Cargus: nu există punct de ridicare (PickupLocation) în cont.",
+  "en": "Cargus: no pickup location (PickupLocation) in the account."
+ },
+ "SameDay: nincs felvételi pont a fiókban.": {
+  "ro": "SameDay: nu există punct de ridicare în cont.",
+  "en": "SameDay: no pickup point in the account."
+ },
+ "DPD Box: a rendelésből nem olvasható ki a pickup point / automata ID (order.lockerId).": {
+  "ro": "DPD Box: din comandă nu se poate citi ID-ul punctului de ridicare / al lockerului (order.lockerId).",
+  "en": "DPD Box: the pickup point / locker ID cannot be read from the order (order.lockerId)."
+ },
+ "Fanbox: a rendelésből nem olvasható ki az automata ID (order.lockerId).": {
+  "ro": "Fanbox: din comandă nu se poate citi ID-ul lockerului (order.lockerId).",
+  "en": "Fanbox: the locker ID cannot be read from the order (order.lockerId)."
+ },
+ "SameDay Box: a rendelésből nem olvasható ki az easybox ID (order.lockerId).": {
+  "ro": "SameDay Box: din comandă nu se poate citi ID-ul easybox (order.lockerId).",
+  "en": "SameDay Box: the easybox ID cannot be read from the order (order.lockerId)."
+ },
+ "SmartBill: hiányzik a belépési email (Email / Client ID mező).": {
+  "ro": "SmartBill: lipsește emailul de autentificare (câmpul Email / Client ID).",
+  "en": "SmartBill: the login email is missing (Email / Client ID field)."
+ },
+ "Oblio: hiányzik a client_id (Email / Client ID mező).": {
+  "ro": "Oblio: lipsește client_id (câmpul Email / Client ID).",
+  "en": "Oblio: client_id is missing (Email / Client ID field)."
+ },
+ "Oblio hitelesítési hiba (ellenőrizd az emailt és a client secretet).": {
+  "ro": "Eroare de autentificare Oblio (verifică emailul și client secret).",
+  "en": "Oblio authentication error (check the email and client secret)."
+ },
+ "DPD API felhasználónév és jelszó.": {
+  "ro": "Utilizator și parolă API DPD.",
+  "en": "DPD API username and password."
+ },
+ "Ugyanazok az adatok, mint a DPD-nél. A rendelésből kiolvasott pickup point / automata ID kell hozzá.": {
+  "ro": "Aceleași date ca la DPD. Este necesar ID-ul punctului de ridicare / lockerului din comandă.",
+  "en": "Same credentials as DPD. The pickup point / locker ID from the order is required."
+ },
+ "FanCourier API felhasználónév és jelszó + a FAN ügyfélazonosító (clientId).": {
+  "ro": "Utilizator și parolă API FanCourier + ID-ul clientului FAN (clientId).",
+  "en": "FanCourier API username and password + the FAN client ID (clientId)."
+ },
+ "Mint a FanCourier, de a rendelésben benne kell lennie a kiválasztott Fanbox automatának.": {
+  "ro": "Ca la FanCourier, dar comanda trebuie să conțină lockerul Fanbox ales.",
+  "en": "Same as FanCourier, but the order must contain the selected Fanbox locker."
+ },
+ "Cargus API felhasználónév + jelszó, és az Azure API Management Subscription Key.": {
+  "ro": "Utilizator + parolă API Cargus și Subscription Key Azure API Management.",
+  "en": "Cargus API username + password and the Azure API Management Subscription Key."
+ },
+ "SameDay API felhasználónév és jelszó. A Service ID-t üresen hagyhatod, automatikusan keresi.": {
+  "ro": "Utilizator și parolă API SameDay. Service ID poate rămâne gol, se caută automat.",
+  "en": "SameDay API username and password. You can leave the Service ID empty; it is found automatically."
+ },
+ "Mint a SameDay, de a rendelésben benne kell lennie az easybox automata ID-nak.": {
+  "ro": "Ca la SameDay, dar comanda trebuie să conțină ID-ul easybox.",
+  "en": "Same as SameDay, but the order must contain the easybox locker ID."
+ },
+ "MyGLS belépési email + jelszó, és a GLS ügyfélszám.": {
+  "ro": "Email de autentificare MyGLS + parolă și numărul de client GLS.",
+  "en": "MyGLS login email + password and the GLS customer number."
+ },
+ "Client ID (DPD ügyfél ID)": {
+  "ro": "Client ID (ID client DPD)",
+  "en": "Client ID (DPD client ID)"
+ },
+ "Client ID (FAN ügyfélazonosító, kötelező)": {
+  "ro": "Client ID (ID client FAN, obligatoriu)",
+  "en": "Client ID (FAN client ID, required)"
+ },
+ "Client ID (nem használt)": {
+  "ro": "Client ID (nefolosit)",
+  "en": "Client ID (not used)"
+ },
+ "Ügyfélszám (ClientNumber, kötelező)": {
+  "ro": "Număr client (ClientNumber, obligatoriu)",
+  "en": "Customer number (ClientNumber, required)"
+ },
+ "Subscription Key (kötelező)": {
+  "ro": "Subscription Key (obligatoriu)",
+  "en": "Subscription Key (required)"
+ },
+ "Service ID (opcionális)": {
+  "ro": "Service ID (opțional)",
+  "en": "Service ID (optional)"
+ },
+ "FGO: Cheie Privată, CUI, Serie és Platforma URL.": {
+  "ro": "FGO: Cheie Privată, CUI, Serie și Platforma URL.",
+  "en": "FGO: Cheie Privată, CUI, Series and Platform URL."
+ },
+ "SmartBill belépési email": {
+  "ro": "Email de autentificare SmartBill",
+  "en": "SmartBill login email"
+ },
+ "API token (SmartBill → Contul meu → Integrări)": {
+  "ro": "Token API (SmartBill → Contul meu → Integrări)",
+  "en": "API token (SmartBill → Contul meu → Integrări)"
+ },
+ "CUI = cégazonosító, Serie = a SmartBillben létező számlasorozat neve.": {
+  "ro": "CUI = codul fiscal, Serie = numele seriei de facturi existente în SmartBill.",
+  "en": "CUI = company tax ID, Series = the name of an existing invoice series in SmartBill."
+ },
+ "Client ID (Oblio belépési email)": {
+  "ro": "Client ID (email de autentificare Oblio)",
+  "en": "Client ID (Oblio login email)"
+ },
+ "Client Secret (Oblio → Setări → Date cont)": {
+  "ro": "Client Secret (Oblio → Setări → Date cont)",
+  "en": "Client Secret (Oblio → Setări → Date cont)"
+ },
+ "CUI = cégazonosító, Serie = az Oblioban létező számlasorozat neve.": {
+  "ro": "CUI = codul fiscal, Serie = numele seriei de facturi existente în Oblio.",
+  "en": "CUI = company tax ID, Series = the name of an existing invoice series in Oblio."
+ },
+ "Ehhez a szolgáltatóhoz nincs publikus API dokumentáció, ezért a számlázás egyelőre nem működik vele.": {
+  "ro": "Pentru acest furnizor nu există documentație API publică, deci facturarea nu funcționează încă cu el.",
+  "en": "There is no public API documentation for this provider, so invoicing does not work with it yet."
+ },
+ "Közvetlen ANAF SPV integráció még nincs implementálva.": {
+  "ro": "Integrarea directă ANAF SPV nu este implementată încă.",
+  "en": "Direct ANAF SPV integration is not implemented yet."
+ },
+ "Folytatás Google-lel": {
+  "ro": "Continuă cu Google",
+  "en": "Continue with Google"
+ }
+};
+const UI_PATTERNS = [["^\u2713 K\u00e9sz \u2014 (\\d+) sikeres, (\\d+) hiba$","✓ Gata — $1 reușite, $2 erori","✓ Done — $1 successful, $2 failed"],["^\u2713 K\u00e9sz \u2014 (\\d+) sz\u00e1mla sikeres, (\\d+) hiba$","✓ Gata — $1 facturi reușite, $2 erori","✓ Done — $1 invoices created, $2 failed"],["^(\\d+) AWB k\u00e9sz, (\\d+) hiba$","$1 AWB gata, $2 erori","$1 AWB done, $2 failed"],["^(\\d+) sz\u00e1mla k\u00e9sz, (\\d+) hiba$","$1 facturi gata, $2 erori","$1 invoices done, $2 failed"],["^(\\d+) rendel\u00e9s bet\u00f6ltve(?: \\((\\d+) kihagyva\\))?$","$1 comenzi încărcate","$1 orders loaded"],["^(.+) AWB \u2014 (\\d+) rendel\u00e9s \u00b7 (.+)$","$1 AWB — $2 comenzi · $3","$1 AWB — $2 orders · $3"],["^Hiba: (.*)$","Eroare: $1","Error: $1"],["^FanCourier: (.*)$","FanCourier: $1","FanCourier: $1"],["^(\\d+) / (\\d+) ezen a h\u00e9ten$","$1 / $2 săptămâna aceasta","$1 / $2 this week"],["^El\u0151fizet\u00e9s m\u00f3dos\u00edtva: (.+)$","Abonament modificat: $1","Subscription changed: $1"],["^\u00c1tv\u00e1ltva: (.+)$","Comutat la: $1","Switched to: $1"],["^Nincs be\u00e1ll\u00edtva a (.+) curier! Menj a Curier be\u00e1ll\u00edt\u00e1sokhoz\\.$","Curierul $1 nu este configurat! Mergi la setările Curier.","The $1 courier is not configured! Go to the Courier settings."],["^Sz\u00e1ml\u00e1k gener\u00e1l\u00e1sa \\((.+)\\)\\.\\.\\.$","Se generează facturile ($1)...","Generating invoices ($1)..."],["^Egyszerre max (\\d+) darab k\u00e9sz\u00fcl\\.$","Se generează maximum $1 odată.","At most $1 are created at a time."],["^Egyszerre max (\\d+) sz\u00e1mla k\u00e9sz\u00fcl\\.$","Se generează maximum $1 facturi odată.","At most $1 invoices are created at a time."],["^\u2014 AWB: (.+), Sz\u00e1mla: (.+)$","— AWB: $1, Factură: $2","— AWB: $1, Invoice: $2"],["^(\\d+) lei/h\u00f3$","$1 lei/lună","$1 lei/mo"],["^A\\(z\\) (.+) sz\u00e1ml\u00e1z\u00f3nak nincs publikusan el\u00e9rhet\u0151 API dokument\u00e1ci\u00f3ja.*$","Furnizorul $1 nu are documentație API publică, deci nu a putut fi implementat.","$1 has no public API documentation, so it could not be implemented."],["^A (.+) (k\u00f6vet\u00e9si|nyomtat\u00e1si) integr\u00e1ci\u00f3 m\u00e9g nincs implement\u00e1lva\\.$","Integrarea $1 nu este implementată încă.","The $1 integration is not implemented yet."],["^Ismeretlen curier: (.+)$","Curier necunoscut: $1","Unknown courier: $1"],["^Ismeretlen sz\u00e1ml\u00e1z\u00f3: (.+)$","Furnizor de facturare necunoscut: $1","Unknown invoicing provider: $1"],["^SameDay: a v\u00e1ros nem tal\u00e1lhat\u00f3 \\((.+)\\)\\.$","SameDay: orașul nu a fost găsit ($1).","SameDay: city not found ($1)."],["^SameDay: ismeretlen megye \\((.+)\\)\\.$","SameDay: județ necunoscut ($1).","SameDay: unknown county ($1)."],["^GLS nem JSON v\u00e1laszt adott \\(HTTP (\\d+)\\)\\.$","GLS nu a returnat JSON (HTTP $1).","GLS did not return JSON (HTTP $1)."]].map(([re, ro, en]) => [new RegExp(re), ro, en]);
+
+function translateUiString(str) {
+  if (currentLang === 'hu' || !str) return str;
+  const m = str.match(/^(\s*)([\s\S]*?)(\s*)$/);
+  const lead = m[1], core = m[2], trail = m[3];
+  if (!core) return str;
+  const hit = UI_TX[core];
+  if (hit && hit[currentLang]) return lead + hit[currentLang] + trail;
+  for (const [re, ro, en] of UI_PATTERNS) {
+    const mm = core.match(re);
+    if (mm) {
+      const tpl = currentLang === 'ro' ? ro : en;
+      let out = tpl.replace(/\$(\d)/g, (_, n) => mm[+n] ?? '');
+      if (/^Hiba: /.test(core) || /^FanCourier: /.test(core)) {
+        // a szerver hibaüzenetét is fordítsuk, ha ismert
+        const inner = mm[1];
+        const tr = translateUiString(inner);
+        out = tpl.replace('$1', tr);
+      }
+      return lead + out + trail;
+    }
+  }
+  return str;
+}
+
+const _uiOrig = new WeakMap(), _uiLast = new WeakMap();
+function localizeTextNode(n) {
+  const cur = n.nodeValue;
+  let orig = cur;
+  if (_uiLast.has(n) && _uiLast.get(n) === cur) orig = _uiOrig.get(n);
+  const out = translateUiString(orig);
+  if (out !== cur) n.nodeValue = out;
+  _uiOrig.set(n, orig); _uiLast.set(n, out);
+}
+const UI_ATTRS = ['placeholder', 'title', 'aria-label'];
+function localizeElementAttrs(el) {
+  for (const a of UI_ATTRS) {
+    if (!el.hasAttribute || !el.hasAttribute(a)) continue;
+    const key = 'uiOrig_' + a.replace('-', '_');
+    const cur = el.getAttribute(a);
+    const lastKey = key + '_last';
+    let orig = cur;
+    if (el.dataset && el.dataset[lastKey] === cur && el.dataset[key] !== undefined) orig = el.dataset[key];
+    const out = translateUiString(orig);
+    if (out !== cur) el.setAttribute(a, out);
+    if (el.dataset) { el.dataset[key] = orig; el.dataset[lastKey] = out; }
+  }
+}
+let _uiBusy = false;
+function localizeDom(root) {
+  if (_uiBusy) return;
+  _uiBusy = true;
+  try {
+    root = root || document.body;
+    if (!root) return;
+    if (root.nodeType === 3) { localizeTextNode(root); return; }
+    const w = document.createTreeWalker(root, NodeFilter.SHOW_TEXT | NodeFilter.SHOW_ELEMENT, {
+      acceptNode(n) {
+        if (n.nodeType === 1) {
+          const tag = n.tagName;
+          if (tag === 'SCRIPT' || tag === 'STYLE' || tag === 'TEXTAREA') return NodeFilter.FILTER_REJECT;
+          return NodeFilter.FILTER_ACCEPT;
+        }
+        return NodeFilter.FILTER_ACCEPT;
+      }
+    });
+    let n = w.currentNode;
+    if (n.nodeType === 1) localizeElementAttrs(n);
+    while ((n = w.nextNode())) {
+      if (n.nodeType === 3) localizeTextNode(n); else localizeElementAttrs(n);
+    }
+  } finally { _uiBusy = false; }
+}
+let _uiQueued = false;
+const _uiObserver = new MutationObserver(() => {
+  if (_uiBusy || _uiQueued) return;
+  _uiQueued = true;
+  requestAnimationFrame(() => { _uiQueued = false; localizeDom(document.body); });
+});
+function startUiObserver() {
+  if (!document.body) return;
+  _uiObserver.observe(document.body, { childList: true, subtree: true, characterData: true });
+}
+// natív confirm/alert is a kiválasztott nyelven
+const _nativeConfirm = window.confirm.bind(window);
+window.confirm = (m) => _nativeConfirm(translateUiString(String(m)));
+const _nativeAlert = window.alert.bind(window);
+window.alert = (m) => _nativeAlert(translateUiString(String(m)));
 
 // ============================================
 // DEFAULT TERMS
@@ -1777,6 +2435,7 @@ window.closeMobileMenu = function () { document.getElementById('mobileMenu').cla
 
 // AUTH STEPS
 let selectedPlan = 'standard';
+let pendingNewUser = null;
 let signupData = { email: '', password: '' };
 
 window.showStep = function (stepId) {
@@ -1808,6 +2467,11 @@ window.selectPlan = function (plan) {
   });
 };
 
+window.cancelPendingSignup = async function () {
+  if (pendingNewUser) { pendingNewUser = null; await signOut(auth); return; }
+  showStep('signup-credentials');
+};
+
 window.signupStep2 = function () { showStep('signup-payment'); };
 
 window.signupStep3 = async function () {
@@ -1816,6 +2480,24 @@ window.signupStep3 = async function () {
   if (!document.getElementById('acceptTerms').checked) {
     errEl.textContent = t('confirm_terms');
     errEl.style.display = 'block';
+    return;
+  }
+  if (pendingNewUser) {
+    try {
+      await setDoc(doc(db, 'users', pendingNewUser.uid), {
+        email: pendingNewUser.email,
+        plan: selectedPlan,
+        accounts: [{ name: 'Fő account', expeditor: {}, shopConfig: {}, courierConfigs: {}, facturaConfigs: {} }],
+        activeAccountIndex: 0,
+        createdAt: new Date().toISOString(),
+        termsAcceptedAt: new Date().toISOString()
+      });
+      toast('Fiók létrehozva!', 'success');
+      await window.__rerunAuth();
+    } catch (e) {
+      errEl.textContent = e.message;
+      errEl.style.display = 'block';
+    }
     return;
   }
   if (signupData.email === ADMIN_EMAIL) {
@@ -1963,25 +2645,27 @@ window.toggleTheme = function () {
 })();
 
 // AUTH STATE
-onAuthStateChanged(auth, async (user) => {
+const authHandler = async (user) => {
   if (user) {
     currentUser = user;
-    document.getElementById('homePage').classList.add('hidden');
-    document.getElementById('authScreen').classList.remove('show');
-    document.getElementById('app').classList.add('show');
     document.getElementById('sidebarEmail').textContent = user.email;
     document.getElementById('userAvatar').textContent = (user.email || 'U').charAt(0).toUpperCase();
 
     const userDoc = await getDoc(doc(db, 'users', user.uid));
     let data = userDoc.data();
     if (!data) {
-      data = {
-        email: user.email, plan: 'standard',
-        accounts: [{ name: 'Fő account', expeditor: {}, shopConfig: {}, courierConfigs: {}, facturaConfigs: {} }],
-        activeAccountIndex: 0, createdAt: new Date().toISOString()
-      };
-      await setDoc(doc(db, 'users', user.uid), data);
+      // Új fiók (pl. Google): először csomag + fizetés lépés, csak utána jön létre a profil
+      pendingNewUser = user;
+      document.getElementById('app').classList.remove('show');
+      document.getElementById('homePage').classList.add('hidden');
+      document.getElementById('authScreen').classList.add('show');
+      showStep('signup-plan');
+      return;
     }
+    pendingNewUser = null;
+    document.getElementById('homePage').classList.add('hidden');
+    document.getElementById('authScreen').classList.remove('show');
+    document.getElementById('app').classList.add('show');
     if (!data.plan) data.plan = 'standard';
     if (!data.accounts) {
       data.accounts = [{ name: 'Fő account', expeditor: data.expeditor || {}, shopConfig: data.shopConfig || {}, courierConfigs: {}, facturaConfigs: {} }];
@@ -2024,7 +2708,9 @@ onAuthStateChanged(auth, async (user) => {
     document.getElementById('adminNavWrap').style.display = 'none';
     showStep('login');
   }
-});
+};
+onAuthStateChanged(auth, authHandler);
+window.__rerunAuth = () => authHandler(auth.currentUser);
 
 // LOGOUT animációval
 window.logout = async function () {
@@ -2506,7 +3192,23 @@ window.deleteCourierConfig = async function () {
   toast('Curier konfiguráció törölve', 'info');
 };
 
+function updateAwbCourierSelect() {
+  const sel = document.getElementById('awbCourierSelect');
+  if (!sel) return;
+  const configs = (getActiveAccount().courierConfigs) || {};
+  const keys = Object.keys(configs).filter(k => configs[k] && configs[k].user);
+  const prev = sel.value;
+  if (!keys.length) {
+    sel.innerHTML = '<option value="">Nincs beállított futár — Beállítások → Curier</option>';
+    sel.value = '';
+    return;
+  }
+  sel.innerHTML = keys.map(k => `<option value="${k}">${COURIERS[k]?.name || k}</option>`).join('');
+  sel.value = keys.includes(prev) ? prev : keys[0];
+}
+
 function renderCourierConfigList() {
+  updateAwbCourierSelect();
   const list = document.getElementById('courierConfigList');
   if (!list) return;
   const acc = getActiveAccount();
@@ -2891,7 +3593,8 @@ window.generateSelectedAWB = async function () {
   if (!acc.expeditor?.name) { toast('Töltsd ki az expedíciós adatokat!', 'warning'); return; }
 
   const courierSel = document.getElementById('awbCourierSelect');
-  const courier = courierSel?.value || 'dpd';
+  const courier = courierSel?.value;
+  if (!courier) { toast('Nincs beállított futár! Menj a Beállítások → Curier részhez.', 'warning'); return; }
   const courierConfig = (acc.courierConfigs || {})[courier];
   if (!courierConfig || !courierConfig.user) {
     toast(`Nincs beállítva a ${COURIERS[courier]?.name || courier} curier! Menj a Curier beállításokhoz.`, 'warning');
@@ -3171,6 +3874,7 @@ window.loadAdminData = async function () {
 // INIT
 document.getElementById('footerYear').textContent = new Date().getFullYear();
 applyTranslations();
+startUiObserver();
 loadGlobalSettings();
 console.log('%c✓ Eauto betöltve', 'color: #10B981; font-weight: bold;');
 </script>
