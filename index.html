@@ -1059,13 +1059,17 @@
           </div>
         </div>
         <div class="card" style="max-width:720px; margin-top:16px;">
-          <div class="card-header"><div><div class="card-title">WooCommerce</div></div></div>
+          <div class="card-header"><div><div class="card-title">Webshop</div></div></div>
           <div class="card-body">
             <div class="form-grid-2">
+              <div class="form-full"><label class="label">Platform</label>
+                <select class="input" id="shopPlatform" onchange="updateShopPlatformUI()"></select></div>
               <div class="form-full"><label class="label">Webshop URL</label><input class="input" id="shopUrl" placeholder="https://effeto.ro" /></div>
-              <div class="form-full"><label class="label">Consumer Key</label><input class="input" id="wcKey" placeholder="ck_..." /></div>
-              <div class="form-full"><label class="label">Consumer Secret</label><input class="input" id="wcSecret" type="password" placeholder="cs_..." /></div>
+              <div class="form-full" id="wcKeyWrap"><label class="label" id="wcKeyLabel">Consumer Key</label><input class="input" id="wcKey" placeholder="ck_..." /></div>
+              <div class="form-full" id="wcSecretWrap"><label class="label" id="wcSecretLabel">Consumer Secret</label><input class="input" id="wcSecret" type="password" placeholder="cs_..." /></div>
+              <div class="form-full" id="shopExtraWrap"><label class="label" id="shopExtraLabel">Extra</label><input class="input" id="shopExtra" /></div>
             </div>
+            <div id="shopPlatformHint" style="font-size:12px; color:var(--fg-muted); margin-top:10px;"></div>
             <div style="margin-top:20px;"><button class="btn" onclick="saveShopConfig()" data-i18n="save">Mentés</button></div>
           </div>
         </div>
@@ -1606,6 +1610,7 @@ window.setLang = function (lang) {
   currentLang = lang;
   localStorage.setItem('zen3-lang', lang);
   applyTranslations();
+  try { if (document.getElementById('shopPlatform')) updateShopPlatformUI(); } catch (e) {}
   document.querySelectorAll('.lang-switcher button, .footer-lang-switcher button, .acc-lang-switcher button').forEach(b => {
     b.classList.toggle('active', b.dataset.lang === lang);
   });
@@ -2257,6 +2262,126 @@ const UI_TX = {
  "Kártya törölve": {
   "ro": "Card șters",
   "en": "Card removed"
+ },
+ "Webshop adatok mentve": {
+  "ro": "Datele magazinului au fost salvate",
+  "en": "Webshop details saved"
+ },
+ "Add meg a webshop hozzáférési adatait!": {
+  "ro": "Introdu datele de acces ale magazinului!",
+  "en": "Enter the webshop access credentials!"
+ },
+ "A szerver nem JSON-t adott": {
+  "ro": "Serverul nu a returnat JSON",
+  "en": "The server did not return JSON"
+ },
+ "Webservice kulcs": {
+  "ro": "Cheie Webservice",
+  "en": "Webservice key"
+ },
+ "API kulcs": {
+  "ro": "Cheie API",
+  "en": "API key"
+ },
+ "Secret token": {
+  "ro": "Token secret",
+  "en": "Secret token"
+ },
+ "App token": {
+  "ro": "Token aplicație",
+  "en": "App token"
+ },
+ "Admin API token": {
+  "ro": "Token Admin API",
+  "en": "Admin API token"
+ },
+ "API token": {
+  "ro": "Token API",
+  "en": "API token"
+ },
+ "Token": {
+  "ro": "Token",
+  "en": "Token"
+ },
+ "Private key": {
+  "ro": "Cheie privată",
+  "en": "Private key"
+ },
+ "Location ID (opcionális)": {
+  "ro": "Location ID (opțional)",
+  "en": "Location ID (optional)"
+ },
+ "Kísérleti: nopCommerce Web API plugin szükséges.": {
+  "ro": "Experimental: este necesar pluginul nopCommerce Web API.",
+  "en": "Experimental: the nopCommerce Web API plugin is required."
+ },
+ "WooCommerce → Beállítások → Haladó → REST API → Kulcs hozzáadása (Olvasás).": {
+  "ro": "WooCommerce → Setări → Avansat → REST API → Adaugă cheie (Citire).",
+  "en": "WooCommerce → Settings → Advanced → REST API → Add key (Read)."
+ },
+ "Shopify admin → Beállítások → Alkalmazások → Egyéni alkalmazás fejlesztése → Admin API (read_orders).": {
+  "ro": "Shopify admin → Setări → Aplicații → Dezvoltă aplicație personalizată → Admin API (read_orders).",
+  "en": "Shopify admin → Settings → Apps → Develop apps → Admin API (read_orders)."
+ },
+ "PrestaShop → Speciális paraméterek → Webservice → kulcs (orders, addresses, customers: GET).": {
+  "ro": "PrestaShop → Parametri avansați → Webservice → cheie (orders, addresses, customers: GET).",
+  "en": "PrestaShop → Advanced Parameters → Webservice → key (orders, addresses, customers: GET)."
+ },
+ "Az OpenCartnak nincs beépített rendelés API-ja, ehhez bővítmény kell.": {
+  "ro": "OpenCart nu are API de comenzi încorporat, este nevoie de o extensie.",
+  "en": "OpenCart has no built-in orders API; an extension is required."
+ },
+ "BigCommerce → Haladó beállítások → API fiókok (Orders: read-only).": {
+  "ro": "BigCommerce → Setări avansate → Conturi API (Orders: read-only).",
+  "en": "BigCommerce → Advanced Settings → API Accounts (Orders: read-only)."
+ },
+ "Wix → API kulcsok kezelése (eCommerce Orders olvasás); Site ID a Wix irányítópult URL-jében.": {
+  "ro": "Wix → Gestionare chei API (citire eCommerce Orders); Site ID se află în URL-ul panoului Wix.",
+  "en": "Wix → API Keys Manager (eCommerce Orders read); the Site ID is in the Wix dashboard URL."
+ },
+ "Ecwid → Apps → Custom apps (read_orders).": {
+  "ro": "Ecwid → Apps → Custom apps (read_orders).",
+  "en": "Ecwid → Apps → Custom apps (read_orders)."
+ },
+ "Magento admin → System → Integrations → Access Token.": {
+  "ro": "Magento admin → System → Integrations → Access Token.",
+  "en": "Magento admin → System → Integrations → Access Token."
+ },
+ "Squarespace → Settings → Developer Tools → API keys (Orders).": {
+  "ro": "Squarespace → Settings → Developer Tools → API keys (Orders).",
+  "en": "Squarespace → Settings → Developer Tools → API keys (Orders)."
+ },
+ "Saleor Dashboard → Apps → Local app → token (MANAGE_ORDERS).": {
+  "ro": "Saleor Dashboard → Apps → Local app → token (MANAGE_ORDERS).",
+  "en": "Saleor Dashboard → Apps → Local app → token (MANAGE_ORDERS)."
+ },
+ "Medusa Admin → Settings → API Key Management (secret).": {
+  "ro": "Medusa Admin → Settings → API Key Management (secret).",
+  "en": "Medusa Admin → Settings → API Key Management (secret)."
+ },
+ "Shopware admin → Beállítások → Rendszer → Integrációk.": {
+  "ro": "Shopware admin → Setări → Sistem → Integrări.",
+  "en": "Shopware admin → Settings → System → Integrations."
+ },
+ "A Drupal Commerce-hez JSON:API bővítmény kell, jelenleg nem támogatott.": {
+  "ro": "Drupal Commerce necesită o extensie JSON:API, momentan nu este suportat.",
+  "en": "Drupal Commerce needs a JSON:API extension; not supported yet."
+ },
+ "Vendure Admin API token (ReadOrder jogosultság).": {
+  "ro": "Token Vendure Admin API (permisiunea ReadOrder).",
+  "en": "Vendure Admin API token (ReadOrder permission)."
+ },
+ "Snipcart → Account → API keys (Secret).": {
+  "ro": "Snipcart → Account → API keys (Secret).",
+  "en": "Snipcart → Account → API keys (Secret)."
+ },
+ "Shift4Shop → Settings → Apps → REST API.": {
+  "ro": "Shift4Shop → Settings → Apps → REST API.",
+  "en": "Shift4Shop → Settings → Apps → REST API."
+ },
+ "Square Developer Dashboard → Application → Access token (ORDERS_READ).": {
+  "ro": "Square Developer Dashboard → Application → Access token (ORDERS_READ).",
+  "en": "Square Developer Dashboard → Application → Access token (ORDERS_READ)."
  }
 };
 const UI_PATTERNS = [["^FGO nem JSON választ adott \\(HTTP (\\d+)\\)(?:: ([\\s\\S]*))?$", "FGO nu a returnat JSON (HTTP $1): $2", "FGO did not return JSON (HTTP $1): $2"],["^\u2713 K\u00e9sz \u2014 (\\d+) sikeres, (\\d+) hiba$","✓ Gata — $1 reușite, $2 erori","✓ Done — $1 successful, $2 failed"],["^\u2713 K\u00e9sz \u2014 (\\d+) sz\u00e1mla sikeres, (\\d+) hiba$","✓ Gata — $1 facturi reușite, $2 erori","✓ Done — $1 invoices created, $2 failed"],["^(\\d+) AWB k\u00e9sz, (\\d+) hiba$","$1 AWB gata, $2 erori","$1 AWB done, $2 failed"],["^(\\d+) sz\u00e1mla k\u00e9sz, (\\d+) hiba$","$1 facturi gata, $2 erori","$1 invoices done, $2 failed"],["^(\\d+) rendel\u00e9s bet\u00f6ltve(?: \\((\\d+) kihagyva\\))?$","$1 comenzi încărcate","$1 orders loaded"],["^(.+) AWB \u2014 (\\d+) rendel\u00e9s \u00b7 (.+)$","$1 AWB — $2 comenzi · $3","$1 AWB — $2 orders · $3"],["^Hiba: (.*)$","Eroare: $1","Error: $1"],["^FanCourier: (.*)$","FanCourier: $1","FanCourier: $1"],["^(\\d+) / (\\d+) ezen a h\u00e9ten$","$1 / $2 săptămâna aceasta","$1 / $2 this week"],["^El\u0151fizet\u00e9s m\u00f3dos\u00edtva: (.+)$","Abonament modificat: $1","Subscription changed: $1"],["^\u00c1tv\u00e1ltva: (.+)$","Comutat la: $1","Switched to: $1"],["^Nincs be\u00e1ll\u00edtva a (.+) curier! Menj a Curier be\u00e1ll\u00edt\u00e1sokhoz\\.$","Curierul $1 nu este configurat! Mergi la setările Curier.","The $1 courier is not configured! Go to the Courier settings."],["^Sz\u00e1ml\u00e1k gener\u00e1l\u00e1sa \\((.+)\\)\\.\\.\\.$","Se generează facturile ($1)...","Generating invoices ($1)..."],["^Egyszerre max (\\d+) darab k\u00e9sz\u00fcl\\.$","Se generează maximum $1 odată.","At most $1 are created at a time."],["^Egyszerre max (\\d+) sz\u00e1mla k\u00e9sz\u00fcl\\.$","Se generează maximum $1 facturi odată.","At most $1 invoices are created at a time."],["^\u2014 AWB: (.+), Sz\u00e1mla: (.+)$","— AWB: $1, Factură: $2","— AWB: $1, Invoice: $2"],["^(\\d+) lei/h\u00f3$","$1 lei/lună","$1 lei/mo"],["^A\\(z\\) (.+) sz\u00e1ml\u00e1z\u00f3nak nincs publikusan el\u00e9rhet\u0151 API dokument\u00e1ci\u00f3ja.*$","Furnizorul $1 nu are documentație API publică, deci nu a putut fi implementat.","$1 has no public API documentation, so it could not be implemented."],["^A (.+) (k\u00f6vet\u00e9si|nyomtat\u00e1si) integr\u00e1ci\u00f3 m\u00e9g nincs implement\u00e1lva\\.$","Integrarea $1 nu este implementată încă.","The $1 integration is not implemented yet."],["^Ismeretlen curier: (.+)$","Curier necunoscut: $1","Unknown courier: $1"],["^Ismeretlen sz\u00e1ml\u00e1z\u00f3: (.+)$","Furnizor de facturare necunoscut: $1","Unknown invoicing provider: $1"],["^SameDay: a v\u00e1ros nem tal\u00e1lhat\u00f3 \\((.+)\\)\\.$","SameDay: orașul nu a fost găsit ($1).","SameDay: city not found ($1)."],["^SameDay: ismeretlen megye \\((.+)\\)\\.$","SameDay: județ necunoscut ($1).","SameDay: unknown county ($1)."],["^GLS nem JSON v\u00e1laszt adott \\(HTTP (\\d+)\\)\\.$","GLS nu a returnat JSON (HTTP $1).","GLS did not return JSON (HTTP $1)."]].map(([re, ro, en]) => [new RegExp(re), ro, en]);
@@ -3270,6 +3395,10 @@ function fillSettingsForm() {
   document.getElementById('shopUrl').value = shop.shopUrl || '';
   document.getElementById('wcKey').value = shop.wcKey || '';
   document.getElementById('wcSecret').value = shop.wcSecret || '';
+  buildShopPlatformSelect();
+  document.getElementById('shopPlatform').value = shop.platform || 'woocommerce';
+  document.getElementById('shopExtra').value = shop.extra || '';
+  updateShopPlatformUI();
 }
 
 window.saveAccountName = async function () {
@@ -3296,10 +3425,12 @@ window.saveShopConfig = async function () {
   getActiveAccount().shopConfig = {
     shopUrl: document.getElementById('shopUrl').value.replace(/\/$/, ''),
     wcKey: document.getElementById('wcKey').value.trim(),
-    wcSecret: document.getElementById('wcSecret').value.trim()
+    wcSecret: document.getElementById('wcSecret').value.trim(),
+    platform: document.getElementById('shopPlatform').value || 'woocommerce',
+    extra: document.getElementById('shopExtra').value.trim()
   };
   await persistAccounts();
-  toast('WooCommerce adatok mentve', 'success');
+  toast('Webshop adatok mentve', 'success');
 };
 window.deleteCurrentAccount = async function () {
   if (!currentUserData) return;
@@ -3593,6 +3724,89 @@ function extractLockerId(o) {
   return hit ? String(hit.value).trim() : '';
 }
 
+// ===== Webshop platformok =====
+const ORDERS_PROXY_URL = 'https://zen3hub-3.onrender.com/api/orders/fetch';
+const SHOP_PLATFORMS = {
+  'woocommerce': { name: 'WooCommerce', key: 'Consumer Key', keyPh: 'ck_...', secret: 'Consumer Secret', secretPh: 'cs_...', hint: 'WooCommerce → Beállítások → Haladó → REST API → Kulcs hozzáadása (Olvasás).' },
+  'shopify': { name: 'Shopify', url: 'https://bolt.myshopify.com', key: null, secret: 'Admin API access token', secretPh: 'shpat_...', hint: 'Shopify admin → Beállítások → Alkalmazások → Egyéni alkalmazás fejlesztése → Admin API (read_orders).' },
+  'prestashop': { name: 'PrestaShop', key: 'Webservice kulcs', keyPh: 'ABC123...', secret: null, hint: 'PrestaShop → Speciális paraméterek → Webservice → kulcs (orders, addresses, customers: GET).' },
+  'opencart': { name: 'OpenCart', key: 'API kulcs', secret: null, hint: 'Az OpenCartnak nincs beépített rendelés API-ja, ehhez bővítmény kell.' },
+  'bigcommerce': { name: 'BigCommerce', key: 'Store hash', keyPh: 'abc123', secret: 'API access token', hint: 'BigCommerce → Haladó beállítások → API fiókok (Orders: read-only).' },
+  'wix': { name: 'Wix eCommerce', key: 'Site ID', secret: 'API kulcs', hint: 'Wix → API kulcsok kezelése (eCommerce Orders olvasás); Site ID a Wix irányítópult URL-jében.' },
+  'ecwid': { name: 'Ecwid', key: 'Store ID', secret: 'Secret token', hint: 'Ecwid → Apps → Custom apps (read_orders).' },
+  'magento': { name: 'Adobe Commerce (Magento)', key: null, secret: 'Integration access token', hint: 'Magento admin → System → Integrations → Access Token.' },
+  'squarespace': { name: 'Squarespace Commerce', key: null, secret: 'API kulcs', hint: 'Squarespace → Settings → Developer Tools → API keys (Orders).' },
+  'saleor': { name: 'Saleor', url: 'https://shop.saleor.cloud', key: null, secret: 'App token', hint: 'Saleor Dashboard → Apps → Local app → token (MANAGE_ORDERS).' },
+  'medusa': { name: 'Medusa', key: null, secret: 'Admin API token', hint: 'Medusa Admin → Settings → API Key Management (secret).' },
+  'shopware': { name: 'Shopware', key: 'Access Key ID', secret: 'Secret Access Key', hint: 'Shopware admin → Beállítások → Rendszer → Integrációk.' },
+  'drupal-commerce': { name: 'Drupal Commerce', key: 'API kulcs', secret: null, hint: 'A Drupal Commerce-hez JSON:API bővítmény kell, jelenleg nem támogatott.' },
+  'nopcommerce': { name: 'nopCommerce', key: 'Client ID', secret: 'Client Secret', hint: 'Kísérleti: nopCommerce Web API plugin szükséges.' },
+  'vendure': { name: 'Vendure', key: null, secret: 'API token', hint: 'Vendure Admin API token (ReadOrder jogosultság).' },
+  'snipcart': { name: 'Snipcart', key: null, secret: 'Secret API key', hint: 'Snipcart → Account → API keys (Secret).' },
+  'shift4shop': { name: 'Shift4Shop', key: 'Private key', secret: 'Token', hint: 'Shift4Shop → Settings → Apps → REST API.' },
+  'square': { name: 'Square Online', key: 'Location ID (opcionális)', secret: 'Access token', hint: 'Square Developer Dashboard → Application → Access token (ORDERS_READ).' }
+};
+function buildShopPlatformSelect() {
+  const sel = document.getElementById('shopPlatform');
+  if (!sel || sel.options.length) return;
+  Object.entries(SHOP_PLATFORMS).forEach(([k, v]) => {
+    const o = document.createElement('option'); o.value = k; o.textContent = v.name; sel.appendChild(o);
+  });
+}
+window.updateShopPlatformUI = function () {
+  buildShopPlatformSelect();
+  const k = document.getElementById('shopPlatform').value || 'woocommerce';
+  const d = SHOP_PLATFORMS[k] || SHOP_PLATFORMS.woocommerce;
+  const show = (id, on) => { const el = document.getElementById(id); if (el) el.style.display = on ? '' : 'none'; };
+  show('wcKeyWrap', !!d.key); show('wcSecretWrap', !!d.secret); show('shopExtraWrap', false);
+  if (d.key) { document.getElementById('wcKeyLabel').textContent = translateUiString(d.key); document.getElementById('wcKey').placeholder = d.keyPh || ''; }
+  if (d.secret) { document.getElementById('wcSecretLabel').textContent = translateUiString(d.secret); document.getElementById('wcSecret').placeholder = d.secretPh || ''; }
+  document.getElementById('shopUrl').placeholder = d.url || 'https://effeto.ro';
+  document.getElementById('shopPlatformHint').textContent = translateUiString(d.hint);
+};
+
+// Proxy-n át érkező normalizált rendelés -> belső formátum
+function mapNormalizedOrder(n) {
+  const plain = (v) => String(v || '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
+  const pm = plain(n.payMethod), pt = plain(n.payTitle);
+  const codWords = ['cod', 'ramburs', 'cash', 'numerar', 'livrare', 'delivery', 'plata la', 'utanvet', 'atvetelkor', 'curier', 'courier'];
+  const onlineWords = ['stripe', 'card', 'netopia', 'mobilpay', 'euplatesc', 'payu', 'paypal', 'ppcp', 'revolut', 'klarna', 'paylike', 'applepay', 'googlepay', 'online', 'bacs', 'transfer', 'viva', 'sumup', 'eupayment'];
+  const isCod = codWords.some(w => pm.includes(w) || pt.includes(w));
+  const isOnline = onlineWords.some(w => pm.includes(w) || pt.includes(w));
+  let isRamburs;
+  if (typeof n.cod === 'boolean') isRamburs = n.cod;
+  else isRamburs = isCod ? true : (isOnline ? false : !n.paid);
+  const totalWithTax = parseFloat(n.total) || 0;
+  const totalTax = parseFloat(n.tax) || 0;
+  const net = totalWithTax - totalTax;
+  const items = (n.items || []).map(it => ({ name: it.name, sku: it.sku || '', quantity: it.quantity || 1, price: parseFloat(it.price) || 0, subtotal: parseFloat(it.subtotal) }));
+  return {
+    id: n.id, name: n.name || '', phone: n.phone || '', email: n.email || '',
+    address: n.address || '', city: n.city || '', state: n.state || '', country: n.country || 'RO',
+    isRamburs, amount: isRamburs ? totalWithTax : 0,
+    payTitle: n.payTitle || n.payMethod || '',
+    netTotal: net, totalTax, totalWithTax,
+    shippingTotal: parseFloat(n.shipping) || 0,
+    discountTotal: parseFloat(n.discount) || 0,
+    items, product: items[0]?.name || 'TERMÉK',
+    postcode: n.postcode || '',
+    vatRate: net > 0 ? Math.round((totalTax / net) * 100) : 0,
+    lockerId: '',
+    raw: { payment_method: n.payMethod || '', payment_method_title: n.payTitle || '', date_paid: n.paid ? 'igen' : null }
+  };
+}
+
+async function fetchOrdersViaProxy(shop, wanted) {
+  const res = await fetch(ORDERS_PROXY_URL, {
+    method: 'POST', headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ platform: shop.platform, config: { url: shop.shopUrl, key: shop.wcKey || '', secret: shop.wcSecret || '', extra: shop.extra || '' }, count: wanted })
+  });
+  let data = null;
+  try { data = await res.json(); } catch (e) { throw new Error('A szerver nem JSON-t adott (HTTP ' + res.status + ')'); }
+  if (!res.ok || !data.success) throw new Error(data?.error || data?.message || ('HTTP ' + res.status));
+  return { orders: (data.orders || []).filter(o => !o.cancelled).map(mapNormalizedOrder), skipped: data.skipped || 0 };
+}
+
 // Hány rendelést töltsön le (mindkét oldalon ugyanaz az érték)
 function getOrdersWanted() {
   let n = parseInt(document.getElementById('ordersCountAwb')?.value || document.getElementById('ordersCountFactura')?.value, 10);
@@ -3615,7 +3829,13 @@ window.loadOrders = async function () {
   const acc = getActiveAccount();
   const shop = acc.shopConfig || {};
   if (!shop.shopUrl) { toast('Add meg a webshop URL-t!', 'warning'); return; }
-  if (!shop.wcKey || !shop.wcSecret) { toast('Add meg a WooCommerce kulcsokat!', 'warning'); return; }
+  const platform = shop.platform || 'woocommerce';
+  const pd = SHOP_PLATFORMS[platform] || SHOP_PLATFORMS.woocommerce;
+  if (platform === 'woocommerce') {
+    if (!shop.wcKey || !shop.wcSecret) { toast('Add meg a WooCommerce kulcsokat!', 'warning'); return; }
+  } else if ((pd.key && !shop.wcKey && platform !== 'square') || (pd.secret && !shop.wcSecret)) {
+    toast('Add meg a webshop hozzáférési adatait!', 'warning'); return;
+  }
 
   const wanted = getOrdersWanted();
   const baseUrl = shop.shopUrl.replace(/\/$/, '');
@@ -3627,6 +3847,19 @@ window.loadOrders = async function () {
   if (tbodyF) tbodyF.innerHTML = '<tr><td colspan="7" style="padding:20px;"><div class="skeleton" style="height:20px;"></div></td></tr>';
 
   try {
+    if (platform !== 'woocommerce') {
+      const r = await fetchOrdersViaProxy(shop, wanted);
+      const mappedP = r.orders;
+      accountOrders[currentAccountIndex] = mappedP;
+      accountSelectedAWB[currentAccountIndex] = new Set();
+      accountSelectedFactura[currentAccountIndex] = new Set();
+      accountSearchAWB[currentAccountIndex] = '';
+      accountSearchFactura[currentAccountIndex] = '';
+      refreshOrdersView();
+      toast(`${mappedP.length} rendelés betöltve${r.skipped ? ` (${r.skipped} kihagyva)` : ''}`, 'success');
+      document.getElementById('statOrders').textContent = mappedP.length;
+      return;
+    }
     // annyi oldalt töltünk le, amíg meg nem lesz a kért számú (nem kizárt státuszú) rendelés
     const orders = [];
     let skipped = 0;
