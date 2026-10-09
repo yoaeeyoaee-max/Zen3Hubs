@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Zen3Hub — Logistics Platform</title>
+<title>Eauto — Platformă Logistică</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
   :root {
     --bg: #FFFFFF;
@@ -50,6 +50,12 @@
     background: var(--bg); color: var(--fg);
     min-height: 100vh; font-size: 14px; line-height: 1.5;
     -webkit-font-smoothing: antialiased;
+    -webkit-user-select: none; -moz-user-select: none; user-select: none;
+    -webkit-touch-callout: none;
+  }
+  input, textarea, select, [contenteditable="true"], .allow-select {
+    -webkit-user-select: text !important; -moz-user-select: text !important;
+    user-select: text !important; -webkit-touch-callout: default !important;
   }
   body { overflow-x: hidden; }
   button, input, select, textarea { font-family: inherit; font-size: inherit; }
@@ -57,134 +63,6 @@
   .hidden { display: none !important; }
   .truncate { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
-  /* ============ AUTH ============ */
-  #authScreen {
-    min-height: 100vh; display: flex; align-items: center; justify-content: center;
-    padding: 24px; background: var(--bg-soft);
-  }
-  .auth-card {
-    width: 100%; max-width: 440px;
-    background: var(--bg); border: 1px solid var(--border);
-    border-radius: var(--radius-card); padding: 40px 32px;
-    box-shadow: var(--shadow-card);
-  }
-  .auth-logo { font-size: 24px; font-weight: 700; letter-spacing: -0.02em; text-align: center; margin-bottom: 6px; }
-  .auth-logo span { color: var(--primary); }
-  .auth-sub { text-align: center; font-size: 13px; color: var(--fg-muted); margin-bottom: 24px; }
-  .auth-title { font-size: 20px; font-weight: 600; letter-spacing: -0.01em; margin-bottom: 4px; }
-  .auth-desc { font-size: 13px; color: var(--fg-muted); margin-bottom: 24px; }
-  .field { margin-bottom: 14px; }
-  .field label { display: block; font-size: 13px; font-weight: 500; margin-bottom: 6px; color: var(--fg); }
-  .field input, .field select {
-    width: 100%; height: 40px; padding: 0 12px;
-    border: 1px solid var(--border); border-radius: var(--radius-btn);
-    background: var(--bg); color: var(--fg); outline: none;
-    transition: border 0.15s, box-shadow 0.15s;
-  }
-  .field input:hover, .field select:hover { border-color: var(--border-strong); }
-  .field input:focus, .field select:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgb(99 102 241 / 0.12); }
-  .checkbox-row {
-    display: flex; align-items: flex-start; gap: 8px;
-    margin: 16px 0 20px; font-size: 13px; color: var(--fg-muted); cursor: pointer;
-    line-height: 1.5;
-  }
-  .checkbox-row input { width: 16px; height: 16px; accent-color: var(--primary); cursor: pointer; flex-shrink: 0; margin-top: 2px; }
-  .checkbox-row a { color: var(--primary); text-decoration: underline; }
-  .auth-switch { text-align: center; margin-top: 20px; font-size: 13px; color: var(--fg-muted); }
-  .auth-switch span { color: var(--primary); font-weight: 500; cursor: pointer; }
-  .auth-switch span:hover { text-decoration: underline; }
-  .auth-bottom-bar {
-    display: flex; align-items: center; justify-content: space-between;
-    margin-top: 24px; padding-top: 20px;
-    border-top: 1px solid var(--border);
-    gap: 8px; flex-wrap: wrap;
-  }
-  .auth-bottom-btn {
-    display: inline-flex; align-items: center; gap: 6px;
-    padding: 6px 10px;
-    background: transparent; border: 1px solid var(--border);
-    border-radius: var(--radius-btn); color: var(--fg-muted);
-    font-size: 12px; font-weight: 500; cursor: pointer;
-    transition: all 0.15s;
-  }
-  .auth-bottom-btn:hover { border-color: var(--border-strong); color: var(--fg); background: var(--bg-soft); }
-  .auth-bottom-btn svg { width: 14px; height: 14px; }
-  .lang-switcher {
-    display: inline-flex; align-items: center; gap: 2px;
-    padding: 2px; background: var(--bg-soft);
-    border: 1px solid var(--border); border-radius: var(--radius-btn);
-  }
-  .lang-switcher button {
-    padding: 4px 10px; background: transparent; border: none;
-    border-radius: 5px; color: var(--fg-muted); font-size: 12px; font-weight: 600;
-    cursor: pointer; transition: all 0.15s;
-  }
-  .lang-switcher button:hover { color: var(--fg); }
-  .lang-switcher button.active {
-    background: var(--bg); color: var(--fg);
-    box-shadow: 0 1px 2px rgba(15,23,42,0.06);
-  }
-
-  /* Signup steps */
-  .signup-steps {
-    display: flex; align-items: center; justify-content: center;
-    gap: 8px; margin-bottom: 24px;
-  }
-  .signup-step {
-    width: 28px; height: 28px; border-radius: 50%;
-    background: var(--bg-soft); border: 1px solid var(--border);
-    display: flex; align-items: center; justify-content: center;
-    font-size: 12px; font-weight: 600; color: var(--fg-muted);
-    transition: all 0.2s;
-  }
-  .signup-step.active { background: var(--primary); border-color: var(--primary); color: #fff; }
-  .signup-step.done { background: var(--success); border-color: var(--success); color: #fff; }
-  .signup-step-line { width: 24px; height: 1px; background: var(--border); }
-  .signup-step-line.done { background: var(--success); }
-
-  .plan-grid { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
-  .plan-card {
-    padding: 16px; border: 2px solid var(--border);
-    border-radius: var(--radius-card); cursor: pointer;
-    transition: all 0.15s;
-    display: flex; align-items: flex-start; gap: 12px;
-    position: relative;
-  }
-  .plan-card:hover { border-color: var(--border-strong); background: var(--bg-soft); }
-  .plan-card.selected { border-color: var(--primary); background: var(--primary-soft); }
-  .plan-radio {
-    width: 18px; height: 18px; border-radius: 50%;
-    border: 2px solid var(--border-strong); flex-shrink: 0; margin-top: 2px;
-    display: flex; align-items: center; justify-content: center;
-    transition: all 0.15s;
-  }
-  .plan-card.selected .plan-radio { border-color: var(--primary); }
-  .plan-card.selected .plan-radio::after {
-    content: ''; width: 8px; height: 8px; border-radius: 50%; background: var(--primary);
-  }
-  .plan-content { flex: 1; min-width: 0; }
-  .plan-header { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 4px; }
-  .plan-name { font-size: 15px; font-weight: 600; letter-spacing: -0.01em; }
-  .plan-price { font-size: 16px; font-weight: 700; color: var(--primary); }
-  .plan-price small { font-size: 11px; color: var(--fg-muted); font-weight: 500; }
-  .plan-desc { font-size: 12.5px; color: var(--fg-muted); line-height: 1.5; }
-  .plan-badge {
-    display: inline-block; padding: 2px 8px; border-radius: 999px;
-    font-size: 10px; font-weight: 600; text-transform: uppercase;
-    letter-spacing: 0.04em; margin-left: 6px;
-  }
-  .plan-badge.popular { background: var(--primary); color: #fff; }
-
-  .beta-banner {
-    padding: 12px 14px; background: var(--warning-soft);
-    border: 1px solid rgba(245,158,11,0.3);
-    border-radius: var(--radius-btn);
-    font-size: 12.5px; color: #92400E; margin-bottom: 16px;
-    display: flex; gap: 10px; align-items: flex-start;
-  }
-  .beta-banner svg { width: 16px; height: 16px; flex-shrink: 0; margin-top: 1px; }
-
-  /* ============ BUTTONS ============ */
   .btn {
     display: inline-flex; align-items: center; justify-content: center; gap: 6px;
     height: 40px; padding: 0 16px;
@@ -200,12 +78,11 @@
   .btn.block { width: 100%; }
   .btn.sm { height: 32px; padding: 0 12px; font-size: 12.5px; }
   .btn.lg { height: 44px; padding: 0 20px; font-size: 14px; }
+  .btn.xl { height: 52px; padding: 0 28px; font-size: 15px; }
   .btn.secondary { background: var(--bg); color: var(--fg); border-color: var(--border); }
   .btn.secondary:hover { background: var(--bg-soft); border-color: var(--border-strong); }
   .btn.ghost { background: transparent; color: var(--fg-muted); border-color: transparent; }
   .btn.ghost:hover { background: var(--bg-soft); color: var(--fg); }
-  .btn.danger { background: var(--danger); color: #fff; }
-  .btn.danger:hover { background: #DC2626; }
   .btn-icon {
     width: 36px; height: 36px; padding: 0;
     border-radius: var(--radius-btn);
@@ -216,101 +93,174 @@
   .btn-icon:hover { background: var(--bg-soft); color: var(--fg); }
   .btn-icon svg { width: 16px; height: 16px; }
 
-  /* ============ APP ============ */
+  #homePage { display: block; min-height: 100vh; }
+  #homePage.hidden { display: none; }
+  .home-nav {
+    height: 68px; display: flex; align-items: center;
+    padding: 0 24px; background: var(--bg);
+    border-bottom: 1px solid var(--border);
+    position: sticky; top: 0; z-index: 50;
+  }
+  .brand-logo { font-size: 22px; font-weight: 800; letter-spacing: -0.03em; display: flex; align-items: center; gap: 10px; }
+  .brand-logo-icon {
+    width: 32px; height: 32px; border-radius: 8px;
+    background: linear-gradient(135deg, var(--primary), #8B5CF6);
+    color: #fff; display: inline-flex; align-items: center; justify-content: center;
+    font-size: 15px; font-weight: 800;
+  }
+  .home-nav-links { display: flex; align-items: center; gap: 4px; margin-left: 40px; flex: 1; }
+  .home-nav-links a { padding: 8px 12px; border-radius: var(--radius-btn); font-size: 13.5px; font-weight: 500; color: var(--fg-muted); transition: all 0.15s; cursor: pointer; }
+  .home-nav-links a:hover { background: var(--bg-soft); color: var(--fg); }
+  .home-nav-actions { display: flex; align-items: center; gap: 8px; }
+  .home-hamburger { display: none; width: 40px; height: 40px; border-radius: var(--radius-btn); background: transparent; border: none; cursor: pointer; color: var(--fg); padding: 8px; }
+  .home-hamburger:hover { background: var(--bg-soft); }
+  .home-hamburger svg { width: 100%; height: 100%; }
+
+  .mobile-menu { position: fixed; inset: 0; background: var(--bg); z-index: 200; display: none; flex-direction: column; padding: 20px 24px 32px; overflow-y: auto; }
+  .mobile-menu.open { display: flex; }
+  .mobile-menu-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 32px; }
+  .mobile-menu-close { width: 40px; height: 40px; border-radius: var(--radius-btn); background: var(--bg-soft); border: none; cursor: pointer; color: var(--fg); font-size: 20px; display: flex; align-items: center; justify-content: center; }
+  .mobile-menu-list { flex: 1; display: flex; flex-direction: column; gap: 4px; }
+  .mobile-menu-list a, .mobile-menu-list button { padding: 16px 4px; font-size: 18px; font-weight: 600; color: var(--fg); cursor: pointer; background: transparent; border: none; text-align: left; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
+  .mobile-menu-list a:hover, .mobile-menu-list button:hover { color: var(--primary); }
+  .mobile-menu-actions { margin-top: 24px; display: flex; flex-direction: column; gap: 10px; }
+
+  .home-hero { max-width: 1200px; margin: 0 auto; padding: 80px 24px; display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
+  .home-hero-image { border-radius: 20px; overflow: hidden; background: linear-gradient(135deg, #EEF2FF, #E0E7FF); aspect-ratio: 4/3; display: flex; align-items: center; justify-content: center; position: relative; box-shadow: var(--shadow-elevated); }
+  .home-hero-image img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .home-hero-image .placeholder { color: var(--fg-muted); font-size: 14px; display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 24px; text-align: center; }
+  .home-hero-image .placeholder svg { width: 48px; height: 48px; opacity: 0.4; }
+  .home-hero-content h1 { font-size: 48px; font-weight: 800; line-height: 1.1; letter-spacing: -0.03em; margin-bottom: 20px; }
+  .home-hero-content p { font-size: 17px; color: var(--fg-muted); line-height: 1.6; margin-bottom: 32px; max-width: 520px; }
+  .home-hero-actions { display: flex; gap: 12px; flex-wrap: wrap; }
+
+  .home-features { max-width: 1200px; margin: 0 auto; padding: 60px 24px; }
+  .home-features-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  .feature-card { padding: 28px; background: var(--bg-soft); border: 1px solid var(--border); border-radius: var(--radius-card); }
+  .feature-card-icon { width: 44px; height: 44px; border-radius: 10px; background: var(--primary-soft); color: var(--primary); display: flex; align-items: center; justify-content: center; margin-bottom: 16px; }
+  .feature-card-icon svg { width: 20px; height: 20px; }
+  .feature-card h3 { font-size: 16px; font-weight: 600; margin-bottom: 8px; }
+  .feature-card p { font-size: 14px; color: var(--fg-muted); line-height: 1.6; }
+
+  .home-pricing { max-width: 1200px; margin: 0 auto; padding: 80px 24px; text-align: center; }
+  .home-pricing h2 { font-size: 36px; font-weight: 800; letter-spacing: -0.03em; margin-bottom: 12px; }
+  .home-pricing .subtitle { font-size: 16px; color: var(--fg-muted); margin-bottom: 48px; }
+  .pricing-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; text-align: left; }
+  .pricing-card { padding: 32px 28px; border: 2px solid var(--border); border-radius: 16px; background: var(--bg); position: relative; transition: all 0.2s; }
+  .pricing-card:hover { border-color: var(--border-strong); }
+  .pricing-card.popular { border-color: var(--primary); box-shadow: 0 0 0 4px var(--primary-soft); }
+  .pricing-card-badge { position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: var(--primary); color: #fff; padding: 4px 14px; border-radius: 999px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; white-space: nowrap; }
+  .pricing-card h3 { font-size: 20px; font-weight: 700; margin-bottom: 8px; }
+  .pricing-card .desc { font-size: 13.5px; color: var(--fg-muted); margin-bottom: 24px; min-height: 42px; }
+  .pricing-price { display: flex; align-items: baseline; gap: 4px; margin-bottom: 4px; }
+  .pricing-price .amount { font-size: 44px; font-weight: 800; letter-spacing: -0.04em; line-height: 1; }
+  .pricing-price .currency { font-size: 15px; color: var(--fg-muted); font-weight: 600; }
+  .pricing-price .period { font-size: 13px; color: var(--fg-muted); margin-left: 4px; }
+  .pricing-features { margin: 24px 0; padding: 0; list-style: none; }
+  .pricing-features li { display: flex; align-items: flex-start; gap: 10px; padding: 8px 0; font-size: 13.5px; }
+  .pricing-features li svg { width: 16px; height: 16px; color: var(--success); flex-shrink: 0; margin-top: 2px; }
+  .pricing-card .btn { width: 100%; }
+
+  .home-footer { background: #0F172A; color: #CBD5E1; padding: 60px 24px 32px; margin-top: 40px; }
+  .home-footer-inner { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr; gap: 40px; }
+  .home-footer-brand .brand-logo { color: #fff; margin-bottom: 16px; }
+  .home-footer-brand p { font-size: 13.5px; line-height: 1.7; max-width: 320px; opacity: 0.85; }
+  .home-footer-col h4 { font-size: 13px; font-weight: 700; color: #fff; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 16px; }
+  .home-footer-col ul { list-style: none; }
+  .home-footer-col li { margin-bottom: 10px; }
+  .home-footer-col a, .home-footer-col button { font-size: 13.5px; color: #94A3B8; cursor: pointer; background: transparent; border: none; padding: 0; text-align: left; transition: color 0.15s; }
+  .home-footer-col a:hover, .home-footer-col button:hover { color: #fff; }
+  .home-footer-bottom { max-width: 1200px; margin: 40px auto 0; padding-top: 24px; border-top: 1px solid rgba(255,255,255,0.08); display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; font-size: 12.5px; color: #64748B; }
+  .footer-lang-switcher { display: inline-flex; align-items: center; gap: 2px; padding: 3px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.08); border-radius: 8px; }
+  .footer-lang-switcher button { padding: 5px 12px; background: transparent; border: none; border-radius: 6px; color: #94A3B8; font-size: 12px; font-weight: 600; cursor: pointer; transition: all 0.15s; }
+  .footer-lang-switcher button:hover { color: #fff; }
+  .footer-lang-switcher button.active { background: var(--primary); color: #fff; }
+
+  #authScreen { min-height: 100vh; display: none; align-items: center; justify-content: center; padding: 24px; background: var(--bg-soft); position: relative; }
+  #authScreen.show { display: flex; }
+  .auth-back-home { position: absolute; top: 20px; left: 24px; display: inline-flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 500; color: var(--fg-muted); cursor: pointer; padding: 8px 12px; border-radius: var(--radius-btn); transition: all 0.15s; }
+  .auth-back-home:hover { background: var(--bg); color: var(--fg); }
+  .auth-back-home svg { width: 14px; height: 14px; }
+  .auth-card { width: 100%; max-width: 440px; background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-card); padding: 40px 32px; box-shadow: var(--shadow-card); }
+  .auth-logo { display: flex; align-items: center; justify-content: center; gap: 10px; font-size: 22px; font-weight: 800; letter-spacing: -0.03em; margin-bottom: 6px; }
+  .auth-logo-icon { width: 30px; height: 30px; border-radius: 8px; background: linear-gradient(135deg, var(--primary), #8B5CF6); color: #fff; display: inline-flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 800; }
+  .auth-sub { text-align: center; font-size: 13px; color: var(--fg-muted); margin-bottom: 24px; }
+  .auth-title { font-size: 20px; font-weight: 600; letter-spacing: -0.01em; margin-bottom: 4px; }
+  .auth-desc { font-size: 13px; color: var(--fg-muted); margin-bottom: 24px; }
+  .field { margin-bottom: 14px; }
+  .field label { display: block; font-size: 13px; font-weight: 500; margin-bottom: 6px; color: var(--fg); }
+  .field input, .field select { width: 100%; height: 40px; padding: 0 12px; border: 1px solid var(--border); border-radius: var(--radius-btn); background: var(--bg); color: var(--fg); outline: none; transition: border 0.15s, box-shadow 0.15s; }
+  .field input:hover, .field select:hover { border-color: var(--border-strong); }
+  .field input:focus, .field select:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgb(99 102 241 / 0.12); }
+  .checkbox-row { display: flex; align-items: flex-start; gap: 8px; margin: 16px 0 20px; font-size: 13px; color: var(--fg-muted); cursor: pointer; line-height: 1.5; }
+  .checkbox-row input { width: 16px; height: 16px; accent-color: var(--primary); cursor: pointer; flex-shrink: 0; margin-top: 2px; }
+  .checkbox-row a { color: var(--primary); text-decoration: underline; cursor: pointer; }
+  .auth-switch { text-align: center; margin-top: 20px; font-size: 13px; color: var(--fg-muted); }
+  .auth-switch span { color: var(--primary); font-weight: 500; cursor: pointer; }
+  .auth-switch span:hover { text-decoration: underline; }
+  .auth-bottom-bar { display: flex; align-items: center; justify-content: space-between; margin-top: 24px; padding-top: 20px; border-top: 1px solid var(--border); gap: 8px; flex-wrap: wrap; }
+  .auth-bottom-btn { display: inline-flex; align-items: center; gap: 6px; padding: 6px 10px; background: transparent; border: 1px solid var(--border); border-radius: var(--radius-btn); color: var(--fg-muted); font-size: 12px; font-weight: 500; cursor: pointer; transition: all 0.15s; }
+  .auth-bottom-btn:hover { border-color: var(--border-strong); color: var(--fg); background: var(--bg-soft); }
+  .auth-bottom-btn svg { width: 14px; height: 14px; }
+  .lang-switcher { display: inline-flex; align-items: center; gap: 2px; padding: 2px; background: var(--bg-soft); border: 1px solid var(--border); border-radius: var(--radius-btn); }
+  .lang-switcher button { padding: 4px 10px; background: transparent; border: none; border-radius: 5px; color: var(--fg-muted); font-size: 12px; font-weight: 600; cursor: pointer; transition: all 0.15s; }
+  .lang-switcher button:hover { color: var(--fg); }
+  .lang-switcher button.active { background: var(--bg); color: var(--fg); box-shadow: 0 1px 2px rgba(15,23,42,0.06); }
+
+  .signup-steps { display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 24px; }
+  .signup-step { width: 28px; height: 28px; border-radius: 50%; background: var(--bg-soft); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600; color: var(--fg-muted); transition: all 0.2s; }
+  .signup-step.active { background: var(--primary); border-color: var(--primary); color: #fff; }
+  .signup-step.done { background: var(--success); border-color: var(--success); color: #fff; }
+  .signup-step-line { width: 24px; height: 1px; background: var(--border); }
+  .signup-step-line.done { background: var(--success); }
+
+  .plan-grid { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
+  .plan-card { padding: 16px; border: 2px solid var(--border); border-radius: var(--radius-card); cursor: pointer; transition: all 0.15s; display: flex; align-items: flex-start; gap: 12px; position: relative; }
+  .plan-card:hover { border-color: var(--border-strong); background: var(--bg-soft); }
+  .plan-card.selected { border-color: var(--primary); background: var(--primary-soft); }
+  .plan-radio { width: 18px; height: 18px; border-radius: 50%; border: 2px solid var(--border-strong); flex-shrink: 0; margin-top: 2px; display: flex; align-items: center; justify-content: center; }
+  .plan-card.selected .plan-radio { border-color: var(--primary); }
+  .plan-card.selected .plan-radio::after { content: ''; width: 8px; height: 8px; border-radius: 50%; background: var(--primary); }
+  .plan-content { flex: 1; min-width: 0; }
+  .plan-header { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 4px; }
+  .plan-name { font-size: 15px; font-weight: 600; letter-spacing: -0.01em; }
+  .plan-price { font-size: 16px; font-weight: 700; color: var(--primary); }
+  .plan-price small { font-size: 11px; color: var(--fg-muted); font-weight: 500; }
+  .plan-desc { font-size: 12.5px; color: var(--fg-muted); line-height: 1.5; }
+  .plan-badge { display: inline-block; padding: 2px 8px; border-radius: 999px; font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; margin-left: 6px; }
+  .plan-badge.popular { background: var(--primary); color: #fff; }
+
+  .beta-banner { padding: 12px 14px; background: var(--warning-soft); border: 1px solid rgba(245,158,11,0.3); border-radius: var(--radius-btn); font-size: 12.5px; color: #92400E; margin-bottom: 16px; display: flex; gap: 10px; align-items: flex-start; }
+  .beta-banner svg { width: 16px; height: 16px; flex-shrink: 0; margin-top: 1px; }
+
   #app { display: none; min-height: 100vh; }
   #app.show { display: flex; }
-  .sidebar {
-    width: 240px; min-height: 100vh;
-    background: var(--sidebar); color: var(--sidebar-fg);
-    display: flex; flex-direction: column;
-    position: fixed; top: 0; left: 0; z-index: 100;
-    transition: transform 0.3s var(--ease);
-  }
-  .sidebar-logo {
-    height: 64px; display: flex; align-items: center;
-    padding: 0 20px; border-bottom: 1px solid rgba(255,255,255,0.06);
-    font-size: 18px; font-weight: 600; letter-spacing: -0.02em;
-  }
-  .sidebar-logo span { color: var(--primary); }
+  .sidebar { width: 240px; min-height: 100vh; background: var(--sidebar); color: var(--sidebar-fg); display: flex; flex-direction: column; position: fixed; top: 0; left: 0; z-index: 100; transition: transform 0.3s var(--ease); }
+  .sidebar-logo { height: 64px; display: flex; align-items: center; padding: 0 20px; border-bottom: 1px solid rgba(255,255,255,0.06); font-size: 17px; font-weight: 800; letter-spacing: -0.03em; gap: 10px; color: #fff; }
+  .sidebar-logo .brand-logo-icon { width: 26px; height: 26px; font-size: 12px; border-radius: 7px; }
   .sidebar-nav { flex: 1; padding: 12px; display: flex; flex-direction: column; gap: 2px; overflow-y: auto; }
-  .nav-section {
-    font-size: 11px; font-weight: 600; text-transform: uppercase;
-    letter-spacing: 0.06em; color: var(--sidebar-muted);
-    padding: 16px 12px 8px; opacity: 0.7;
-  }
-  .nav-item {
-    display: flex; align-items: center; gap: 12px;
-    height: 38px; padding: 0 12px;
-    border-radius: var(--radius-btn); color: var(--sidebar-muted);
-    font-size: 13.5px; font-weight: 450; cursor: pointer;
-    transition: background 0.15s, color 0.15s;
-    border: none; background: transparent; width: 100%; text-align: left;
-  }
+  .nav-section { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--sidebar-muted); padding: 16px 12px 8px; opacity: 0.7; }
+  .nav-item { display: flex; align-items: center; gap: 12px; height: 38px; padding: 0 12px; border-radius: var(--radius-btn); color: var(--sidebar-muted); font-size: 13.5px; cursor: pointer; transition: background 0.15s, color 0.15s; border: none; background: transparent; width: 100%; text-align: left; }
   .nav-item:hover { background: var(--sidebar-hover); color: #fff; }
   .nav-item.active { background: rgba(99,102,241,0.15); color: #fff; }
   .nav-icon { width: 16px; height: 16px; flex-shrink: 0; color: var(--sidebar-muted); }
   .nav-item:hover .nav-icon { color: #fff; }
   .nav-item.active .nav-icon { color: #A5B4FC; }
 
-  .sidebar-user {
-    padding: 12px; border-top: 1px solid rgba(255,255,255,0.06);
-    position: relative;
-  }
-  .sidebar-user-btn {
-    display: flex; align-items: center; gap: 10px;
-    width: 100%; padding: 6px 8px;
-    background: transparent; border: none;
-    border-radius: var(--radius-btn); cursor: pointer;
-    transition: background 0.15s; text-align: left;
-  }
+  .sidebar-user { padding: 12px; border-top: 1px solid rgba(255,255,255,0.06); position: relative; }
+  .sidebar-user-btn { display: flex; align-items: center; gap: 10px; width: 100%; padding: 6px 8px; background: transparent; border: none; border-radius: var(--radius-btn); cursor: pointer; transition: background 0.15s; text-align: left; }
   .sidebar-user-btn:hover { background: var(--sidebar-hover); }
-  .user-avatar {
-    width: 32px; height: 32px; border-radius: 50%;
-    background: rgba(99,102,241,0.2); color: #A5B4FC;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 12px; font-weight: 600; flex-shrink: 0;
-  }
+  .user-avatar { width: 32px; height: 32px; border-radius: 50%; background: rgba(99,102,241,0.2); color: #A5B4FC; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600; flex-shrink: 0; }
   .user-meta { flex: 1; min-width: 0; }
-  .user-email {
-    font-size: 12px; font-weight: 500; color: #fff;
-    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
-  }
-  .user-account {
-    font-size: 11px; color: var(--sidebar-muted);
-    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
-  }
-  .user-chevron {
-    width: 14px; height: 14px; color: var(--sidebar-muted);
-    transition: transform 0.2s; flex-shrink: 0;
-  }
+  .user-email { font-size: 12px; font-weight: 500; color: #fff; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .user-account { font-size: 11px; color: var(--sidebar-muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .user-chevron { width: 14px; height: 14px; color: var(--sidebar-muted); transition: transform 0.2s; flex-shrink: 0; }
   .sidebar-user-btn.open .user-chevron { transform: rotate(180deg); }
 
-  .account-menu {
-    position: absolute; bottom: calc(100% + 4px);
-    left: 12px; right: 12px;
-    background: #1E293B;
-    border: 1px solid rgba(255,255,255,0.08);
-    border-radius: var(--radius-card);
-    box-shadow: 0 10px 30px -10px rgba(0,0,0,0.6);
-    padding: 6px;
-    opacity: 0; pointer-events: none;
-    transform: translateY(8px) scale(0.98);
-    transition: opacity 0.18s, transform 0.18s;
-    z-index: 10; max-height: 400px; overflow-y: auto;
-  }
+  .account-menu { position: fixed; bottom: 76px; left: 12px; width: 216px; background: #1E293B; border: 1px solid rgba(255,255,255,0.08); border-radius: var(--radius-card); box-shadow: 0 10px 30px -10px rgba(0,0,0,0.6); padding: 6px; opacity: 0; pointer-events: none; transform: translateY(8px) scale(0.98); transition: opacity 0.18s, transform 0.18s; z-index: 150; max-height: calc(100vh - 100px); overflow-y: auto; }
   .account-menu.open { opacity: 1; pointer-events: auto; transform: translateY(0) scale(1); }
-  .account-menu-label {
-    font-size: 10.5px; font-weight: 600;
-    text-transform: uppercase; letter-spacing: 0.06em;
-    color: var(--sidebar-muted); padding: 8px 10px 6px;
-  }
-  .account-menu-item {
-    display: flex; align-items: center; gap: 8px;
-    padding: 8px 10px; border-radius: var(--radius-sm);
-    font-size: 13px; color: var(--sidebar-fg); cursor: pointer;
-    transition: background 0.12s;
-    border: none; background: transparent; width: 100%; text-align: left;
-  }
+  .account-menu-label { font-size: 10.5px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--sidebar-muted); padding: 8px 10px 6px; }
+  .account-menu-item { display: flex; align-items: center; gap: 8px; padding: 8px 10px; border-radius: var(--radius-sm); font-size: 13px; color: var(--sidebar-fg); cursor: pointer; transition: background 0.12s; border: none; background: transparent; width: 100%; text-align: left; }
   .account-menu-item:hover { background: rgba(255,255,255,0.06); }
   .account-menu-item.active { background: rgba(99,102,241,0.2); color: #fff; }
   .account-menu-item .check { width: 14px; height: 14px; margin-left: auto; color: #A5B4FC; }
@@ -321,120 +271,56 @@
   .account-menu-item.subscription:hover { background: rgba(251,191,36,0.1); }
   .acc-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--sidebar-muted); flex-shrink: 0; }
   .account-menu-item.active .acc-dot { background: #A5B4FC; box-shadow: 0 0 8px #A5B4FC; }
-  .plan-tag {
-    display: inline-block; padding: 2px 6px; border-radius: 4px;
-    font-size: 9.5px; font-weight: 700; text-transform: uppercase;
-    letter-spacing: 0.04em; margin-left: auto;
-  }
-  .plan-tag.standard { background: rgba(148,163,184,0.2); color: #CBD5E1; }
-  .plan-tag.premium { background: rgba(99,102,241,0.25); color: #A5B4FC; }
-  .plan-tag.elite { background: rgba(251,191,36,0.2); color: #FBBF24; }
+  .acc-lang-switcher { display: flex; gap: 4px; padding: 8px 10px; }
+  .acc-lang-switcher button { flex: 1; padding: 6px; border-radius: 6px; background: rgba(255,255,255,0.05); border: none; color: var(--sidebar-muted); font-size: 11.5px; font-weight: 600; cursor: pointer; transition: all 0.15s; }
+  .acc-lang-switcher button:hover { background: rgba(255,255,255,0.1); color: #fff; }
+  .acc-lang-switcher button.active { background: var(--primary); color: #fff; }
 
   .main-wrap { flex: 1; margin-left: 240px; min-width: 0; display: flex; flex-direction: column; min-height: 100vh; }
-  .topbar {
-    height: 64px; display: flex; align-items: center; gap: 16px;
-    padding: 0 24px; background: rgba(255,255,255,0.8);
-    backdrop-filter: blur(12px);
-    border-bottom: 1px solid var(--border);
-    position: sticky; top: 0; z-index: 50;
-  }
+  .topbar { height: 64px; display: flex; align-items: center; gap: 16px; padding: 0 24px; background: rgba(255,255,255,0.8); backdrop-filter: blur(12px); border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 50; }
   [data-theme="dark"] .topbar { background: rgba(15,23,42,0.8); }
   .topbar-title { font-size: 15px; font-weight: 600; letter-spacing: -0.01em; }
-  .topbar-search {
-    display: flex; align-items: center; gap: 8px;
-    height: 36px; padding: 0 12px;
-    background: var(--bg-soft); border: 1px solid var(--border);
-    border-radius: var(--radius-btn);
-    color: var(--fg-muted); font-size: 13px; cursor: pointer;
-    transition: border 0.15s, background 0.15s; min-width: 260px;
-  }
+  .topbar-search { display: flex; align-items: center; gap: 8px; height: 36px; padding: 0 12px; background: var(--bg-soft); border: 1px solid var(--border); border-radius: var(--radius-btn); color: var(--fg-muted); font-size: 13px; cursor: pointer; transition: border 0.15s, background 0.15s; min-width: 260px; }
   .topbar-search:hover { border-color: var(--border-strong); background: var(--bg); }
-  .topbar-search kbd {
-    margin-left: auto; font-family: inherit; font-size: 11px;
-    background: var(--bg); border: 1px solid var(--border);
-    padding: 1px 6px; border-radius: 4px; color: var(--fg-dim);
-  }
+  .topbar-search kbd { margin-left: auto; font-family: inherit; font-size: 11px; background: var(--bg); border: 1px solid var(--border); padding: 1px 6px; border-radius: 4px; color: var(--fg-dim); }
   .topbar-actions { display: flex; align-items: center; gap: 8px; }
-  .icon-btn {
-    width: 36px; height: 36px;
-    display: inline-flex; align-items: center; justify-content: center;
-    background: transparent; border: none; cursor: pointer;
-    border-radius: var(--radius-btn); color: var(--fg-muted);
-    transition: background 0.15s, color 0.15s;
-  }
+  .icon-btn { width: 36px; height: 36px; display: inline-flex; align-items: center; justify-content: center; background: transparent; border: none; cursor: pointer; border-radius: var(--radius-btn); color: var(--fg-muted); transition: background 0.15s, color 0.15s; }
   .icon-btn:hover { background: var(--bg-soft); color: var(--fg); }
   .icon-btn svg { width: 16px; height: 16px; }
   .main-content { padding: 24px; flex: 1; }
   .mobile-menu-btn { display: none; }
 
-  .card {
-    background: var(--bg); border: 1px solid var(--border);
-    border-radius: var(--radius-card);
-    box-shadow: var(--shadow-card); overflow: hidden;
-  }
-  .card-header {
-    padding: 20px; border-bottom: 1px solid var(--border);
-    display: flex; align-items: center; justify-content: space-between; gap: 12px;
-  }
+  .card { background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-card); box-shadow: var(--shadow-card); overflow: hidden; }
+  .card-header { padding: 20px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; gap: 12px; }
   .card-title { font-size: 14px; font-weight: 600; letter-spacing: -0.01em; }
   .card-subtitle { font-size: 12.5px; color: var(--fg-muted); margin-top: 2px; }
   .card-body { padding: 20px; }
 
   .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 24px; }
-  .stat-card {
-    background: var(--bg); border: 1px solid var(--border);
-    border-radius: var(--radius-card); padding: 20px;
-    box-shadow: var(--shadow-card);
-    transition: box-shadow 0.2s var(--ease);
-  }
+  .stat-card { background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-card); padding: 20px; box-shadow: var(--shadow-card); transition: box-shadow 0.2s var(--ease); }
   .stat-card:hover { box-shadow: var(--shadow-elevated); }
   .stat-top { display: flex; align-items: flex-start; justify-content: space-between; }
-  .stat-label { font-size: 13px; color: var(--fg-muted); font-weight: 450; }
+  .stat-label { font-size: 13px; color: var(--fg-muted); }
   .stat-value { font-size: 28px; font-weight: 600; letter-spacing: -0.03em; margin-top: 8px; line-height: 1.1; }
   .stat-hint { font-size: 11.5px; color: var(--fg-dim); margin-top: 4px; }
-  .stat-icon {
-    width: 40px; height: 40px; border-radius: 10px;
-    background: var(--primary-soft); color: var(--primary);
-    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
-  }
+  .stat-icon { width: 40px; height: 40px; border-radius: 10px; background: var(--primary-soft); color: var(--primary); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
   .stat-icon svg { width: 18px; height: 18px; }
 
   .table-wrap { overflow-x: auto; }
   table.tbl { width: 100%; border-collapse: collapse; font-size: 13.5px; }
-  .tbl thead th {
-    height: 40px; padding: 0 16px; text-align: left;
-    font-size: 11.5px; font-weight: 600;
-    text-transform: uppercase; letter-spacing: 0.04em;
-    color: var(--fg-muted); background: var(--bg-soft);
-    border-bottom: 1px solid var(--border); white-space: nowrap;
-  }
-  .tbl tbody td {
-    height: 56px; padding: 0 16px;
-    border-bottom: 1px solid var(--border); vertical-align: middle;
-  }
+  .tbl thead th { height: 40px; padding: 0 16px; text-align: left; font-size: 11.5px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; color: var(--fg-muted); background: var(--bg-soft); border-bottom: 1px solid var(--border); white-space: nowrap; }
+  .tbl tbody td { height: 56px; padding: 0 16px; border-bottom: 1px solid var(--border); vertical-align: middle; }
   .tbl tbody tr { transition: background 0.1s; }
   .tbl tbody tr:hover { background: var(--bg-soft); }
   .tbl tbody tr:last-child td { border-bottom: none; }
 
-  .badge {
-    display: inline-flex; align-items: center; gap: 4px;
-    height: 22px; padding: 0 8px; border-radius: 999px;
-    font-size: 11.5px; font-weight: 500;
-    border: 1px solid var(--border); background: var(--bg-soft);
-    color: var(--fg-muted); white-space: nowrap;
-  }
+  .badge { display: inline-flex; align-items: center; gap: 4px; height: 22px; padding: 0 8px; border-radius: 999px; font-size: 11.5px; font-weight: 500; border: 1px solid var(--border); background: var(--bg-soft); color: var(--fg-muted); white-space: nowrap; }
   .badge.primary { background: var(--primary-soft); color: var(--primary); border-color: transparent; }
   .badge.success { background: var(--success-soft); color: var(--success); border-color: transparent; }
   .badge.warning { background: var(--warning-soft); color: var(--warning); border-color: transparent; }
   .badge.danger { background: var(--danger-soft); color: var(--danger); border-color: transparent; }
 
-  .input {
-    width: 100%; height: 40px; padding: 0 12px;
-    background: var(--bg); border: 1px solid var(--border);
-    border-radius: var(--radius-btn); color: var(--fg);
-    outline: none; font-size: 13.5px;
-    transition: border 0.15s, box-shadow 0.15s;
-  }
+  .input { width: 100%; height: 40px; padding: 0 12px; background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-btn); color: var(--fg); outline: none; font-size: 13.5px; transition: border 0.15s, box-shadow 0.15s; }
   .input:hover { border-color: var(--border-strong); }
   .input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgb(99 102 241 / 0.12); }
   .input::placeholder { color: var(--fg-dim); }
@@ -442,130 +328,39 @@
   .label { display: block; font-size: 13px; font-weight: 500; margin-bottom: 6px; color: var(--fg); }
   textarea.input { height: auto; padding: 12px; line-height: 1.6; resize: vertical; font-family: inherit; }
 
-  .filters {
-    display: flex; align-items: center; gap: 12px;
-    padding: 14px 20px; border-bottom: 1px solid var(--border);
-    flex-wrap: wrap; background: var(--bg);
-  }
+  .filters { display: flex; align-items: center; gap: 12px; padding: 14px 20px; border-bottom: 1px solid var(--border); flex-wrap: wrap; background: var(--bg); }
   .filters .input { max-width: 280px; }
   .filters-spacer { flex: 1; }
 
   .empty { padding: 60px 24px; text-align: center; display: flex; flex-direction: column; align-items: center; }
-  .empty-icon {
-    width: 56px; height: 56px; border-radius: 50%;
-    background: var(--bg-soft); color: var(--fg-dim);
-    display: flex; align-items: center; justify-content: center; margin-bottom: 16px;
-  }
+  .empty-icon { width: 56px; height: 56px; border-radius: 50%; background: var(--bg-soft); color: var(--fg-dim); display: flex; align-items: center; justify-content: center; margin-bottom: 16px; }
   .empty-icon svg { width: 24px; height: 24px; }
   .empty h3 { font-size: 15px; font-weight: 600; margin-bottom: 4px; }
   .empty p { font-size: 13.5px; color: var(--fg-muted); max-width: 380px; margin-bottom: 20px; }
 
   .skeleton { background: var(--bg-soft); border-radius: 6px; position: relative; overflow: hidden; }
-  .skeleton::after {
-    content: ''; position: absolute; inset: 0;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.6), transparent);
-    animation: shimmer 1.6s infinite;
-  }
+  .skeleton::after { content: ''; position: absolute; inset: 0; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.6), transparent); animation: shimmer 1.6s infinite; }
   @keyframes shimmer { 100% { transform: translateX(100%); } }
 
-  .sheet-overlay {
-    position: fixed; inset: 0;
-    background: rgba(15,23,42,0.5); backdrop-filter: blur(2px);
-    z-index: 200; opacity: 0; pointer-events: none; transition: opacity 0.25s;
-  }
-  .sheet-overlay.open { opacity: 1; pointer-events: auto; }
-  .sheet {
-    position: fixed; top: 0; right: 0;
-    width: 100%; max-width: 560px; height: 100vh;
-    background: var(--bg); z-index: 201;
-    display: flex; flex-direction: column;
-    transform: translateX(100%);
-    transition: transform 0.35s var(--ease);
-    box-shadow: -20px 0 40px rgba(15,23,42,0.1);
-  }
-  .sheet.open { transform: translateX(0); }
-  .sheet-header { padding: 20px 24px; border-bottom: 1px solid var(--border); }
-  .sheet-title { font-size: 16px; font-weight: 600; letter-spacing: -0.01em; }
-  .sheet-desc { font-size: 13px; color: var(--fg-muted); margin-top: 3px; }
-  .sheet-body { flex: 1; overflow-y: auto; padding: 24px; }
-  .sheet-footer {
-    padding: 16px 24px; border-top: 1px solid var(--border);
-    display: flex; justify-content: flex-end; gap: 8px; background: var(--bg);
-  }
-  .sheet-close {
-    position: absolute; top: 20px; right: 20px;
-    width: 32px; height: 32px; border-radius: var(--radius-btn);
-    background: transparent; border: none; color: var(--fg-muted); cursor: pointer;
-    display: flex; align-items: center; justify-content: center;
-    transition: background 0.15s, color 0.15s;
-  }
-  .sheet-close:hover { background: var(--bg-soft); color: var(--fg); }
-
   .form-section { margin-bottom: 24px; }
-  .form-section-title {
-    font-size: 11.5px; font-weight: 600;
-    text-transform: uppercase; letter-spacing: 0.06em;
-    color: var(--fg-muted); margin-bottom: 12px;
-  }
+  .form-section-title { font-size: 11.5px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--fg-muted); margin-bottom: 12px; }
   .form-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
   .form-full { grid-column: 1 / -1; }
 
-  /* Modal (Manage Subscription) */
-  .modal-overlay {
-    position: fixed; inset: 0;
-    background: rgba(15,23,42,0.6); backdrop-filter: blur(4px);
-    z-index: 500; display: none;
-    align-items: center; justify-content: center; padding: 24px;
-  }
+  .modal-overlay { position: fixed; inset: 0; background: rgba(15,23,42,0.6); backdrop-filter: blur(4px); z-index: 500; display: none; align-items: center; justify-content: center; padding: 24px; }
   .modal-overlay.open { display: flex; }
-  .modal {
-    width: 100%; max-width: 640px; max-height: 90vh;
-    background: var(--bg); border: 1px solid var(--border);
-    border-radius: var(--radius-card);
-    box-shadow: var(--shadow-elevated);
-    display: flex; flex-direction: column;
-    overflow: hidden;
-  }
-  .modal-header {
-    padding: 20px 24px; border-bottom: 1px solid var(--border);
-    display: flex; align-items: center; justify-content: space-between;
-  }
+  .modal { width: 100%; max-width: 640px; max-height: 90vh; background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-card); box-shadow: var(--shadow-elevated); display: flex; flex-direction: column; overflow: hidden; }
+  .modal-header { padding: 20px 24px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; }
   .modal-title { font-size: 16px; font-weight: 600; letter-spacing: -0.01em; }
   .modal-body { flex: 1; overflow-y: auto; padding: 24px; }
-  .modal-footer {
-    padding: 16px 24px; border-top: 1px solid var(--border);
-    display: flex; justify-content: flex-end; gap: 8px;
-  }
+  .modal-footer { padding: 16px 24px; border-top: 1px solid var(--border); display: flex; justify-content: flex-end; gap: 8px; }
+  .sheet-close { width: 32px; height: 32px; border-radius: var(--radius-btn); background: transparent; border: none; color: var(--fg-muted); cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background 0.15s, color 0.15s; }
+  .sheet-close:hover { background: var(--bg-soft); color: var(--fg); }
 
-  /* Terms box */
-  .terms-box {
-    max-height: 320px; overflow-y: auto;
-    padding: 16px; background: var(--bg-soft);
-    border: 1px solid var(--border); border-radius: var(--radius-btn);
-    font-size: 12.5px; line-height: 1.6;
-    color: var(--fg-muted);
-    white-space: pre-wrap;
-    font-family: 'Inter', sans-serif;
-  }
-  .terms-box h1, .terms-box h2, .terms-box h3 { color: var(--fg); }
-  .terms-box strong { color: var(--fg); }
-  .terms-box p { margin-bottom: 10px; }
+  .terms-box { max-height: 320px; overflow-y: auto; padding: 16px; background: var(--bg-soft); border: 1px solid var(--border); border-radius: var(--radius-btn); font-size: 12.5px; line-height: 1.6; color: var(--fg-muted); white-space: pre-wrap; font-family: 'Inter', sans-serif; -webkit-user-select: text; user-select: text; }
 
-  .toast-wrap {
-    position: fixed; top: 20px; right: 20px; z-index: 700;
-    display: flex; flex-direction: column; gap: 8px; pointer-events: none;
-  }
-  .toast {
-    min-width: 280px; max-width: 380px;
-    padding: 12px 16px; background: var(--bg);
-    border: 1px solid var(--border);
-    border-left: 3px solid var(--primary);
-    border-radius: var(--radius-btn);
-    box-shadow: var(--shadow-elevated);
-    font-size: 13.5px; color: var(--fg);
-    pointer-events: auto; animation: toastIn 0.3s var(--ease);
-    display: flex; align-items: flex-start; gap: 10px;
-  }
+  .toast-wrap { position: fixed; top: 20px; right: 20px; z-index: 700; display: flex; flex-direction: column; gap: 8px; pointer-events: none; }
+  .toast { min-width: 280px; max-width: 380px; padding: 12px 16px; background: var(--bg); border: 1px solid var(--border); border-left: 3px solid var(--primary); border-radius: var(--radius-btn); box-shadow: var(--shadow-elevated); font-size: 13.5px; color: var(--fg); pointer-events: auto; animation: toastIn 0.3s var(--ease); display: flex; align-items: flex-start; gap: 10px; }
   .toast.success { border-left-color: var(--success); }
   .toast.error { border-left-color: var(--danger); }
   .toast.warning { border-left-color: var(--warning); }
@@ -576,88 +371,45 @@
   .toast.info svg { color: var(--primary); }
   @keyframes toastIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
 
-  .cmd-overlay {
-    position: fixed; inset: 0; background: rgba(15,23,42,0.5);
-    backdrop-filter: blur(4px); z-index: 400; display: none;
-    align-items: flex-start; justify-content: center; padding-top: 15vh;
-  }
-  .cmd-overlay.open { display: flex; animation: fadeIn 0.15s; }
-  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-  .cmd-panel {
-    width: 100%; max-width: 560px; background: var(--bg);
-    border: 1px solid var(--border); border-radius: var(--radius-card);
-    box-shadow: var(--shadow-elevated); overflow: hidden;
-    animation: cmdIn 0.2s var(--ease);
-  }
-  @keyframes cmdIn { from { transform: translateY(-8px) scale(0.98); opacity: 0; } to { transform: translateY(0) scale(1); opacity: 1; } }
-  .cmd-input {
-    width: 100%; height: 52px; padding: 0 18px;
-    background: transparent; border: none; border-bottom: 1px solid var(--border);
-    color: var(--fg); font-size: 15px; outline: none;
-  }
+  .cmd-overlay { position: fixed; inset: 0; background: rgba(15,23,42,0.5); backdrop-filter: blur(4px); z-index: 400; display: none; align-items: flex-start; justify-content: center; padding-top: 15vh; }
+  .cmd-overlay.open { display: flex; }
+  .cmd-panel { width: 100%; max-width: 560px; background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-card); box-shadow: var(--shadow-elevated); overflow: hidden; }
+  .cmd-input { width: 100%; height: 52px; padding: 0 18px; background: transparent; border: none; border-bottom: 1px solid var(--border); color: var(--fg); font-size: 15px; outline: none; }
   .cmd-list { max-height: 340px; overflow-y: auto; padding: 6px; }
-  .cmd-group-title {
-    font-size: 11px; font-weight: 600; text-transform: uppercase;
-    letter-spacing: 0.06em; color: var(--fg-muted); padding: 10px 12px 6px;
-  }
-  .cmd-item {
-    display: flex; align-items: center; gap: 10px;
-    padding: 10px 12px; border-radius: var(--radius-sm);
-    font-size: 13.5px; cursor: pointer; color: var(--fg);
-  }
+  .cmd-item { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: var(--radius-sm); font-size: 13.5px; cursor: pointer; color: var(--fg); }
   .cmd-item:hover, .cmd-item.active { background: var(--bg-soft); }
-  .cmd-item svg { width: 15px; height: 15px; color: var(--fg-muted); }
   .cmd-empty { padding: 32px; text-align: center; color: var(--fg-muted); font-size: 13px; }
 
-  .awb-preview {
-    background: #fff; color: #000;
-    border: 1px solid var(--border); border-radius: var(--radius-card);
-    padding: 24px; margin-top: 16px; display: none; font-size: 13px;
-  }
+  .awb-preview { background: #fff; color: #000; border: 1px solid var(--border); border-radius: var(--radius-card); padding: 24px; margin-top: 16px; display: none; font-size: 13px; }
   .awb-preview.show { display: block; }
-  .awb-preview h4 {
-    font-size: 14px; font-weight: 600;
-    margin-bottom: 14px; padding-bottom: 10px; border-bottom: 1px solid #E5E7EB;
-  }
+  .awb-preview h4 { font-size: 14px; font-weight: 600; margin-bottom: 14px; padding-bottom: 10px; border-bottom: 1px solid #E5E7EB; }
   .awb-preview .row { display: flex; justify-content: space-between; padding: 6px 0; }
   .awb-preview .row span:first-child { color: #64748B; }
-  .fgo-factura-wrap {
-    background: #fff; margin-bottom: 16px;
-    border: 1px solid var(--border); border-radius: var(--radius-card); overflow: hidden;
-  }
+  .fgo-factura-wrap { background: #fff; margin-bottom: 16px; border: 1px solid var(--border); border-radius: var(--radius-card); overflow: hidden; }
   .fgo-factura-wrap iframe { display: block; width: 100%; height: 800px; border: none; background: #fff; }
-  .fgo-factura-link {
-    padding: 10px; background: #F8FAFC; font-size: 11px; color: #64748B;
-    text-align: center; border-top: 1px solid var(--border);
-  }
+  .fgo-factura-link { padding: 10px; background: #F8FAFC; font-size: 11px; color: #64748B; text-align: center; border-top: 1px solid var(--border); }
 
-  .progress-box {
-    margin-bottom: 16px; padding: 14px 18px;
-    background: var(--primary-soft); border-radius: 12px; font-size: 13px;
-  }
+  .progress-box { margin-bottom: 16px; padding: 14px 18px; background: var(--primary-soft); border-radius: 12px; font-size: 13px; }
   .progress-box.done { background: var(--success-soft); color: var(--success); font-weight: 500; }
   .progress-head { display: flex; justify-content: space-between; margin-bottom: 8px; }
-  .progress-track {
-    height: 4px; background: rgba(99,102,241,0.2);
-    border-radius: 999px; overflow: hidden;
-  }
+  .progress-track { height: 4px; background: rgba(99,102,241,0.2); border-radius: 999px; overflow: hidden; }
   .progress-bar { height: 100%; background: var(--primary); width: 0%; transition: width 0.3s; }
   .progress-hint { margin-top: 8px; font-size: 11.5px; color: var(--fg-muted); }
 
-  .usage-bar {
-    padding: 12px 16px; background: var(--bg-soft);
-    border: 1px solid var(--border); border-radius: var(--radius-btn);
-    display: flex; justify-content: space-between; align-items: center;
-    margin-bottom: 12px;
-  }
+  .usage-bar { padding: 12px 16px; background: var(--bg-soft); border: 1px solid var(--border); border-radius: var(--radius-btn); display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
   .usage-bar.over { background: var(--danger-soft); border-color: rgba(239,68,68,0.3); color: var(--danger); }
   .usage-bar.warn { background: var(--warning-soft); border-color: rgba(245,158,11,0.3); color: #92400E; }
 
-  /* Reset */
   .auth-step { display: none; }
-  .auth-step.active { display: block; animation: fadeIn 0.25s var(--ease); }
+  .auth-step.active { display: block; }
 
-  @media (max-width: 900px) { .stats-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 900px) {
+    .stats-grid { grid-template-columns: repeat(2, 1fr); }
+    .home-hero { grid-template-columns: 1fr; gap: 40px; padding: 40px 24px; }
+    .home-hero-content h1 { font-size: 36px; }
+    .home-features-grid, .pricing-grid { grid-template-columns: 1fr; }
+    .home-footer-inner { grid-template-columns: 1fr 1fr; }
+  }
   @media (max-width: 768px) {
     .sidebar { transform: translateX(-100%); box-shadow: 20px 0 60px rgba(15,23,42,0.2); }
     .sidebar.open { transform: translateX(0); }
@@ -668,9 +420,13 @@
     .main-content { padding: 16px; }
     .stats-grid { grid-template-columns: 1fr; }
     .form-grid-2 { grid-template-columns: 1fr; }
-    .sheet { max-width: 100%; }
     .toast-wrap { left: 12px; right: 12px; }
     .toast { min-width: 0; max-width: 100%; }
+    .home-nav-links { display: none; }
+    .home-hamburger { display: flex; align-items: center; justify-content: center; }
+    .home-nav-actions .btn { display: none; }
+    .home-footer-inner { grid-template-columns: 1fr; }
+    .account-menu { left: 8px; right: 8px; width: auto; }
   }
   .icon-sun, .icon-moon { transition: transform 0.2s, opacity 0.2s; }
   [data-theme="dark"] .icon-sun { display: none; }
@@ -680,13 +436,188 @@
 </head>
 <body>
 
-<!-- ================= AUTH ================= -->
-<div id="authScreen">
-  <div class="auth-card">
-    <div class="auth-logo">Zen3<span>Hub</span></div>
-    <div class="auth-sub" data-i18n="auth_sub">Logistics Platform</div>
+<!-- HOMEPAGE -->
+<div id="homePage">
+  <nav class="home-nav">
+    <div class="brand-logo">
+      <span class="brand-logo-icon">E</span>
+      <span>Eauto</span>
+    </div>
+    <div class="home-nav-links">
+      <a onclick="scrollToSection('features')" data-i18n="nav_features">Funkciók</a>
+      <a onclick="scrollToSection('pricing')" data-i18n="nav_pricing">Árak</a>
+      <a onclick="scrollToSection('about')" data-i18n="nav_about">Rólunk</a>
+      <a onclick="scrollToSection('contact')" data-i18n="nav_contact">Kapcsolat</a>
+    </div>
+    <div class="home-nav-actions">
+      <button class="btn secondary" onclick="showAuth()" data-i18n="nav_login">Belépés</button>
+      <button class="btn" onclick="showAuth('signup')" data-i18n="nav_signup">Regisztráció</button>
+      <button class="home-hamburger" onclick="openMobileMenu()" aria-label="Menu">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      </button>
+    </div>
+  </nav>
 
-    <!-- STEP 1: LOGIN -->
+  <section class="home-hero">
+    <div class="home-hero-image" id="heroImageWrap">
+      <div class="placeholder">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+        <div data-i18n="hero_image_placeholder">Hero kép helye</div>
+        <small data-i18n="hero_image_hint">Admin tudja cserélni</small>
+      </div>
+    </div>
+    <div class="home-hero-content">
+      <h1 id="heroTitle" data-i18n="hero_title">Platformă completă pentru facturare și AWB</h1>
+      <p id="heroSubtitle" data-i18n="hero_subtitle">Generează AWB-uri și facturi în câteva secunde. Integrare cu DPD, WooCommerce și FGO eFactura.</p>
+      <div class="home-hero-actions">
+        <button class="btn xl" onclick="showAuth('signup')" data-i18n="hero_cta">Începe gratuit 7 zile</button>
+        <button class="btn xl secondary" onclick="scrollToSection('pricing')" data-i18n="hero_cta2">Vezi prețuri</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="home-features" id="features">
+    <div class="home-features-grid">
+      <div class="feature-card">
+        <div class="feature-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m7.5 4.27 9 5.15"/><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/></svg></div>
+        <h3 data-i18n="feat_awb_title">AWB automatikus</h3>
+        <p data-i18n="feat_awb_desc">Generează AWB-uri DPD-hez pár kattintással, közvetlenül a WooCommerce rendelésekből.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
+        <h3 data-i18n="feat_factura_title">Facturi e-Factura</h3>
+        <p data-i18n="feat_factura_desc">Emite facturi și trimite-le automat în SPV prin FGO. Totul conform ANAF.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+        <h3 data-i18n="feat_fast_title">Rapid și simplu</h3>
+        <p data-i18n="feat_fast_desc">5 secunde per AWB. Interfață modernă, fără training. Începe imediat.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="home-pricing" id="pricing">
+    <h2 data-i18n="pricing_title">Alege planul potrivit</h2>
+    <p class="subtitle" data-i18n="pricing_subtitle">7 zile gratuit. Fără card obligatoriu.</p>
+    <div class="pricing-grid">
+      <div class="pricing-card">
+        <h3>Standard</h3>
+        <div class="desc" data-i18n="pricing_standard_desc">Pentru magazine mici și începători</div>
+        <div class="pricing-price"><span class="amount">50</span><span class="currency">lei</span><span class="period">/ lună</span></div>
+        <ul class="pricing-features">
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg><span data-i18n="pricing_standard_f1">50 AWB / săptămână</span></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg><span data-i18n="pricing_standard_f2">50 facturi / săptămână</span></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg><span data-i18n="pricing_standard_f3">Integrare DPD + WooCommerce</span></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg><span data-i18n="pricing_standard_f4">Suport email</span></li>
+        </ul>
+        <button class="btn secondary" onclick="showAuth('signup')" data-i18n="pricing_cta">Începe gratuit</button>
+      </div>
+      <div class="pricing-card popular">
+        <div class="pricing-card-badge" data-i18n="pricing_popular">Popular</div>
+        <h3>Premium</h3>
+        <div class="desc" data-i18n="pricing_premium_desc">Pentru afaceri în creștere</div>
+        <div class="pricing-price"><span class="amount">200</span><span class="currency">lei</span><span class="period">/ lună</span></div>
+        <ul class="pricing-features">
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg><span data-i18n="pricing_premium_f1">200 AWB / săptămână</span></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg><span data-i18n="pricing_premium_f2">200 facturi / săptămână</span></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg><span data-i18n="pricing_premium_f3">Toate integrările Standard</span></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg><span data-i18n="pricing_premium_f4">Suport prioritar</span></li>
+        </ul>
+        <button class="btn" onclick="showAuth('signup')" data-i18n="pricing_cta">Începe gratuit</button>
+      </div>
+      <div class="pricing-card">
+        <h3>Elite</h3>
+        <div class="desc" data-i18n="pricing_elite_desc">Pentru companii mari și echipe</div>
+        <div class="pricing-price"><span class="amount">400</span><span class="currency">lei</span><span class="period">/ lună</span></div>
+        <ul class="pricing-features">
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg><span data-i18n="pricing_elite_f1">AWB nelimitat</span></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg><span data-i18n="pricing_elite_f2">Facturi nelimitate</span></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg><span data-i18n="pricing_elite_f3">Toate integrările</span></li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg><span data-i18n="pricing_elite_f4">Suport dedicat 24/7</span></li>
+        </ul>
+        <button class="btn secondary" onclick="showAuth('signup')" data-i18n="pricing_cta">Începe gratuit</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="home-features" id="about">
+    <div class="card" style="padding:40px;">
+      <h2 style="font-size:28px; font-weight:800; letter-spacing:-0.02em; margin-bottom:16px;" id="aboutTitle" data-i18n="about_title">Despre noi</h2>
+      <p style="font-size:15px; line-height:1.7; color:var(--fg-muted);" id="aboutText" data-i18n="about_text">Eauto este o platformă românească de logistică, creată pentru a simplifica viața antreprenorilor online. Gestionăm AWB-uri, facturi și integrarea cu curierii — totul dintr-un singur loc.</p>
+    </div>
+  </section>
+
+  <footer class="home-footer" id="contact">
+    <div class="home-footer-inner">
+      <div class="home-footer-brand">
+        <div class="brand-logo"><span class="brand-logo-icon">E</span><span>Eauto</span></div>
+        <p data-i18n="footer_brand_desc">Platformă completă pentru facturare și AWB în România. Operat de Milan web S.R.L.</p>
+      </div>
+      <div class="home-footer-col">
+        <h4 data-i18n="footer_product">Produs</h4>
+        <ul>
+          <li><a onclick="scrollToSection('features')" data-i18n="nav_features">Funkciók</a></li>
+          <li><a onclick="scrollToSection('pricing')" data-i18n="nav_pricing">Árak</a></li>
+          <li><a onclick="showAuth('signup')" data-i18n="nav_signup">Regisztráció</a></li>
+        </ul>
+      </div>
+      <div class="home-footer-col">
+        <h4 data-i18n="footer_company">Companie</h4>
+        <ul>
+          <li><a onclick="scrollToSection('about')" data-i18n="nav_about">Rólunk</a></li>
+          <li><a onclick="openContact()" data-i18n="nav_contact">Kapcsolat</a></li>
+          <li><a onclick="openAjutor()" data-i18n="ajutor">Ajutor</a></li>
+        </ul>
+      </div>
+      <div class="home-footer-col">
+        <h4 data-i18n="footer_legal">Legal</h4>
+        <ul>
+          <li><a onclick="openTermsModal()" data-i18n="terms_link">Termeni și Condiții</a></li>
+          <li><a onclick="openANPC()" data-i18n="anpc">ANPC</a></li>
+          <li><a onclick="openContact()" data-i18n="nav_contact">Kapcsolat</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="home-footer-bottom">
+      <div>© <span id="footerYear">2026</span> Milan web S.R.L. · Eauto</div>
+      <div class="footer-lang-switcher">
+        <button onclick="setLang('ro')" data-lang="ro">RO</button>
+        <button onclick="setLang('en')" data-lang="en">EN</button>
+        <button onclick="setLang('hu')" data-lang="hu">HU</button>
+      </div>
+    </div>
+  </footer>
+</div>
+
+<div class="mobile-menu" id="mobileMenu">
+  <div class="mobile-menu-header">
+    <div class="brand-logo"><span class="brand-logo-icon">E</span><span>Eauto</span></div>
+    <button class="mobile-menu-close" onclick="closeMobileMenu()">✕</button>
+  </div>
+  <div class="mobile-menu-list">
+    <a onclick="scrollToSection('features'); closeMobileMenu();" data-i18n="nav_features">Funkciók</a>
+    <a onclick="scrollToSection('pricing'); closeMobileMenu();" data-i18n="nav_pricing">Árak</a>
+    <a onclick="scrollToSection('about'); closeMobileMenu();" data-i18n="nav_about">Rólunk</a>
+    <a onclick="openContact(); closeMobileMenu();" data-i18n="nav_contact">Kapcsolat</a>
+    <a onclick="openAjutor(); closeMobileMenu();" data-i18n="ajutor">Ajutor</a>
+    <a onclick="openTermsModal(); closeMobileMenu();" data-i18n="terms_link">Termeni și Condiții</a>
+    <a onclick="openANPC(); closeMobileMenu();" data-i18n="anpc">ANPC</a>
+  </div>
+  <div class="mobile-menu-actions">
+    <button class="btn secondary lg" onclick="closeMobileMenu(); showAuth();" data-i18n="nav_login">Belépés</button>
+    <button class="btn lg" onclick="closeMobileMenu(); showAuth('signup');" data-i18n="nav_signup">Regisztráció</button>
+  </div>
+</div>
+
+<div id="authScreen">
+  <div class="auth-back-home" onclick="showHome()">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+    <span data-i18n="back_home">Înapoi la pagina principală</span>
+  </div>
+  <div class="auth-card">
+    <div class="auth-logo"><span class="auth-logo-icon">E</span><span>Eauto</span></div>
+    <div class="auth-sub" data-i18n="auth_sub">Platformă Logistică</div>
+
     <div class="auth-step active" id="step-login">
       <h1 class="auth-title" data-i18n="login_title">Bejelentkezés</h1>
       <p class="auth-desc" data-i18n="login_desc">Üdv újra! Add meg az adataidat.</p>
@@ -698,7 +629,6 @@
       <div class="auth-switch"><span onclick="showStep('signup-credentials')" data-i18n="no_account">Nincs fiókod? Regisztrálj</span></div>
     </div>
 
-    <!-- STEP 2: SIGNUP - credentials -->
     <div class="auth-step" id="step-signup-credentials">
       <div class="signup-steps">
         <div class="signup-step active">1</div>
@@ -717,7 +647,6 @@
       <div class="auth-switch"><span onclick="showStep('login')" data-i18n="have_account">Már van fiókod? Jelentkezz be</span></div>
     </div>
 
-    <!-- STEP 3: SIGNUP - plan -->
     <div class="auth-step" id="step-signup-plan">
       <div class="signup-steps">
         <div class="signup-step done">✓</div>
@@ -732,31 +661,22 @@
         <div class="plan-card" data-plan="standard" onclick="selectPlan('standard')">
           <div class="plan-radio"></div>
           <div class="plan-content">
-            <div class="plan-header">
-              <div class="plan-name">Standard</div>
-              <div class="plan-price">50 <small>lei/hó</small></div>
-            </div>
-            <div class="plan-desc" data-i18n="plan_standard_desc">Heti 50 számla · 100 AWB</div>
+            <div class="plan-header"><div class="plan-name">Standard</div><div class="plan-price">50 <small>lei/hó</small></div></div>
+            <div class="plan-desc" data-i18n="plan_standard_desc">50 AWB + 50 számla / hét</div>
           </div>
         </div>
         <div class="plan-card" data-plan="premium" onclick="selectPlan('premium')">
           <div class="plan-radio"></div>
           <div class="plan-content">
-            <div class="plan-header">
-              <div class="plan-name">Premium <span class="plan-badge popular" data-i18n="popular">Népszerű</span></div>
-              <div class="plan-price">200 <small>lei/hó</small></div>
-            </div>
-            <div class="plan-desc" data-i18n="plan_premium_desc">Heti 200 számla · 200 AWB</div>
+            <div class="plan-header"><div class="plan-name">Premium <span class="plan-badge popular" data-i18n="popular">Népszerű</span></div><div class="plan-price">200 <small>lei/hó</small></div></div>
+            <div class="plan-desc" data-i18n="plan_premium_desc">200 AWB + 200 számla / hét</div>
           </div>
         </div>
         <div class="plan-card" data-plan="elite" onclick="selectPlan('elite')">
           <div class="plan-radio"></div>
           <div class="plan-content">
-            <div class="plan-header">
-              <div class="plan-name">Elite</div>
-              <div class="plan-price">400 <small>lei/hó</small></div>
-            </div>
-            <div class="plan-desc" data-i18n="plan_elite_desc">Korlátlan számla és AWB</div>
+            <div class="plan-header"><div class="plan-name">Elite</div><div class="plan-price">400 <small>lei/hó</small></div></div>
+            <div class="plan-desc" data-i18n="plan_elite_desc">Korlátlan AWB és számla</div>
           </div>
         </div>
       </div>
@@ -764,7 +684,6 @@
       <div class="auth-switch"><span onclick="showStep('signup-credentials')" data-i18n="back">← Vissza</span></div>
     </div>
 
-    <!-- STEP 4: SIGNUP - payment -->
     <div class="auth-step" id="step-signup-payment">
       <div class="signup-steps">
         <div class="signup-step done">✓</div>
@@ -793,18 +712,11 @@
       <div class="auth-switch"><span onclick="showStep('signup-plan')" data-i18n="back">← Vissza</span></div>
     </div>
 
-    <!-- Auth bottom bar: Support + Reclamație + Language -->
     <div class="auth-bottom-bar">
-      <div style="display: flex; gap: 6px; flex-wrap: wrap;">
-        <button class="auth-bottom-btn" onclick="openSupport()">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-          <span data-i18n="support">Support</span>
-        </button>
-        <button class="auth-bottom-btn" onclick="openReclamatie()">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-          <span data-i18n="reclamatie">Reclamație</span>
-        </button>
-      </div>
+      <button class="auth-bottom-btn" onclick="openANPC()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        <span>ANPC</span>
+      </button>
       <div class="lang-switcher">
         <button onclick="setLang('ro')" data-lang="ro">RO</button>
         <button onclick="setLang('en')" data-lang="en">EN</button>
@@ -814,42 +726,22 @@
   </div>
 </div>
 
-<!-- ================= APP ================= -->
 <div id="app">
   <aside class="sidebar" id="sidebar">
-    <div class="sidebar-logo">Zen3<span>Hub</span></div>
+    <div class="sidebar-logo"><span class="brand-logo-icon">E</span><span>Eauto</span></div>
     <nav class="sidebar-nav">
-      <button class="nav-item active" data-tab="dashboard" onclick="switchTab('dashboard')">
-        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg>
-        <span data-i18n="nav_dashboard">Dashboard</span>
-      </button>
-      <button class="nav-item" data-tab="awb" onclick="switchTab('awb')">
-        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m7.5 4.27 9 5.15"/><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/></svg>
-        <span data-i18n="nav_awb">AWB-k</span>
-      </button>
-      <button class="nav-item" data-tab="factura" onclick="switchTab('factura')">
-        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-        <span data-i18n="nav_factura">Számlák</span>
-      </button>
+      <button class="nav-item active" data-tab="dashboard" onclick="switchTab('dashboard')"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg><span data-i18n="nav_dashboard">Dashboard</span></button>
+      <button class="nav-item" data-tab="awb" onclick="switchTab('awb')"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m7.5 4.27 9 5.15"/><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/></svg><span data-i18n="nav_awb">AWB-k</span></button>
+      <button class="nav-item" data-tab="factura" onclick="switchTab('factura')"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg><span data-i18n="nav_factura">Számlák</span></button>
       <div class="nav-section" data-i18n="nav_settings">Beállítások</div>
-      <button class="nav-item" data-tab="curier" onclick="switchTab('curier')">
-        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"/><circle cx="17" cy="18" r="2"/><circle cx="7" cy="18" r="2"/></svg>
-        <span data-i18n="nav_curier">Futár</span>
-      </button>
-      <button class="nav-item" data-tab="companie" onclick="switchTab('companie')">
-        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M5 21V7l8-4v18"/></svg>
-        <span data-i18n="nav_companie">Cég</span>
-      </button>
+      <button class="nav-item" data-tab="curier" onclick="switchTab('curier')"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"/><circle cx="17" cy="18" r="2"/><circle cx="7" cy="18" r="2"/></svg><span data-i18n="nav_curier">Futár</span></button>
+      <button class="nav-item" data-tab="companie" onclick="switchTab('companie')"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M5 21V7l8-4v18"/></svg><span data-i18n="nav_companie">Cég</span></button>
+      <button class="nav-item" data-tab="subscription" onclick="switchTab('subscription')"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg><span data-i18n="manage_subscription">Manage Subscription</span></button>
       <div id="adminNavWrap" style="display:none;">
         <div class="nav-section">Admin</div>
-        <button class="nav-item" data-tab="terms-admin" onclick="switchTab('terms-admin')">
-          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-          <span>Termeni &amp; Condiții</span>
-        </button>
-        <button class="nav-item" data-tab="admin" onclick="switchTab('admin')">
-          <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 4 6v6c0 5 3.5 9 8 10 4.5-1 8-5 8-10V6z"/></svg>
-          <span>Admin panel</span>
-        </button>
+        <button class="nav-item" data-tab="homepage-admin" onclick="switchTab('homepage-admin')"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg><span>Homepage</span></button>
+        <button class="nav-item" data-tab="terms-admin" onclick="switchTab('terms-admin')"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg><span>Termeni</span></button>
+        <button class="nav-item" data-tab="admin" onclick="switchTab('admin')"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 4 6v6c0 5 3.5 9 8 10 4.5-1 8-5 8-10V6z"/></svg><span>Admin panel</span></button>
       </div>
     </nav>
     <div class="sidebar-user">
@@ -865,139 +757,66 @@
         <div class="account-menu-label" data-i18n="accounts_label">Fiókok</div>
         <div id="accountMenuList"></div>
         <div class="account-menu-divider"></div>
-        <button class="account-menu-item add" onclick="addSubAccount()">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-          <span data-i18n="new_subaccount">Új al-account</span>
-        </button>
-        <button class="account-menu-item subscription" onclick="openManageSubscription()">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
-          <span data-i18n="manage_subscription">Manage Subscription</span>
-        </button>
+        <button class="account-menu-item add" onclick="addSubAccount()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg><span data-i18n="new_subaccount">Új al-account</span></button>
+        <button class="account-menu-item subscription" onclick="switchTab('subscription'); closeAccountMenu();"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg><span data-i18n="manage_subscription">Manage Subscription</span></button>
         <div class="account-menu-divider"></div>
-        <button class="account-menu-item" onclick="openSupport()">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-          <span data-i18n="support">Support</span>
-        </button>
-        <button class="account-menu-item" onclick="openReclamatie()">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-          <span data-i18n="reclamatie">Reclamație</span>
-        </button>
+        <div class="account-menu-label" data-i18n="language">Nyelv</div>
+        <div class="acc-lang-switcher">
+          <button onclick="setLang('ro')" data-lang="ro">RO</button>
+          <button onclick="setLang('en')" data-lang="en">EN</button>
+          <button onclick="setLang('hu')" data-lang="hu">HU</button>
+        </div>
         <div class="account-menu-divider"></div>
-        <button class="account-menu-item" onclick="logout()" style="color:#F87171;">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
-          <span data-i18n="logout">Kijelentkezés</span>
-        </button>
+        <button class="account-menu-item" onclick="openAjutor()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg><span data-i18n="ajutor">Ajutor</span></button>
+        <button class="account-menu-item" onclick="openANPC()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg><span>ANPC</span></button>
+        <div class="account-menu-divider"></div>
+        <button class="account-menu-item" onclick="logout()" style="color:#F87171;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg><span data-i18n="logout">Kijelentkezés</span></button>
       </div>
     </div>
   </aside>
 
   <div class="main-wrap">
     <header class="topbar">
-      <button class="icon-btn mobile-menu-btn" onclick="toggleSidebar()">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
-      </button>
+      <button class="icon-btn mobile-menu-btn" onclick="toggleSidebar()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
       <div class="topbar-title" id="pageTitle">Dashboard</div>
-      <div class="topbar-search" onclick="openCmdK()">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-        <span data-i18n="search">Keresés...</span>
-        <kbd>⌘K</kbd>
-      </div>
+      <div class="topbar-search" onclick="openCmdK()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><span data-i18n="search">Keresés...</span><kbd>⌘K</kbd></div>
       <div class="topbar-actions">
-        <button class="icon-btn" onclick="toggleTheme()" title="Theme">
-          <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg>
-          <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg>
-        </button>
+        <button class="icon-btn" onclick="toggleTheme()" title="Theme"><svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg><svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg></button>
       </div>
     </header>
 
     <main class="main-content">
-
-      <!-- DASHBOARD -->
       <div class="tab-page" id="page-dashboard">
         <div id="usageWarning" style="display:none; margin-bottom:16px;"></div>
         <div class="stats-grid">
-          <div class="stat-card">
-            <div class="stat-top">
-              <div>
-                <div class="stat-label" data-i18n="stat_orders">Mai rendelések</div>
-                <div class="stat-value" id="statOrders">0</div>
-                <div class="stat-hint" data-i18n="stat_orders_hint">Utolsó 24 óra</div>
-              </div>
-              <div class="stat-icon">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg>
-              </div>
-            </div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-top">
-              <div>
-                <div class="stat-label" data-i18n="stat_awb">Heti AWB-k</div>
-                <div class="stat-value" id="statAwb">0</div>
-                <div class="stat-hint" id="statAwbLimit">— / —</div>
-              </div>
-              <div class="stat-icon">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m7.5 4.27 9 5.15"/><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/></svg>
-              </div>
-            </div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-top">
-              <div>
-                <div class="stat-label" data-i18n="stat_factura">Heti számlák</div>
-                <div class="stat-value" id="statFacturi">0</div>
-                <div class="stat-hint" id="statFacturaLimit">— / —</div>
-              </div>
-              <div class="stat-icon">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-              </div>
-            </div>
-          </div>
-          <div class="stat-card">
-            <div class="stat-top">
-              <div>
-                <div class="stat-label" data-i18n="stat_plan">Előfizetés</div>
-                <div class="stat-value" id="statPlan" style="font-size:22px;">Standard</div>
-                <div class="stat-hint" id="statPlanHint">50 lei/hó</div>
-              </div>
-              <div class="stat-icon" style="background: rgba(251,191,36,0.15); color: #F59E0B;">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 4 6v6c0 5 3.5 9 8 10 4.5-1 8-5 8-10V6z"/></svg>
-              </div>
-            </div>
-          </div>
+          <div class="stat-card"><div class="stat-top"><div><div class="stat-label" data-i18n="stat_orders">Mai rendelések</div><div class="stat-value" id="statOrders">0</div><div class="stat-hint" data-i18n="stat_orders_hint">Utolsó 24 óra</div></div><div class="stat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/></svg></div></div></div>
+          <div class="stat-card"><div class="stat-top"><div><div class="stat-label" data-i18n="stat_awb">Heti AWB-k</div><div class="stat-value" id="statAwb">0</div><div class="stat-hint" id="statAwbLimit">— / —</div></div><div class="stat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m7.5 4.27 9 5.15"/><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/></svg></div></div></div>
+          <div class="stat-card"><div class="stat-top"><div><div class="stat-label" data-i18n="stat_factura">Heti számlák</div><div class="stat-value" id="statFacturi">0</div><div class="stat-hint" id="statFacturaLimit">— / —</div></div><div class="stat-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div></div></div>
+          <div class="stat-card"><div class="stat-top"><div><div class="stat-label" data-i18n="stat_plan">Előfizetés</div><div class="stat-value" id="statPlan" style="font-size:22px;">Standard</div><div class="stat-hint" id="statPlanHint">50 lei/hó</div></div><div class="stat-icon" style="background: rgba(251,191,36,0.15); color: #F59E0B;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 4 6v6c0 5 3.5 9 8 10 4.5-1 8-5 8-10V6z"/></svg></div></div></div>
         </div>
       </div>
 
-      <!-- AWB -->
       <div class="tab-page hidden" id="page-awb">
-        <div id="usageWarningAWB" style="display:none; margin-bottom:16px;"></div>
         <div class="card">
           <div class="filters">
             <input type="text" class="input sm" id="searchAWB" placeholder="Keresés..." oninput="applySearchAWB(this.value)" style="max-width:300px;" />
             <div class="filters-spacer"></div>
-            <button class="btn secondary sm" onclick="loadOrders()">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-              <span data-i18n="load_orders">Rendelések letöltése</span>
-            </button>
+            <button class="btn secondary sm" onclick="loadOrders()" data-i18n="load_orders">Rendelések letöltése</button>
             <button class="btn secondary sm" onclick="clearOrders()" data-i18n="clear">Törlés</button>
             <button class="btn sm" onclick="generateSelectedAWB()" data-i18n="generate_awb">AWB generálása</button>
           </div>
-          <div class="table-wrap">
-            <table class="tbl">
-              <thead>
-                <tr>
-                  <th style="width:40px;"><input type="checkbox" id="selectAllAWB" onchange="toggleSelectAll(this)" style="accent-color:var(--primary);"></th>
-                  <th data-i18n="col_order">Rendelés</th><th data-i18n="col_customer">Ügyfél</th><th data-i18n="col_address">Cím</th><th data-i18n="col_product">Termék</th><th data-i18n="col_payment">Fizetés</th><th style="text-align:right;" data-i18n="col_amount">Összeg</th>
-                </tr>
-              </thead>
-              <tbody id="ordersList"></tbody>
-            </table>
-          </div>
+          <div class="table-wrap"><table class="tbl">
+            <thead><tr><th style="width:40px;"><input type="checkbox" id="selectAllAWB" onchange="toggleSelectAll(this)" style="accent-color:var(--primary);"></th><th data-i18n="col_order">Rendelés</th><th data-i18n="col_customer">Ügyfél</th><th data-i18n="col_address">Cím</th><th data-i18n="col_product">Termék</th><th data-i18n="col_payment">Fizetés</th><th style="text-align:right;" data-i18n="col_amount">Összeg</th></tr></thead>
+            <tbody id="ordersList"></tbody>
+          </table></div>
+        </div>
+        <div class="card" style="margin-top:16px;">
+          <div class="card-header"><div><div class="card-title" data-i18n="awb_preview">AWB előnézet</div><div class="card-subtitle">DPD · max 5 egyszerre</div></div></div>
+          <div class="card-body"><div class="awb-preview" id="awbPreview"></div></div>
         </div>
       </div>
 
-      <!-- FACTURA -->
       <div class="tab-page hidden" id="page-factura">
-        <div id="usageWarningFactura" style="display:none; margin-bottom:16px;"></div>
         <div class="card">
           <div class="filters">
             <input type="text" class="input sm" id="searchFactura" placeholder="Keresés..." oninput="applySearchFactura(this.value)" style="max-width:300px;" />
@@ -1006,21 +825,17 @@
             <button class="btn secondary sm" onclick="clearOrders()" data-i18n="clear">Törlés</button>
             <button class="btn sm" onclick="generateSelectedFactura()" data-i18n="generate_factura">Számla kiállítása</button>
           </div>
-          <div class="table-wrap">
-            <table class="tbl">
-              <thead>
-                <tr>
-                  <th style="width:40px;"><input type="checkbox" id="selectAllFactura" onchange="toggleSelectAllFactura(this)" style="accent-color:var(--primary);"></th>
-                  <th data-i18n="col_order">Rendelés</th><th data-i18n="col_customer">Ügyfél</th><th data-i18n="col_address">Cím</th><th data-i18n="col_product">Termék</th><th data-i18n="col_payment">Fizetés</th><th style="text-align:right;" data-i18n="col_amount">Összeg</th>
-                </tr>
-              </thead>
-              <tbody id="ordersListFactura"></tbody>
-            </table>
-          </div>
+          <div class="table-wrap"><table class="tbl">
+            <thead><tr><th style="width:40px;"><input type="checkbox" id="selectAllFactura" onchange="toggleSelectAllFactura(this)" style="accent-color:var(--primary);"></th><th data-i18n="col_order">Rendelés</th><th data-i18n="col_customer">Ügyfél</th><th data-i18n="col_address">Cím</th><th data-i18n="col_product">Termék</th><th data-i18n="col_payment">Fizetés</th><th style="text-align:right;" data-i18n="col_amount">Összeg</th></tr></thead>
+            <tbody id="ordersListFactura"></tbody>
+          </table></div>
+        </div>
+        <div class="card" style="margin-top:16px;">
+          <div class="card-header"><div><div class="card-title" data-i18n="factura_preview">Számla előnézet</div><div class="card-subtitle">FGO · max 5 egyszerre</div></div></div>
+          <div class="card-body"><div id="facturaPreview"></div></div>
         </div>
       </div>
 
-      <!-- CURIER -->
       <div class="tab-page hidden" id="page-curier">
         <div class="card" style="max-width:720px;">
           <div class="card-header"><div><div class="card-title" data-i18n="curier_title">Futár beállítások</div><div class="card-subtitle">DPD</div></div></div>
@@ -1035,7 +850,6 @@
         </div>
       </div>
 
-      <!-- COMPANIE -->
       <div class="tab-page hidden" id="page-companie">
         <div class="card" style="max-width:720px;">
           <div class="card-header"><div><div class="card-title" data-i18n="company_title">Cég beállítások</div></div></div>
@@ -1080,15 +894,58 @@
         </div>
       </div>
 
-      <!-- TERMS ADMIN -->
-      <div class="tab-page hidden" id="page-terms-admin">
+      <div class="tab-page hidden" id="page-subscription">
         <div class="card">
-          <div class="card-header">
-            <div>
-              <div class="card-title">Termeni și Condiții</div>
-              <div class="card-subtitle" data-i18n="terms_admin_desc">Szerkeszd a szöveget — minden felhasználó látni fogja.</div>
+          <div class="card-header"><div><div class="card-title" data-i18n="manage_subscription">Manage Subscription</div><div class="card-subtitle" data-i18n="subscription_subtitle">Változtasd meg az előfizetésed</div></div></div>
+          <div class="card-body">
+            <div id="subCurrentInfoTab" style="padding:14px 16px; background:var(--primary-soft); border-radius:12px; margin-bottom:20px; font-size:13px;">
+              <b data-i18n="current_plan">Aktív előfizetésed:</b> <span id="subCurrentPlanTab">Standard</span>
+            </div>
+            <div class="plan-grid" id="subPlanGridTab">
+              <div class="plan-card" data-plan="standard" onclick="selectSubPlanTab('standard')"><div class="plan-radio"></div><div class="plan-content"><div class="plan-header"><div class="plan-name">Standard</div><div class="plan-price">50 <small>lei/hó</small></div></div><div class="plan-desc" data-i18n="plan_standard_desc">50 AWB + 50 számla / hét</div></div></div>
+              <div class="plan-card" data-plan="premium" onclick="selectSubPlanTab('premium')"><div class="plan-radio"></div><div class="plan-content"><div class="plan-header"><div class="plan-name">Premium</div><div class="plan-price">200 <small>lei/hó</small></div></div><div class="plan-desc" data-i18n="plan_premium_desc">200 AWB + 200 számla / hét</div></div></div>
+              <div class="plan-card" data-plan="elite" onclick="selectSubPlanTab('elite')"><div class="plan-radio"></div><div class="plan-content"><div class="plan-header"><div class="plan-name">Elite</div><div class="plan-price">400 <small>lei/hó</small></div></div><div class="plan-desc" data-i18n="plan_elite_desc">Korlátlan AWB és számla</div></div></div>
+            </div>
+            <div class="beta-banner"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg><div><b data-i18n="beta_warning">Beta verzió.</b> <span data-i18n="beta_warning_text">Nem történik valódi fizetés.</span></div></div>
+            <div class="form-section-title" data-i18n="payment_title">Fizetési adatok</div>
+            <div class="field"><label data-i18n="card_holder">Kártyabirtokos neve</label><input type="text" id="subCardHolder" placeholder="POPESCU ION" /></div>
+            <div class="field"><label data-i18n="card_number">Kártyaszám</label><input type="text" id="subCardNumber" placeholder="4242 4242 4242 4242" maxlength="19" oninput="formatCard(this)" /></div>
+            <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 14px;">
+              <div class="field"><label data-i18n="card_expiry">Lejárat</label><input type="text" id="subCardExpiry" placeholder="MM/YY" maxlength="5" oninput="formatExpiry(this)" /></div>
+              <div class="field"><label data-i18n="card_cvv">CVV</label><input type="text" id="subCardCvv" placeholder="123" maxlength="4" /></div>
+            </div>
+            <div style="margin-top:20px;"><button class="btn" onclick="saveSubscriptionTab()" data-i18n="change_plan">Előfizetés módosítása</button></div>
+            <div class="form-section-title" style="margin-top:32px;">Termeni și Condiții</div>
+            <div class="terms-box" id="subTermsBoxTab">—</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tab-page hidden" id="page-homepage-admin">
+        <div class="card">
+          <div class="card-header"><div><div class="card-title">Homepage szerkesztése</div><div class="card-subtitle">Minden változás azonnal élesedik</div></div></div>
+          <div class="card-body">
+            <div class="form-section-title">Hero szekció</div>
+            <div class="field"><label class="label">Hero kép URL</label><input class="input" id="adminHeroImage" placeholder="https://..." /></div>
+            <div class="field"><label class="label">Hero cím</label><input class="input" id="adminHeroTitle" /></div>
+            <div class="field"><label class="label">Hero alcím</label><textarea class="input" id="adminHeroSubtitle" style="min-height:80px;"></textarea></div>
+            <div class="form-section-title" style="margin-top:24px;">Despre noi</div>
+            <div class="field"><label class="label">Cím</label><input class="input" id="adminAboutTitle" /></div>
+            <div class="field"><label class="label">Szöveg</label><textarea class="input" id="adminAboutText" style="min-height:120px;"></textarea></div>
+            <div class="form-section-title" style="margin-top:24px;">Kapcsolat (footer)</div>
+            <div class="field"><label class="label">Email</label><input class="input" id="adminContactEmail" /></div>
+            <div class="field"><label class="label">Telefon</label><input class="input" id="adminContactPhone" /></div>
+            <div style="margin-top:20px; display:flex; gap:8px;">
+              <button class="btn" onclick="saveHomepageAdmin()" data-i18n="save">Mentés</button>
+              <button class="btn secondary" onclick="resetHomepageAdmin()" data-i18n="reset">Visszaállítás</button>
             </div>
           </div>
+        </div>
+      </div>
+
+      <div class="tab-page hidden" id="page-terms-admin">
+        <div class="card">
+          <div class="card-header"><div><div class="card-title">Termeni și Condiții</div><div class="card-subtitle" data-i18n="terms_admin_desc">Szerkeszd a szöveget — minden felhasználó látni fogja.</div></div></div>
           <div class="card-body">
             <textarea class="input" id="termsAdminText" style="min-height:520px; font-family: monospace; font-size: 12.5px; line-height: 1.7;"></textarea>
             <div style="margin-top:16px; display:flex; gap:8px;">
@@ -1099,13 +956,9 @@
         </div>
       </div>
 
-      <!-- ADMIN -->
       <div class="tab-page hidden" id="page-admin">
         <div class="card">
-          <div class="card-header">
-            <div><div class="card-title">Admin panel</div></div>
-            <button class="btn sm" onclick="loadAdminData()" data-i18n="refresh">Frissítés</button>
-          </div>
+          <div class="card-header"><div><div class="card-title">Admin panel</div></div><button class="btn sm" onclick="loadAdminData()" data-i18n="refresh">Frissítés</button></div>
           <div class="card-body">
             <h3 style="font-size:13px; font-weight:600; margin-bottom:12px;">Felhasználók</h3>
             <div id="adminUsersList"></div>
@@ -1117,92 +970,26 @@
   </div>
 </div>
 
-<!-- ============ MANAGE SUBSCRIPTION MODAL ============ -->
-<div class="modal-overlay" id="subModalOverlay" onclick="if(event.target===this) closeManageSubscription()">
-  <div class="modal">
-    <div class="modal-header">
-      <div class="modal-title" data-i18n="manage_subscription">Manage Subscription</div>
-      <button class="sheet-close" style="position:static;" onclick="closeManageSubscription()">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-      </button>
-    </div>
-    <div class="modal-body">
-      <div id="subCurrentInfo" style="padding:14px 16px; background:var(--primary-soft); border-radius:12px; margin-bottom:20px; font-size:13px;">
-        <b data-i18n="current_plan">Aktív előfizetésed:</b> <span id="subCurrentPlan">Standard</span>
-      </div>
-
-      <div class="form-section-title" data-i18n="choose_plan">Válassz előfizetést</div>
-      <div class="plan-grid" id="subPlanGrid">
-        <div class="plan-card" data-plan="standard" onclick="selectSubPlan('standard')">
-          <div class="plan-radio"></div>
-          <div class="plan-content">
-            <div class="plan-header">
-              <div class="plan-name">Standard</div>
-              <div class="plan-price">50 <small>lei/hó</small></div>
-            </div>
-            <div class="plan-desc" data-i18n="plan_standard_desc">Heti 50 számla · 100 AWB</div>
-          </div>
-        </div>
-        <div class="plan-card" data-plan="premium" onclick="selectSubPlan('premium')">
-          <div class="plan-radio"></div>
-          <div class="plan-content">
-            <div class="plan-header">
-              <div class="plan-name">Premium</div>
-              <div class="plan-price">200 <small>lei/hó</small></div>
-            </div>
-            <div class="plan-desc" data-i18n="plan_premium_desc">Heti 200 számla · 200 AWB</div>
-          </div>
-        </div>
-        <div class="plan-card" data-plan="elite" onclick="selectSubPlan('elite')">
-          <div class="plan-radio"></div>
-          <div class="plan-content">
-            <div class="plan-header">
-              <div class="plan-name">Elite</div>
-              <div class="plan-price">400 <small>lei/hó</small></div>
-            </div>
-            <div class="plan-desc" data-i18n="plan_elite_desc">Korlátlan számla és AWB</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="beta-banner">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-        <div><b data-i18n="beta_warning">Beta verzió.</b> <span data-i18n="beta_warning_text">A kártya adatait nem dolgozzuk fel, nem történik valódi fizetés.</span></div>
-      </div>
-
-      <div class="form-section-title" data-i18n="payment_title">Fizetési adatok</div>
-      <div class="field"><label data-i18n="card_holder">Kártyabirtokos neve</label><input type="text" id="subCardHolder" placeholder="POPESCU ION" /></div>
-      <div class="field"><label data-i18n="card_number">Kártyaszám</label><input type="text" id="subCardNumber" placeholder="4242 4242 4242 4242" maxlength="19" oninput="formatCard(this)" /></div>
-      <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 14px;">
-        <div class="field"><label data-i18n="card_expiry">Lejárat</label><input type="text" id="subCardExpiry" placeholder="MM/YY" maxlength="5" oninput="formatExpiry(this)" /></div>
-        <div class="field"><label data-i18n="card_cvv">CVV</label><input type="text" id="subCardCvv" placeholder="123" maxlength="4" /></div>
-      </div>
-
-      <div class="form-section-title" style="margin-top:24px;">Termeni și Condiții</div>
-      <div class="terms-box" id="subTermsBox">—</div>
-    </div>
-    <div class="modal-footer">
-      <button class="btn secondary" onclick="closeManageSubscription()" data-i18n="cancel">Mégse</button>
-      <button class="btn" onclick="saveSubscription()" data-i18n="change_plan">Előfizetés módosítása</button>
-    </div>
+<div class="modal-overlay" id="termsModalOverlay" onclick="if(event.target===this) closeTermsModal()">
+  <div class="modal" style="max-width:720px;">
+    <div class="modal-header"><div class="modal-title">Termeni și Condiții</div><button class="sheet-close" onclick="closeTermsModal()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>
+    <div class="modal-body"><div class="terms-box" id="termsModalBox" style="max-height:60vh;"></div></div>
+    <div class="modal-footer"><button class="btn" onclick="closeTermsModal()" data-i18n="close">Bezárás</button></div>
   </div>
 </div>
 
-<!-- ============ TERMS VIEW MODAL ============ -->
-<div class="modal-overlay" id="termsModalOverlay" onclick="if(event.target===this) closeTermsModal()">
-  <div class="modal" style="max-width:720px;">
-    <div class="modal-header">
-      <div class="modal-title">Termeni și Condiții</div>
-      <button class="sheet-close" style="position:static;" onclick="closeTermsModal()">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-      </button>
-    </div>
+<div class="modal-overlay" id="contactModalOverlay" onclick="if(event.target===this) closeContact()">
+  <div class="modal" style="max-width:480px;">
+    <div class="modal-header"><div class="modal-title" data-i18n="nav_contact">Kapcsolat</div><button class="sheet-close" onclick="closeContact()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>
     <div class="modal-body">
-      <div class="terms-box" id="termsModalBox" style="max-height: 60vh;"></div>
+      <p style="margin-bottom:16px; color:var(--fg-muted); font-size:14px;">
+        <b style="color:var(--fg);">Milan web S.R.L.</b><br>
+        Email: <b id="contactEmailDisplay">electricautomatiks@gmail.com</b><br>
+        Telefon: <b id="contactPhoneDisplay">—</b>
+      </p>
+      <button class="btn block lg" onclick="openAjutor()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg><span data-i18n="send_message">Üzenet küldése</span></button>
     </div>
-    <div class="modal-footer">
-      <button class="btn" onclick="closeTermsModal()" data-i18n="close">Bezárás</button>
-    </div>
+    <div class="modal-footer"><button class="btn secondary" onclick="closeContact()" data-i18n="close">Bezárás</button></div>
   </div>
 </div>
 
@@ -1215,7 +1002,36 @@
   </div>
 </div>
 
-<!-- FIREBASE -->
+<script>
+(function() {
+  'use strict';
+  document.addEventListener('contextmenu', function(e) {
+    const tag = (e.target.tagName || '').toLowerCase();
+    if (tag === 'input' || tag === 'textarea') return;
+    e.preventDefault();
+    return false;
+  });
+  document.addEventListener('keydown', function(e) {
+    const key = (e.key || '').toLowerCase();
+    if (e.key === 'F12' || e.keyCode === 123) { e.preventDefault(); e.stopPropagation(); return false; }
+    if (e.ctrlKey && e.shiftKey && ['i', 'j', 'c', 'k'].includes(key)) { e.preventDefault(); e.stopPropagation(); return false; }
+    if (e.metaKey && e.altKey && ['i', 'j', 'c', 'k'].includes(key)) { e.preventDefault(); e.stopPropagation(); return false; }
+    if ((e.ctrlKey || e.metaKey) && key === 'u') { e.preventDefault(); e.stopPropagation(); return false; }
+    if ((e.ctrlKey || e.metaKey) && key === 's') { e.preventDefault(); e.stopPropagation(); return false; }
+    if ((e.ctrlKey || e.metaKey) && key === 'p') { e.preventDefault(); e.stopPropagation(); return false; }
+  }, true);
+  document.addEventListener('touchstart', function(e) {
+    const tag = (e.target.tagName || '').toLowerCase();
+    if (tag === 'input' || tag === 'textarea') return;
+    const timer = setTimeout(function() { e.preventDefault(); }, 500);
+    const clear = function() { clearTimeout(timer); };
+    document.addEventListener('touchend', clear, { once: true });
+    document.addEventListener('touchmove', clear, { once: true });
+  }, { passive: false });
+  console.log('%cEauto', 'color: #6366F1; font-size: 20px; font-weight: bold;');
+})();
+</script>
+
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import {
@@ -1247,15 +1063,14 @@ const ORDERS_PER_PAGE = 100;
 const BLOCKED_ORDER_STATUSES = ['cancelled', 'refunded', 'failed', 'trash'];
 const SUPPORT_EMAIL = 'electricautomatiks@gmail.com';
 const ANPC_URL = 'https://anpc.ro/ce-este-sal/';
-
 const BATCH_SIZE = 5;
 const BATCH_DELAY_MS = 1500;
 
 // ============================================
-// PLAN LIMITS (heti)
+// CSOMAG LIMITEK — heti
 // ============================================
 const PLAN_LIMITS = {
-  standard: { awb: 100, factura: 50, price: 50, name: 'Standard' },
+  standard: { awb: 50, factura: 50, price: 50, name: 'Standard' },
   premium:  { awb: 200, factura: 200, price: 200, name: 'Premium' },
   elite:    { awb: Infinity, factura: Infinity, price: 400, name: 'Elite' }
 };
@@ -1266,171 +1081,201 @@ const PLAN_LIMITS = {
 const TRANSLATIONS = {
   ro: {
     auth_sub: 'Platformă Logistică',
-    login_title: 'Autentificare',
-    login_desc: 'Bine ai revenit! Introdu datele.',
-    email: 'Email', password: 'Parolă',
-    remember_me: 'Ține-mă minte',
-    login_btn: 'Autentificare',
-    no_account: 'Nu ai cont? Înregistrează-te',
-    signup_title: 'Creare cont',
-    signup_desc: 'Introdu emailul și parola.',
-    password_confirm: 'Confirmare parolă',
-    next: 'Continuă', back: '← Înapoi',
-    choose_plan: 'Alege abonamentul',
-    choose_plan_desc: '7 zile gratuit la toate pachetele.',
-    plan_standard_desc: '50 facturi · 100 AWB pe săptămână',
-    plan_premium_desc: '200 facturi · 200 AWB pe săptămână',
-    plan_elite_desc: 'Nelimitat facturi și AWB',
-    popular: 'Popular',
-    payment_title: 'Date de plată',
-    payment_desc: 'Introdu cardul debit',
-    card_holder: 'Nume titular', card_number: 'Număr card',
-    card_expiry: 'Expirare', card_cvv: 'CVV',
+    login_title: 'Autentificare', login_desc: 'Bine ai revenit! Introdu datele.',
+    email: 'Email', password: 'Parolă', remember_me: 'Ține-mă minte',
+    login_btn: 'Autentificare', no_account: 'Nu ai cont? Înregistrează-te',
+    signup_title: 'Creare cont', signup_desc: 'Introdu emailul și parola.',
+    password_confirm: 'Confirmare parolă', next: 'Continuă', back: '← Înapoi',
+    choose_plan: 'Alege abonamentul', choose_plan_desc: '7 zile gratuit la toate pachetele.',
+    plan_standard_desc: '50 AWB + 50 facturi / săptămână',
+    plan_premium_desc: '200 AWB + 200 facturi / săptămână',
+    plan_elite_desc: 'Nelimitat AWB și facturi',
+    popular: 'Popular', payment_title: 'Date de plată', payment_desc: 'Introdu cardul debit',
+    card_holder: 'Nume titular', card_number: 'Număr card', card_expiry: 'Expirare', card_cvv: 'CVV',
     accept_terms: 'Accept', terms_link: 'Termenii și Condițiile',
     signup_complete: 'Finalizare înregistrare',
     beta_warning: 'Versiune beta.',
     beta_warning_text: 'Datele cardului nu sunt procesate, nu se efectuează plată reală.',
-    support: 'Suport', reclamatie: 'Reclamație',
-    have_account: 'Ai deja cont? Autentifică-te',
-    nav_dashboard: 'Dashboard', nav_awb: 'AWB-uri', nav_factura: 'Facturi',
+    nav_login: 'Intră în cont', nav_signup: 'Creează cont',
+    nav_features: 'Funcții', nav_pricing: 'Prețuri', nav_about: 'Despre noi', nav_contact: 'Contact',
+    hero_title: 'Platformă completă pentru facturare și AWB',
+    hero_subtitle: 'Generează AWB-uri și facturi în câteva secunde. Integrare cu DPD, WooCommerce și FGO eFactura.',
+    hero_cta: 'Începe gratuit 7 zile', hero_cta2: 'Vezi prețuri',
+    hero_image_placeholder: 'Loc pentru imaginea hero',
+    hero_image_hint: 'Adminul o poate schimba',
+    feat_awb_title: 'AWB automat', feat_awb_desc: 'Generează AWB-uri DPD direct din comenzile WooCommerce.',
+    feat_factura_title: 'Facturi e-Factura', feat_factura_desc: 'Emite facturi și trimite-le automat în SPV prin FGO.',
+    feat_fast_title: 'Rapid și simplu', feat_fast_desc: '5 secunde per AWB. Interfață modernă, fără training.',
+    pricing_title: 'Alege planul potrivit', pricing_subtitle: '7 zile gratuit. Fără card obligatoriu.',
+    pricing_standard_desc: 'Pentru magazine mici', pricing_premium_desc: 'Pentru afaceri în creștere', pricing_elite_desc: 'Pentru companii mari',
+    pricing_standard_f1: '50 AWB / săptămână', pricing_standard_f2: '50 facturi / săptămână',
+    pricing_standard_f3: 'Integrare DPD + WooCommerce', pricing_standard_f4: 'Suport email',
+    pricing_premium_f1: '200 AWB / săptămână', pricing_premium_f2: '200 facturi / săptămână',
+    pricing_premium_f3: 'Toate integrările Standard', pricing_premium_f4: 'Suport prioritar',
+    pricing_elite_f1: 'AWB nelimitat', pricing_elite_f2: 'Facturi nelimitate',
+    pricing_elite_f3: 'Toate integrările', pricing_elite_f4: 'Suport dedicat 24/7',
+    pricing_popular: 'Popular', pricing_cta: 'Începe gratuit',
+    about_title: 'Despre noi',
+    about_text: 'Eauto este o platformă românească de logistică, creată pentru a simplifica viața antreprenorilor online.',
+    footer_brand_desc: 'Platformă completă pentru facturare și AWB în România. Operat de Milan web S.R.L.',
+    footer_product: 'Produs', footer_company: 'Companie', footer_legal: 'Legal',
+    ajutor: 'Ajutor', anpc: 'ANPC', back_home: 'Înapoi la pagina principală',
+    nav_dashboard: 'Dashboard', nav_awb: 'AWB', nav_factura: 'Facturi',
     nav_settings: 'Setări', nav_curier: 'Curier', nav_companie: 'Companie',
-    accounts_label: 'Conturi',
-    new_subaccount: 'Sub-cont nou',
-    manage_subscription: 'Gestionează abonamentul',
-    logout: 'Deconectare',
-    search: 'Caută...',
-    stat_orders: 'Comenzi azi', stat_orders_hint: 'Ultimele 24 ore',
-    stat_awb: 'AWB-uri săptămâna', stat_factura: 'Facturi săptămâna',
-    stat_plan: 'Abonament',
+    accounts_label: 'Conturi', new_subaccount: 'Sub-cont nou',
+    manage_subscription: 'Gestionează abonamentul', logout: 'Deconectare',
+    language: 'Limbă', search: 'Caută...',
+    stat_orders: 'Comenzi azi', stat_orders_hint: 'Ultimele 24h',
+    stat_awb: 'AWB săptămâna', stat_factura: 'Facturi săptămâna', stat_plan: 'Abonament',
     load_orders: 'Descarcă comenzi', clear: 'Șterge',
     generate_awb: 'Generează AWB', generate_factura: 'Emite facturi',
     col_order: 'Comandă', col_customer: 'Client', col_address: 'Adresă',
     col_product: 'Produs', col_payment: 'Plată', col_amount: 'Sumă',
+    awb_preview: 'Previzualizare AWB', factura_preview: 'Previzualizare factură',
     curier_title: 'Setări curier', company_title: 'Setări companie',
     account_name: 'Nume sub-cont', company_name: 'Nume / Companie',
     phone: 'Telefon', country: 'Țară', city: 'Oraș', street: 'Stradă',
     save: 'Salvează', delete_account: 'Șterge sub-cont',
-    current_plan: 'Abonament activ:',
-    change_plan: 'Schimbă abonamentul',
-    cancel: 'Anulează', close: 'Închide',
-    refresh: 'Reîncarcă',
+    current_plan: 'Abonament activ:', subscription_subtitle: 'Modifică-ți abonamentul',
+    change_plan: 'Schimbă abonamentul', cancel: 'Anulează', close: 'Închide',
+    refresh: 'Reîncarcă', reset: 'Reset',
     terms_admin_desc: 'Editează textul — toți utilizatorii îl vor vedea.',
-    reset: 'Reset',
     limit_reached: 'Limita săptămânală atinsă',
     limit_text: 'Ai atins limita de {type} pentru planul {plan}. Upgrade pentru mai mult.',
-    confirm_terms: 'Trebuie să accepți Termenii și Condițiile.'
+    confirm_terms: 'Trebuie să accepți Termenii și Condițiile.',
+    send_message: 'Trimite mesaj'
   },
   en: {
     auth_sub: 'Logistics Platform',
-    login_title: 'Sign In',
-    login_desc: 'Welcome back! Enter your credentials.',
-    email: 'Email', password: 'Password',
-    remember_me: 'Remember me',
-    login_btn: 'Sign In',
-    no_account: "Don't have an account? Sign up",
-    signup_title: 'Create account',
-    signup_desc: 'Enter your email and password.',
-    password_confirm: 'Confirm password',
-    next: 'Continue', back: '← Back',
-    choose_plan: 'Choose subscription',
-    choose_plan_desc: '7-day free trial on all plans.',
-    plan_standard_desc: '50 invoices · 100 AWB per week',
-    plan_premium_desc: '200 invoices · 200 AWB per week',
-    plan_elite_desc: 'Unlimited invoices and AWB',
-    popular: 'Popular',
-    payment_title: 'Payment details',
-    payment_desc: 'Enter debit card',
-    card_holder: 'Card holder', card_number: 'Card number',
-    card_expiry: 'Expiry', card_cvv: 'CVV',
+    login_title: 'Sign In', login_desc: 'Welcome back! Enter your credentials.',
+    email: 'Email', password: 'Password', remember_me: 'Remember me',
+    login_btn: 'Sign In', no_account: "Don't have an account? Sign up",
+    signup_title: 'Create account', signup_desc: 'Enter your email and password.',
+    password_confirm: 'Confirm password', next: 'Continue', back: '← Back',
+    choose_plan: 'Choose subscription', choose_plan_desc: '7-day free trial on all plans.',
+    plan_standard_desc: '50 AWB + 50 invoices / week',
+    plan_premium_desc: '200 AWB + 200 invoices / week',
+    plan_elite_desc: 'Unlimited AWB and invoices',
+    popular: 'Popular', payment_title: 'Payment details', payment_desc: 'Enter debit card',
+    card_holder: 'Card holder', card_number: 'Card number', card_expiry: 'Expiry', card_cvv: 'CVV',
     accept_terms: 'I accept the', terms_link: 'Terms & Conditions',
     signup_complete: 'Complete registration',
     beta_warning: 'Beta version.',
     beta_warning_text: 'Card data is not processed, no real payment occurs.',
-    support: 'Support', reclamatie: 'Complaint',
-    have_account: 'Already have an account? Sign in',
+    nav_login: 'Sign in', nav_signup: 'Create account',
+    nav_features: 'Features', nav_pricing: 'Pricing', nav_about: 'About', nav_contact: 'Contact',
+    hero_title: 'Complete platform for invoicing and AWB',
+    hero_subtitle: 'Generate AWBs and invoices in seconds. Integration with DPD, WooCommerce and FGO eFactura.',
+    hero_cta: 'Start free 7 days', hero_cta2: 'View pricing',
+    hero_image_placeholder: 'Hero image placeholder',
+    hero_image_hint: 'Admin can change it',
+    feat_awb_title: 'Automatic AWB', feat_awb_desc: 'Generate DPD AWBs directly from WooCommerce orders.',
+    feat_factura_title: 'e-Factura invoices', feat_factura_desc: 'Issue invoices and send them automatically to SPV via FGO.',
+    feat_fast_title: 'Fast and simple', feat_fast_desc: '5 seconds per AWB. Modern interface, no training.',
+    pricing_title: 'Choose the right plan', pricing_subtitle: '7 days free. No card required.',
+    pricing_standard_desc: 'For small shops', pricing_premium_desc: 'For growing businesses', pricing_elite_desc: 'For large companies',
+    pricing_standard_f1: '50 AWB / week', pricing_standard_f2: '50 invoices / week',
+    pricing_standard_f3: 'DPD + WooCommerce integration', pricing_standard_f4: 'Email support',
+    pricing_premium_f1: '200 AWB / week', pricing_premium_f2: '200 invoices / week',
+    pricing_premium_f3: 'All Standard integrations', pricing_premium_f4: 'Priority support',
+    pricing_elite_f1: 'Unlimited AWB', pricing_elite_f2: 'Unlimited invoices',
+    pricing_elite_f3: 'All integrations', pricing_elite_f4: 'Dedicated 24/7 support',
+    pricing_popular: 'Popular', pricing_cta: 'Start free',
+    about_title: 'About us',
+    about_text: 'Eauto is a Romanian logistics platform designed to simplify the life of online entrepreneurs.',
+    footer_brand_desc: 'Complete platform for invoicing and AWB in Romania. Operated by Milan web S.R.L.',
+    footer_product: 'Product', footer_company: 'Company', footer_legal: 'Legal',
+    ajutor: 'Help', anpc: 'ANPC', back_home: 'Back to homepage',
     nav_dashboard: 'Dashboard', nav_awb: 'AWB', nav_factura: 'Invoices',
     nav_settings: 'Settings', nav_curier: 'Courier', nav_companie: 'Company',
-    accounts_label: 'Accounts',
-    new_subaccount: 'New sub-account',
-    manage_subscription: 'Manage Subscription',
-    logout: 'Sign out',
-    search: 'Search...',
-    stat_orders: 'Orders today', stat_orders_hint: 'Last 24 hours',
-    stat_awb: 'AWB this week', stat_factura: 'Invoices this week',
-    stat_plan: 'Subscription',
+    accounts_label: 'Accounts', new_subaccount: 'New sub-account',
+    manage_subscription: 'Manage Subscription', logout: 'Sign out',
+    language: 'Language', search: 'Search...',
+    stat_orders: 'Orders today', stat_orders_hint: 'Last 24h',
+    stat_awb: 'AWB this week', stat_factura: 'Invoices this week', stat_plan: 'Subscription',
     load_orders: 'Load orders', clear: 'Clear',
     generate_awb: 'Generate AWB', generate_factura: 'Issue invoices',
     col_order: 'Order', col_customer: 'Customer', col_address: 'Address',
     col_product: 'Product', col_payment: 'Payment', col_amount: 'Amount',
+    awb_preview: 'AWB preview', factura_preview: 'Invoice preview',
     curier_title: 'Courier settings', company_title: 'Company settings',
     account_name: 'Sub-account name', company_name: 'Name / Company',
     phone: 'Phone', country: 'Country', city: 'City', street: 'Street',
     save: 'Save', delete_account: 'Delete sub-account',
-    current_plan: 'Current plan:',
-    change_plan: 'Change subscription',
-    cancel: 'Cancel', close: 'Close',
-    refresh: 'Refresh',
+    current_plan: 'Current plan:', subscription_subtitle: 'Change your subscription',
+    change_plan: 'Change plan', cancel: 'Cancel', close: 'Close',
+    refresh: 'Refresh', reset: 'Reset',
     terms_admin_desc: 'Edit the text — all users will see it.',
-    reset: 'Reset',
     limit_reached: 'Weekly limit reached',
     limit_text: 'You reached the {type} limit for the {plan} plan. Upgrade for more.',
-    confirm_terms: 'You must accept the Terms & Conditions.'
+    confirm_terms: 'You must accept the Terms & Conditions.',
+    send_message: 'Send message'
   },
   hu: {
     auth_sub: 'Logisztikai Platform',
-    login_title: 'Bejelentkezés',
-    login_desc: 'Üdv újra! Add meg az adataidat.',
-    email: 'Email', password: 'Jelszó',
-    remember_me: 'Emlékezz rám',
-    login_btn: 'Bejelentkezés',
-    no_account: 'Nincs fiókod? Regisztrálj',
-    signup_title: 'Fiók létrehozása',
-    signup_desc: 'Add meg az email címed és jelszavad.',
-    password_confirm: 'Jelszó megerősítés',
-    next: 'Tovább', back: '← Vissza',
-    choose_plan: 'Válassz előfizetést',
-    choose_plan_desc: '7 napos ingyenes próbaidő minden csomagnál.',
-    plan_standard_desc: 'Heti 50 számla · 100 AWB',
-    plan_premium_desc: 'Heti 200 számla · 200 AWB',
-    plan_elite_desc: 'Korlátlan számla és AWB',
-    popular: 'Népszerű',
-    payment_title: 'Fizetési adatok',
-    payment_desc: 'Debit kártya megadása',
-    card_holder: 'Kártyabirtokos neve', card_number: 'Kártyaszám',
-    card_expiry: 'Lejárat', card_cvv: 'CVV',
+    login_title: 'Bejelentkezés', login_desc: 'Üdv újra! Add meg az adataidat.',
+    email: 'Email', password: 'Jelszó', remember_me: 'Emlékezz rám',
+    login_btn: 'Bejelentkezés', no_account: 'Nincs fiókod? Regisztrálj',
+    signup_title: 'Fiók létrehozása', signup_desc: 'Add meg az email címed és jelszavad.',
+    password_confirm: 'Jelszó megerősítés', next: 'Tovább', back: '← Vissza',
+    choose_plan: 'Válassz előfizetést', choose_plan_desc: '7 napos ingyenes próbaidő minden csomagnál.',
+    plan_standard_desc: '50 AWB + 50 számla / hét',
+    plan_premium_desc: '200 AWB + 200 számla / hét',
+    plan_elite_desc: 'Korlátlan AWB és számla',
+    popular: 'Népszerű', payment_title: 'Fizetési adatok', payment_desc: 'Debit kártya megadása',
+    card_holder: 'Kártyabirtokos neve', card_number: 'Kártyaszám', card_expiry: 'Lejárat', card_cvv: 'CVV',
     accept_terms: 'Elfogadom a', terms_link: 'Termeni și Condiții',
     signup_complete: 'Regisztráció befejezése',
     beta_warning: 'Beta verzió.',
     beta_warning_text: 'A kártya adatait nem dolgozzuk fel, nem történik valódi fizetés.',
-    support: 'Support', reclamatie: 'Reclamație',
-    have_account: 'Már van fiókod? Jelentkezz be',
+    nav_login: 'Belépés', nav_signup: 'Regisztráció',
+    nav_features: 'Funkciók', nav_pricing: 'Árak', nav_about: 'Rólunk', nav_contact: 'Kapcsolat',
+    hero_title: 'Platformă completă pentru facturare și AWB',
+    hero_subtitle: 'Generează AWB-uri și facturi în câteva secunde. Integrare cu DPD, WooCommerce și FGO eFactura.',
+    hero_cta: 'Începe gratuit 7 zile', hero_cta2: 'Vezi prețuri',
+    hero_image_placeholder: 'Hero kép helye',
+    hero_image_hint: 'Admin tudja cserélni',
+    feat_awb_title: 'AWB automatikus', feat_awb_desc: 'Generează AWB-uri DPD-hez pár kattintással.',
+    feat_factura_title: 'Facturi e-Factura', feat_factura_desc: 'Emite facturi și trimite-le automat în SPV prin FGO.',
+    feat_fast_title: 'Rapid și simplu', feat_fast_desc: '5 secunde per AWB. Interfață modernă, fără training.',
+    pricing_title: 'Alege planul potrivit', pricing_subtitle: '7 zile gratuit. Fără card obligatoriu.',
+    pricing_standard_desc: 'Pentru magazine mici', pricing_premium_desc: 'Pentru afaceri în creștere', pricing_elite_desc: 'Pentru companii mari',
+    pricing_standard_f1: '50 AWB / săptămână', pricing_standard_f2: '50 facturi / săptămână',
+    pricing_standard_f3: 'Integrare DPD + WooCommerce', pricing_standard_f4: 'Suport email',
+    pricing_premium_f1: '200 AWB / săptămână', pricing_premium_f2: '200 facturi / săptămână',
+    pricing_premium_f3: 'Toate integrările Standard', pricing_premium_f4: 'Suport prioritar',
+    pricing_elite_f1: 'AWB nelimitat', pricing_elite_f2: 'Facturi nelimitate',
+    pricing_elite_f3: 'Toate integrările', pricing_elite_f4: 'Suport dedicat 24/7',
+    pricing_popular: 'Popular', pricing_cta: 'Începe gratuit',
+    about_title: 'Despre noi',
+    about_text: 'Eauto este o platformă românească de logistică, creată pentru a simplifica viața antreprenorilor online.',
+    footer_brand_desc: 'Platformă completă pentru facturare și AWB în România. Operat de Milan web S.R.L.',
+    footer_product: 'Produs', footer_company: 'Companie', footer_legal: 'Legal',
+    ajutor: 'Ajutor', anpc: 'ANPC', back_home: 'Înapoi la pagina principală',
     nav_dashboard: 'Dashboard', nav_awb: 'AWB-k', nav_factura: 'Számlák',
     nav_settings: 'Beállítások', nav_curier: 'Futár', nav_companie: 'Cég',
-    accounts_label: 'Fiókok',
-    new_subaccount: 'Új al-account',
-    manage_subscription: 'Manage Subscription',
-    logout: 'Kijelentkezés',
-    search: 'Keresés...',
+    accounts_label: 'Fiókok', new_subaccount: 'Új al-account',
+    manage_subscription: 'Manage Subscription', logout: 'Kijelentkezés',
+    language: 'Nyelv', search: 'Keresés...',
     stat_orders: 'Mai rendelések', stat_orders_hint: 'Utolsó 24 óra',
-    stat_awb: 'Heti AWB-k', stat_factura: 'Heti számlák',
-    stat_plan: 'Előfizetés',
+    stat_awb: 'Heti AWB-k', stat_factura: 'Heti számlák', stat_plan: 'Előfizetés',
     load_orders: 'Rendelések letöltése', clear: 'Törlés',
     generate_awb: 'AWB generálása', generate_factura: 'Számla kiállítása',
     col_order: 'Rendelés', col_customer: 'Ügyfél', col_address: 'Cím',
     col_product: 'Termék', col_payment: 'Fizetés', col_amount: 'Összeg',
+    awb_preview: 'AWB előnézet', factura_preview: 'Számla előnézet',
     curier_title: 'Futár beállítások', company_title: 'Cég beállítások',
     account_name: 'Al-account neve', company_name: 'Név / Cég',
     phone: 'Telefon', country: 'Ország', city: 'Város', street: 'Utca',
     save: 'Mentés', delete_account: 'Al-account törlése',
-    current_plan: 'Aktív előfizetésed:',
-    change_plan: 'Előfizetés módosítása',
-    cancel: 'Mégse', close: 'Bezárás',
-    refresh: 'Frissítés',
+    current_plan: 'Aktív előfizetésed:', subscription_subtitle: 'Változtasd meg az előfizetésed',
+    change_plan: 'Előfizetés módosítása', cancel: 'Mégse', close: 'Bezárás',
+    refresh: 'Frissítés', reset: 'Visszaállítás',
     terms_admin_desc: 'Szerkeszd a szöveget — minden felhasználó látni fogja.',
-    reset: 'Visszaállítás',
     limit_reached: 'Heti limit elérve',
     limit_text: 'Elérted a {type} limitet a {plan} csomagnál. Válts nagyobbra!',
-    confirm_terms: 'El kell fogadnod a Termeni și Condiții-t.'
+    confirm_terms: 'El kell fogadnod a Termeni și Condiții-t.',
+    send_message: 'Üzenet küldése'
   }
 };
 
@@ -1440,7 +1285,7 @@ window.setLang = function (lang) {
   currentLang = lang;
   localStorage.setItem('zen3-lang', lang);
   applyTranslations();
-  document.querySelectorAll('.lang-switcher button').forEach(b => {
+  document.querySelectorAll('.lang-switcher button, .footer-lang-switcher button, .acc-lang-switcher button').forEach(b => {
     b.classList.toggle('active', b.dataset.lang === lang);
   });
 };
@@ -1455,7 +1300,7 @@ function applyTranslations() {
     const val = t(key);
     if (val) el.textContent = val;
   });
-  document.querySelectorAll('.lang-switcher button').forEach(b => {
+  document.querySelectorAll('.lang-switcher button, .footer-lang-switcher button, .acc-lang-switcher button').forEach(b => {
     b.classList.toggle('active', b.dataset.lang === currentLang);
   });
 }
@@ -1478,7 +1323,7 @@ Eauto este o platformă software destinată gestionării operațiunilor de logis
 Utilizatorul este responsabil pentru furnizarea informațiilor corecte, păstrarea confidențialității datelor de autentificare și toate activitățile din cont.
 
 4. Abonamente
-STANDARD — 50 lei/lună (50 facturi + 100 AWB / săptămână)
+STANDARD — 50 lei/lună (50 facturi + 50 AWB / săptămână)
 PREMIUM — 200 lei/lună (200 facturi + 200 AWB / săptămână)
 ELITE — 400 lei/lună (nelimitat)
 
@@ -1534,56 +1379,127 @@ Milan web S.R.L.
 Email: electricautomatiks@gmail.com
 Platformă: Eauto`;
 
-let globalTerms = DEFAULT_TERMS;
+const DEFAULT_HOMEPAGE = {
+  heroImage: '',
+  heroTitle: 'Platformă completă pentru facturare și AWB',
+  heroSubtitle: 'Generează AWB-uri și facturi în câteva secunde. Integrare cu DPD, WooCommerce și FGO eFactura.',
+  aboutTitle: 'Despre noi',
+  aboutText: 'Eauto este o platformă românească de logistică, creată pentru a simplifica viața antreprenorilor online. Gestionăm AWB-uri, facturi și integrarea cu curierii — totul dintr-un singur loc.',
+  contactEmail: 'electricautomatiks@gmail.com',
+  contactPhone: '—'
+};
 
-async function loadGlobalTerms() {
+let globalTerms = DEFAULT_TERMS;
+let globalHomepage = { ...DEFAULT_HOMEPAGE };
+
+async function loadGlobalSettings() {
   try {
-    const docRef = doc(db, 'settings', 'terms');
-    const snap = await getDoc(docRef);
-    if (snap.exists() && snap.data().text) {
-      globalTerms = snap.data().text;
-    }
+    const termsSnap = await getDoc(doc(db, 'settings', 'terms'));
+    if (termsSnap.exists() && termsSnap.data().text) globalTerms = termsSnap.data().text;
   } catch (e) { console.warn('Terms load error:', e); }
+  try {
+    const hpSnap = await getDoc(doc(db, 'settings', 'homepage'));
+    if (hpSnap.exists()) globalHomepage = { ...DEFAULT_HOMEPAGE, ...hpSnap.data() };
+  } catch (e) { console.warn('Homepage load error:', e); }
+  applyGlobalSettings();
+}
+
+function applyGlobalSettings() {
   document.querySelectorAll('.terms-box').forEach(el => { el.textContent = globalTerms; });
+
+  const heroImgWrap = document.getElementById('heroImageWrap');
+  if (heroImgWrap && globalHomepage.heroImage) {
+    heroImgWrap.innerHTML = `<img src="${globalHomepage.heroImage}" alt="Hero" />`;
+  }
+  const ht = document.getElementById('heroTitle');
+  const hs = document.getElementById('heroSubtitle');
+  if (ht && globalHomepage.heroTitle) ht.textContent = globalHomepage.heroTitle;
+  if (hs && globalHomepage.heroSubtitle) hs.textContent = globalHomepage.heroSubtitle;
+
+  const at = document.getElementById('aboutTitle');
+  const ax = document.getElementById('aboutText');
+  if (at && globalHomepage.aboutTitle) at.textContent = globalHomepage.aboutTitle;
+  if (ax && globalHomepage.aboutText) ax.textContent = globalHomepage.aboutText;
+
+  const ce = document.getElementById('contactEmailDisplay');
+  const cp = document.getElementById('contactPhoneDisplay');
+  if (ce && globalHomepage.contactEmail) ce.textContent = globalHomepage.contactEmail;
+  if (cp && globalHomepage.contactPhone) cp.textContent = globalHomepage.contactPhone;
 }
 
 // ============================================
-// SUPPORT / RECLAMATIE
+// SUPPORT / ANPC
 // ============================================
-window.openSupport = function () {
-  const subject = encodeURIComponent('Zen3Hub Support Request');
+window.openAjutor = function () {
+  const subject = encodeURIComponent('Eauto Support Request');
   const url = `https://mail.google.com/mail/?view=cm&fs=1&to=${SUPPORT_EMAIL}&su=${subject}`;
   window.open(url, '_blank');
 };
-
-window.openReclamatie = function () {
+window.openANPC = function () {
   window.open(ANPC_URL, '_blank');
 };
 
 // ============================================
-// TERMS MODAL
+// MODALS
 // ============================================
 window.openTermsModal = function (e) {
   if (e) e.preventDefault();
-  document.getElementById('termsModalOverlay').classList.add('open');
   document.getElementById('termsModalBox').textContent = globalTerms;
+  document.getElementById('termsModalOverlay').classList.add('open');
 };
 window.closeTermsModal = function () {
   document.getElementById('termsModalOverlay').classList.remove('open');
+};
+window.openContact = function () {
+  document.getElementById('contactModalOverlay').classList.add('open');
+};
+window.closeContact = function () {
+  document.getElementById('contactModalOverlay').classList.remove('open');
+};
+
+// ============================================
+// HOMEPAGE / AUTH navigation
+// ============================================
+window.showHome = function () {
+  document.getElementById('homePage').classList.remove('hidden');
+  document.getElementById('authScreen').classList.remove('show');
+  document.getElementById('app').classList.remove('show');
+  window.scrollTo({ top: 0, behavior: 'instant' });
+};
+
+window.showAuth = function (mode) {
+  document.getElementById('homePage').classList.add('hidden');
+  document.getElementById('authScreen').classList.add('show');
+  if (mode === 'signup') {
+    showStep('signup-credentials');
+  } else {
+    showStep('login');
+  }
+};
+
+window.scrollToSection = function (id) {
+  const el = document.getElementById(id);
+  if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+};
+
+window.openMobileMenu = function () {
+  document.getElementById('mobileMenu').classList.add('open');
+};
+window.closeMobileMenu = function () {
+  document.getElementById('mobileMenu').classList.remove('open');
 };
 
 // ============================================
 // AUTH STEPS
 // ============================================
 let selectedPlan = 'standard';
+let signupData = { email: '', password: '' };
 
 window.showStep = function (stepId) {
   document.querySelectorAll('.auth-step').forEach(s => s.classList.remove('active'));
   document.getElementById('step-' + stepId).classList.add('active');
   document.querySelectorAll('#loginError, #signupError').forEach(e => e.style.display = 'none');
 };
-
-let signupData = { email: '', password: '' };
 
 window.signupStep1 = function () {
   const email = document.getElementById('signupEmail').value.trim();
@@ -1619,22 +1535,15 @@ window.signupStep3 = async function () {
   errEl.style.display = 'none';
 
   if (!document.getElementById('acceptTerms').checked) {
-    // Ugrás vissza payment step-re és ott jelezzük
-    showStep('signup-payment');
     errEl.textContent = t('confirm_terms');
     errEl.style.display = 'block';
-    // Görgessünk a checkbox-hoz
-    document.getElementById('acceptTerms').scrollIntoView({ behavior: 'smooth', block: 'center' });
     return;
   }
-
   if (signupData.email === ADMIN_EMAIL) {
-    showStep('signup-payment');
     errEl.textContent = 'Ez az email admin fiókhoz tartozik.';
     errEl.style.display = 'block';
     return;
   }
-
   try {
     const cred = await createUserWithEmailAndPassword(auth, signupData.email, signupData.password);
     await setDoc(doc(db, 'users', cred.user.uid), {
@@ -1652,7 +1561,6 @@ window.signupStep3 = async function () {
       'auth/weak-password': 'A jelszó túl gyenge.',
       'auth/invalid-email': 'Érvénytelen email cím.'
     };
-    showStep('signup-payment');
     errEl.textContent = map[e.code] || e.message;
     errEl.style.display = 'block';
   }
@@ -1664,9 +1572,7 @@ window.handleLogin = async function () {
   const errEl = document.getElementById('loginError');
   const remember = document.getElementById('rememberMe').checked;
   errEl.style.display = 'none';
-
   if (!email || !password) { errEl.textContent = 'Töltsd ki az összes mezőt!'; errEl.style.display = 'block'; return; }
-
   try {
     await setPersistence(auth, remember ? browserLocalPersistence : browserSessionPersistence);
     await signInWithEmailAndPassword(auth, email, password);
@@ -1682,7 +1588,6 @@ window.handleLogin = async function () {
   }
 };
 
-// Card formatting
 window.formatCard = function (el) {
   let v = el.value.replace(/\s+/g, '').replace(/\D/g, '').slice(0, 16);
   el.value = v.replace(/(.{4})/g, '$1 ').trim();
@@ -1714,7 +1619,6 @@ function getSelectedFactura() {
   if (!accountSelectedFactura[currentAccountIndex]) accountSelectedFactura[currentAccountIndex] = new Set();
   return accountSelectedFactura[currentAccountIndex];
 }
-
 function escapeHtml(s) {
   return String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 }
@@ -1762,7 +1666,8 @@ window.toggleTheme = function () {
 onAuthStateChanged(auth, async (user) => {
   if (user) {
     currentUser = user;
-    document.getElementById('authScreen').style.display = 'none';
+    document.getElementById('homePage').classList.add('hidden');
+    document.getElementById('authScreen').classList.remove('show');
     document.getElementById('app').classList.add('show');
     document.getElementById('sidebarEmail').textContent = user.email;
     document.getElementById('userAvatar').textContent = (user.email || 'U').charAt(0).toUpperCase();
@@ -1771,11 +1676,9 @@ onAuthStateChanged(auth, async (user) => {
     let data = userDoc.data();
     if (!data) {
       data = {
-        email: user.email,
-        plan: 'standard',
+        email: user.email, plan: 'standard',
         accounts: [{ name: 'Fő account', expeditor: {}, shopConfig: {}, dpdConfig: {}, fgoConfig: {} }],
-        activeAccountIndex: 0,
-        createdAt: new Date().toISOString()
+        activeAccountIndex: 0, createdAt: new Date().toISOString()
       };
       await setDoc(doc(db, 'users', user.uid), data);
     }
@@ -1797,13 +1700,16 @@ onAuthStateChanged(auth, async (user) => {
     fillSettingsForm();
     refreshOrdersView();
     updatePlanDisplay();
-    await loadGlobalTerms();
+    await loadGlobalSettings();
     await refreshUsageStats();
+    applyTranslations();
+    switchTab('dashboard');
   } else {
     currentUser = null; currentUserData = null;
     accountOrders = {}; accountSelectedAWB = {}; accountSelectedFactura = {};
     accountSearchAWB = {}; accountSearchFactura = {};
-    document.getElementById('authScreen').style.display = 'flex';
+    document.getElementById('homePage').classList.remove('hidden');
+    document.getElementById('authScreen').classList.remove('show');
     document.getElementById('app').classList.remove('show');
     document.getElementById('adminNavWrap').style.display = 'none';
     showStep('login');
@@ -1821,18 +1727,13 @@ function getWeekKey() {
   const week = Math.ceil((((d - onejan) / 86400000) + onejan.getDay() + 1) / 7);
   return `${d.getFullYear()}-W${String(week).padStart(2, '0')}`;
 }
-
 async function getUsage() {
   if (!currentUser) return { awb: 0, factura: 0 };
   const weekKey = getWeekKey();
   const snap = await getDoc(doc(db, 'usage', currentUser.uid + '_' + weekKey));
-  if (snap.exists()) {
-    const data = snap.data();
-    return { awb: data.awb || 0, factura: data.factura || 0 };
-  }
+  if (snap.exists()) { const data = snap.data(); return { awb: data.awb || 0, factura: data.factura || 0 }; }
   return { awb: 0, factura: 0 };
 }
-
 async function incrementUsage(type, count) {
   if (!currentUser) return;
   const weekKey = getWeekKey();
@@ -1843,7 +1744,6 @@ async function incrementUsage(type, count) {
   data.updatedAt = new Date().toISOString();
   await setDoc(ref, data);
 }
-
 async function canGenerate(type, count) {
   const plan = currentUserData?.plan || 'standard';
   const limits = PLAN_LIMITS[plan];
@@ -1853,16 +1753,13 @@ async function canGenerate(type, count) {
   const remaining = limit - usage[type];
   return { ok: remaining >= count, remaining, limit, used: usage[type] };
 }
-
 async function refreshUsageStats() {
   if (!currentUser) return;
   const usage = await getUsage();
   const plan = currentUserData?.plan || 'standard';
   const limits = PLAN_LIMITS[plan];
-
   document.getElementById('statAwb').textContent = usage.awb;
   document.getElementById('statFacturi').textContent = usage.factura;
-
   const awbLimitEl = document.getElementById('statAwbLimit');
   const facLimitEl = document.getElementById('statFacturaLimit');
   if (limits.awb === Infinity) {
@@ -1872,8 +1769,6 @@ async function refreshUsageStats() {
     awbLimitEl.textContent = `${usage.awb} / ${limits.awb} ezen a héten`;
     facLimitEl.textContent = `${usage.factura} / ${limits.factura} ezen a héten`;
   }
-
-  // Usage warning box
   const warnBox = document.getElementById('usageWarning');
   if (limits.awb !== Infinity) {
     const awbPct = usage.awb / limits.awb;
@@ -1881,9 +1776,7 @@ async function refreshUsageStats() {
     if (awbPct >= 0.8 || facPct >= 0.8) {
       warnBox.style.display = 'block';
       warnBox.className = 'usage-bar warn';
-      warnBox.innerHTML = `
-        <div><b>⚠️ ${t('limit_reached')}</b> — AWB: ${usage.awb}/${limits.awb}, Számla: ${usage.factura}/${limits.factura}</div>
-      `;
+      warnBox.innerHTML = `<div><b>⚠️ ${t('limit_reached')}</b> — AWB: ${usage.awb}/${limits.awb}, Számla: ${usage.factura}/${limits.factura}</div>`;
     } else {
       warnBox.style.display = 'none';
     }
@@ -1891,7 +1784,6 @@ async function refreshUsageStats() {
     warnBox.style.display = 'none';
   }
 }
-
 function updatePlanDisplay() {
   const plan = currentUserData?.plan || 'standard';
   const limits = PLAN_LIMITS[plan];
@@ -1900,61 +1792,46 @@ function updatePlanDisplay() {
 }
 
 // ============================================
-// MANAGE SUBSCRIPTION
+// SUBSCRIPTION
 // ============================================
-let subSelectedPlan = null;
+let subSelectedPlanTab = null;
 
-window.openManageSubscription = async function () {
-  if (!currentUserData) return;
-  document.getElementById('accountMenu').classList.remove('open');
-  document.getElementById('sidebarUserBtn').classList.remove('open');
-
-  const currentPlan = currentUserData.plan || 'standard';
-  subSelectedPlan = currentPlan;
-
-  document.getElementById('subCurrentPlan').textContent = PLAN_LIMITS[currentPlan].name + ' — ' + PLAN_LIMITS[currentPlan].price + ' lei/hó';
-
-  document.querySelectorAll('#subPlanGrid .plan-card').forEach(c => {
-    c.classList.toggle('selected', c.dataset.plan === currentPlan);
+function updateSubscriptionTab() {
+  const plan = currentUserData?.plan || 'standard';
+  subSelectedPlanTab = plan;
+  const info = document.getElementById('subCurrentPlanTab');
+  if (info) info.textContent = PLAN_LIMITS[plan].name + ' — ' + PLAN_LIMITS[plan].price + ' lei/hó';
+  document.querySelectorAll('#subPlanGridTab .plan-card').forEach(c => {
+    c.classList.toggle('selected', c.dataset.plan === plan);
   });
+  const tb = document.getElementById('subTermsBoxTab');
+  if (tb) tb.textContent = globalTerms;
+}
 
-  document.getElementById('subTermsBox').textContent = globalTerms;
-
-  document.getElementById('subModalOverlay').classList.add('open');
-};
-
-window.closeManageSubscription = function () {
-  document.getElementById('subModalOverlay').classList.remove('open');
-};
-
-window.selectSubPlan = function (plan) {
-  subSelectedPlan = plan;
-  document.querySelectorAll('#subPlanGrid .plan-card').forEach(c => {
+window.selectSubPlanTab = function (plan) {
+  subSelectedPlanTab = plan;
+  document.querySelectorAll('#subPlanGridTab .plan-card').forEach(c => {
     c.classList.toggle('selected', c.dataset.plan === plan);
   });
 };
 
-window.saveSubscription = async function () {
-  if (!currentUser || !subSelectedPlan) return;
+window.saveSubscriptionTab = async function () {
+  if (!currentUser || !subSelectedPlanTab) return;
   const old = currentUserData.plan || 'standard';
-  if (old === subSelectedPlan) {
-    toast('Ez már az aktív csomagod.', 'info');
-    closeManageSubscription();
-    return;
-  }
-  await updateDoc(doc(db, 'users', currentUser.uid), { plan: subSelectedPlan });
-  currentUserData.plan = subSelectedPlan;
+  if (old === subSelectedPlanTab) { toast('Ez már az aktív csomagod.', 'info'); return; }
+  await updateDoc(doc(db, 'users', currentUser.uid), { plan: subSelectedPlanTab });
+  currentUserData.plan = subSelectedPlanTab;
   updatePlanDisplay();
   await refreshUsageStats();
-  closeManageSubscription();
-  toast(`Előfizetés módosítva: ${PLAN_LIMITS[subSelectedPlan].name}`, 'success');
+  updateSubscriptionTab();
+  toast(`Előfizetés módosítva: ${PLAN_LIMITS[subSelectedPlanTab].name}`, 'success');
 };
 
 // ============================================
 // TABS
 // ============================================
 window.switchTab = function (tab) {
-  if ((tab === 'admin' || tab === 'terms-admin') && currentUser?.email !== ADMIN_EMAIL) {
+  if ((tab === 'admin' || tab === 'terms-admin' || tab === 'homepage-admin') && currentUser?.email !== ADMIN_EMAIL) {
     toast('Nincs jogosultságod', 'error'); return;
   }
   document.querySelectorAll('.nav-item').forEach(n => n.classList.toggle('active', n.dataset.tab === tab));
@@ -1963,41 +1840,39 @@ window.switchTab = function (tab) {
   if (page) page.classList.remove('hidden');
   const titles = {
     dashboard: 'Dashboard', awb: 'AWB-k', factura: 'Számlák',
-    curier: 'Futár', companie: 'Cég', 'terms-admin': 'Termeni & Condiții', admin: 'Admin panel'
+    curier: 'Futár', companie: 'Cég', subscription: 'Manage Subscription',
+    'homepage-admin': 'Homepage', 'terms-admin': 'Termeni', admin: 'Admin'
   };
   document.getElementById('pageTitle').textContent = titles[tab] || 'Dashboard';
   document.getElementById('sidebar').classList.remove('open');
   if (tab === 'admin') loadAdminData();
   if (tab === 'terms-admin') document.getElementById('termsAdminText').value = globalTerms;
+  if (tab === 'subscription') updateSubscriptionTab();
+  if (tab === 'homepage-admin') fillHomepageAdmin();
 };
 
 window.toggleSidebar = function () { document.getElementById('sidebar').classList.toggle('open'); };
 
 // ============================================
-// AL-ACCOUNT
+// ACCOUNT MENU
 // ============================================
 window.toggleAccountMenu = function (e) {
   e.stopPropagation();
   const menu = document.getElementById('accountMenu');
   const btn = document.getElementById('sidebarUserBtn');
   const isOpen = !menu.classList.contains('open');
-  if (isOpen) {
-    renderAccountMenu();
-    menu.classList.add('open');
-    btn.classList.add('open');
-  } else {
-    menu.classList.remove('open');
-    btn.classList.remove('open');
-  }
+  if (isOpen) { renderAccountMenu(); menu.classList.add('open'); btn.classList.add('open'); }
+  else { menu.classList.remove('open'); btn.classList.remove('open'); }
+};
+window.closeAccountMenu = function () {
+  document.getElementById('accountMenu').classList.remove('open');
+  document.getElementById('sidebarUserBtn').classList.remove('open');
 };
 document.addEventListener('click', (e) => {
   const menu = document.getElementById('accountMenu');
   const btn = document.getElementById('sidebarUserBtn');
   if (!menu || !btn) return;
-  if (!menu.contains(e.target) && !btn.contains(e.target)) {
-    menu.classList.remove('open');
-    btn.classList.remove('open');
-  }
+  if (!menu.contains(e.target) && !btn.contains(e.target)) { menu.classList.remove('open'); btn.classList.remove('open'); }
 });
 
 function renderAccountMenu() {
@@ -2014,19 +1889,14 @@ function renderAccountMenu() {
 }
 
 window.selectAccount = async function (idx) {
-  if (idx === currentAccountIndex) {
-    document.getElementById('accountMenu').classList.remove('open');
-    document.getElementById('sidebarUserBtn').classList.remove('open');
-    return;
-  }
+  if (idx === currentAccountIndex) { closeAccountMenu(); return; }
   currentAccountIndex = idx;
   if (currentUserData) currentUserData.activeAccountIndex = idx;
   await persistAccounts();
   updateSidebarAccount();
   fillSettingsForm();
   refreshOrdersView();
-  document.getElementById('accountMenu').classList.remove('open');
-  document.getElementById('sidebarUserBtn').classList.remove('open');
+  closeAccountMenu();
   toast(`Átváltva: ${getActiveAccount().name}`, 'success');
 };
 
@@ -2045,8 +1915,7 @@ window.addSubAccount = async function () {
   updateSidebarAccount();
   fillSettingsForm();
   refreshOrdersView();
-  document.getElementById('accountMenu').classList.remove('open');
-  document.getElementById('sidebarUserBtn').classList.remove('open');
+  closeAccountMenu();
   toast('Új al-account hozzáadva', 'success');
   switchTab('companie');
 };
@@ -2158,7 +2027,52 @@ window.deleteCurrentAccount = async function () {
 };
 
 // ============================================
-// ADMIN - TERMS SAVE
+// HOMEPAGE ADMIN
+// ============================================
+function fillHomepageAdmin() {
+  document.getElementById('adminHeroImage').value = globalHomepage.heroImage || '';
+  document.getElementById('adminHeroTitle').value = globalHomepage.heroTitle || '';
+  document.getElementById('adminHeroSubtitle').value = globalHomepage.heroSubtitle || '';
+  document.getElementById('adminAboutTitle').value = globalHomepage.aboutTitle || '';
+  document.getElementById('adminAboutText').value = globalHomepage.aboutText || '';
+  document.getElementById('adminContactEmail').value = globalHomepage.contactEmail || '';
+  document.getElementById('adminContactPhone').value = globalHomepage.contactPhone || '';
+}
+window.saveHomepageAdmin = async function () {
+  if (currentUser?.email !== ADMIN_EMAIL) { toast('Nincs jogosultságod', 'error'); return; }
+  const data = {
+    heroImage: document.getElementById('adminHeroImage').value.trim(),
+    heroTitle: document.getElementById('adminHeroTitle').value.trim(),
+    heroSubtitle: document.getElementById('adminHeroSubtitle').value.trim(),
+    aboutTitle: document.getElementById('adminAboutTitle').value.trim(),
+    aboutText: document.getElementById('adminAboutText').value.trim(),
+    contactEmail: document.getElementById('adminContactEmail').value.trim(),
+    contactPhone: document.getElementById('adminContactPhone').value.trim(),
+    updatedAt: new Date().toISOString(),
+    updatedBy: currentUser.email
+  };
+  try {
+    await setDoc(doc(db, 'settings', 'homepage'), data);
+    globalHomepage = { ...DEFAULT_HOMEPAGE, ...data };
+    applyGlobalSettings();
+    toast('Homepage mentve', 'success');
+  } catch (e) { toast('Hiba: ' + e.message, 'error'); }
+};
+window.resetHomepageAdmin = function () {
+  if (!confirm('Visszaállítod az alapértelmezettre?')) return;
+  fillHomepageAdmin();
+  document.getElementById('adminHeroImage').value = '';
+  document.getElementById('adminHeroTitle').value = DEFAULT_HOMEPAGE.heroTitle;
+  document.getElementById('adminHeroSubtitle').value = DEFAULT_HOMEPAGE.heroSubtitle;
+  document.getElementById('adminAboutTitle').value = DEFAULT_HOMEPAGE.aboutTitle;
+  document.getElementById('adminAboutText').value = DEFAULT_HOMEPAGE.aboutText;
+  document.getElementById('adminContactEmail').value = DEFAULT_HOMEPAGE.contactEmail;
+  document.getElementById('adminContactPhone').value = DEFAULT_HOMEPAGE.contactPhone;
+  toast('Visszaállítva (még nem mentve)', 'info');
+};
+
+// ============================================
+// TERMS ADMIN
 // ============================================
 window.saveTermsAdmin = async function () {
   if (currentUser?.email !== ADMIN_EMAIL) { toast('Nincs jogosultságod', 'error'); return; }
@@ -2169,9 +2083,7 @@ window.saveTermsAdmin = async function () {
     globalTerms = text;
     document.querySelectorAll('.terms-box').forEach(el => { el.textContent = globalTerms; });
     toast('Termeni și Condiții mentve', 'success');
-  } catch (e) {
-    toast('Hiba: ' + e.message, 'error');
-  }
+  } catch (e) { toast('Hiba: ' + e.message, 'error'); }
 };
 window.resetTermsAdmin = function () {
   document.getElementById('termsAdminText').value = DEFAULT_TERMS;
@@ -2357,7 +2269,7 @@ window.toggleSelectAllFactura = function (cb) {
 };
 
 // ============================================
-// AWB GENERATION
+// AWB GENERATION — 5-ös batch
 // ============================================
 window.generateSelectedAWB = async function () {
   const s = getSelectedAWB();
@@ -2372,7 +2284,6 @@ window.generateSelectedAWB = async function () {
     toast(t('limit_text').replace('{type}', 'AWB').replace('{plan}', planName), 'error');
     return;
   }
-
   await buildAWBPreview();
 };
 
@@ -2447,17 +2358,12 @@ async function buildAWBPreview() {
 
   document.getElementById(progressId).className = 'progress-box done';
   document.getElementById(progressId).innerHTML = `✓ Kész — ${ok} sikeres, ${err} hiba`;
-
-  if (ok > 0) {
-    await incrementUsage('awb', ok);
-    await refreshUsageStats();
-  }
-
+  if (ok > 0) { await incrementUsage('awb', ok); await refreshUsageStats(); }
   toast(`${ok} AWB kész, ${err} hiba`, err ? 'warning' : 'success');
 }
 
 // ============================================
-// FACTURA GENERATION
+// FACTURA GENERATION — 5-ös batch
 // ============================================
 window.generateSelectedFactura = async function () {
   const s = getSelectedFactura();
@@ -2471,7 +2377,6 @@ window.generateSelectedFactura = async function () {
     toast(t('limit_text').replace('{type}', 'számla').replace('{plan}', planName), 'error');
     return;
   }
-
   await buildFacturaPreview();
 };
 
@@ -2540,7 +2445,7 @@ async function buildFacturaPreview() {
         } else {
           resultsEl.insertAdjacentHTML('beforeend', `
             <div style="margin-bottom:16px; padding:16px; background:#FEF2F2; color:#EF4444; border-radius:12px;">
-              <b>#${val.order.id}</b> — ${escapeHtml(val.order.name)}<br><small>Az FGO nem adott PDF linket. Számlaszám: <b>${sz}</b></small>
+              <b>#${val.order.id}</b> — ${escapeHtml(val.order.name)}<br><small>Számlaszám: <b>${sz}</b> (nincs PDF)</small>
             </div>
           `);
         }
@@ -2561,12 +2466,7 @@ async function buildFacturaPreview() {
 
   document.getElementById(progressId).className = 'progress-box done';
   document.getElementById(progressId).innerHTML = `✓ Kész — ${ok} számla sikeres, ${err} hiba`;
-
-  if (ok > 0) {
-    await incrementUsage('factura', ok);
-    await refreshUsageStats();
-  }
-
+  if (ok > 0) { await incrementUsage('factura', ok); await refreshUsageStats(); }
   toast(`${ok} számla kész, ${err} hiba`, err ? 'warning' : 'success');
 }
 
@@ -2578,7 +2478,8 @@ const cmdItems = [
   { label: 'AWB-k', tab: 'awb' },
   { label: 'Számlák', tab: 'factura' },
   { label: 'Futár', tab: 'curier' },
-  { label: 'Cég', tab: 'companie' }
+  { label: 'Cég', tab: 'companie' },
+  { label: 'Manage Subscription', tab: 'subscription' }
 ];
 window.openCmdK = function () {
   document.getElementById('cmdOverlay').classList.add('open');
@@ -2603,7 +2504,7 @@ document.addEventListener('keydown', (e) => {
     if (document.getElementById('cmdOverlay').classList.contains('open')) closeCmdK();
     else openCmdK();
   }
-  if (e.key === 'Escape') { closeCmdK(); closeTermsModal(); closeManageSubscription(); }
+  if (e.key === 'Escape') { closeCmdK(); closeTermsModal(); closeContact(); closeAccountMenu(); }
 });
 
 // ============================================
@@ -2621,18 +2522,19 @@ window.loadAdminData = async function () {
       const planName = PLAN_LIMITS[u.plan || 'standard']?.name || 'Standard';
       return `<div style="padding:12px; border:1px solid var(--border); border-radius:8px; margin-bottom:8px;">
         <div style="font-weight:600;">${u.email || '–'}</div>
-        <div style="font-size:12px; color:var(--fg-muted); margin-top:2px;">Plan: <b>${planName}</b> · Accountok: ${(u.accounts||[]).length} · UID: ${d.id.slice(0,8)}...</div>
+        <div style="font-size:12px; color:var(--fg-muted); margin-top:2px;">Plan: <b>${planName}</b> · Accountok: ${(u.accounts||[]).length}</div>
       </div>`;
     }).join('');
   } catch (e) { list.innerHTML = '<p style="color:var(--danger);">Hiba: ' + e.message + '</p>'; }
-}
+};
 
 // ============================================
 // INIT
 // ============================================
+document.getElementById('footerYear').textContent = new Date().getFullYear();
 applyTranslations();
-loadGlobalTerms();
-console.log('Zen3Hub ready · plan:', currentUserData?.plan || 'n/a');
+loadGlobalSettings();
+console.log('%c✓ Eauto betöltve', 'color: #10B981; font-weight: bold;');
 </script>
 </body>
 </html>
