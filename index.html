@@ -83,6 +83,10 @@
   .btn.secondary:hover { background: var(--bg-soft); border-color: var(--border-strong); }
   .btn.ghost { background: transparent; color: var(--fg-muted); border-color: transparent; }
   .btn.ghost:hover { background: var(--bg-soft); color: var(--fg); }
+  .btn.danger { background: var(--danger); color: #fff; }
+  .btn.danger:hover { background: #DC2626; transform: translateY(-1px); box-shadow: 0 10px 30px rgba(239,68,68,0.25); }
+  .btn.success { background: var(--success); color: #fff; }
+  .btn.success:hover { background: #059669; transform: translateY(-1px); box-shadow: 0 10px 30px rgba(16,185,129,0.25); }
   .btn-icon {
     width: 36px; height: 36px; padding: 0;
     border-radius: var(--radius-btn);
@@ -93,6 +97,7 @@
   .btn-icon:hover { background: var(--bg-soft); color: var(--fg); }
   .btn-icon svg { width: 16px; height: 16px; }
 
+  /* HOMEPAGE */
   #homePage { display: block; min-height: 100vh; }
   #homePage.hidden { display: none; }
   .home-nav {
@@ -107,7 +112,9 @@
     background: linear-gradient(135deg, var(--primary), #8B5CF6);
     color: #fff; display: inline-flex; align-items: center; justify-content: center;
     font-size: 15px; font-weight: 800;
+    overflow: hidden;
   }
+  .brand-logo-icon img { width: 100%; height: 100%; object-fit: cover; display: block; }
   .home-nav-links { display: flex; align-items: center; gap: 4px; margin-left: 40px; flex: 1; }
   .home-nav-links a { padding: 8px 12px; border-radius: var(--radius-btn); font-size: 13.5px; font-weight: 500; color: var(--fg-muted); transition: all 0.15s; cursor: pointer; }
   .home-nav-links a:hover { background: var(--bg-soft); color: var(--fg); }
@@ -176,6 +183,7 @@
   .footer-lang-switcher button:hover { color: #fff; }
   .footer-lang-switcher button.active { background: var(--primary); color: #fff; }
 
+  /* AUTH */
   #authScreen { min-height: 100vh; display: none; align-items: center; justify-content: center; padding: 24px; background: var(--bg-soft); position: relative; }
   #authScreen.show { display: flex; }
   .auth-back-home { position: absolute; top: 20px; left: 24px; display: inline-flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 500; color: var(--fg-muted); cursor: pointer; padding: 8px 12px; border-radius: var(--radius-btn); transition: all 0.15s; }
@@ -183,7 +191,8 @@
   .auth-back-home svg { width: 14px; height: 14px; }
   .auth-card { width: 100%; max-width: 440px; background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius-card); padding: 40px 32px; box-shadow: var(--shadow-card); }
   .auth-logo { display: flex; align-items: center; justify-content: center; gap: 10px; font-size: 22px; font-weight: 800; letter-spacing: -0.03em; margin-bottom: 6px; }
-  .auth-logo-icon { width: 30px; height: 30px; border-radius: 8px; background: linear-gradient(135deg, var(--primary), #8B5CF6); color: #fff; display: inline-flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 800; }
+  .auth-logo-icon { width: 30px; height: 30px; border-radius: 8px; background: linear-gradient(135deg, var(--primary), #8B5CF6); color: #fff; display: inline-flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 800; overflow: hidden; }
+  .auth-logo-icon img { width: 100%; height: 100%; object-fit: cover; display: block; }
   .auth-sub { text-align: center; font-size: 13px; color: var(--fg-muted); margin-bottom: 24px; }
   .auth-title { font-size: 20px; font-weight: 600; letter-spacing: -0.01em; margin-bottom: 4px; }
   .auth-desc { font-size: 13px; color: var(--fg-muted); margin-bottom: 24px; }
@@ -233,6 +242,7 @@
   .beta-banner { padding: 12px 14px; background: var(--warning-soft); border: 1px solid rgba(245,158,11,0.3); border-radius: var(--radius-btn); font-size: 12.5px; color: #92400E; margin-bottom: 16px; display: flex; gap: 10px; align-items: flex-start; }
   .beta-banner svg { width: 16px; height: 16px; flex-shrink: 0; margin-top: 1px; }
 
+  /* APP */
   #app { display: none; min-height: 100vh; }
   #app.show { display: flex; }
   .sidebar { width: 240px; min-height: 100vh; background: var(--sidebar); color: var(--sidebar-fg); display: flex; flex-direction: column; position: fixed; top: 0; left: 0; z-index: 100; transition: transform 0.3s var(--ease); }
@@ -332,6 +342,50 @@
   .filters .input { max-width: 280px; }
   .filters-spacer { flex: 1; }
 
+  /* AWB date bar */
+  .awb-date-bar {
+    display: flex; align-items: center; gap: 12px;
+    padding: 14px 20px;
+    background: var(--primary-soft);
+    border-bottom: 1px solid var(--border);
+    flex-wrap: wrap;
+  }
+  .awb-date-label {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 13px; font-weight: 500;
+    color: var(--primary); white-space: nowrap;
+  }
+  .awb-date-input { max-width: 180px; background: var(--bg); font-weight: 600; color: var(--fg); }
+  .awb-date-quick { display: flex; gap: 6px; margin-left: auto; }
+  .awb-quick-btn {
+    padding: 6px 12px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    color: var(--fg-muted);
+    font-size: 12px; font-weight: 500;
+    cursor: pointer; transition: all 0.15s;
+  }
+  .awb-quick-btn:hover { border-color: var(--primary); color: var(--primary); }
+  .awb-quick-btn.active { background: var(--primary); border-color: var(--primary); color: #fff; }
+
+  /* Courier select */
+  .courier-select-bar {
+    display: flex; align-items: center; gap: 12px;
+    padding: 14px 20px;
+    background: var(--bg-soft);
+    border-bottom: 1px solid var(--border);
+    flex-wrap: wrap;
+  }
+  .courier-select-bar label {
+    font-size: 13px; font-weight: 500;
+    color: var(--fg); white-space: nowrap;
+    display: inline-flex; align-items: center; gap: 6px;
+  }
+  .courier-select-bar select {
+    min-width: 200px;
+  }
+
   .empty { padding: 60px 24px; text-align: center; display: flex; flex-direction: column; align-items: center; }
   .empty-icon { width: 56px; height: 56px; border-radius: 50%; background: var(--bg-soft); color: var(--fg-dim); display: flex; align-items: center; justify-content: center; margin-bottom: 16px; }
   .empty-icon svg { width: 24px; height: 24px; }
@@ -403,6 +457,32 @@
   .auth-step { display: none; }
   .auth-step.active { display: block; }
 
+  #cancelledBanner.show { display: block !important; }
+
+  /* LOGOUT ANIMÁCIÓ */
+  #logoutOverlay {
+    position: fixed; inset: 0;
+    background: #0F172A;
+    z-index: 9999;
+    display: flex; align-items: center; justify-content: center;
+    opacity: 0;
+    transition: opacity 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+    pointer-events: none;
+  }
+  #logoutOverlay.show { opacity: 1; pointer-events: auto; }
+  #logoutOverlay.hide { opacity: 0; transition: opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1); }
+  .logout-content { text-align: center; color: #fff; transform: scale(0.9); opacity: 0; transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.6s; }
+  #logoutOverlay.show .logout-content { transform: scale(1); opacity: 1; transition-delay: 0.15s; }
+  .logout-logo { display: flex; align-items: center; justify-content: center; gap: 12px; font-size: 32px; font-weight: 800; letter-spacing: -0.03em; margin-bottom: 24px; }
+  .logout-logo img { width: 48px; height: 48px; object-fit: contain; animation: logoutLogoPulse 1.4s ease-in-out infinite; }
+  @keyframes logoutLogoPulse { 0%, 100% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.08); opacity: 0.85; } }
+  .logout-text { font-size: 15px; color: #94A3B8; letter-spacing: 0.2em; text-transform: uppercase; font-weight: 500; margin-bottom: 20px; }
+  .logout-dots { display: inline-flex; gap: 6px; align-items: center; justify-content: center; }
+  .logout-dots span { width: 6px; height: 6px; border-radius: 50%; background: #6366F1; display: inline-block; animation: logoutDot 1.4s ease-in-out infinite; }
+  .logout-dots span:nth-child(2) { animation-delay: 0.15s; }
+  .logout-dots span:nth-child(3) { animation-delay: 0.3s; }
+  @keyframes logoutDot { 0%, 60%, 100% { transform: translateY(0); opacity: 0.4; } 30% { transform: translateY(-6px); opacity: 1; } }
+
   @media (max-width: 900px) {
     .stats-grid { grid-template-columns: repeat(2, 1fr); }
     .home-hero { grid-template-columns: 1fr; gap: 40px; padding: 40px 24px; }
@@ -427,6 +507,9 @@
     .home-nav-actions .btn { display: none; }
     .home-footer-inner { grid-template-columns: 1fr; }
     .account-menu { left: 8px; right: 8px; width: auto; }
+    .awb-date-bar { padding: 12px 16px; gap: 8px; }
+    .awb-date-quick { margin-left: 0; width: 100%; }
+    .awb-quick-btn { flex: 1; }
   }
   .icon-sun, .icon-moon { transition: transform 0.2s, opacity 0.2s; }
   [data-theme="dark"] .icon-sun { display: none; }
@@ -440,7 +523,7 @@
 <div id="homePage">
   <nav class="home-nav">
     <div class="brand-logo">
-      <span class="brand-logo-icon">E</span>
+      <span class="brand-logo-icon"><img src="https://i.imgur.com/SqIdPLa.png" alt="Eauto" /></span>
       <span>Eauto</span>
     </div>
     <div class="home-nav-links">
@@ -460,11 +543,7 @@
 
   <section class="home-hero">
     <div class="home-hero-image" id="heroImageWrap">
-      <div class="placeholder">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-        <div data-i18n="hero_image_placeholder">Hero kép helye</div>
-        <small data-i18n="hero_image_hint">Admin tudja cserélni</small>
-      </div>
+      <img src="https://i.imgur.com/MnGstII.png" alt="Eauto hero" />
     </div>
     <div class="home-hero-content">
       <h1 id="heroTitle" data-i18n="hero_title">Platformă completă pentru facturare și AWB</h1>
@@ -543,14 +622,14 @@
   <section class="home-features" id="about">
     <div class="card" style="padding:40px;">
       <h2 style="font-size:28px; font-weight:800; letter-spacing:-0.02em; margin-bottom:16px;" id="aboutTitle" data-i18n="about_title">Despre noi</h2>
-      <p style="font-size:15px; line-height:1.7; color:var(--fg-muted);" id="aboutText" data-i18n="about_text">Eauto este o platformă românească de logistică, creată pentru a simplifica viața antreprenorilor online. Gestionăm AWB-uri, facturi și integrarea cu curierii — totul dintr-un singur loc.</p>
+      <p style="font-size:15px; line-height:1.7; color:var(--fg-muted);" id="aboutText" data-i18n="about_text">Eauto este o platformă românească de logistică, creată pentru a simplifica viața antreprenorilor online.</p>
     </div>
   </section>
 
   <footer class="home-footer" id="contact">
     <div class="home-footer-inner">
       <div class="home-footer-brand">
-        <div class="brand-logo"><span class="brand-logo-icon">E</span><span>Eauto</span></div>
+        <div class="brand-logo"><span class="brand-logo-icon"><img src="https://i.imgur.com/SqIdPLa.png" alt="Eauto" /></span><span>Eauto</span></div>
         <p data-i18n="footer_brand_desc">Platformă completă pentru facturare și AWB în România. Operat de Milan web S.R.L.</p>
       </div>
       <div class="home-footer-col">
@@ -591,7 +670,7 @@
 
 <div class="mobile-menu" id="mobileMenu">
   <div class="mobile-menu-header">
-    <div class="brand-logo"><span class="brand-logo-icon">E</span><span>Eauto</span></div>
+    <div class="brand-logo"><span class="brand-logo-icon"><img src="https://i.imgur.com/SqIdPLa.png" alt="Eauto" /></span><span>Eauto</span></div>
     <button class="mobile-menu-close" onclick="closeMobileMenu()">✕</button>
   </div>
   <div class="mobile-menu-list">
@@ -615,7 +694,7 @@
     <span data-i18n="back_home">Înapoi la pagina principală</span>
   </div>
   <div class="auth-card">
-    <div class="auth-logo"><span class="auth-logo-icon">E</span><span>Eauto</span></div>
+    <div class="auth-logo"><span class="auth-logo-icon"><img src="https://i.imgur.com/SqIdPLa.png" alt="Eauto" /></span><span>Eauto</span></div>
     <div class="auth-sub" data-i18n="auth_sub">Platformă Logistică</div>
 
     <div class="auth-step active" id="step-login">
@@ -728,13 +807,14 @@
 
 <div id="app">
   <aside class="sidebar" id="sidebar">
-    <div class="sidebar-logo"><span class="brand-logo-icon">E</span><span>Eauto</span></div>
+    <div class="sidebar-logo"><span class="brand-logo-icon"><img src="https://i.imgur.com/SqIdPLa.png" alt="Eauto" /></span><span>Eauto</span></div>
     <nav class="sidebar-nav">
       <button class="nav-item active" data-tab="dashboard" onclick="switchTab('dashboard')"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg><span data-i18n="nav_dashboard">Dashboard</span></button>
       <button class="nav-item" data-tab="awb" onclick="switchTab('awb')"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m7.5 4.27 9 5.15"/><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/></svg><span data-i18n="nav_awb">AWB-k</span></button>
       <button class="nav-item" data-tab="factura" onclick="switchTab('factura')"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg><span data-i18n="nav_factura">Számlák</span></button>
       <div class="nav-section" data-i18n="nav_settings">Beállítások</div>
-      <button class="nav-item" data-tab="curier" onclick="switchTab('curier')"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"/><circle cx="17" cy="18" r="2"/><circle cx="7" cy="18" r="2"/></svg><span data-i18n="nav_curier">Futár</span></button>
+      <button class="nav-item" data-tab="curier" onclick="switchTab('curier')"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"/><circle cx="17" cy="18" r="2"/><circle cx="7" cy="18" r="2"/></svg><span data-i18n="nav_curier">Curier</span></button>
+      <button class="nav-item" data-tab="factura-settings" onclick="switchTab('factura-settings')"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="9" y1="9" x2="15" y2="9"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="13" y2="17"/></svg><span data-i18n="nav_factura_settings">Facturare</span></button>
       <button class="nav-item" data-tab="companie" onclick="switchTab('companie')"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M5 21V7l8-4v18"/></svg><span data-i18n="nav_companie">Cég</span></button>
       <button class="nav-item" data-tab="subscription" onclick="switchTab('subscription')"><svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg><span data-i18n="manage_subscription">Manage Subscription</span></button>
       <div id="adminNavWrap" style="display:none;">
@@ -805,13 +885,44 @@
             <button class="btn secondary sm" onclick="clearOrders()" data-i18n="clear">Törlés</button>
             <button class="btn sm" onclick="generateSelectedAWB()" data-i18n="generate_awb">AWB generálása</button>
           </div>
+
+          <div class="awb-date-bar">
+            <div class="awb-date-label">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+              <span data-i18n="awb_pickup_date">Csomag felvételi dátuma:</span>
+            </div>
+            <input type="date" class="input sm awb-date-input" id="awbPickupDate" onchange="updateAwbDateQuick()" />
+            <div class="awb-date-quick">
+              <button class="awb-quick-btn" onclick="setAwbDate('today')" data-i18n="date_today">Ma</button>
+              <button class="awb-quick-btn" onclick="setAwbDate('tomorrow')" data-i18n="date_tomorrow">Holnap</button>
+              <button class="awb-quick-btn" onclick="setAwbDate('week')" data-i18n="date_next_week">+1 hét</button>
+            </div>
+          </div>
+
+          <div class="courier-select-bar">
+            <label>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;"><path d="M14 18V6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v11a1 1 0 0 0 1 1h2"/><circle cx="17" cy="18" r="2"/><circle cx="7" cy="18" r="2"/></svg>
+              <span data-i18n="awb_courier_select">Futár kiválasztása:</span>
+            </label>
+            <select class="input sm" id="awbCourierSelect">
+              <option value="dpd">DPD</option>
+              <option value="dpd-box">DPD Box</option>
+              <option value="fancourier">FanCourier</option>
+              <option value="fanbox">Fanbox</option>
+              <option value="cargus">Cargus</option>
+              <option value="sameday">SameDay</option>
+              <option value="sameday-box">SameDay Box</option>
+              <option value="gls">GLS</option>
+            </select>
+          </div>
+
           <div class="table-wrap"><table class="tbl">
             <thead><tr><th style="width:40px;"><input type="checkbox" id="selectAllAWB" onchange="toggleSelectAll(this)" style="accent-color:var(--primary);"></th><th data-i18n="col_order">Rendelés</th><th data-i18n="col_customer">Ügyfél</th><th data-i18n="col_address">Cím</th><th data-i18n="col_product">Termék</th><th data-i18n="col_payment">Fizetés</th><th style="text-align:right;" data-i18n="col_amount">Összeg</th></tr></thead>
             <tbody id="ordersList"></tbody>
           </table></div>
         </div>
         <div class="card" style="margin-top:16px;">
-          <div class="card-header"><div><div class="card-title" data-i18n="awb_preview">AWB előnézet</div><div class="card-subtitle">DPD · max 5 egyszerre</div></div></div>
+          <div class="card-header"><div><div class="card-title" data-i18n="awb_preview">AWB előnézet</div><div class="card-subtitle">max 5 egyszerre</div></div></div>
           <div class="card-body"><div class="awb-preview" id="awbPreview"></div></div>
         </div>
       </div>
@@ -831,21 +942,81 @@
           </table></div>
         </div>
         <div class="card" style="margin-top:16px;">
-          <div class="card-header"><div><div class="card-title" data-i18n="factura_preview">Számla előnézet</div><div class="card-subtitle">FGO · max 5 egyszerre</div></div></div>
+          <div class="card-header"><div><div class="card-title" data-i18n="factura_preview">Számla előnézet</div><div class="card-subtitle">max 5 egyszerre</div></div></div>
           <div class="card-body"><div id="facturaPreview"></div></div>
         </div>
       </div>
 
       <div class="tab-page hidden" id="page-curier">
         <div class="card" style="max-width:720px;">
-          <div class="card-header"><div><div class="card-title" data-i18n="curier_title">Futár beállítások</div><div class="card-subtitle">DPD</div></div></div>
+          <div class="card-header"><div><div class="card-title" data-i18n="curier_title">Curier beállítások</div><div class="card-subtitle" data-i18n="curier_select_first">Válaszd ki melyik curier-hez adod meg az adataidat</div></div></div>
           <div class="card-body">
-            <div class="form-grid-2">
-              <div class="form-full"><label class="label">DPD user</label><input class="input" id="dpdUser" /></div>
-              <div class="form-full"><label class="label">DPD password</label><input class="input" id="dpdPass" type="password" /></div>
-              <div class="form-full"><label class="label">DPD ClientID</label><input class="input" id="dpdClientId" /></div>
+            <div class="form-full" style="margin-bottom:24px;">
+              <label class="label" data-i18n="courier_provider">Curier szolgáltató</label>
+              <select class="input" id="courierProviderSelect" onchange="onCourierProviderChange()">
+                <option value="">— Válassz —</option>
+                <option value="dpd">DPD</option>
+                <option value="dpd-box">DPD Box</option>
+                <option value="fancourier">FanCourier</option>
+                <option value="fanbox">Fanbox</option>
+                <option value="cargus">Cargus</option>
+                <option value="sameday">SameDay</option>
+                <option value="sameday-box">SameDay Box</option>
+                <option value="gls">GLS</option>
+              </select>
             </div>
-            <div style="margin-top:20px;"><button class="btn" onclick="saveDpdConfig()" data-i18n="save">Mentés</button></div>
+            <div id="courierConfigFields" style="display:none;">
+              <div class="form-grid-2">
+                <div class="form-full"><label class="label" data-i18n="courier_user">Felhasználó / Ügyfélkód</label><input class="input" id="courierUser" /></div>
+                <div class="form-full"><label class="label" data-i18n="courier_password">Jelszó / API kulcs</label><input class="input" id="courierPassword" type="password" /></div>
+                <div class="form-full"><label class="label">Client ID</label><input class="input" id="courierClientId" /></div>
+              </div>
+              <div style="margin-top:20px; display:flex; gap:8px;">
+                <button class="btn" onclick="saveCourierConfig()" data-i18n="save">Mentés</button>
+                <button class="btn secondary" onclick="deleteCourierConfig()" data-i18n="delete">Törlés</button>
+              </div>
+              <div style="margin-top:16px; padding:12px 14px; background:var(--success-soft); border-radius:8px; font-size:12.5px; color:#065F46; display:none;" id="courierSavedIndicator">
+                ✓ <span data-i18n="courier_config_saved">Konfiguráció elmentve</span>
+              </div>
+            </div>
+            <div id="courierConfigList" style="margin-top:24px;"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tab-page hidden" id="page-factura-settings">
+        <div class="card" style="max-width:720px;">
+          <div class="card-header"><div><div class="card-title" data-i18n="factura_settings_title">Számlázó beállítások</div><div class="card-subtitle" data-i18n="factura_select_first">Válaszd ki melyik számlázóhoz adod meg az adataidat</div></div></div>
+          <div class="card-body">
+            <div class="form-full" style="margin-bottom:24px;">
+              <label class="label" data-i18n="factura_provider">Számlázó szolgáltató</label>
+              <select class="input" id="facturaProviderSelect" onchange="onFacturaProviderChange()">
+                <option value="">— Válassz —</option>
+                <option value="fgo">FGO.ro</option>
+                <option value="smartbill">SmartBill.ro</option>
+                <option value="oblio">Oblio.eu</option>
+                <option value="facturis-online">Facturis-Online.ro</option>
+                <option value="fiscalio">Fiscalio.ro</option>
+                <option value="facturescu">Facturescu.com</option>
+                <option value="efactura-direct">eFactura Direct (ANAF SPV)</option>
+              </select>
+            </div>
+            <div id="facturaConfigFields" style="display:none;">
+              <div class="form-grid-2">
+                <div class="form-full"><label class="label">API Kulcs / Cheie Privată</label><input class="input" id="facturaApiKey" type="password" /></div>
+                <div class="form-full"><label class="label">CUI / Cod Unic</label><input class="input" id="facturaCui" /></div>
+                <div class="form-full"><label class="label">Serie</label><input class="input" id="facturaSerie" /></div>
+                <div class="form-full"><label class="label">Platforma URL</label><input class="input" id="facturaPlatformUrl" /></div>
+              </div>
+              <div style="margin-top:20px; display:flex; gap:8px;">
+                <button class="btn" onclick="saveFacturaConfig()" data-i18n="save">Mentés</button>
+                <button class="btn secondary" onclick="deleteFacturaConfig()" data-i18n="delete">Törlés</button>
+              </div>
+              <div style="margin-top:16px; padding:12px 14px; background:var(--success-soft); border-radius:8px; font-size:12.5px; color:#065F46; display:none;" id="facturaSavedIndicator">
+                ✓ <span data-i18n="factura_config_saved">Konfiguráció elmentve</span>
+              </div>
+            </div>
+            <div id="facturaConfigList" style="margin-top:24px;"></div>
           </div>
         </div>
       </div>
@@ -880,18 +1051,6 @@
             <div style="margin-top:20px;"><button class="btn" onclick="saveShopConfig()" data-i18n="save">Mentés</button></div>
           </div>
         </div>
-        <div class="card" style="max-width:720px; margin-top:16px;">
-          <div class="card-header"><div><div class="card-title">FGO eFactura</div></div></div>
-          <div class="card-body">
-            <div class="form-grid-2">
-              <div><label class="label">Cheie Privată</label><input class="input" id="fgoKey" type="password" /></div>
-              <div><label class="label">CUI</label><input class="input" id="fgoCui" /></div>
-              <div><label class="label">Serie</label><input class="input" id="fgoSerie" /></div>
-              <div><label class="label">Platforma URL</label><input class="input" id="fgoPlatform" /></div>
-            </div>
-            <div style="margin-top:20px;"><button class="btn" onclick="saveFgoConfig()" data-i18n="save">Mentés</button></div>
-          </div>
-        </div>
       </div>
 
       <div class="tab-page hidden" id="page-subscription">
@@ -917,6 +1076,23 @@
             <div style="margin-top:20px;"><button class="btn" onclick="saveSubscriptionTab()" data-i18n="change_plan">Előfizetés módosítása</button></div>
             <div class="form-section-title" style="margin-top:32px;">Termeni și Condiții</div>
             <div class="terms-box" id="subTermsBoxTab">—</div>
+
+            <div id="cancelSection" style="margin-top:32px; padding-top:24px; border-top:1px solid var(--border);">
+              <div class="form-section-title" data-i18n="cancel_subscription_title">Előfizetés lemondása</div>
+              <p style="font-size:13px; color:var(--fg-muted); margin-bottom:16px; line-height:1.6;" data-i18n="cancel_subscription_desc">
+                Ha lemondod az előfizetésed, az aktív marad a hónap végéig. Nem újul meg automatikusan.
+              </p>
+              <div id="cancelledBanner" style="display:none; padding:14px 16px; background:var(--warning-soft); border:1px solid rgba(245,158,11,0.3); border-radius:12px; margin-bottom:16px; font-size:13px; color:#92400E;">
+                <b>⚠️ <span data-i18n="subscription_cancelled">Előfizetés lemondva</span></b><br>
+                <span data-i18n="subscription_active_until">Aktív még:</span> <b id="cancelledDaysLeft">—</b> <span data-i18n="days">nap</span>
+              </div>
+              <button class="btn danger" id="cancelSubBtn" onclick="openCancelModal()" data-i18n="cancel_subscription_btn">
+                Előfizetés lemondása
+              </button>
+              <button class="btn success" id="resumeSubBtn" onclick="resumeSubscription()" style="display:none;" data-i18n="resume_subscription_btn">
+                Előfizetés visszavonása
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -993,6 +1169,29 @@
   </div>
 </div>
 
+<div class="modal-overlay" id="cancelModalOverlay" onclick="if(event.target===this) closeCancelModal()">
+  <div class="modal" style="max-width:440px;">
+    <div class="modal-header">
+      <div class="modal-title" data-i18n="cancel_confirm_title">Biztosan lemondod?</div>
+      <button class="sheet-close" onclick="closeCancelModal()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px;"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div class="modal-body">
+      <p style="font-size:14px; line-height:1.7; color:var(--fg-muted); margin-bottom:12px;" data-i18n="cancel_confirm_text">
+        Az előfizetésed aktív marad a hónap végéig, de nem újul meg automatikusan. Bármikor visszavonhatod.
+      </p>
+      <p style="font-size:13px; color:var(--fg-muted);" data-i18n="cancel_confirm_note">
+        Ha újra elő akarsz fizetni, egyszerűen válaszd ki újra a csomagot.
+      </p>
+    </div>
+    <div class="modal-footer">
+      <button class="btn secondary" onclick="closeCancelModal()" data-i18n="cancel">Mégse</button>
+      <button class="btn danger" onclick="confirmCancelSubscription()" data-i18n="cancel_confirm_btn">Igen, lemondom</button>
+    </div>
+  </div>
+</div>
+
 <div class="toast-wrap" id="toastWrap"></div>
 
 <div class="cmd-overlay" id="cmdOverlay" onclick="if(event.target===this) closeCmdK()">
@@ -1028,7 +1227,6 @@
     document.addEventListener('touchend', clear, { once: true });
     document.addEventListener('touchmove', clear, { once: true });
   }, { passive: false });
-  console.log('%cEauto', 'color: #6366F1; font-size: 20px; font-weight: bold;');
 })();
 </script>
 
@@ -1066,13 +1264,33 @@ const ANPC_URL = 'https://anpc.ro/ce-este-sal/';
 const BATCH_SIZE = 5;
 const BATCH_DELAY_MS = 1500;
 
-// ============================================
 // CSOMAG LIMITEK — heti
-// ============================================
 const PLAN_LIMITS = {
   standard: { awb: 50, factura: 50, price: 50, name: 'Standard' },
   premium:  { awb: 200, factura: 200, price: 200, name: 'Premium' },
   elite:    { awb: Infinity, factura: Infinity, price: 400, name: 'Elite' }
+};
+
+// COURIER ÉS FACTURA SZOLGÁLTATÓK
+const COURIERS = {
+  dpd: { name: 'DPD' },
+  'dpd-box': { name: 'DPD Box' },
+  fancourier: { name: 'FanCourier' },
+  fanbox: { name: 'Fanbox' },
+  cargus: { name: 'Cargus' },
+  sameday: { name: 'SameDay' },
+  'sameday-box': { name: 'SameDay Box' },
+  gls: { name: 'GLS' }
+};
+
+const FACTURA_PROVIDERS = {
+  fgo: { name: 'FGO.ro' },
+  smartbill: { name: 'SmartBill.ro' },
+  oblio: { name: 'Oblio.eu' },
+  'facturis-online': { name: 'Facturis-Online.ro' },
+  fiscalio: { name: 'Fiscalio.ro' },
+  facturescu: { name: 'Facturescu.com' },
+  'efactura-direct': { name: 'eFactura Direct (ANAF SPV)' }
 };
 
 // ============================================
@@ -1101,8 +1319,6 @@ const TRANSLATIONS = {
     hero_title: 'Platformă completă pentru facturare și AWB',
     hero_subtitle: 'Generează AWB-uri și facturi în câteva secunde. Integrare cu DPD, WooCommerce și FGO eFactura.',
     hero_cta: 'Începe gratuit 7 zile', hero_cta2: 'Vezi prețuri',
-    hero_image_placeholder: 'Loc pentru imaginea hero',
-    hero_image_hint: 'Adminul o poate schimba',
     feat_awb_title: 'AWB automat', feat_awb_desc: 'Generează AWB-uri DPD direct din comenzile WooCommerce.',
     feat_factura_title: 'Facturi e-Factura', feat_factura_desc: 'Emite facturi și trimite-le automat în SPV prin FGO.',
     feat_fast_title: 'Rapid și simplu', feat_fast_desc: '5 secunde per AWB. Interfață modernă, fără training.',
@@ -1115,16 +1331,16 @@ const TRANSLATIONS = {
     pricing_elite_f1: 'AWB nelimitat', pricing_elite_f2: 'Facturi nelimitate',
     pricing_elite_f3: 'Toate integrările', pricing_elite_f4: 'Suport dedicat 24/7',
     pricing_popular: 'Popular', pricing_cta: 'Începe gratuit',
-    about_title: 'Despre noi',
-    about_text: 'Eauto este o platformă românească de logistică, creată pentru a simplifica viața antreprenorilor online.',
+    about_title: 'Despre noi', about_text: 'Eauto este o platformă românească de logistică, creată pentru a simplifica viața antreprenorilor online.',
     footer_brand_desc: 'Platformă completă pentru facturare și AWB în România. Operat de Milan web S.R.L.',
     footer_product: 'Produs', footer_company: 'Companie', footer_legal: 'Legal',
     ajutor: 'Ajutor', anpc: 'ANPC', back_home: 'Înapoi la pagina principală',
     nav_dashboard: 'Dashboard', nav_awb: 'AWB', nav_factura: 'Facturi',
     nav_settings: 'Setări', nav_curier: 'Curier', nav_companie: 'Companie',
+    nav_factura_settings: 'Facturare',
     accounts_label: 'Conturi', new_subaccount: 'Sub-cont nou',
     manage_subscription: 'Gestionează abonamentul', logout: 'Deconectare',
-    language: 'Limbă', search: 'Caută...',
+    language: 'Limbă', search: 'Caută...', logging_out: 'Deconectare',
     stat_orders: 'Comenzi azi', stat_orders_hint: 'Ultimele 24h',
     stat_awb: 'AWB săptămâna', stat_factura: 'Facturi săptămâna', stat_plan: 'Abonament',
     load_orders: 'Descarcă comenzi', clear: 'Șterge',
@@ -1132,10 +1348,19 @@ const TRANSLATIONS = {
     col_order: 'Comandă', col_customer: 'Client', col_address: 'Adresă',
     col_product: 'Produs', col_payment: 'Plată', col_amount: 'Sumă',
     awb_preview: 'Previzualizare AWB', factura_preview: 'Previzualizare factură',
-    curier_title: 'Setări curier', company_title: 'Setări companie',
-    account_name: 'Nume sub-cont', company_name: 'Nume / Companie',
+    awb_pickup_date: 'Data ridicare colet:',
+    date_today: 'Azi', date_tomorrow: 'Mâine', date_next_week: '+1 săptămână',
+    awb_date_required: 'Selectează o dată de ridicare!',
+    awb_date_past: 'Data nu poate fi în trecut!',
+    awb_courier_select: 'Curier:',
+    curier_title: 'Setări curier', curier_select_first: 'Alege curierul pentru care adaugi datele',
+    courier_provider: 'Furnizor curier', courier_user: 'Utilizator / Cod client',
+    courier_password: 'Parolă / Cheie API', courier_config_saved: 'Configurare salvată',
+    factura_settings_title: 'Setări facturare', factura_select_first: 'Alege furnizorul pentru care adaugi datele',
+    factura_provider: 'Furnizor facturare', factura_config_saved: 'Configurare salvată',
+    company_title: 'Setări companie', account_name: 'Nume sub-cont', company_name: 'Nume / Companie',
     phone: 'Telefon', country: 'Țară', city: 'Oraș', street: 'Stradă',
-    save: 'Salvează', delete_account: 'Șterge sub-cont',
+    save: 'Salvează', delete: 'Șterge', delete_account: 'Șterge sub-cont',
     current_plan: 'Abonament activ:', subscription_subtitle: 'Modifică-ți abonamentul',
     change_plan: 'Schimbă abonamentul', cancel: 'Anulează', close: 'Închide',
     refresh: 'Reîncarcă', reset: 'Reset',
@@ -1143,7 +1368,19 @@ const TRANSLATIONS = {
     limit_reached: 'Limita săptămânală atinsă',
     limit_text: 'Ai atins limita de {type} pentru planul {plan}. Upgrade pentru mai mult.',
     confirm_terms: 'Trebuie să accepți Termenii și Condițiile.',
-    send_message: 'Trimite mesaj'
+    send_message: 'Trimite mesaj',
+    cancel_subscription_title: 'Anulare abonament',
+    cancel_subscription_desc: 'Dacă anulezi abonamentul, acesta rămâne activ până la sfârșitul lunii. Nu se reînnoiește automat.',
+    subscription_cancelled: 'Abonament anulat',
+    subscription_active_until: 'Activ până în:', days: 'zile',
+    cancel_subscription_btn: 'Anulează abonamentul',
+    resume_subscription_btn: 'Reactivează abonamentul',
+    cancel_confirm_title: 'Sigur vrei să anulezi?',
+    cancel_confirm_text: 'Abonamentul tău rămâne activ până la sfârșitul lunii, dar nu se va reînnoi automat. Poți reveni oricând.',
+    cancel_confirm_note: 'Dacă vrei să te abonezi din nou, alege din nou pachetul.',
+    cancel_confirm_btn: 'Da, anulează',
+    subscription_cancelled_toast: 'Abonament anulat. Activ până la sfârșitul perioadei.',
+    subscription_resumed: 'Abonament reactivat cu succes.'
   },
   en: {
     auth_sub: 'Logistics Platform',
@@ -1167,8 +1404,6 @@ const TRANSLATIONS = {
     hero_title: 'Complete platform for invoicing and AWB',
     hero_subtitle: 'Generate AWBs and invoices in seconds. Integration with DPD, WooCommerce and FGO eFactura.',
     hero_cta: 'Start free 7 days', hero_cta2: 'View pricing',
-    hero_image_placeholder: 'Hero image placeholder',
-    hero_image_hint: 'Admin can change it',
     feat_awb_title: 'Automatic AWB', feat_awb_desc: 'Generate DPD AWBs directly from WooCommerce orders.',
     feat_factura_title: 'e-Factura invoices', feat_factura_desc: 'Issue invoices and send them automatically to SPV via FGO.',
     feat_fast_title: 'Fast and simple', feat_fast_desc: '5 seconds per AWB. Modern interface, no training.',
@@ -1181,16 +1416,16 @@ const TRANSLATIONS = {
     pricing_elite_f1: 'Unlimited AWB', pricing_elite_f2: 'Unlimited invoices',
     pricing_elite_f3: 'All integrations', pricing_elite_f4: 'Dedicated 24/7 support',
     pricing_popular: 'Popular', pricing_cta: 'Start free',
-    about_title: 'About us',
-    about_text: 'Eauto is a Romanian logistics platform designed to simplify the life of online entrepreneurs.',
+    about_title: 'About us', about_text: 'Eauto is a Romanian logistics platform designed to simplify the life of online entrepreneurs.',
     footer_brand_desc: 'Complete platform for invoicing and AWB in Romania. Operated by Milan web S.R.L.',
     footer_product: 'Product', footer_company: 'Company', footer_legal: 'Legal',
     ajutor: 'Help', anpc: 'ANPC', back_home: 'Back to homepage',
     nav_dashboard: 'Dashboard', nav_awb: 'AWB', nav_factura: 'Invoices',
     nav_settings: 'Settings', nav_curier: 'Courier', nav_companie: 'Company',
+    nav_factura_settings: 'Invoicing',
     accounts_label: 'Accounts', new_subaccount: 'New sub-account',
     manage_subscription: 'Manage Subscription', logout: 'Sign out',
-    language: 'Language', search: 'Search...',
+    language: 'Language', search: 'Search...', logging_out: 'Signing out',
     stat_orders: 'Orders today', stat_orders_hint: 'Last 24h',
     stat_awb: 'AWB this week', stat_factura: 'Invoices this week', stat_plan: 'Subscription',
     load_orders: 'Load orders', clear: 'Clear',
@@ -1198,10 +1433,19 @@ const TRANSLATIONS = {
     col_order: 'Order', col_customer: 'Customer', col_address: 'Address',
     col_product: 'Product', col_payment: 'Payment', col_amount: 'Amount',
     awb_preview: 'AWB preview', factura_preview: 'Invoice preview',
-    curier_title: 'Courier settings', company_title: 'Company settings',
-    account_name: 'Sub-account name', company_name: 'Name / Company',
+    awb_pickup_date: 'Package pickup date:',
+    date_today: 'Today', date_tomorrow: 'Tomorrow', date_next_week: '+1 week',
+    awb_date_required: 'Select a pickup date!',
+    awb_date_past: 'Date cannot be in the past!',
+    awb_courier_select: 'Courier:',
+    curier_title: 'Courier settings', curier_select_first: 'Choose the courier to add your data',
+    courier_provider: 'Courier provider', courier_user: 'User / Client code',
+    courier_password: 'Password / API key', courier_config_saved: 'Configuration saved',
+    factura_settings_title: 'Invoicing settings', factura_select_first: 'Choose the provider to add your data',
+    factura_provider: 'Invoicing provider', factura_config_saved: 'Configuration saved',
+    company_title: 'Company settings', account_name: 'Sub-account name', company_name: 'Name / Company',
     phone: 'Phone', country: 'Country', city: 'City', street: 'Street',
-    save: 'Save', delete_account: 'Delete sub-account',
+    save: 'Save', delete: 'Delete', delete_account: 'Delete sub-account',
     current_plan: 'Current plan:', subscription_subtitle: 'Change your subscription',
     change_plan: 'Change plan', cancel: 'Cancel', close: 'Close',
     refresh: 'Refresh', reset: 'Reset',
@@ -1209,7 +1453,19 @@ const TRANSLATIONS = {
     limit_reached: 'Weekly limit reached',
     limit_text: 'You reached the {type} limit for the {plan} plan. Upgrade for more.',
     confirm_terms: 'You must accept the Terms & Conditions.',
-    send_message: 'Send message'
+    send_message: 'Send message',
+    cancel_subscription_title: 'Cancel subscription',
+    cancel_subscription_desc: 'If you cancel, your subscription stays active until the end of the month. It will not auto-renew.',
+    subscription_cancelled: 'Subscription cancelled',
+    subscription_active_until: 'Active until:', days: 'days',
+    cancel_subscription_btn: 'Cancel subscription',
+    resume_subscription_btn: 'Resume subscription',
+    cancel_confirm_title: 'Are you sure?',
+    cancel_confirm_text: 'Your subscription stays active until the end of the month but will not auto-renew. You can come back anytime.',
+    cancel_confirm_note: 'If you want to subscribe again, just choose a plan.',
+    cancel_confirm_btn: 'Yes, cancel',
+    subscription_cancelled_toast: 'Subscription cancelled. Active until the end of the period.',
+    subscription_resumed: 'Subscription resumed successfully.'
   },
   hu: {
     auth_sub: 'Logisztikai Platform',
@@ -1233,11 +1489,9 @@ const TRANSLATIONS = {
     hero_title: 'Platformă completă pentru facturare și AWB',
     hero_subtitle: 'Generează AWB-uri și facturi în câteva secunde. Integrare cu DPD, WooCommerce și FGO eFactura.',
     hero_cta: 'Începe gratuit 7 zile', hero_cta2: 'Vezi prețuri',
-    hero_image_placeholder: 'Hero kép helye',
-    hero_image_hint: 'Admin tudja cserélni',
     feat_awb_title: 'AWB automatikus', feat_awb_desc: 'Generează AWB-uri DPD-hez pár kattintással.',
     feat_factura_title: 'Facturi e-Factura', feat_factura_desc: 'Emite facturi și trimite-le automat în SPV prin FGO.',
-    feat_fast_title: 'Rapid și simplu', feat_fast_desc: '5 secunde per AWB. Interfață modernă, fără training.',
+    feat_fast_title: 'Rapid și simplu', feat_fast_desc: '5 secunde per AWB. Interfață modernă.',
     pricing_title: 'Alege planul potrivit', pricing_subtitle: '7 zile gratuit. Fără card obligatoriu.',
     pricing_standard_desc: 'Pentru magazine mici', pricing_premium_desc: 'Pentru afaceri în creștere', pricing_elite_desc: 'Pentru companii mari',
     pricing_standard_f1: '50 AWB / săptămână', pricing_standard_f2: '50 facturi / săptămână',
@@ -1247,16 +1501,16 @@ const TRANSLATIONS = {
     pricing_elite_f1: 'AWB nelimitat', pricing_elite_f2: 'Facturi nelimitate',
     pricing_elite_f3: 'Toate integrările', pricing_elite_f4: 'Suport dedicat 24/7',
     pricing_popular: 'Popular', pricing_cta: 'Începe gratuit',
-    about_title: 'Despre noi',
-    about_text: 'Eauto este o platformă românească de logistică, creată pentru a simplifica viața antreprenorilor online.',
-    footer_brand_desc: 'Platformă completă pentru facturare și AWB în România. Operat de Milan web S.R.L.',
+    about_title: 'Despre noi', about_text: 'Eauto este o platformă românească de logistică.',
+    footer_brand_desc: 'Platformă completă pentru facturare și AWB în România.',
     footer_product: 'Produs', footer_company: 'Companie', footer_legal: 'Legal',
     ajutor: 'Ajutor', anpc: 'ANPC', back_home: 'Înapoi la pagina principală',
     nav_dashboard: 'Dashboard', nav_awb: 'AWB-k', nav_factura: 'Számlák',
     nav_settings: 'Beállítások', nav_curier: 'Futár', nav_companie: 'Cég',
+    nav_factura_settings: 'Számlázás',
     accounts_label: 'Fiókok', new_subaccount: 'Új al-account',
     manage_subscription: 'Manage Subscription', logout: 'Kijelentkezés',
-    language: 'Nyelv', search: 'Keresés...',
+    language: 'Nyelv', search: 'Keresés...', logging_out: 'Kijelentkezés',
     stat_orders: 'Mai rendelések', stat_orders_hint: 'Utolsó 24 óra',
     stat_awb: 'Heti AWB-k', stat_factura: 'Heti számlák', stat_plan: 'Előfizetés',
     load_orders: 'Rendelések letöltése', clear: 'Törlés',
@@ -1264,10 +1518,19 @@ const TRANSLATIONS = {
     col_order: 'Rendelés', col_customer: 'Ügyfél', col_address: 'Cím',
     col_product: 'Termék', col_payment: 'Fizetés', col_amount: 'Összeg',
     awb_preview: 'AWB előnézet', factura_preview: 'Számla előnézet',
-    curier_title: 'Futár beállítások', company_title: 'Cég beállítások',
-    account_name: 'Al-account neve', company_name: 'Név / Cég',
+    awb_pickup_date: 'Csomag felvételi dátuma:',
+    date_today: 'Ma', date_tomorrow: 'Holnap', date_next_week: '+1 hét',
+    awb_date_required: 'Válassz felvételi dátumot!',
+    awb_date_past: 'A dátum nem lehet múltbeli!',
+    awb_courier_select: 'Futár:',
+    curier_title: 'Futár beállítások', curier_select_first: 'Válaszd ki melyik futárhoz adod meg az adataidat',
+    courier_provider: 'Futár szolgáltató', courier_user: 'Felhasználó / Ügyfélkód',
+    courier_password: 'Jelszó / API kulcs', courier_config_saved: 'Konfiguráció elmentve',
+    factura_settings_title: 'Számlázó beállítások', factura_select_first: 'Válaszd ki melyik számlázóhoz adod meg az adataidat',
+    factura_provider: 'Számlázó szolgáltató', factura_config_saved: 'Konfiguráció elmentve',
+    company_title: 'Cég beállítások', account_name: 'Al-account neve', company_name: 'Név / Cég',
     phone: 'Telefon', country: 'Ország', city: 'Város', street: 'Utca',
-    save: 'Mentés', delete_account: 'Al-account törlése',
+    save: 'Mentés', delete: 'Törlés', delete_account: 'Al-account törlése',
     current_plan: 'Aktív előfizetésed:', subscription_subtitle: 'Változtasd meg az előfizetésed',
     change_plan: 'Előfizetés módosítása', cancel: 'Mégse', close: 'Bezárás',
     refresh: 'Frissítés', reset: 'Visszaállítás',
@@ -1275,7 +1538,19 @@ const TRANSLATIONS = {
     limit_reached: 'Heti limit elérve',
     limit_text: 'Elérted a {type} limitet a {plan} csomagnál. Válts nagyobbra!',
     confirm_terms: 'El kell fogadnod a Termeni și Condiții-t.',
-    send_message: 'Üzenet küldése'
+    send_message: 'Üzenet küldése',
+    cancel_subscription_title: 'Előfizetés lemondása',
+    cancel_subscription_desc: 'Ha lemondod, az előfizetésed aktív marad a hónap végéig. Nem újul meg automatikusan.',
+    subscription_cancelled: 'Előfizetés lemondva',
+    subscription_active_until: 'Aktív még:', days: 'nap',
+    cancel_subscription_btn: 'Előfizetés lemondása',
+    resume_subscription_btn: 'Előfizetés visszavonása',
+    cancel_confirm_title: 'Biztosan lemondod?',
+    cancel_confirm_text: 'Az előfizetésed aktív marad a hónap végéig, de nem újul meg automatikusan. Bármikor visszavonhatod.',
+    cancel_confirm_note: 'Ha újra elő akarsz fizetni, egyszerűen válaszd ki újra a csomagot.',
+    cancel_confirm_btn: 'Igen, lemondom',
+    subscription_cancelled_toast: 'Előfizetés lemondva. Aktív a periódus végéig.',
+    subscription_resumed: 'Előfizetés visszavonva.'
   }
 };
 
@@ -1380,7 +1655,7 @@ Email: electricautomatiks@gmail.com
 Platformă: Eauto`;
 
 const DEFAULT_HOMEPAGE = {
-  heroImage: '',
+  heroImage: 'https://i.imgur.com/MnGstII.png',
   heroTitle: 'Platformă completă pentru facturare și AWB',
   heroSubtitle: 'Generează AWB-uri și facturi în câteva secunde. Integrare cu DPD, WooCommerce și FGO eFactura.',
   aboutTitle: 'Despre noi',
@@ -1427,71 +1702,44 @@ function applyGlobalSettings() {
   if (cp && globalHomepage.contactPhone) cp.textContent = globalHomepage.contactPhone;
 }
 
-// ============================================
 // SUPPORT / ANPC
-// ============================================
 window.openAjutor = function () {
   const subject = encodeURIComponent('Eauto Support Request');
   const url = `https://mail.google.com/mail/?view=cm&fs=1&to=${SUPPORT_EMAIL}&su=${subject}`;
   window.open(url, '_blank');
 };
-window.openANPC = function () {
-  window.open(ANPC_URL, '_blank');
-};
+window.openANPC = function () { window.open(ANPC_URL, '_blank'); };
 
-// ============================================
-// MODALS
-// ============================================
 window.openTermsModal = function (e) {
   if (e) e.preventDefault();
   document.getElementById('termsModalBox').textContent = globalTerms;
   document.getElementById('termsModalOverlay').classList.add('open');
 };
-window.closeTermsModal = function () {
-  document.getElementById('termsModalOverlay').classList.remove('open');
-};
-window.openContact = function () {
-  document.getElementById('contactModalOverlay').classList.add('open');
-};
-window.closeContact = function () {
-  document.getElementById('contactModalOverlay').classList.remove('open');
-};
+window.closeTermsModal = function () { document.getElementById('termsModalOverlay').classList.remove('open'); };
+window.openContact = function () { document.getElementById('contactModalOverlay').classList.add('open'); };
+window.closeContact = function () { document.getElementById('contactModalOverlay').classList.remove('open'); };
 
-// ============================================
-// HOMEPAGE / AUTH navigation
-// ============================================
+// NAVIGATION
 window.showHome = function () {
   document.getElementById('homePage').classList.remove('hidden');
   document.getElementById('authScreen').classList.remove('show');
   document.getElementById('app').classList.remove('show');
   window.scrollTo({ top: 0, behavior: 'instant' });
 };
-
 window.showAuth = function (mode) {
   document.getElementById('homePage').classList.add('hidden');
   document.getElementById('authScreen').classList.add('show');
-  if (mode === 'signup') {
-    showStep('signup-credentials');
-  } else {
-    showStep('login');
-  }
+  if (mode === 'signup') showStep('signup-credentials');
+  else showStep('login');
 };
-
 window.scrollToSection = function (id) {
   const el = document.getElementById(id);
   if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
 };
+window.openMobileMenu = function () { document.getElementById('mobileMenu').classList.add('open'); };
+window.closeMobileMenu = function () { document.getElementById('mobileMenu').classList.remove('open'); };
 
-window.openMobileMenu = function () {
-  document.getElementById('mobileMenu').classList.add('open');
-};
-window.closeMobileMenu = function () {
-  document.getElementById('mobileMenu').classList.remove('open');
-};
-
-// ============================================
 // AUTH STEPS
-// ============================================
 let selectedPlan = 'standard';
 let signupData = { email: '', password: '' };
 
@@ -1507,13 +1755,11 @@ window.signupStep1 = function () {
   const password2 = document.getElementById('signupPassword2').value;
   const errEl = document.getElementById('signupError');
   errEl.style.display = 'none';
-
   if (!email || !password) { errEl.textContent = 'Töltsd ki az összes mezőt!'; errEl.style.display = 'block'; return; }
   if (password.length < 6) { errEl.textContent = 'A jelszó legalább 6 karakter legyen!'; errEl.style.display = 'block'; return; }
   if (password !== password2) { errEl.textContent = 'A jelszavak nem egyeznek!'; errEl.style.display = 'block'; return; }
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   if (!emailRegex.test(email)) { errEl.textContent = 'Érvénytelen email cím!'; errEl.style.display = 'block'; return; }
-
   signupData.email = email;
   signupData.password = password;
   showStep('signup-plan');
@@ -1526,14 +1772,11 @@ window.selectPlan = function (plan) {
   });
 };
 
-window.signupStep2 = function () {
-  showStep('signup-payment');
-};
+window.signupStep2 = function () { showStep('signup-payment'); };
 
 window.signupStep3 = async function () {
   const errEl = document.getElementById('signupError');
   errEl.style.display = 'none';
-
   if (!document.getElementById('acceptTerms').checked) {
     errEl.textContent = t('confirm_terms');
     errEl.style.display = 'block';
@@ -1549,7 +1792,7 @@ window.signupStep3 = async function () {
     await setDoc(doc(db, 'users', cred.user.uid), {
       email: signupData.email,
       plan: selectedPlan,
-      accounts: [{ name: 'Fő account', expeditor: {}, shopConfig: {}, dpdConfig: {}, fgoConfig: {} }],
+      accounts: [{ name: 'Fő account', expeditor: {}, shopConfig: {}, courierConfigs: {}, facturaConfigs: {} }],
       activeAccountIndex: 0,
       createdAt: new Date().toISOString(),
       termsAcceptedAt: new Date().toISOString()
@@ -1598,9 +1841,7 @@ window.formatExpiry = function (el) {
   el.value = v;
 };
 
-// ============================================
 // STATE
-// ============================================
 let currentUser = null;
 let currentUserData = null;
 let currentAccountIndex = 0;
@@ -1609,6 +1850,7 @@ let accountSelectedAWB = {};
 let accountSelectedFactura = {};
 let accountSearchAWB = {};
 let accountSearchFactura = {};
+let selectedAwbDate = null;
 
 function getOrdersForCurrent() { return accountOrders[currentAccountIndex] || []; }
 function getSelectedAWB() {
@@ -1627,7 +1869,7 @@ function chunkArray(arr, size) {
   const out = []; for (let i = 0; i < arr.length; i += size) out.push(arr.slice(i, i + size)); return out;
 }
 
-// ===== TOAST =====
+// TOAST
 window.toast = function (msg, type = 'info') {
   const wrap = document.getElementById('toastWrap');
   const el = document.createElement('div');
@@ -1648,7 +1890,7 @@ window.toast = function (msg, type = 'info') {
   }, 4000);
 };
 
-// ===== THEME =====
+// THEME
 window.toggleTheme = function () {
   const cur = document.documentElement.getAttribute('data-theme') || 'light';
   const next = cur === 'dark' ? 'light' : 'dark';
@@ -1660,9 +1902,7 @@ window.toggleTheme = function () {
   document.documentElement.setAttribute('data-theme', saved);
 })();
 
-// ============================================
 // AUTH STATE
-// ============================================
 onAuthStateChanged(auth, async (user) => {
   if (user) {
     currentUser = user;
@@ -1677,15 +1917,22 @@ onAuthStateChanged(auth, async (user) => {
     if (!data) {
       data = {
         email: user.email, plan: 'standard',
-        accounts: [{ name: 'Fő account', expeditor: {}, shopConfig: {}, dpdConfig: {}, fgoConfig: {} }],
+        accounts: [{ name: 'Fő account', expeditor: {}, shopConfig: {}, courierConfigs: {}, facturaConfigs: {} }],
         activeAccountIndex: 0, createdAt: new Date().toISOString()
       };
       await setDoc(doc(db, 'users', user.uid), data);
     }
     if (!data.plan) data.plan = 'standard';
     if (!data.accounts) {
-      data.accounts = [{ name: 'Fő account', expeditor: data.expeditor || {}, shopConfig: data.shopConfig || {}, dpdConfig: data.dpdConfig || {}, fgoConfig: data.fgoConfig || {} }];
+      data.accounts = [{ name: 'Fő account', expeditor: data.expeditor || {}, shopConfig: data.shopConfig || {}, courierConfigs: {}, facturaConfigs: {} }];
     }
+    // Migráció: minden account kap courierConfigs és facturaConfigs objektumot
+    data.accounts = data.accounts.map(a => ({
+      ...a,
+      courierConfigs: a.courierConfigs || {},
+      facturaConfigs: a.facturaConfigs || {}
+    }));
+
     currentUserData = data;
     currentAccountIndex = data.activeAccountIndex || 0;
 
@@ -1698,11 +1945,14 @@ onAuthStateChanged(auth, async (user) => {
 
     updateSidebarAccount();
     fillSettingsForm();
+    fillCourierSettings();
+    fillFacturaSettings();
     refreshOrdersView();
     updatePlanDisplay();
     await loadGlobalSettings();
     await refreshUsageStats();
     applyTranslations();
+    initAwbDate();
     switchTab('dashboard');
   } else {
     currentUser = null; currentUserData = null;
@@ -1716,11 +1966,32 @@ onAuthStateChanged(auth, async (user) => {
   }
 });
 
-window.logout = async function () { await signOut(auth); toast('Kijelentkezve', 'info'); };
+// LOGOUT animációval
+window.logout = async function () {
+  const overlay = document.createElement('div');
+  overlay.id = 'logoutOverlay';
+  overlay.innerHTML = `
+    <div class="logout-content">
+      <div class="logout-logo">
+        <img src="https://i.imgur.com/SqIdPLa.png" alt="Eauto" />
+        <span>Eauto</span>
+      </div>
+      <div class="logout-text" data-i18n="logging_out">${t('logging_out')}</div>
+      <div class="logout-dots"><span></span><span></span><span></span></div>
+    </div>
+  `;
+  document.body.appendChild(overlay);
+  void overlay.offsetWidth;
+  overlay.classList.add('show');
+  await new Promise(r => setTimeout(r, 1500));
+  await signOut(auth);
+  overlay.classList.remove('show');
+  overlay.classList.add('hide');
+  await new Promise(r => setTimeout(r, 600));
+  overlay.remove();
+};
 
-// ============================================
 // PLAN + USAGE
-// ============================================
 function getWeekKey() {
   const d = new Date();
   const onejan = new Date(d.getFullYear(), 0, 1);
@@ -1777,12 +2048,8 @@ async function refreshUsageStats() {
       warnBox.style.display = 'block';
       warnBox.className = 'usage-bar warn';
       warnBox.innerHTML = `<div><b>⚠️ ${t('limit_reached')}</b> — AWB: ${usage.awb}/${limits.awb}, Számla: ${usage.factura}/${limits.factura}</div>`;
-    } else {
-      warnBox.style.display = 'none';
-    }
-  } else {
-    warnBox.style.display = 'none';
-  }
+    } else { warnBox.style.display = 'none'; }
+  } else { warnBox.style.display = 'none'; }
 }
 function updatePlanDisplay() {
   const plan = currentUserData?.plan || 'standard';
@@ -1791,11 +2058,8 @@ function updatePlanDisplay() {
   document.getElementById('statPlanHint').textContent = limits.price + ' lei/hó';
 }
 
-// ============================================
 // SUBSCRIPTION
-// ============================================
 let subSelectedPlanTab = null;
-
 function updateSubscriptionTab() {
   const plan = currentUserData?.plan || 'standard';
   subSelectedPlanTab = plan;
@@ -1807,14 +2071,12 @@ function updateSubscriptionTab() {
   const tb = document.getElementById('subTermsBoxTab');
   if (tb) tb.textContent = globalTerms;
 }
-
 window.selectSubPlanTab = function (plan) {
   subSelectedPlanTab = plan;
   document.querySelectorAll('#subPlanGridTab .plan-card').forEach(c => {
     c.classList.toggle('selected', c.dataset.plan === plan);
   });
 };
-
 window.saveSubscriptionTab = async function () {
   if (!currentUser || !subSelectedPlanTab) return;
   const old = currentUserData.plan || 'standard';
@@ -1827,9 +2089,116 @@ window.saveSubscriptionTab = async function () {
   toast(`Előfizetés módosítva: ${PLAN_LIMITS[subSelectedPlanTab].name}`, 'success');
 };
 
-// ============================================
+// CANCEL SUBSCRIPTION
+window.openCancelModal = function () {
+  document.getElementById('cancelModalOverlay').classList.add('open');
+};
+window.closeCancelModal = function () {
+  document.getElementById('cancelModalOverlay').classList.remove('open');
+};
+window.confirmCancelSubscription = async function () {
+  if (!currentUser) return;
+  try {
+    const now = new Date();
+    const activeUntil = new Date(now.getTime() + 30 * 24 * 60 * 60 * 1000);
+    await updateDoc(doc(db, 'users', currentUser.uid), {
+      subscriptionCancelled: true,
+      cancelledAt: now.toISOString(),
+      activeUntil: activeUntil.toISOString()
+    });
+    currentUserData.subscriptionCancelled = true;
+    currentUserData.cancelledAt = now.toISOString();
+    currentUserData.activeUntil = activeUntil.toISOString();
+    closeCancelModal();
+    updateCancelSection();
+    toast(t('subscription_cancelled_toast'), 'warning');
+  } catch (e) {
+    console.error(e);
+    toast('Hiba: ' + e.message, 'error');
+  }
+};
+window.resumeSubscription = async function () {
+  if (!currentUser) return;
+  try {
+    await updateDoc(doc(db, 'users', currentUser.uid), {
+      subscriptionCancelled: false,
+      cancelledAt: null,
+      activeUntil: null
+    });
+    currentUserData.subscriptionCancelled = false;
+    currentUserData.cancelledAt = null;
+    currentUserData.activeUntil = null;
+    updateCancelSection();
+    toast(t('subscription_resumed'), 'success');
+  } catch (e) {
+    console.error(e);
+    toast('Hiba: ' + e.message, 'error');
+  }
+};
+function updateCancelSection() {
+  const banner = document.getElementById('cancelledBanner');
+  const cancelBtn = document.getElementById('cancelSubBtn');
+  const resumeBtn = document.getElementById('resumeSubBtn');
+  const daysEl = document.getElementById('cancelledDaysLeft');
+  if (!banner || !cancelBtn || !resumeBtn) return;
+  if (currentUserData?.subscriptionCancelled && currentUserData?.activeUntil) {
+    banner.style.display = 'block';
+    cancelBtn.style.display = 'none';
+    resumeBtn.style.display = 'inline-flex';
+    const now = new Date();
+    const until = new Date(currentUserData.activeUntil);
+    const daysLeft = Math.max(0, Math.ceil((until - now) / (1000 * 60 * 60 * 24)));
+    if (daysEl) daysEl.textContent = daysLeft;
+  } else {
+    banner.style.display = 'none';
+    cancelBtn.style.display = 'inline-flex';
+    resumeBtn.style.display = 'none';
+  }
+}
+
+// AWB DÁTUM VÁLASZTÓ
+function initAwbDate() {
+  const input = document.getElementById('awbPickupDate');
+  if (!input) return;
+  const today = new Date();
+  const yyyy = today.getFullYear();
+  const mm = String(today.getMonth() + 1).padStart(2, '0');
+  const dd = String(today.getDate()).padStart(2, '0');
+  input.value = `${yyyy}-${mm}-${dd}`;
+  input.min = `${yyyy}-${mm}-${dd}`;
+  selectedAwbDate = input.value;
+  updateAwbDateQuick();
+}
+window.setAwbDate = function (when) {
+  const input = document.getElementById('awbPickupDate');
+  if (!input) return;
+  const d = new Date();
+  if (when === 'tomorrow') d.setDate(d.getDate() + 1);
+  if (when === 'week') d.setDate(d.getDate() + 7);
+  const yyyy = d.getFullYear();
+  const mm = String(d.getMonth() + 1).padStart(2, '0');
+  const dd = String(d.getDate()).padStart(2, '0');
+  input.value = `${yyyy}-${mm}-${dd}`;
+  selectedAwbDate = input.value;
+  updateAwbDateQuick();
+};
+window.updateAwbDateQuick = function () {
+  const input = document.getElementById('awbPickupDate');
+  if (!input) return;
+  selectedAwbDate = input.value;
+  const today = new Date();
+  const todayStr = `${today.getFullYear()}-${String(today.getMonth()+1).padStart(2,'0')}-${String(today.getDate()).padStart(2,'0')}`;
+  const tomorrow = new Date(); tomorrow.setDate(tomorrow.getDate() + 1);
+  const tomorrowStr = `${tomorrow.getFullYear()}-${String(tomorrow.getMonth()+1).padStart(2,'0')}-${String(tomorrow.getDate()).padStart(2,'0')}`;
+  const week = new Date(); week.setDate(week.getDate() + 7);
+  const weekStr = `${week.getFullYear()}-${String(week.getMonth()+1).padStart(2,'0')}-${String(week.getDate()).padStart(2,'0')}`;
+  document.querySelectorAll('.awb-quick-btn').forEach((btn, idx) => {
+    const val = [todayStr, tomorrowStr, weekStr][idx];
+    btn.classList.toggle('active', input.value === val);
+  });
+};
+
 // TABS
-// ============================================
 window.switchTab = function (tab) {
   if ((tab === 'admin' || tab === 'terms-admin' || tab === 'homepage-admin') && currentUser?.email !== ADMIN_EMAIL) {
     toast('Nincs jogosultságod', 'error'); return;
@@ -1840,22 +2209,24 @@ window.switchTab = function (tab) {
   if (page) page.classList.remove('hidden');
   const titles = {
     dashboard: 'Dashboard', awb: 'AWB-k', factura: 'Számlák',
-    curier: 'Futár', companie: 'Cég', subscription: 'Manage Subscription',
+    curier: 'Curier', 'factura-settings': 'Facturare', companie: 'Cég',
+    subscription: 'Manage Subscription',
     'homepage-admin': 'Homepage', 'terms-admin': 'Termeni', admin: 'Admin'
   };
   document.getElementById('pageTitle').textContent = titles[tab] || 'Dashboard';
   document.getElementById('sidebar').classList.remove('open');
   if (tab === 'admin') loadAdminData();
   if (tab === 'terms-admin') document.getElementById('termsAdminText').value = globalTerms;
-  if (tab === 'subscription') updateSubscriptionTab();
+  if (tab === 'subscription') { updateSubscriptionTab(); updateCancelSection(); }
+  if (tab === 'awb') { initAwbDate(); }
   if (tab === 'homepage-admin') fillHomepageAdmin();
+  if (tab === 'curier') fillCourierSettings();
+  if (tab === 'factura-settings') fillFacturaSettings();
 };
 
 window.toggleSidebar = function () { document.getElementById('sidebar').classList.toggle('open'); };
 
-// ============================================
 // ACCOUNT MENU
-// ============================================
 window.toggleAccountMenu = function (e) {
   e.stopPropagation();
   const menu = document.getElementById('accountMenu');
@@ -1895,6 +2266,8 @@ window.selectAccount = async function (idx) {
   await persistAccounts();
   updateSidebarAccount();
   fillSettingsForm();
+  fillCourierSettings();
+  fillFacturaSettings();
   refreshOrdersView();
   closeAccountMenu();
   toast(`Átváltva: ${getActiveAccount().name}`, 'success');
@@ -1906,7 +2279,7 @@ window.addSubAccount = async function () {
   if (accounts.length >= 6) { toast('Maximum 6 account', 'warning'); return; }
   accounts.push({
     name: `Al-account ${accounts.length}`,
-    expeditor: {}, shopConfig: {}, dpdConfig: {}, fgoConfig: {}
+    expeditor: {}, shopConfig: {}, courierConfigs: {}, facturaConfigs: {}
   });
   currentUserData.accounts = accounts;
   currentAccountIndex = accounts.length - 1;
@@ -1914,6 +2287,8 @@ window.addSubAccount = async function () {
   await persistAccounts();
   updateSidebarAccount();
   fillSettingsForm();
+  fillCourierSettings();
+  fillFacturaSettings();
   refreshOrdersView();
   closeAccountMenu();
   toast('Új al-account hozzáadva', 'success');
@@ -1922,7 +2297,7 @@ window.addSubAccount = async function () {
 
 function getActiveAccount() {
   if (!currentUserData?.accounts?.length) {
-    return { name: 'Fő account', expeditor: {}, shopConfig: {}, dpdConfig: {}, fgoConfig: {} };
+    return { name: 'Fő account', expeditor: {}, shopConfig: {}, courierConfigs: {}, facturaConfigs: {} };
   }
   return currentUserData.accounts[currentAccountIndex] || currentUserData.accounts[0];
 }
@@ -1951,15 +2326,6 @@ function fillSettingsForm() {
   document.getElementById('shopUrl').value = shop.shopUrl || '';
   document.getElementById('wcKey').value = shop.wcKey || '';
   document.getElementById('wcSecret').value = shop.wcSecret || '';
-  const dpd = acc.dpdConfig || {};
-  document.getElementById('dpdUser').value = dpd.dpdUser || '';
-  document.getElementById('dpdPass').value = dpd.dpdPass || '';
-  document.getElementById('dpdClientId').value = dpd.dpdClientId || '';
-  const fgo = acc.fgoConfig || {};
-  document.getElementById('fgoKey').value = fgo.fgoKey || '';
-  document.getElementById('fgoCui').value = fgo.fgoCui || '';
-  document.getElementById('fgoSerie').value = fgo.fgoSerie || '';
-  document.getElementById('fgoPlatform').value = fgo.fgoPlatform || '';
 }
 
 window.saveAccountName = async function () {
@@ -1991,25 +2357,6 @@ window.saveShopConfig = async function () {
   await persistAccounts();
   toast('WooCommerce adatok mentve', 'success');
 };
-window.saveDpdConfig = async function () {
-  getActiveAccount().dpdConfig = {
-    dpdUser: document.getElementById('dpdUser').value.trim(),
-    dpdPass: document.getElementById('dpdPass').value.trim(),
-    dpdClientId: document.getElementById('dpdClientId').value.trim()
-  };
-  await persistAccounts();
-  toast('DPD adatok mentve', 'success');
-};
-window.saveFgoConfig = async function () {
-  getActiveAccount().fgoConfig = {
-    fgoKey: document.getElementById('fgoKey').value.trim(),
-    fgoCui: document.getElementById('fgoCui').value.trim(),
-    fgoSerie: document.getElementById('fgoSerie').value.trim(),
-    fgoPlatform: document.getElementById('fgoPlatform').value.trim()
-  };
-  await persistAccounts();
-  toast('FGO adatok mentve', 'success');
-};
 window.deleteCurrentAccount = async function () {
   if (!currentUserData) return;
   const accounts = currentUserData.accounts || [];
@@ -2022,13 +2369,180 @@ window.deleteCurrentAccount = async function () {
   await persistAccounts();
   updateSidebarAccount();
   fillSettingsForm();
+  fillCourierSettings();
+  fillFacturaSettings();
   refreshOrdersView();
   toast('Al-account törölve', 'success');
 };
 
-// ============================================
+// COURIER SETTINGS
+function fillCourierSettings() {
+  const acc = getActiveAccount();
+  const configs = acc.courierConfigs || {};
+  const sel = document.getElementById('courierProviderSelect');
+  if (!sel) return;
+  sel.value = '';
+  document.getElementById('courierConfigFields').style.display = 'none';
+  renderCourierConfigList();
+}
+
+window.onCourierProviderChange = function () {
+  const sel = document.getElementById('courierProviderSelect');
+  const fields = document.getElementById('courierConfigFields');
+  const provider = sel.value;
+  if (!provider) { fields.style.display = 'none'; return; }
+  const acc = getActiveAccount();
+  const configs = acc.courierConfigs || {};
+  const cfg = configs[provider] || {};
+  document.getElementById('courierUser').value = cfg.user || '';
+  document.getElementById('courierPassword').value = cfg.password || '';
+  document.getElementById('courierClientId').value = cfg.clientId || '';
+  document.getElementById('courierSavedIndicator').style.display = 'none';
+  fields.style.display = 'block';
+};
+
+window.saveCourierConfig = async function () {
+  const sel = document.getElementById('courierProviderSelect');
+  const provider = sel.value;
+  if (!provider) { toast('Válassz curiert', 'warning'); return; }
+  const acc = getActiveAccount();
+  if (!acc.courierConfigs) acc.courierConfigs = {};
+  acc.courierConfigs[provider] = {
+    user: document.getElementById('courierUser').value.trim(),
+    password: document.getElementById('courierPassword').value.trim(),
+    clientId: document.getElementById('courierClientId').value.trim()
+  };
+  await persistAccounts();
+  document.getElementById('courierSavedIndicator').style.display = 'block';
+  setTimeout(() => { const el = document.getElementById('courierSavedIndicator'); if (el) el.style.display = 'none'; }, 3000);
+  renderCourierConfigList();
+  toast('Curier konfiguráció mentve', 'success');
+};
+
+window.deleteCourierConfig = async function () {
+  const sel = document.getElementById('courierProviderSelect');
+  const provider = sel.value;
+  if (!provider) return;
+  if (!confirm('Törlöd ezt a curier konfigurációt?')) return;
+  const acc = getActiveAccount();
+  if (acc.courierConfigs && acc.courierConfigs[provider]) {
+    delete acc.courierConfigs[provider];
+    await persistAccounts();
+  }
+  document.getElementById('courierUser').value = '';
+  document.getElementById('courierPassword').value = '';
+  document.getElementById('courierClientId').value = '';
+  document.getElementById('courierSavedIndicator').style.display = 'none';
+  renderCourierConfigList();
+  toast('Curier konfiguráció törölve', 'info');
+};
+
+function renderCourierConfigList() {
+  const list = document.getElementById('courierConfigList');
+  if (!list) return;
+  const acc = getActiveAccount();
+  const configs = acc.courierConfigs || {};
+  const keys = Object.keys(configs);
+  if (!keys.length) { list.innerHTML = ''; return; }
+  list.innerHTML = `
+    <div class="form-section-title">Beállított curierek</div>
+    ${keys.map(k => `
+      <div style="display:flex; align-items:center; justify-content:space-between; padding:10px 12px; background:var(--bg-soft); border-radius:8px; margin-bottom:6px; font-size:13px;">
+        <div>
+          <b>${COURIERS[k]?.name || k}</b>
+          <div style="font-size:11.5px; color:var(--fg-muted); margin-top:2px;">${configs[k].user || '–'}</div>
+        </div>
+        <span class="badge success">✓ Beállítva</span>
+      </div>
+    `).join('')}
+  `;
+}
+
+// FACTURA SETTINGS
+function fillFacturaSettings() {
+  const sel = document.getElementById('facturaProviderSelect');
+  if (!sel) return;
+  sel.value = '';
+  document.getElementById('facturaConfigFields').style.display = 'none';
+  renderFacturaConfigList();
+}
+
+window.onFacturaProviderChange = function () {
+  const sel = document.getElementById('facturaProviderSelect');
+  const fields = document.getElementById('facturaConfigFields');
+  const provider = sel.value;
+  if (!provider) { fields.style.display = 'none'; return; }
+  const acc = getActiveAccount();
+  const configs = acc.facturaConfigs || {};
+  const cfg = configs[provider] || {};
+  document.getElementById('facturaApiKey').value = cfg.apiKey || '';
+  document.getElementById('facturaCui').value = cfg.cui || '';
+  document.getElementById('facturaSerie').value = cfg.serie || '';
+  document.getElementById('facturaPlatformUrl').value = cfg.platformUrl || '';
+  document.getElementById('facturaSavedIndicator').style.display = 'none';
+  fields.style.display = 'block';
+};
+
+window.saveFacturaConfig = async function () {
+  const sel = document.getElementById('facturaProviderSelect');
+  const provider = sel.value;
+  if (!provider) { toast('Válassz számlázót', 'warning'); return; }
+  const acc = getActiveAccount();
+  if (!acc.facturaConfigs) acc.facturaConfigs = {};
+  acc.facturaConfigs[provider] = {
+    apiKey: document.getElementById('facturaApiKey').value.trim(),
+    cui: document.getElementById('facturaCui').value.trim(),
+    serie: document.getElementById('facturaSerie').value.trim(),
+    platformUrl: document.getElementById('facturaPlatformUrl').value.trim()
+  };
+  await persistAccounts();
+  document.getElementById('facturaSavedIndicator').style.display = 'block';
+  setTimeout(() => { const el = document.getElementById('facturaSavedIndicator'); if (el) el.style.display = 'none'; }, 3000);
+  renderFacturaConfigList();
+  toast('Számlázó konfiguráció mentve', 'success');
+};
+
+window.deleteFacturaConfig = async function () {
+  const sel = document.getElementById('facturaProviderSelect');
+  const provider = sel.value;
+  if (!provider) return;
+  if (!confirm('Törlöd ezt a számlázó konfigurációt?')) return;
+  const acc = getActiveAccount();
+  if (acc.facturaConfigs && acc.facturaConfigs[provider]) {
+    delete acc.facturaConfigs[provider];
+    await persistAccounts();
+  }
+  document.getElementById('facturaApiKey').value = '';
+  document.getElementById('facturaCui').value = '';
+  document.getElementById('facturaSerie').value = '';
+  document.getElementById('facturaPlatformUrl').value = '';
+  document.getElementById('facturaSavedIndicator').style.display = 'none';
+  renderFacturaConfigList();
+  toast('Számlázó konfiguráció törölve', 'info');
+};
+
+function renderFacturaConfigList() {
+  const list = document.getElementById('facturaConfigList');
+  if (!list) return;
+  const acc = getActiveAccount();
+  const configs = acc.facturaConfigs || {};
+  const keys = Object.keys(configs);
+  if (!keys.length) { list.innerHTML = ''; return; }
+  list.innerHTML = `
+    <div class="form-section-title">Beállított számlázók</div>
+    ${keys.map(k => `
+      <div style="display:flex; align-items:center; justify-content:space-between; padding:10px 12px; background:var(--bg-soft); border-radius:8px; margin-bottom:6px; font-size:13px;">
+        <div>
+          <b>${FACTURA_PROVIDERS[k]?.name || k}</b>
+          <div style="font-size:11.5px; color:var(--fg-muted); margin-top:2px;">CUI: ${configs[k].cui || '–'} · Serie: ${configs[k].serie || '–'}</div>
+        </div>
+        <span class="badge success">✓ Beállítva</span>
+      </div>
+    `).join('')}
+  `;
+}
+
 // HOMEPAGE ADMIN
-// ============================================
 function fillHomepageAdmin() {
   document.getElementById('adminHeroImage').value = globalHomepage.heroImage || '';
   document.getElementById('adminHeroTitle').value = globalHomepage.heroTitle || '';
@@ -2060,8 +2574,7 @@ window.saveHomepageAdmin = async function () {
 };
 window.resetHomepageAdmin = function () {
   if (!confirm('Visszaállítod az alapértelmezettre?')) return;
-  fillHomepageAdmin();
-  document.getElementById('adminHeroImage').value = '';
+  document.getElementById('adminHeroImage').value = DEFAULT_HOMEPAGE.heroImage;
   document.getElementById('adminHeroTitle').value = DEFAULT_HOMEPAGE.heroTitle;
   document.getElementById('adminHeroSubtitle').value = DEFAULT_HOMEPAGE.heroSubtitle;
   document.getElementById('adminAboutTitle').value = DEFAULT_HOMEPAGE.aboutTitle;
@@ -2071,9 +2584,7 @@ window.resetHomepageAdmin = function () {
   toast('Visszaállítva (még nem mentve)', 'info');
 };
 
-// ============================================
 // TERMS ADMIN
-// ============================================
 window.saveTermsAdmin = async function () {
   if (currentUser?.email !== ADMIN_EMAIL) { toast('Nincs jogosultságod', 'error'); return; }
   const text = document.getElementById('termsAdminText').value.trim();
@@ -2090,9 +2601,7 @@ window.resetTermsAdmin = function () {
   toast('Alapértelmezett visszaállítva (még nem mentve)', 'info');
 };
 
-// ============================================
 // ORDERS
-// ============================================
 window.loadOrders = async function () {
   const acc = getActiveAccount();
   const shop = acc.shopConfig || {};
@@ -2178,7 +2687,6 @@ function refreshOrdersView() {
   renderOrdersAWB(filterOrders(orders, qa));
   renderOrdersFactura(filterOrders(orders, qf));
 }
-
 function filterOrders(orders, query) {
   if (!query || !query.trim()) return orders;
   const q = query.trim().toLowerCase();
@@ -2191,7 +2699,6 @@ function filterOrders(orders, query) {
     return s.includes(q);
   });
 }
-
 window.applySearchAWB = function (value) {
   accountSearchAWB[currentAccountIndex] = value;
   renderOrdersAWB(filterOrders(getOrdersForCurrent(), value));
@@ -2268,15 +2775,33 @@ window.toggleSelectAllFactura = function (cb) {
   });
 };
 
-// ============================================
-// AWB GENERATION — 5-ös batch
-// ============================================
+// AWB GENERÁLÁS — 5-ös batch + dátum + courier
 window.generateSelectedAWB = async function () {
   const s = getSelectedAWB();
   if (s.size === 0) { toast('Nincs kijelölt rendelés', 'warning'); return; }
+
+  const dateInput = document.getElementById('awbPickupDate');
+  if (!dateInput || !dateInput.value) {
+    toast(t('awb_date_required'), 'warning');
+    dateInput?.focus();
+    return;
+  }
+  selectedAwbDate = dateInput.value;
+  const chosenDate = new Date(selectedAwbDate + 'T00:00:00');
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  if (chosenDate < today) { toast(t('awb_date_past'), 'warning'); return; }
+
   const acc = getActiveAccount();
   if (!acc.expeditor?.name) { toast('Töltsd ki az expedíciós adatokat!', 'warning'); return; }
-  if (!acc.dpdConfig?.dpdUser) { toast('Töltsd ki a DPD adatokat!', 'warning'); return; }
+
+  const courierSel = document.getElementById('awbCourierSelect');
+  const courier = courierSel?.value || 'dpd';
+  const courierConfig = (acc.courierConfigs || {})[courier];
+  if (!courierConfig || !courierConfig.user) {
+    toast(`Nincs beállítva a ${COURIERS[courier]?.name || courier} curier! Menj a Curier beállításokhoz.`, 'warning');
+    return;
+  }
 
   const check = await canGenerate('awb', s.size);
   if (!check.ok) {
@@ -2284,12 +2809,11 @@ window.generateSelectedAWB = async function () {
     toast(t('limit_text').replace('{type}', 'AWB').replace('{plan}', planName), 'error');
     return;
   }
-  await buildAWBPreview();
+  await buildAWBPreview(courier, courierConfig);
 };
 
-async function buildAWBPreview() {
+async function buildAWBPreview(courier, courierConfig) {
   const acc = getActiveAccount();
-  const dpd = acc.dpdConfig || {};
   const selectedSet = getSelectedAWB();
   const selected = getOrdersForCurrent().filter(o => selectedSet.has(String(o.id)));
 
@@ -2301,7 +2825,7 @@ async function buildAWBPreview() {
   const progressId = 'awbProgress_' + Date.now();
 
   preview.innerHTML = `
-    <h4>DPD AWB — ${total} rendelés</h4>
+    <h4>${COURIERS[courier]?.name || courier} AWB — ${total} rendelés · ${selectedAwbDate}</h4>
     <div id="${progressId}" class="progress-box">
       <div class="progress-head"><span>Feldolgozás folyamatban...</span><span id="${progressId}_count">0 / ${total}</span></div>
       <div class="progress-track"><div id="${progressId}_bar" class="progress-bar"></div></div>
@@ -2321,10 +2845,15 @@ async function buildAWBPreview() {
       try {
         const res = await fetch(DPD_PROXY_URL, {
           method: 'POST', headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ dpdUser: dpd.dpdUser, dpdPassword: dpd.dpdPass, clientSystemId: dpd.dpdClientId, order: o })
+          body: JSON.stringify({
+            courier: courier,
+            courierConfig: courierConfig,
+            pickupDate: selectedAwbDate,
+            order: o
+          })
         });
         const result = await res.json();
-        if (!result.success) throw new Error(result.error || 'DPD hiba');
+        if (!result.success) throw new Error(result.error || 'AWB hiba');
         return { ok: true, order: o, result };
       } catch (e) { return { ok: false, order: o, error: e.message }; }
     }));
@@ -2338,6 +2867,7 @@ async function buildAWBPreview() {
             <div class="row"><span><b>#${val.order.id}</b></span><span>${escapeHtml(val.order.name)}</span></div>
             <div class="row"><span>Telefon:</span><span>${escapeHtml(val.order.phone)}</span></div>
             <div class="row"><span>Cím:</span><span>${escapeHtml(val.order.address)}, ${escapeHtml(val.order.city)}</span></div>
+            <div class="row"><span>Felvétel:</span><span>${selectedAwbDate}</span></div>
             <div class="row"><span>AWB:</span><span style="font-weight:600;">${val.result.barcode || val.result.shipmentId}</span></div>
           </div>
         `);
@@ -2362,14 +2892,22 @@ async function buildAWBPreview() {
   toast(`${ok} AWB kész, ${err} hiba`, err ? 'warning' : 'success');
 }
 
-// ============================================
-// FACTURA GENERATION — 5-ös batch
-// ============================================
+// FACTURA GENERÁLÁS — 5-ös batch
 window.generateSelectedFactura = async function () {
   const s = getSelectedFactura();
   if (s.size === 0) { toast('Nincs kijelölt rendelés', 'warning'); return; }
   const acc = getActiveAccount();
-  if (!acc.fgoConfig?.fgoKey || !acc.fgoConfig?.fgoCui) { toast('Töltsd ki az FGO adatokat!', 'warning'); return; }
+  const facturaSel = document.getElementById('facturaProviderSelect');
+  // Ha van fül select, azt használjuk, egyébként az elsőt
+  let provider = 'fgo';
+  const facturaConfigs = acc.facturaConfigs || {};
+  const configuredProviders = Object.keys(facturaConfigs);
+  if (configuredProviders.length === 0) {
+    toast('Nincs beállított számlázó! Menj a Facturare fülre.', 'warning');
+    return;
+  }
+  provider = configuredProviders[0];
+  const providerConfig = facturaConfigs[provider];
 
   const check = await canGenerate('factura', s.size);
   if (!check.ok) {
@@ -2377,12 +2915,10 @@ window.generateSelectedFactura = async function () {
     toast(t('limit_text').replace('{type}', 'számla').replace('{plan}', planName), 'error');
     return;
   }
-  await buildFacturaPreview();
+  await buildFacturaPreview(provider, providerConfig);
 };
 
-async function buildFacturaPreview() {
-  const acc = getActiveAccount();
-  const fgo = acc.fgoConfig || {};
+async function buildFacturaPreview(provider, providerConfig) {
   const selectedSet = getSelectedFactura();
   const selected = getOrdersForCurrent().filter(o => selectedSet.has(String(o.id)));
 
@@ -2393,7 +2929,7 @@ async function buildFacturaPreview() {
 
   preview.innerHTML = `
     <div id="${progressId}" class="progress-box">
-      <div class="progress-head"><span style="font-weight:500;">Számlák generálása...</span><span id="${progressId}_count">0 / ${total}</span></div>
+      <div class="progress-head"><span style="font-weight:500;">Számlák generálása (${FACTURA_PROVIDERS[provider]?.name || provider})...</span><span id="${progressId}_count">0 / ${total}</span></div>
       <div class="progress-track"><div id="${progressId}_bar" class="progress-bar"></div></div>
       <div class="progress-hint">Egyszerre max ${BATCH_SIZE} számla készül.</div>
     </div>
@@ -2410,8 +2946,10 @@ async function buildFacturaPreview() {
     const batchResults = await Promise.allSettled(batch.map(async (o) => {
       try {
         const payload = {
-          codUnic: fgo.fgoCui, cheiePrivata: fgo.fgoKey,
-          platformaUrl: fgo.fgoPlatform, serie: fgo.fgoSerie,
+          provider: provider,
+          providerConfig: providerConfig,
+          codUnic: providerConfig.cui, cheiePrivata: providerConfig.apiKey,
+          platformaUrl: providerConfig.platformUrl, serie: providerConfig.serie,
           client: { Tip: 'PF', Denumire: o.name, Adresa: o.address, Localitate: o.city, Judet: o.state, Tara: 'România', Email: o.email, Telefon: o.phone },
           Continut: o.items.map(it => ({
             Denumire: it.name, UM: 'BUC', CodArticol: String(o.id),
@@ -2470,14 +3008,13 @@ async function buildFacturaPreview() {
   toast(`${ok} számla kész, ${err} hiba`, err ? 'warning' : 'success');
 }
 
-// ============================================
 // CMD+K
-// ============================================
 const cmdItems = [
   { label: 'Dashboard', tab: 'dashboard' },
   { label: 'AWB-k', tab: 'awb' },
   { label: 'Számlák', tab: 'factura' },
-  { label: 'Futár', tab: 'curier' },
+  { label: 'Curier', tab: 'curier' },
+  { label: 'Facturare', tab: 'factura-settings' },
   { label: 'Cég', tab: 'companie' },
   { label: 'Manage Subscription', tab: 'subscription' }
 ];
@@ -2504,12 +3041,10 @@ document.addEventListener('keydown', (e) => {
     if (document.getElementById('cmdOverlay').classList.contains('open')) closeCmdK();
     else openCmdK();
   }
-  if (e.key === 'Escape') { closeCmdK(); closeTermsModal(); closeContact(); closeAccountMenu(); }
+  if (e.key === 'Escape') { closeCmdK(); closeTermsModal(); closeContact(); closeAccountMenu(); closeCancelModal(); }
 });
 
-// ============================================
 // ADMIN
-// ============================================
 window.loadAdminData = async function () {
   if (currentUser?.email !== ADMIN_EMAIL) { toast('Nincs jogosultságod', 'error'); return; }
   const list = document.getElementById('adminUsersList');
@@ -2522,15 +3057,13 @@ window.loadAdminData = async function () {
       const planName = PLAN_LIMITS[u.plan || 'standard']?.name || 'Standard';
       return `<div style="padding:12px; border:1px solid var(--border); border-radius:8px; margin-bottom:8px;">
         <div style="font-weight:600;">${u.email || '–'}</div>
-        <div style="font-size:12px; color:var(--fg-muted); margin-top:2px;">Plan: <b>${planName}</b> · Accountok: ${(u.accounts||[]).length}</div>
+        <div style="font-size:12px; color:var(--fg-muted); margin-top:2px;">Plan: <b>${planName}</b> · Accountok: ${(u.accounts||[]).length}${u.subscriptionCancelled ? ' · <span style="color:var(--warning);">⚠️ Lemondva</span>' : ''}</div>
       </div>`;
     }).join('');
   } catch (e) { list.innerHTML = '<p style="color:var(--danger);">Hiba: ' + e.message + '</p>'; }
 };
 
-// ============================================
 // INIT
-// ============================================
 document.getElementById('footerYear').textContent = new Date().getFullYear();
 applyTranslations();
 loadGlobalSettings();
