@@ -3644,14 +3644,15 @@ window.loadOrders = async function () {
 
     const mapped = orders.map(o => {
       const hasPaidDate = o.date_paid !== null && o.date_paid !== undefined && o.date_paid !== '';
-      const pm = (o.payment_method || '').toLowerCase();
-      const pt = (o.payment_method_title || '').toLowerCase();
-      const status = (o.status || '').toLowerCase();
-      const codWords = ['cod', 'ramburs', 'cash', 'numerar', 'livrare', 'delivery', 'plata la', 'plată la', 'utánvét', 'átvételkor', 'curier'];
+      const plain = (v) => String(v || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+      const pm = plain(o.payment_method), pt = plain(o.payment_method_title);
+      const codWords = ['cod', 'ramburs', 'cash', 'numerar', 'livrare', 'delivery', 'plata la', 'utanvet', 'atvetelkor', 'curier', 'courier'];
+      const onlineWords = ['stripe', 'card', 'netopia', 'mobilpay', 'euplatesc', 'payu', 'paypal', 'ppcp', 'revolut', 'klarna', 'paylike', 'applepay', 'googlepay', 'online', 'bacs', 'transfer', 'viva', 'sumup', 'eupayment'];
       const isCod = codWords.some(w => pm.includes(w) || pt.includes(w));
-      // Utánvét: a fizetési mód alapján dől el (a date_paid egyes boltoknál utánvétnél is ki van töltve);
-      // lezárt (completed) utánvétes rendelés már kifizetettnek számít
-      const isRamburs = isCod && status !== 'completed';
+      const isOnline = onlineWords.some(w => pm.includes(w) || pt.includes(w));
+      // 1) utánvétes fizetési mód → ramburs; 2) online/kártyás mód → fizetve;
+      // 3) ismeretlen mód: ha nincs kifizetve (nincs date_paid), akkor ramburs
+      const isRamburs = isCod ? true : (isOnline ? false : !hasPaidDate);
       const totalWithTax = parseFloat(o.total) || 0;
       const totalTax = parseFloat(o.total_tax) || 0;
       return {
@@ -3669,7 +3670,8 @@ window.loadOrders = async function () {
         shippingTotal: parseFloat(o.shipping_total) || 0,
         discountTotal: parseFloat(o.discount_total) || 0,
         items: (o.line_items || []).map(it => ({
-          name: it.name, sku: it.sku || '', quantity: it.quantity, price: parseFloat(it.price) || 0
+          name: it.name, sku: it.sku || '', quantity: it.quantity, price: parseFloat(it.price) || 0,
+          subtotal: parseFloat(it.subtotal)
         })),
         product: o.line_items?.[0]?.name || 'TERMÉK',
         postcode: o.shipping?.postcode || o.billing.postcode || '',
@@ -3679,6 +3681,14 @@ window.loadOrders = async function () {
       };
     });
 
+    try {
+      const summary = {};
+      mapped.forEach(m => {
+        const k = (m.raw.payment_method || '-') + ' | ' + (m.raw.payment_method_title || '-') + ' | date_paid=' + (m.raw.date_paid ? 'igen' : 'nem') + ' | ' + (m.isRamburs ? 'RAMBURS' : 'FIZETVE');
+        summary[k] = (summary[k] || 0) + 1;
+      });
+      console.table(summary);
+    } catch (e) {}
     accountOrders[currentAccountIndex] = mapped;
     accountSelectedAWB[currentAccountIndex] = new Set();
     accountSelectedFactura[currentAccountIndex] = new Set();
@@ -3699,6 +3709,22 @@ window.clearOrders = function () {
   accountSelectedFactura[currentAccountIndex] = new Set();
   refreshOrdersView();
   toast('Lista törölve', 'info');
+};
+
+// Fizetés jelölő (kattintásra átállítható: Ramburs <-> Fizetve), alatta a webshop fizetési módja
+function payBadge(o) {
+  const label = o.isRamburs ? 'Ramburs' : 'Fizetve';
+  const cls = o.isRamburs ? 'warning' : 'success';
+  const m = escapeHtml(o.payTitle || '');
+  return '<span class="badge ' + cls + '" style="cursor:pointer;" title="' + m + '" onclick="event.stopPropagation(); togglePay(\'' + escapeHtml(String(o.id)) + '\')">' + label + '</span>' +
+    (m ? '<div style="font-size:10.5px; color:var(--fg-muted); margin-top:3px; max-width:140px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">' + m + '</div>' : '');
+}
+window.togglePay = function (id) {
+  const o = getOrdersForCurrent().find(x => String(x.id) === String(id));
+  if (!o) return;
+  o.isRamburs = !o.isRamburs;
+  o.amount = o.isRamburs ? o.totalWithTax : 0; // AWB-nél csak ramburs esetén megy utánvét összeg
+  refreshOrdersView();
 };
 
 function refreshOrdersView() {
@@ -3744,7 +3770,7 @@ function renderOrdersAWB(orders) {
       <td><div style="font-weight:500;">${escapeHtml(o.name)}</div><div style="font-size:12px; color:var(--fg-muted);">${escapeHtml(o.phone) || '–'}</div></td>
       <td><div style="font-size:13px;">${escapeHtml(o.address) || '–'}</div><div style="font-size:12px; color:var(--fg-muted);">${escapeHtml(o.city) || ''}</div></td>
       <td style="font-size:12.5px; color:var(--fg-muted); max-width:180px;" class="truncate">${escapeHtml(o.product) || '–'}</td>
-      <td>${o.isRamburs ? '<span class="badge warning" title="' + escapeHtml(o.payTitle || '') + '">Ramburs</span>' : '<span class="badge success" title="' + escapeHtml(o.payTitle || '') + '">Fizetve</span>'}</td>
+      <td>${payBadge(o)}</td>
       <td style="text-align:right; font-weight:600;">${o.totalWithTax.toFixed(2)} RON</td>
     </tr>
   `).join('');
@@ -3765,7 +3791,7 @@ function renderOrdersFactura(orders) {
       <td><div style="font-weight:500;">${escapeHtml(o.name)}</div><div style="font-size:12px; color:var(--fg-muted);">${escapeHtml(o.phone) || '–'}</div></td>
       <td><div style="font-size:13px;">${escapeHtml(o.address) || '–'}</div><div style="font-size:12px; color:var(--fg-muted);">${escapeHtml(o.city) || ''}</div></td>
       <td style="font-size:12.5px; color:var(--fg-muted); max-width:180px;" class="truncate">${escapeHtml(o.product) || '–'}</td>
-      <td>${o.isRamburs ? '<span class="badge warning" title="' + escapeHtml(o.payTitle || '') + '">Ramburs</span>' : '<span class="badge success" title="' + escapeHtml(o.payTitle || '') + '">Fizetve</span>'}</td>
+      <td>${payBadge(o)}</td>
       <td style="text-align:right; font-weight:600;">${o.totalWithTax.toFixed(2)} RON</td>
     </tr>
   `).join('');
@@ -3941,6 +3967,42 @@ window.generateSelectedFactura = async function () {
   await buildFacturaPreview(provider, providerConfig);
 };
 
+// Számlasorok: a kedvezmény a termék(ek) árából van levonva, a végén mindig van Transport sor
+const TRANSPORT_FEE = 25; // lei — ingyenes szállításnál 0
+function buildInvoiceLines(o) {
+  const round2 = (n) => Math.round((n + Number.EPSILON) * 100) / 100;
+  const items = (o.items || []).map(it => {
+    const qty = Number(it.quantity) || 1;
+    const sub = Number.isFinite(it.subtotal) ? it.subtotal : (Number(it.price) || 0) * qty; // kedvezmény előtti sorösszeg
+    return { name: it.name, qty, sub };
+  });
+  const pre = items.reduce((a, it) => a + it.sub, 0);
+  const discount = Math.min(Math.max(Number(o.discountTotal) || 0, 0), pre); // a kedvezmény nem lehet nagyobb az árnál
+  const target = round2(pre - discount);
+
+  // a kedvezményt a termékárakból vonjuk le, arányosan elosztva; az utolsó sor viszi a kerekítési különbséget
+  let used = 0;
+  const lines = items.map((it, i) => {
+    let lineTotal = i === items.length - 1
+      ? round2(target - used)
+      : round2(pre > 0 ? it.sub * target / pre : 0);
+    used = round2(used + lineTotal);
+    return {
+      Denumire: it.name, UM: 'BUC', CodArticol: String(o.id),
+      NrProduse: it.qty, PretUnitar: round2(lineTotal / it.qty), CotaTVA: 0, TVA: 0,
+      Valoare: lineTotal
+    };
+  });
+
+  const freeShipping = !(Number(o.shippingTotal) > 0);
+  const fee = freeShipping ? 0 : TRANSPORT_FEE;
+  lines.push({
+    Denumire: 'Transport', UM: 'BUC', CodArticol: 'TRANSPORT',
+    NrProduse: 1, PretUnitar: fee, CotaTVA: 0, TVA: 0, Valoare: fee
+  });
+  return lines;
+}
+
 async function buildFacturaPreview(provider, providerConfig) {
   const selectedSet = getSelectedFactura();
   const selected = getOrdersForCurrent().filter(o => selectedSet.has(String(o.id)));
@@ -3974,13 +4036,9 @@ async function buildFacturaPreview(provider, providerConfig) {
           codUnic: providerConfig.cui, cheiePrivata: providerConfig.apiKey,
           platformaUrl: providerConfig.platformUrl, serie: providerConfig.serie,
           client: { Tip: 'PF', Denumire: o.name, Adresa: o.address, Localitate: o.city, Judet: o.state, Tara: 'România', Email: o.email, Telefon: o.phone },
-          Continut: o.items.map(it => ({
-            Denumire: it.name, UM: 'BUC', CodArticol: String(o.id),
-            NrProduse: it.quantity, PretUnitar: it.price, CotaTVA: 0, TVA: 0,
-            Valoare: it.price * it.quantity
-          })),
+          Continut: buildInvoiceLines(o),
           vatRate: o.vatRate || 0,
-          shipping: o.shippingTotal || 0,
+          shipping: 0, // a szállítás már külön sorként (Transport) benne van a Continut-ban
           Discount: 0, DiscountProcent: 0, DiscountTip: 'valoare'
         };
         const res = await fetch(FGO_PROXY_URL, {
