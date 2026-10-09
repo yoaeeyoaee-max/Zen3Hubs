@@ -888,6 +888,7 @@
           <div class="filters">
             <input type="text" class="input sm" id="searchAWB" placeholder="Keresés..." oninput="applySearchAWB(this.value)" style="max-width:300px;" />
             <div class="filters-spacer"></div>
+            <label style="display:inline-flex; align-items:center; gap:6px; font-size:12.5px; color:var(--fg-muted); white-space:nowrap;"><span>Rendelések száma:</span><input type="number" class="input sm" id="ordersCountAwb" min="1" max="500" value="50" oninput="syncOrdersCount(this)" style="width:78px;" /></label>
             <button class="btn secondary sm" onclick="loadOrders()" data-i18n="load_orders">Rendelések letöltése</button>
             <button class="btn secondary sm" onclick="clearOrders()" data-i18n="clear">Törlés</button>
             <button class="btn sm" onclick="generateSelectedAWB()" data-i18n="generate_awb">AWB generálása</button>
@@ -940,6 +941,7 @@
             <input type="text" class="input sm" id="searchFactura" placeholder="Keresés..." oninput="applySearchFactura(this.value)" style="max-width:300px;" />
             <select class="input sm" id="facturaUseSelect" style="max-width:220px;" title="Számlázó"></select>
             <div class="filters-spacer"></div>
+            <label style="display:inline-flex; align-items:center; gap:6px; font-size:12.5px; color:var(--fg-muted); white-space:nowrap;"><span>Rendelések száma:</span><input type="number" class="input sm" id="ordersCountFactura" min="1" max="500" value="50" oninput="syncOrdersCount(this)" style="width:78px;" /></label>
             <button class="btn secondary sm" onclick="loadOrders()" data-i18n="load_orders">Rendelések letöltése</button>
             <button class="btn secondary sm" onclick="clearOrders()" data-i18n="clear">Törlés</button>
             <button class="btn sm" onclick="generateSelectedFactura()" data-i18n="generate_factura">Számla kiállítása</button>
@@ -2182,6 +2184,14 @@ const UI_TX = {
  "Folytatás Google-lel": {
   "ro": "Continuă cu Google",
   "en": "Continue with Google"
+ },
+ "Rendelések száma:": {
+  "ro": "Număr de comenzi:",
+  "en": "Number of orders:"
+ },
+ "Maximum 6 account": {
+  "ro": "Maximum 6 conturi",
+  "en": "Maximum 6 accounts"
  }
 };
 const UI_PATTERNS = [["^\u2713 K\u00e9sz \u2014 (\\d+) sikeres, (\\d+) hiba$","✓ Gata — $1 reușite, $2 erori","✓ Done — $1 successful, $2 failed"],["^\u2713 K\u00e9sz \u2014 (\\d+) sz\u00e1mla sikeres, (\\d+) hiba$","✓ Gata — $1 facturi reușite, $2 erori","✓ Done — $1 invoices created, $2 failed"],["^(\\d+) AWB k\u00e9sz, (\\d+) hiba$","$1 AWB gata, $2 erori","$1 AWB done, $2 failed"],["^(\\d+) sz\u00e1mla k\u00e9sz, (\\d+) hiba$","$1 facturi gata, $2 erori","$1 invoices done, $2 failed"],["^(\\d+) rendel\u00e9s bet\u00f6ltve(?: \\((\\d+) kihagyva\\))?$","$1 comenzi încărcate","$1 orders loaded"],["^(.+) AWB \u2014 (\\d+) rendel\u00e9s \u00b7 (.+)$","$1 AWB — $2 comenzi · $3","$1 AWB — $2 orders · $3"],["^Hiba: (.*)$","Eroare: $1","Error: $1"],["^FanCourier: (.*)$","FanCourier: $1","FanCourier: $1"],["^(\\d+) / (\\d+) ezen a h\u00e9ten$","$1 / $2 săptămâna aceasta","$1 / $2 this week"],["^El\u0151fizet\u00e9s m\u00f3dos\u00edtva: (.+)$","Abonament modificat: $1","Subscription changed: $1"],["^\u00c1tv\u00e1ltva: (.+)$","Comutat la: $1","Switched to: $1"],["^Nincs be\u00e1ll\u00edtva a (.+) curier! Menj a Curier be\u00e1ll\u00edt\u00e1sokhoz\\.$","Curierul $1 nu este configurat! Mergi la setările Curier.","The $1 courier is not configured! Go to the Courier settings."],["^Sz\u00e1ml\u00e1k gener\u00e1l\u00e1sa \\((.+)\\)\\.\\.\\.$","Se generează facturile ($1)...","Generating invoices ($1)..."],["^Egyszerre max (\\d+) darab k\u00e9sz\u00fcl\\.$","Se generează maximum $1 odată.","At most $1 are created at a time."],["^Egyszerre max (\\d+) sz\u00e1mla k\u00e9sz\u00fcl\\.$","Se generează maximum $1 facturi odată.","At most $1 invoices are created at a time."],["^\u2014 AWB: (.+), Sz\u00e1mla: (.+)$","— AWB: $1, Factură: $2","— AWB: $1, Invoice: $2"],["^(\\d+) lei/h\u00f3$","$1 lei/lună","$1 lei/mo"],["^A\\(z\\) (.+) sz\u00e1ml\u00e1z\u00f3nak nincs publikusan el\u00e9rhet\u0151 API dokument\u00e1ci\u00f3ja.*$","Furnizorul $1 nu are documentație API publică, deci nu a putut fi implementat.","$1 has no public API documentation, so it could not be implemented."],["^A (.+) (k\u00f6vet\u00e9si|nyomtat\u00e1si) integr\u00e1ci\u00f3 m\u00e9g nincs implement\u00e1lva\\.$","Integrarea $1 nu este implementată încă.","The $1 integration is not implemented yet."],["^Ismeretlen curier: (.+)$","Curier necunoscut: $1","Unknown courier: $1"],["^Ismeretlen sz\u00e1ml\u00e1z\u00f3: (.+)$","Furnizor de facturare necunoscut: $1","Unknown invoicing provider: $1"],["^SameDay: a v\u00e1ros nem tal\u00e1lhat\u00f3 \\((.+)\\)\\.$","SameDay: orașul nu a fost găsit ($1).","SameDay: city not found ($1)."],["^SameDay: ismeretlen megye \\((.+)\\)\\.$","SameDay: județ necunoscut ($1).","SameDay: unknown county ($1)."],["^GLS nem JSON v\u00e1laszt adott \\(HTTP (\\d+)\\)\\.$","GLS nu a returnat JSON (HTTP $1).","GLS did not return JSON (HTTP $1)."]].map(([re, ro, en]) => [new RegExp(re), ro, en]);
@@ -2622,7 +2632,7 @@ window.toast = function (msg, type = 'info') {
     warning: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>',
     info:    '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>'
   };
-  el.innerHTML = (icons[type] || icons.info) + '<div>' + msg + '</div>';
+  el.innerHTML = (icons[type] || icons.info) + '<div>' + translateUiString(String(msg)) + '</div>';
   wrap.appendChild(el);
   setTimeout(() => {
     el.style.transition = 'opacity 0.3s, transform 0.3s';
@@ -3395,6 +3405,23 @@ function extractLockerId(o) {
   return hit ? String(hit.value).trim() : '';
 }
 
+// Hány rendelést töltsön le (mindkét oldalon ugyanaz az érték)
+function getOrdersWanted() {
+  let n = parseInt(document.getElementById('ordersCountAwb')?.value || document.getElementById('ordersCountFactura')?.value, 10);
+  if (!n || n < 1) n = 50;
+  return Math.min(n, 500);
+}
+window.syncOrdersCount = function (el) {
+  const v = el.value;
+  ['ordersCountAwb', 'ordersCountFactura'].forEach(id => { const x = document.getElementById(id); if (x && x !== el) x.value = v; });
+  try { localStorage.setItem('zen3-orders-count', v); } catch (e) {}
+};
+(function initOrdersCount() {
+  let v = '50';
+  try { v = localStorage.getItem('zen3-orders-count') || '50'; } catch (e) {}
+  ['ordersCountAwb', 'ordersCountFactura'].forEach(id => { const x = document.getElementById(id); if (x) x.value = v; });
+})();
+
 // ORDERS
 window.loadOrders = async function () {
   const acc = getActiveAccount();
@@ -3402,11 +3429,9 @@ window.loadOrders = async function () {
   if (!shop.shopUrl) { toast('Add meg a webshop URL-t!', 'warning'); return; }
   if (!shop.wcKey || !shop.wcSecret) { toast('Add meg a WooCommerce kulcsokat!', 'warning'); return; }
 
-  const twoWeeksAgo = new Date();
-  twoWeeksAgo.setDate(twoWeeksAgo.getDate() - 14);
-  const afterDate = twoWeeksAgo.toISOString().split('T')[0] + 'T00:00:00';
+  const wanted = getOrdersWanted();
   const baseUrl = shop.shopUrl.replace(/\/$/, '');
-  const url = `${baseUrl}/wp-json/wc/v3/orders?per_page=${ORDERS_PER_PAGE}&after=${afterDate}&orderby=date&order=desc&consumer_key=${shop.wcKey}&consumer_secret=${shop.wcSecret}`;
+  const mkUrl = (page) => `${baseUrl}/wp-json/wc/v3/orders?per_page=100&page=${page}&orderby=date&order=desc&consumer_key=${shop.wcKey}&consumer_secret=${shop.wcSecret}`;
 
   const tbody = document.getElementById('ordersList');
   const tbodyF = document.getElementById('ordersListFactura');
@@ -3414,21 +3439,31 @@ window.loadOrders = async function () {
   if (tbodyF) tbodyF.innerHTML = '<tr><td colspan="7" style="padding:20px;"><div class="skeleton" style="height:20px;"></div></td></tr>';
 
   try {
-    const res = await fetch(url);
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    const rawOrders = await res.json();
-    if (!Array.isArray(rawOrders)) throw new Error(rawOrders.message || 'Érvénytelen válasz');
-
-    const orders = rawOrders.filter(o => !BLOCKED_ORDER_STATUSES.includes((o.status || '').toLowerCase()));
-    const skipped = rawOrders.length - orders.length;
+    // annyi oldalt töltünk le, amíg meg nem lesz a kért számú (nem kizárt státuszú) rendelés
+    const orders = [];
+    let skipped = 0;
+    for (let page = 1; page <= 10 && orders.length < wanted; page++) {
+      const res = await fetch(mkUrl(page));
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const chunk = await res.json();
+      if (!Array.isArray(chunk)) throw new Error(chunk.message || 'Érvénytelen válasz');
+      for (const o of chunk) {
+        if (BLOCKED_ORDER_STATUSES.includes((o.status || '').toLowerCase())) skipped++;
+        else if (orders.length < wanted) orders.push(o);
+      }
+      if (chunk.length < 100) break;
+    }
 
     const mapped = orders.map(o => {
       const hasPaidDate = o.date_paid !== null && o.date_paid !== undefined && o.date_paid !== '';
       const pm = (o.payment_method || '').toLowerCase();
       const pt = (o.payment_method_title || '').toLowerCase();
-      const isCod = pm === 'cod' || pm === 'ramburs' || pm === 'cash' || pm === 'numerar' ||
-        pt.includes('ramburs') || pt.includes('numerar') || pt.includes('livrare');
-      const isRamburs = isCod && !hasPaidDate;
+      const status = (o.status || '').toLowerCase();
+      const codWords = ['cod', 'ramburs', 'cash', 'numerar', 'livrare', 'delivery', 'plata la', 'plată la', 'utánvét', 'átvételkor', 'curier'];
+      const isCod = codWords.some(w => pm.includes(w) || pt.includes(w));
+      // Utánvét: a fizetési mód alapján dől el (a date_paid egyes boltoknál utánvétnél is ki van töltve);
+      // lezárt (completed) utánvétes rendelés már kifizetettnek számít
+      const isRamburs = isCod && status !== 'completed';
       const totalWithTax = parseFloat(o.total) || 0;
       const totalTax = parseFloat(o.total_tax) || 0;
       return {
@@ -3441,6 +3476,7 @@ window.loadOrders = async function () {
         state: o.shipping?.state || o.billing.state,
         country: o.shipping?.country || o.billing.country,
         isRamburs, amount: isRamburs ? totalWithTax : 0,
+        payTitle: (o.payment_method_title || o.payment_method || ''),
         netTotal: totalWithTax - totalTax, totalTax, totalWithTax,
         shippingTotal: parseFloat(o.shipping_total) || 0,
         discountTotal: parseFloat(o.discount_total) || 0,
@@ -3520,7 +3556,7 @@ function renderOrdersAWB(orders) {
       <td><div style="font-weight:500;">${escapeHtml(o.name)}</div><div style="font-size:12px; color:var(--fg-muted);">${escapeHtml(o.phone) || '–'}</div></td>
       <td><div style="font-size:13px;">${escapeHtml(o.address) || '–'}</div><div style="font-size:12px; color:var(--fg-muted);">${escapeHtml(o.city) || ''}</div></td>
       <td style="font-size:12.5px; color:var(--fg-muted); max-width:180px;" class="truncate">${escapeHtml(o.product) || '–'}</td>
-      <td>${o.isRamburs ? '<span class="badge warning">Ramburs</span>' : '<span class="badge success">Fizetve</span>'}</td>
+      <td>${o.isRamburs ? '<span class="badge warning" title="' + escapeHtml(o.payTitle || '') + '">Ramburs</span>' : '<span class="badge success" title="' + escapeHtml(o.payTitle || '') + '">Fizetve</span>'}</td>
       <td style="text-align:right; font-weight:600;">${o.totalWithTax.toFixed(2)} RON</td>
     </tr>
   `).join('');
@@ -3541,7 +3577,7 @@ function renderOrdersFactura(orders) {
       <td><div style="font-weight:500;">${escapeHtml(o.name)}</div><div style="font-size:12px; color:var(--fg-muted);">${escapeHtml(o.phone) || '–'}</div></td>
       <td><div style="font-size:13px;">${escapeHtml(o.address) || '–'}</div><div style="font-size:12px; color:var(--fg-muted);">${escapeHtml(o.city) || ''}</div></td>
       <td style="font-size:12.5px; color:var(--fg-muted); max-width:180px;" class="truncate">${escapeHtml(o.product) || '–'}</td>
-      <td>${o.isRamburs ? '<span class="badge warning">Ramburs</span>' : '<span class="badge success">Fizetve</span>'}</td>
+      <td>${o.isRamburs ? '<span class="badge warning" title="' + escapeHtml(o.payTitle || '') + '">Ramburs</span>' : '<span class="badge success" title="' + escapeHtml(o.payTitle || '') + '">Fizetve</span>'}</td>
       <td style="text-align:right; font-weight:600;">${o.totalWithTax.toFixed(2)} RON</td>
     </tr>
   `).join('');
