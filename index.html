@@ -4317,7 +4317,7 @@ async function buildFacturaPreview(provider, providerConfig) {
           // az FGO oldala nem ágyazható be, ezért gombként nyitjuk meg
           resultsEl.insertAdjacentHTML('beforeend', `
             <div class="fgo-factura-wrap" style="padding:16px;">
-              <div class="fgo-factura-link">Számlaszám: <b>${sz}</b> · Rendelés: <b>#${val.order.id}</b> · <a href="${escapeHtml(extUrl)}" target="_blank" rel="noopener">Számla megnyitása (PDF)</a></div>
+              <div class="fgo-factura-link">Számlaszám: <b>${sz}</b> · Rendelés: <b>#${val.order.id}</b> · <a href="${escapeHtml(extUrl)}" target="_blank" rel="noopener">Számla megnyitása (PDF)</a>${val.result.pdfDebug ? `<div style="font-size:11px;color:var(--fg-muted);margin-top:6px;word-break:break-all;">PDF debug: ${escapeHtml(val.result.pdfDebug)}</div>` : ''}</div>
             </div>
           `);
         } else {
