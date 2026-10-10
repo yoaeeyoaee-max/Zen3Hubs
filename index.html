@@ -441,6 +441,9 @@
   .awb-preview .row span:first-child { color: #64748B; }
   .fgo-factura-wrap { background: #fff; margin-bottom: 16px; border: 1px solid var(--border); border-radius: var(--radius-card); overflow: hidden; }
   .fgo-factura-wrap iframe { display: block; width: 100%; height: 800px; border: none; background: #fff; }
+  tr[data-order-id] { cursor: pointer; }
+  .inv-toolbar { display:flex; flex-wrap:wrap; gap:10px; align-items:center; margin-bottom:16px; }
+  .inv-print-label { display:inline-flex; align-items:center; gap:6px; cursor:pointer; font-weight:600; color:#334155; }
   .fgo-factura-link { padding: 10px; background: #F8FAFC; font-size: 11px; color: #64748B; text-align: center; border-top: 1px solid var(--border); }
 
   .progress-box { margin-bottom: 16px; padding: 14px 18px; background: var(--primary-soft); border-radius: 12px; font-size: 13px; }
@@ -2390,6 +2393,30 @@ const UI_TX = {
  "Számla megnyitása (PDF)": {
   "ro": "Deschide factura (PDF)",
   "en": "Open invoice (PDF)"
+ },
+ "Összes nyomtatása": {
+  "ro": "Imprimă toate",
+  "en": "Print all"
+ },
+ "Kijelöltek nyomtatása": {
+  "ro": "Imprimă selectate",
+  "en": "Print selected"
+ },
+ "Mind kijelölése / törlése": {
+  "ro": "Selectează / deselectează tot",
+  "en": "Select / deselect all"
+ },
+ "Nyomtatás": {
+  "ro": "Imprimă",
+  "en": "Print"
+ },
+ "Nincs kijelölt számla a nyomtatáshoz": {
+  "ro": "Nicio factură selectată pentru imprimare",
+  "en": "No invoice selected for printing"
+ },
+ "Nyomtatás előkészítése...": {
+  "ro": "Se pregătește imprimarea...",
+  "en": "Preparing print..."
  }
 };
 const UI_PATTERNS = [["^FGO nem JSON választ adott \\(HTTP (\\d+)\\)(?:: ([\\s\\S]*))?$", "FGO nu a returnat JSON (HTTP $1): $2", "FGO did not return JSON (HTTP $1): $2"],["^\u2713 K\u00e9sz \u2014 (\\d+) sikeres, (\\d+) hiba$","✓ Gata — $1 reușite, $2 erori","✓ Done — $1 successful, $2 failed"],["^\u2713 K\u00e9sz \u2014 (\\d+) sz\u00e1mla sikeres, (\\d+) hiba$","✓ Gata — $1 facturi reușite, $2 erori","✓ Done — $1 invoices created, $2 failed"],["^(\\d+) AWB k\u00e9sz, (\\d+) hiba$","$1 AWB gata, $2 erori","$1 AWB done, $2 failed"],["^(\\d+) sz\u00e1mla k\u00e9sz, (\\d+) hiba$","$1 facturi gata, $2 erori","$1 invoices done, $2 failed"],["^(\\d+) rendel\u00e9s bet\u00f6ltve(?: \\((\\d+) kihagyva\\))?$","$1 comenzi încărcate","$1 orders loaded"],["^(.+) AWB \u2014 (\\d+) rendel\u00e9s \u00b7 (.+)$","$1 AWB — $2 comenzi · $3","$1 AWB — $2 orders · $3"],["^Hiba: (.*)$","Eroare: $1","Error: $1"],["^FanCourier: (.*)$","FanCourier: $1","FanCourier: $1"],["^(\\d+) / (\\d+) ezen a h\u00e9ten$","$1 / $2 săptămâna aceasta","$1 / $2 this week"],["^El\u0151fizet\u00e9s m\u00f3dos\u00edtva: (.+)$","Abonament modificat: $1","Subscription changed: $1"],["^\u00c1tv\u00e1ltva: (.+)$","Comutat la: $1","Switched to: $1"],["^Nincs be\u00e1ll\u00edtva a (.+) curier! Menj a Curier be\u00e1ll\u00edt\u00e1sokhoz\\.$","Curierul $1 nu este configurat! Mergi la setările Curier.","The $1 courier is not configured! Go to the Courier settings."],["^Sz\u00e1ml\u00e1k gener\u00e1l\u00e1sa \\((.+)\\)\\.\\.\\.$","Se generează facturile ($1)...","Generating invoices ($1)..."],["^Egyszerre max (\\d+) darab k\u00e9sz\u00fcl\\.$","Se generează maximum $1 odată.","At most $1 are created at a time."],["^Egyszerre max (\\d+) sz\u00e1mla k\u00e9sz\u00fcl\\.$","Se generează maximum $1 facturi odată.","At most $1 invoices are created at a time."],["^\u2014 AWB: (.+), Sz\u00e1mla: (.+)$","— AWB: $1, Factură: $2","— AWB: $1, Invoice: $2"],["^(\\d+) lei/h\u00f3$","$1 lei/lună","$1 lei/mo"],["^A\\(z\\) (.+) sz\u00e1ml\u00e1z\u00f3nak nincs publikusan el\u00e9rhet\u0151 API dokument\u00e1ci\u00f3ja.*$","Furnizorul $1 nu are documentație API publică, deci nu a putut fi implementat.","$1 has no public API documentation, so it could not be implemented."],["^A (.+) (k\u00f6vet\u00e9si|nyomtat\u00e1si) integr\u00e1ci\u00f3 m\u00e9g nincs implement\u00e1lva\\.$","Integrarea $1 nu este implementată încă.","The $1 integration is not implemented yet."],["^Ismeretlen curier: (.+)$","Curier necunoscut: $1","Unknown courier: $1"],["^Ismeretlen sz\u00e1ml\u00e1z\u00f3: (.+)$","Furnizor de facturare necunoscut: $1","Unknown invoicing provider: $1"],["^SameDay: a v\u00e1ros nem tal\u00e1lhat\u00f3 \\((.+)\\)\\.$","SameDay: orașul nu a fost găsit ($1).","SameDay: city not found ($1)."],["^SameDay: ismeretlen megye \\((.+)\\)\\.$","SameDay: județ necunoscut ($1).","SameDay: unknown county ($1)."],["^GLS nem JSON v\u00e1laszt adott \\(HTTP (\\d+)\\)\\.$","GLS nu a returnat JSON (HTTP $1).","GLS did not return JSON (HTTP $1)."]].map(([re, ro, en]) => [new RegExp(re), ro, en]);
@@ -4063,6 +4090,79 @@ window.toggleSelectAllFactura = function (cb) {
   });
 };
 
+// Sorra kattintva is kijelölődik a rendelés (nem kell a kis dobozra kattintani)
+document.addEventListener('click', function (e) {
+  const tr = e.target.closest('#ordersList tr[data-order-id], #ordersListFactura tr[data-order-id]');
+  if (!tr) return;
+  if (e.target.closest('input, a, button, label, select, .badge')) return;
+  try { if (String(window.getSelection && window.getSelection()) !== '') return; } catch (err) {}
+  const cb = tr.querySelector('input[type=checkbox]');
+  if (!cb) return;
+  cb.checked = !cb.checked;
+  cb.dispatchEvent(new Event('change', { bubbles: true }));
+});
+
+// Számlák nyomtatása (összes / kijelöltek) — a PDF-eket egybe fűzi és egyszer nyomtat
+let invoicePdfs = [];
+function updateInvPrintCount() {
+  const n = document.querySelectorAll('.inv-print-cb:checked').length;
+  const el = document.getElementById('invPrintCount');
+  if (el) el.textContent = '(' + n + ')';
+}
+window.invPrintCbChanged = updateInvPrintCount;
+window.invToggleAll = function () {
+  const cbs = [...document.querySelectorAll('.inv-print-cb')];
+  const allOn = cbs.length && cbs.every(c => c.checked);
+  cbs.forEach(c => { c.checked = !allOn; });
+  updateInvPrintCount();
+};
+function loadPdfLib() {
+  if (window.PDFLib) return Promise.resolve();
+  return new Promise((resolve, reject) => {
+    const sc = document.createElement('script');
+    sc.src = 'https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js';
+    sc.onload = resolve; sc.onerror = () => reject(new Error('pdf-lib'));
+    document.head.appendChild(sc);
+  });
+}
+window.printInvoices = async function (onlySelected) {
+  let list = invoicePdfs;
+  if (onlySelected) {
+    const on = new Set([...document.querySelectorAll('.inv-print-cb:checked')].map(c => parseInt(c.dataset.idx, 10)));
+    list = invoicePdfs.filter((x, i) => on.has(i));
+  }
+  if (!list.length) { toast('Nincs kijelölt számla a nyomtatáshoz', 'warning'); return; }
+  toast('Nyomtatás előkészítése...', 'info');
+  try {
+    let url;
+    if (list.length === 1) {
+      url = URL.createObjectURL(new Blob([list[0].bytes], { type: 'application/pdf' }));
+    } else {
+      await loadPdfLib();
+      const out = await PDFLib.PDFDocument.create();
+      for (const x of list) {
+        const src = await PDFLib.PDFDocument.load(x.bytes);
+        const pages = await out.copyPages(src, src.getPageIndices());
+        pages.forEach(pg => out.addPage(pg));
+      }
+      const merged = await out.save();
+      url = URL.createObjectURL(new Blob([merged], { type: 'application/pdf' }));
+    }
+    const fr = document.createElement('iframe');
+    fr.style.cssText = 'position:fixed;right:0;bottom:0;width:0;height:0;border:0;';
+    fr.src = url;
+    fr.onload = () => {
+      try { fr.contentWindow.focus(); fr.contentWindow.print(); }
+      catch (e) { window.open(url, '_blank'); }
+    };
+    document.body.appendChild(fr);
+    setTimeout(() => fr.remove(), 120000);
+  } catch (e) {
+    console.error(e);
+    toast('Hiba: ' + e.message, 'error');
+  }
+};
+
 // AWB GENERÁLÁS — 5-ös batch + dátum + courier
 window.generateSelectedAWB = async function () {
   const s = getSelectedAWB();
@@ -4120,8 +4220,10 @@ async function buildAWBPreview(courier, courierConfig) {
       <div class="progress-track"><div id="${progressId}_bar" class="progress-bar"></div></div>
       <div class="progress-hint">Egyszerre max ${BATCH_SIZE} darab készül.</div>
     </div>
+    <div id="${progressId}_tools"></div>
     <div id="${progressId}_results"></div>
   `;
+  invoicePdfs = [];
 
   const resultsEl = document.getElementById(progressId + '_results');
   const countEl = document.getElementById(progressId + '_count');
@@ -4299,18 +4401,20 @@ async function buildFacturaPreview(provider, providerConfig) {
         const sz = val.result.numar ? `${val.result.serie}-${val.result.numar}` : `${val.result.serie}-`;
         const extUrl = (val.result.pdfUrl || '').trim();
         let pdfSrc = '';
+        let pdfIdx = -1;
         if (val.result.pdfBase64) {
           const bin = atob(val.result.pdfBase64);
           const bytes = new Uint8Array(bin.length);
           for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
           pdfSrc = URL.createObjectURL(new Blob([bytes], { type: 'application/pdf' }));
+          pdfIdx = invoicePdfs.push({ bytes, sz }) - 1;
         }
         const fname = `Factura_${sz}_${String(val.order.name || '').replace(/[^\w]+/g, '_')}.pdf`;
         if (pdfSrc) {
           resultsEl.insertAdjacentHTML('beforeend', `
             <div class="fgo-factura-wrap">
               <iframe src="${pdfSrc}#toolbar=1&navpanes=0&scrollbar=1&view=FitH" type="application/pdf"></iframe>
-              <div class="fgo-factura-link">Számlaszám: <b>${sz}</b> · Rendelés: <b>#${val.order.id}</b> · <a href="${pdfSrc}" download="${fname}">Letöltés</a>${extUrl ? ` · <a href="${escapeHtml(extUrl)}" target="_blank" rel="noopener">FGO</a>` : ''}</div>
+              <div class="fgo-factura-link">Számlaszám: <b>${sz}</b> · Rendelés: <b>#${val.order.id}</b> · <label class="inv-print-label"><input type="checkbox" class="inv-print-cb" data-idx="${pdfIdx}" checked onchange="invPrintCbChanged()" style="accent-color:var(--primary);"> Nyomtatás</label> · <a href="${pdfSrc}" download="${fname}">Letöltés</a>${extUrl ? ` · <a href="${escapeHtml(extUrl)}" target="_blank" rel="noopener">FGO</a>` : ''}</div>
             </div>
           `);
         } else if (extUrl) {
@@ -4344,6 +4448,15 @@ async function buildFacturaPreview(provider, providerConfig) {
 
   document.getElementById(progressId).className = 'progress-box done';
   document.getElementById(progressId).innerHTML = `✓ Kész — ${ok} számla sikeres, ${err} hiba`;
+  if (invoicePdfs.length) {
+    document.getElementById(progressId + '_tools').innerHTML = `
+      <div class="inv-toolbar">
+        <button class="btn" onclick="printInvoices(false)">Összes nyomtatása</button>
+        <button class="btn secondary" onclick="printInvoices(true)">Kijelöltek nyomtatása <span id="invPrintCount"></span></button>
+        <button class="btn secondary" onclick="invToggleAll()">Mind kijelölése / törlése</button>
+      </div>`;
+    updateInvPrintCount();
+  }
   if (ok > 0) { await incrementUsage('factura', ok); await refreshUsageStats(); }
   toast(`${ok} számla kész, ${err} hiba`, err ? 'warning' : 'success');
 }
