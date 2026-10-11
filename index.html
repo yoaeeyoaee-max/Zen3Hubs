@@ -442,7 +442,9 @@
   .fgo-factura-wrap { background: #fff; margin-bottom: 16px; border: 1px solid var(--border); border-radius: var(--radius-card); overflow: hidden; }
   .fgo-factura-wrap iframe { display: block; width: 100%; height: 800px; border: none; background: #fff; }
   tr[data-order-id] { cursor: pointer; }
-  .inv-toolbar { display:flex; flex-wrap:wrap; gap:10px; align-items:center; margin-bottom:16px; }
+  #supportFab { position: fixed; right: 20px; bottom: 20px; z-index: 450; display: none; align-items: center; gap: 8px; padding: 11px 16px; border-radius: 999px; border: none; cursor: pointer; background: var(--primary); color: #fff; font-weight: 600; font-size: 13px; box-shadow: var(--shadow-elevated); }
+  #supportFab:hover { filter: brightness(1.08); }
+  .inv-toolbar { position:sticky; top:0; z-index:5; padding:10px 0; background:var(--bg, transparent); display:flex; flex-wrap:wrap; gap:10px; align-items:center; margin-bottom:16px; }
   .inv-print-label { display:inline-flex; align-items:center; gap:6px; cursor:pointer; font-weight:600; color:#334155; }
   .fgo-factura-link { padding: 10px; background: #F8FAFC; font-size: 11px; color: #64748B; text-align: center; border-top: 1px solid var(--border); }
 
@@ -734,6 +736,24 @@
       <div class="auth-or"><span data-i18n="or_word">vagy</span></div>
       <button class="btn secondary block lg google-btn" onclick="handleGoogle('signup')"><svg viewBox="0 0 48 48" style="width:18px;height:18px;"><path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9.1 3.6l6.8-6.8C35.8 2.4 30.3 0 24 0 14.6 0 6.5 5.4 2.6 13.2l7.9 6.1C12.4 13.6 17.7 9.5 24 9.5z"/><path fill="#4285F4" d="M46.5 24.5c0-1.6-.1-3.1-.4-4.5H24v9h12.7c-.6 3-2.3 5.5-4.8 7.2l7.5 5.8c4.4-4.1 7.1-10.1 7.1-17.5z"/><path fill="#FBBC05" d="M10.5 28.7c-.5-1.5-.8-3-.8-4.7s.3-3.2.8-4.7l-7.9-6.1C.9 16.4 0 20.1 0 24s.9 7.6 2.6 10.8l7.9-6.1z"/><path fill="#34A853" d="M24 48c6.5 0 11.9-2.1 15.9-5.8l-7.5-5.8c-2.1 1.4-4.8 2.3-8.4 2.3-6.3 0-11.6-4.1-13.5-9.8l-7.9 6.1C6.5 42.6 14.6 48 24 48z"/></svg><span data-i18n="continue_google">Folytatás Google-lel</span></button>
       <div class="auth-switch"><span onclick="showStep('login')" data-i18n="have_account">Már van fiókod? Jelentkezz be</span></div>
+    </div>
+
+    <div class="auth-step" id="step-signup-verify">
+      <div class="signup-steps">
+        <div class="signup-step active">1</div>
+        <div class="signup-step-line"></div>
+        <div class="signup-step">2</div>
+        <div class="signup-step-line"></div>
+        <div class="signup-step">3</div>
+      </div>
+      <h1 class="auth-title">Email megerősítése</h1>
+      <p class="auth-desc">Küldtünk egy 6 jegyű kódot erre a címre:</p>
+      <p id="verifyEmailShow" style="font-weight:600; margin:-8px 0 16px;"></p>
+      <div id="verifyError" style="display:none; padding:10px 12px; background:var(--danger-soft); color:var(--danger); border-radius:var(--radius-btn); font-size:13px; margin-bottom:16px;"></div>
+      <div class="field"><label>Megerősítő kód</label><input type="text" id="verifyCode" inputmode="numeric" autocomplete="one-time-code" maxlength="6" placeholder="••••••" style="text-align:center; font-size:22px; letter-spacing:8px; height:52px;" onkeydown="if(event.key==='Enter') verifySignupCode()" /></div>
+      <button class="btn block lg" onclick="verifySignupCode()">Megerősítés</button>
+      <div class="auth-switch"><span id="verifyResend" onclick="resendVerifyCode()">Kód újraküldése</span></div>
+      <div class="auth-switch"><span onclick="showStep('signup-credentials')">Vissza</span></div>
     </div>
 
     <div class="auth-step" id="step-signup-plan">
@@ -1219,6 +1239,22 @@
 </div>
 
 <div class="toast-wrap" id="toastWrap"></div>
+
+<button id="supportFab" onclick="openSupport()"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg><span>Support</span></button>
+<div class="modal-overlay" id="supportModal" onclick="if(event.target===this) closeSupport()">
+  <div class="modal" style="max-width:520px;">
+    <div class="modal-header"><div class="modal-title">Support</div><button class="btn secondary sm" onclick="closeSupport()">✕</button></div>
+    <div style="padding:20px 24px; overflow:auto;">
+      <p style="font-size:13px; color:var(--fg-muted); margin-bottom:14px;">Írd le a hibát vagy a kérdést. Visszaigazoló e-mailt küldünk, és azonnal foglalkozunk vele.</p>
+      <div class="form-full" style="margin-bottom:12px;"><label class="label">Tárgy</label><input class="input" id="supportSubject" maxlength="120" /></div>
+      <div class="form-full"><label class="label">Üzenet</label><textarea class="input" id="supportMessage" rows="6" maxlength="4000" style="resize:vertical;"></textarea></div>
+      <div style="margin-top:16px; display:flex; gap:10px; justify-content:flex-end;">
+        <button class="btn secondary" onclick="closeSupport()">Mégse</button>
+        <button class="btn" id="supportSend" onclick="sendSupport()">Küldés</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 <div class="cmd-overlay" id="cmdOverlay" onclick="if(event.target===this) closeCmdK()">
   <div class="cmd-panel">
@@ -2417,6 +2453,98 @@ const UI_TX = {
  "Nyomtatás előkészítése...": {
   "ro": "Se pregătește imprimarea...",
   "en": "Preparing print..."
+ },
+ "A számlák PDF-je nem töltődött le (lásd a PDF debug sort), ezért nem nyomtatható": {
+  "ro": "PDF-ul facturilor nu a fost descărcat (vezi linia PDF debug), deci nu poate fi imprimat",
+  "en": "The invoice PDFs were not downloaded (see the PDF debug line), so they cannot be printed"
+ },
+ "Support": {
+  "ro": "Suport",
+  "en": "Support"
+ },
+ "Írd le a hibát vagy a kérdést. Visszaigazoló e-mailt küldünk, és azonnal foglalkozunk vele.": {
+  "ro": "Descrie eroarea sau întrebarea. Îți trimitem un e-mail de confirmare și ne ocupăm imediat de ea.",
+  "en": "Describe the problem or question. We will send a confirmation email and start working on it right away."
+ },
+ "Tárgy": {
+  "ro": "Subiect",
+  "en": "Subject"
+ },
+ "Üzenet": {
+  "ro": "Mesaj",
+  "en": "Message"
+ },
+ "Küldés": {
+  "ro": "Trimite",
+  "en": "Send"
+ },
+ "Nem vagy bejelentkezve.": {
+  "ro": "Nu ești autentificat.",
+  "en": "You are not signed in."
+ },
+ "Írd le röviden a problémát.": {
+  "ro": "Descrie pe scurt problema.",
+  "en": "Briefly describe the problem."
+ },
+ "Üzenet elküldve, visszaigazolást küldtünk e-mailben": {
+  "ro": "Mesaj trimis, am trimis o confirmare pe e-mail",
+  "en": "Message sent, we emailed you a confirmation"
+ },
+ "Email megerősítése": {
+  "ro": "Confirmarea e-mailului",
+  "en": "Verify your email"
+ },
+ "Küldtünk egy 6 jegyű kódot erre a címre:": {
+  "ro": "Am trimis un cod din 6 cifre la această adresă:",
+  "en": "We sent a 6-digit code to this address:"
+ },
+ "Megerősítő kód": {
+  "ro": "Cod de confirmare",
+  "en": "Verification code"
+ },
+ "Megerősítés": {
+  "ro": "Confirmă",
+  "en": "Verify"
+ },
+ "Kód újraküldése": {
+  "ro": "Retrimite codul",
+  "en": "Resend code"
+ },
+ "Vissza": {
+  "ro": "Înapoi",
+  "en": "Back"
+ },
+ "Új kódot küldtünk": {
+  "ro": "Am trimis un cod nou",
+  "en": "We sent a new code"
+ },
+ "Add meg a 6 jegyű kódot.": {
+  "ro": "Introdu codul din 6 cifre.",
+  "en": "Enter the 6-digit code."
+ },
+ "Előbb erősítsd meg az email címed.": {
+  "ro": "Confirmă mai întâi adresa de e-mail.",
+  "en": "Please verify your email first."
+ },
+ "Várj egy kicsit az újraküldés előtt.": {
+  "ro": "Așteaptă puțin înainte de retrimitere.",
+  "en": "Please wait a moment before resending."
+ },
+ "Túl sok kérés, próbáld újra később.": {
+  "ro": "Prea multe cereri, încearcă mai târziu.",
+  "en": "Too many requests, try again later."
+ },
+ "A kód lejárt, kérj újat.": {
+  "ro": "Codul a expirat, cere unul nou.",
+  "en": "The code expired, request a new one."
+ },
+ "Túl sok hibás próba, kérj új kódot.": {
+  "ro": "Prea multe încercări greșite, cere un cod nou.",
+  "en": "Too many wrong attempts, request a new code."
+ },
+ "Hibás kód.": {
+  "ro": "Cod greșit.",
+  "en": "Wrong code."
  }
 };
 const UI_PATTERNS = [["^FGO nem JSON választ adott \\(HTTP (\\d+)\\)(?:: ([\\s\\S]*))?$", "FGO nu a returnat JSON (HTTP $1): $2", "FGO did not return JSON (HTTP $1): $2"],["^\u2713 K\u00e9sz \u2014 (\\d+) sikeres, (\\d+) hiba$","✓ Gata — $1 reușite, $2 erori","✓ Done — $1 successful, $2 failed"],["^\u2713 K\u00e9sz \u2014 (\\d+) sz\u00e1mla sikeres, (\\d+) hiba$","✓ Gata — $1 facturi reușite, $2 erori","✓ Done — $1 invoices created, $2 failed"],["^(\\d+) AWB k\u00e9sz, (\\d+) hiba$","$1 AWB gata, $2 erori","$1 AWB done, $2 failed"],["^(\\d+) sz\u00e1mla k\u00e9sz, (\\d+) hiba$","$1 facturi gata, $2 erori","$1 invoices done, $2 failed"],["^(\\d+) rendel\u00e9s bet\u00f6ltve(?: \\((\\d+) kihagyva\\))?$","$1 comenzi încărcate","$1 orders loaded"],["^(.+) AWB \u2014 (\\d+) rendel\u00e9s \u00b7 (.+)$","$1 AWB — $2 comenzi · $3","$1 AWB — $2 orders · $3"],["^Hiba: (.*)$","Eroare: $1","Error: $1"],["^FanCourier: (.*)$","FanCourier: $1","FanCourier: $1"],["^(\\d+) / (\\d+) ezen a h\u00e9ten$","$1 / $2 săptămâna aceasta","$1 / $2 this week"],["^El\u0151fizet\u00e9s m\u00f3dos\u00edtva: (.+)$","Abonament modificat: $1","Subscription changed: $1"],["^\u00c1tv\u00e1ltva: (.+)$","Comutat la: $1","Switched to: $1"],["^Nincs be\u00e1ll\u00edtva a (.+) curier! Menj a Curier be\u00e1ll\u00edt\u00e1sokhoz\\.$","Curierul $1 nu este configurat! Mergi la setările Curier.","The $1 courier is not configured! Go to the Courier settings."],["^Sz\u00e1ml\u00e1k gener\u00e1l\u00e1sa \\((.+)\\)\\.\\.\\.$","Se generează facturile ($1)...","Generating invoices ($1)..."],["^Egyszerre max (\\d+) darab k\u00e9sz\u00fcl\\.$","Se generează maximum $1 odată.","At most $1 are created at a time."],["^Egyszerre max (\\d+) sz\u00e1mla k\u00e9sz\u00fcl\\.$","Se generează maximum $1 facturi odată.","At most $1 invoices are created at a time."],["^\u2014 AWB: (.+), Sz\u00e1mla: (.+)$","— AWB: $1, Factură: $2","— AWB: $1, Invoice: $2"],["^(\\d+) lei/h\u00f3$","$1 lei/lună","$1 lei/mo"],["^A\\(z\\) (.+) sz\u00e1ml\u00e1z\u00f3nak nincs publikusan el\u00e9rhet\u0151 API dokument\u00e1ci\u00f3ja.*$","Furnizorul $1 nu are documentație API publică, deci nu a putut fi implementat.","$1 has no public API documentation, so it could not be implemented."],["^A (.+) (k\u00f6vet\u00e9si|nyomtat\u00e1si) integr\u00e1ci\u00f3 m\u00e9g nincs implement\u00e1lva\\.$","Integrarea $1 nu este implementată încă.","The $1 integration is not implemented yet."],["^Ismeretlen curier: (.+)$","Curier necunoscut: $1","Unknown courier: $1"],["^Ismeretlen sz\u00e1ml\u00e1z\u00f3: (.+)$","Furnizor de facturare necunoscut: $1","Unknown invoicing provider: $1"],["^SameDay: a v\u00e1ros nem tal\u00e1lhat\u00f3 \\((.+)\\)\\.$","SameDay: orașul nu a fost găsit ($1).","SameDay: city not found ($1)."],["^SameDay: ismeretlen megye \\((.+)\\)\\.$","SameDay: județ necunoscut ($1).","SameDay: unknown county ($1)."],["^GLS nem JSON v\u00e1laszt adott \\(HTTP (\\d+)\\)\\.$","GLS nu a returnat JSON (HTTP $1).","GLS did not return JSON (HTTP $1)."]].map(([re, ro, en]) => [new RegExp(re), ro, en]);
@@ -2676,10 +2804,10 @@ let signupData = { email: '', password: '' };
 window.showStep = function (stepId) {
   document.querySelectorAll('.auth-step').forEach(s => s.classList.remove('active'));
   document.getElementById('step-' + stepId).classList.add('active');
-  document.querySelectorAll('#loginError, #signupError').forEach(e => e.style.display = 'none');
+  document.querySelectorAll('#loginError, #signupError, #verifyError').forEach(e => e.style.display = 'none');
 };
 
-window.signupStep1 = function () {
+window.signupStep1 = async function () {
   const email = document.getElementById('signupEmail').value.trim();
   const password = document.getElementById('signupPassword').value;
   const password2 = document.getElementById('signupPassword2').value;
@@ -2690,9 +2818,57 @@ window.signupStep1 = function () {
   if (password !== password2) { errEl.textContent = 'A jelszavak nem egyeznek!'; errEl.style.display = 'block'; return; }
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   if (!emailRegex.test(email)) { errEl.textContent = 'Érvénytelen email cím!'; errEl.style.display = 'block'; return; }
+  if (email.toLowerCase() === ADMIN_EMAIL) { errEl.textContent = 'Ez az email admin fiókhoz tartozik.'; errEl.style.display = 'block'; return; }
   signupData.email = email;
   signupData.password = password;
-  showStep('signup-plan');
+  const ok = await sendVerifyCode(errEl);
+  if (ok) {
+    document.getElementById('verifyEmailShow').textContent = email;
+    document.getElementById('verifyCode').value = '';
+    showStep('signup-verify');
+    setTimeout(() => document.getElementById('verifyCode')?.focus(), 50);
+  }
+};
+
+const VERIFY_BASE = 'https://zen3hub-3.onrender.com/api/verify';
+let verifyEmailOk = '';
+async function sendVerifyCode(errEl) {
+  try {
+    const res = await fetch(VERIFY_BASE + '/send', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: signupData.email, lang: currentLang })
+    });
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok || !data.success) throw new Error(data.error || ('HTTP ' + res.status));
+    return true;
+  } catch (e) {
+    errEl.textContent = translateUiString(e.message); errEl.style.display = 'block';
+    return false;
+  }
+}
+window.resendVerifyCode = async function () {
+  const errEl = document.getElementById('verifyError');
+  errEl.style.display = 'none';
+  const ok = await sendVerifyCode(errEl);
+  if (ok) toast('Új kódot küldtünk', 'success');
+};
+window.verifySignupCode = async function () {
+  const errEl = document.getElementById('verifyError');
+  errEl.style.display = 'none';
+  const code = document.getElementById('verifyCode').value.replace(/\D/g, '');
+  if (code.length !== 6) { errEl.textContent = translateUiString('Add meg a 6 jegyű kódot.'); errEl.style.display = 'block'; return; }
+  try {
+    const res = await fetch(VERIFY_BASE + '/check', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: signupData.email, code })
+    });
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok || !data.success) throw new Error(data.error || ('HTTP ' + res.status));
+    verifyEmailOk = signupData.email;
+    showStep('signup-plan');
+  } catch (e) {
+    errEl.textContent = translateUiString(e.message); errEl.style.display = 'block';
+  }
 };
 
 window.selectPlan = function (plan) {
@@ -2855,6 +3031,12 @@ window.signupStep3 = async function () {
   if (signupData.email === ADMIN_EMAIL) {
     errEl.textContent = 'Ez az email admin fiókhoz tartozik.';
     errEl.style.display = 'block';
+    return;
+  }
+  if (verifyEmailOk !== signupData.email) {
+    errEl.textContent = translateUiString('Előbb erősítsd meg az email címed.');
+    errEl.style.display = 'block';
+    showStep('signup-credentials');
     return;
   }
   try {
@@ -3065,6 +3247,39 @@ const authHandler = async (user) => {
   }
 };
 onAuthStateChanged(auth, authHandler);
+// ===== Support =====
+const SUPPORT_URL = 'https://zen3hub-3.onrender.com/api/support';
+const recentErrors = [];
+window.addEventListener('error', e => { recentErrors.push(String(e.message || '').substring(0, 200)); if (recentErrors.length > 5) recentErrors.shift(); });
+window.addEventListener('unhandledrejection', e => { recentErrors.push(String((e.reason && e.reason.message) || e.reason || '').substring(0, 200)); if (recentErrors.length > 5) recentErrors.shift(); });
+window.openSupport = function () { document.getElementById('supportModal').classList.add('open'); setTimeout(() => document.getElementById('supportSubject')?.focus(), 50); };
+window.closeSupport = function () { document.getElementById('supportModal').classList.remove('open'); };
+window.sendSupport = async function () {
+  const user = auth.currentUser;
+  if (!user) { toast('Nem vagy bejelentkezve.', 'warning'); return; }
+  const subject = document.getElementById('supportSubject').value.trim();
+  const message = document.getElementById('supportMessage').value.trim();
+  if (message.length < 5) { toast('Írd le röviden a problémát.', 'warning'); return; }
+  const btn = document.getElementById('supportSend');
+  btn.disabled = true;
+  try {
+    const idToken = await user.getIdToken();
+    const res = await fetch(SUPPORT_URL, {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ idToken, subject, message, lang: currentLang, page: location.hash || document.title, errors: recentErrors })
+    });
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok || !data.success) throw new Error(data.error || ('HTTP ' + res.status));
+    document.getElementById('supportSubject').value = '';
+    document.getElementById('supportMessage').value = '';
+    closeSupport();
+    toast(translateUiString('Üzenet elküldve, visszaigazolást küldtünk e-mailben') + ' (' + data.ticket + ')', 'success');
+  } catch (e) {
+    toast('Hiba: ' + e.message, 'error');
+  } finally { btn.disabled = false; }
+};
+onAuthStateChanged(auth, u => { const f = document.getElementById('supportFab'); if (f) f.style.display = u ? 'flex' : 'none'; });
+
 window.__rerunAuth = () => authHandler(auth.currentUser);
 
 // LOGOUT animációval
@@ -4131,7 +4346,7 @@ window.printInvoices = async function (onlySelected) {
     const on = new Set([...document.querySelectorAll('.inv-print-cb:checked')].map(c => parseInt(c.dataset.idx, 10)));
     list = invoicePdfs.filter((x, i) => on.has(i));
   }
-  if (!list.length) { toast('Nincs kijelölt számla a nyomtatáshoz', 'warning'); return; }
+  if (!list.length) { toast(invoicePdfs.length ? 'Nincs kijelölt számla a nyomtatáshoz' : 'A számlák PDF-je nem töltődött le (lásd a PDF debug sort), ezért nem nyomtatható', 'warning'); return; }
   toast('Nyomtatás előkészítése...', 'info');
   try {
     let url;
@@ -4448,7 +4663,7 @@ async function buildFacturaPreview(provider, providerConfig) {
 
   document.getElementById(progressId).className = 'progress-box done';
   document.getElementById(progressId).innerHTML = `✓ Kész — ${ok} számla sikeres, ${err} hiba`;
-  if (invoicePdfs.length) {
+  if (ok > 0) {
     document.getElementById(progressId + '_tools').innerHTML = `
       <div class="inv-toolbar">
         <button class="btn" onclick="printInvoices(false)">Összes nyomtatása</button>
