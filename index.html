@@ -1256,7 +1256,17 @@
   <div class="modal" style="max-width:720px;">
     <div class="modal-header"><div class="modal-title">Számlák keresése</div><button class="btn secondary sm" onclick="closeInvHistory()">✕</button></div>
     <div style="padding:16px 24px 0;">
-      <input type="text" class="input" id="invHistSearch" placeholder="Keresés névre, számlaszámra vagy rendelésszámra..." oninput="renderInvHistory()" />
+      <div id="invFgoBlock">
+      <div style="font-size:12.5px; color:var(--fg-muted); margin-bottom:6px;">Keresés az FGO-ban számlaszám szerint:</div>
+      <div style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:12px;">
+        <input type="text" class="input sm" id="invFgoSerie" placeholder="Sorozat" style="width:90px;" />
+        <input type="number" class="input sm" id="invFgoFrom" placeholder="Számtól" min="1" style="width:110px;" />
+        <input type="number" class="input sm" id="invFgoTo" placeholder="Számig" min="1" style="width:110px;" />
+        <button class="btn sm" id="invFgoBtn" onclick="searchInFgo()">Keresés az FGO-ban</button>
+        <button class="btn secondary sm" onclick="invBackToLog()">Mentett lista</button>
+      </div>
+      </div>
+      <input type="text" class="input" id="invHistSearch" placeholder="Szűrés névre, számlaszámra vagy rendelésszámra..." oninput="renderInvHistory()" />
       <div style="display:flex; justify-content:space-between; align-items:center; margin-top:10px; font-size:12.5px; color:var(--fg-muted);">
         <label style="display:inline-flex; align-items:center; gap:6px; cursor:pointer;"><input type="checkbox" id="invHistAll" onchange="invHistToggleAll(this.checked)" style="accent-color:var(--primary);"> Mind kijelölése</label>
         <span id="invHistCount"></span>
@@ -2611,6 +2621,66 @@ const UI_TX = {
  "A számlák PDF-je nem érhető el.": {
   "ro": "PDF-urile facturilor nu sunt disponibile.",
   "en": "The invoice PDFs are not available."
+ },
+ "Keresés az FGO-ban számlaszám szerint:": {
+  "ro": "Caută în FGO după numărul facturii:",
+  "en": "Search FGO by invoice number:"
+ },
+ "Sorozat": {
+  "ro": "Serie",
+  "en": "Series"
+ },
+ "Számtól": {
+  "ro": "De la numărul",
+  "en": "From number"
+ },
+ "Számig": {
+  "ro": "Până la numărul",
+  "en": "To number"
+ },
+ "Keresés az FGO-ban": {
+  "ro": "Caută în FGO",
+  "en": "Search in FGO"
+ },
+ "Mentett lista": {
+  "ro": "Lista salvată",
+  "en": "Saved list"
+ },
+ "Szűrés névre, számlaszámra vagy rendelésszámra...": {
+  "ro": "Filtrează după nume, număr factură sau număr comandă...",
+  "en": "Filter by name, invoice number or order number..."
+ },
+ "Az FGO-ban nem található számla ebben a tartományban.": {
+  "ro": "Nu s-a găsit nicio factură în FGO în acest interval.",
+  "en": "No invoice found in FGO in this range."
+ },
+ "Nincs mentett számla. Az ettől kezdve kiállított számlák itt jelennek meg. Az FGO-ban számlaszám szerint kereshetsz.": {
+  "ro": "Nicio factură salvată. Facturile emise de acum vor apărea aici. În FGO poți căuta după numărul facturii.",
+  "en": "No saved invoices. Invoices issued from now on appear here. You can search FGO by invoice number."
+ },
+ "Keresés az FGO-ban... (kb. 1 másodperc számlánként)": {
+  "ro": "Se caută în FGO... (aprox. 1 secundă per factură)",
+  "en": "Searching FGO... (about 1 second per invoice)"
+ },
+ "Nincs beállított FGO! Menj a Facturare fülre.": {
+  "ro": "FGO nu este configurat! Mergi la fila Facturare.",
+  "en": "FGO is not configured! Go to the Facturare tab."
+ },
+ "Add meg a kezdő számlaszámot.": {
+  "ro": "Introdu numărul de început al facturii.",
+  "en": "Enter the starting invoice number."
+ },
+ "Egyszerre legfeljebb 30 számlát lehet lekérni.": {
+  "ro": "Se pot prelua cel mult 30 de facturi odată.",
+  "en": "At most 30 invoices can be fetched at once."
+ },
+ "(FGO számla)": {
+  "ro": "(factură FGO)",
+  "en": "(FGO invoice)"
+ },
+ "Nincs mentett számla ennél a számlázónál. Az ettől kezdve kiállított számlák itt jelennek meg.": {
+  "ro": "Nicio factură salvată pentru acest furnizor. Facturile emise de acum vor apărea aici.",
+  "en": "No saved invoices for this provider. Invoices issued from now on will appear here."
  }
 };
 const UI_PATTERNS = [["^FGO nem JSON választ adott \\(HTTP (\\d+)\\)(?:: ([\\s\\S]*))?$", "FGO nu a returnat JSON (HTTP $1): $2", "FGO did not return JSON (HTTP $1): $2"],["^\u2713 K\u00e9sz \u2014 (\\d+) sikeres, (\\d+) hiba$","✓ Gata — $1 reușite, $2 erori","✓ Done — $1 successful, $2 failed"],["^\u2713 K\u00e9sz \u2014 (\\d+) sz\u00e1mla sikeres, (\\d+) hiba$","✓ Gata — $1 facturi reușite, $2 erori","✓ Done — $1 invoices created, $2 failed"],["^(\\d+) AWB k\u00e9sz, (\\d+) hiba$","$1 AWB gata, $2 erori","$1 AWB done, $2 failed"],["^(\\d+) sz\u00e1mla k\u00e9sz, (\\d+) hiba$","$1 facturi gata, $2 erori","$1 invoices done, $2 failed"],["^(\\d+) rendel\u00e9s bet\u00f6ltve(?: \\((\\d+) kihagyva\\))?$","$1 comenzi încărcate","$1 orders loaded"],["^(.+) AWB \u2014 (\\d+) rendel\u00e9s \u00b7 (.+)$","$1 AWB — $2 comenzi · $3","$1 AWB — $2 orders · $3"],["^Hiba: (.*)$","Eroare: $1","Error: $1"],["^FanCourier: (.*)$","FanCourier: $1","FanCourier: $1"],["^(\\d+) / (\\d+) ezen a h\u00e9ten$","$1 / $2 săptămâna aceasta","$1 / $2 this week"],["^El\u0151fizet\u00e9s m\u00f3dos\u00edtva: (.+)$","Abonament modificat: $1","Subscription changed: $1"],["^\u00c1tv\u00e1ltva: (.+)$","Comutat la: $1","Switched to: $1"],["^Nincs be\u00e1ll\u00edtva a (.+) curier! Menj a Curier be\u00e1ll\u00edt\u00e1sokhoz\\.$","Curierul $1 nu este configurat! Mergi la setările Curier.","The $1 courier is not configured! Go to the Courier settings."],["^Sz\u00e1ml\u00e1k gener\u00e1l\u00e1sa \\((.+)\\)\\.\\.\\.$","Se generează facturile ($1)...","Generating invoices ($1)..."],["^Egyszerre max (\\d+) darab k\u00e9sz\u00fcl\\.$","Se generează maximum $1 odată.","At most $1 are created at a time."],["^Egyszerre max (\\d+) sz\u00e1mla k\u00e9sz\u00fcl\\.$","Se generează maximum $1 facturi odată.","At most $1 invoices are created at a time."],["^\u2014 AWB: (.+), Sz\u00e1mla: (.+)$","— AWB: $1, Factură: $2","— AWB: $1, Invoice: $2"],["^(\\d+) lei/h\u00f3$","$1 lei/lună","$1 lei/mo"],["^A\\(z\\) (.+) sz\u00e1ml\u00e1z\u00f3nak nincs publikusan el\u00e9rhet\u0151 API dokument\u00e1ci\u00f3ja.*$","Furnizorul $1 nu are documentație API publică, deci nu a putut fi implementat.","$1 has no public API documentation, so it could not be implemented."],["^A (.+) (k\u00f6vet\u00e9si|nyomtat\u00e1si) integr\u00e1ci\u00f3 m\u00e9g nincs implement\u00e1lva\\.$","Integrarea $1 nu este implementată încă.","The $1 integration is not implemented yet."],["^Ismeretlen curier: (.+)$","Curier necunoscut: $1","Unknown courier: $1"],["^Ismeretlen sz\u00e1ml\u00e1z\u00f3: (.+)$","Furnizor de facturare necunoscut: $1","Unknown invoicing provider: $1"],["^SameDay: a v\u00e1ros nem tal\u00e1lhat\u00f3 \\((.+)\\)\\.$","SameDay: orașul nu a fost găsit ($1).","SameDay: city not found ($1)."],["^SameDay: ismeretlen megye \\((.+)\\)\\.$","SameDay: județ necunoscut ($1).","SameDay: unknown county ($1)."],["^GLS nem JSON v\u00e1laszt adott \\(HTTP (\\d+)\\)\\.$","GLS nu a returnat JSON (HTTP $1).","GLS did not return JSON (HTTP $1)."]].map(([re, ro, en]) => [new RegExp(re), ro, en]);
@@ -4522,17 +4592,50 @@ window.printInvoices = async function (onlySelected) {
 // ===== Korábbi számlák keresése / újranyomtatása =====
 const PDF_PROXY_URL = 'https://zen3hub-3.onrender.com/api/pdf/fetch';
 let invHistSel = new Set();
+let invHistMode = 'log';
+let invFgoItems = [];
+const FGO_LOOKUP_URL = 'https://zen3hub-3.onrender.com/api/fgo/lookup';
+function currentInvProvider() {
+  const cfgs = getActiveAccount().facturaConfigs || {};
+  const chosen = document.getElementById('facturaUseSelect')?.value;
+  return (chosen && cfgs[chosen]) ? chosen : (Object.keys(cfgs)[0] || 'fgo');
+}
+// A nem FGO számlák PDF-jét ebben a böngészőben (IndexedDB) tároljuk, mert nincs újra-letöltési linkjük
+function idbOpen() {
+  return new Promise((resolve, reject) => {
+    const rq = indexedDB.open('zen3-invoices', 1);
+    rq.onupgradeneeded = () => rq.result.createObjectStore('pdf');
+    rq.onsuccess = () => resolve(rq.result);
+    rq.onerror = () => reject(rq.error);
+  });
+}
+async function idbPut(key, bytes) {
+  try { const db0 = await idbOpen(); await new Promise((res, rej) => { const tx = db0.transaction('pdf', 'readwrite'); tx.objectStore('pdf').put(bytes, key); tx.oncomplete = res; tx.onerror = () => rej(tx.error); }); } catch (e) { console.warn('IDB mentés hiba', e); }
+}
+async function idbGet(key) {
+  try { const db0 = await idbOpen(); return await new Promise((res, rej) => { const rq = db0.transaction('pdf').objectStore('pdf').get(key); rq.onsuccess = () => res(rq.result || null); rq.onerror = () => rej(rq.error); }); } catch (e) { return null; }
+}
+const idbKey = (provider, sz) => (currentUser ? currentUser.uid : '') + '|' + provider + '|' + sz;
+
 window.openInvHistory = function () {
   invHistSel = new Set();
+  invHistMode = 'log'; invFgoItems = [];
   document.getElementById('invHistSearch').value = '';
   document.getElementById('invHistAll').checked = false;
+  const acc0 = getActiveAccount();
+  const fgoCfg = (acc0.facturaConfigs || {}).fgo || {};
+  document.getElementById('invFgoSerie').value = fgoCfg.serie || '';
+  const nums = (acc0.invoiceLog || []).map(x => parseInt(String(x.sz).split(/[-\s]/).pop(), 10)).filter(Boolean);
+  if (nums.length) { const mx = Math.max(...nums); document.getElementById('invFgoTo').value = mx; document.getElementById('invFgoFrom').value = Math.max(1, mx - 9); }
+  document.getElementById('invFgoBlock').style.display = currentInvProvider() === 'fgo' ? '' : 'none';
   renderInvHistory();
   document.getElementById('invHistoryModal').classList.add('open');
   setTimeout(() => document.getElementById('invHistSearch')?.focus(), 50);
 };
 window.closeInvHistory = function () { document.getElementById('invHistoryModal').classList.remove('open'); };
 function invHistFiltered() {
-  const log = getActiveAccount().invoiceLog || [];
+  const prov = currentInvProvider();
+  const log = invHistMode === 'fgo' ? invFgoItems : (getActiveAccount().invoiceLog || []).filter(x => (x.provider || 'fgo') === prov);
   const q = (document.getElementById('invHistSearch')?.value || '').trim().toLowerCase();
   if (!q) return log;
   return log.filter(x => [x.name, x.sz, x.id].some(v => String(v || '').toLowerCase().includes(q)));
@@ -4542,16 +4645,16 @@ window.renderInvHistory = function () {
   const el = document.getElementById('invHistList');
   const fmt = (iso) => { const d = new Date(iso); return isNaN(d) ? '' : d.toLocaleDateString(currentLang === 'hu' ? 'hu-HU' : currentLang === 'ro' ? 'ro-RO' : 'en-GB'); };
   if (!list.length) {
-    el.innerHTML = '<div style="padding:28px 0; text-align:center; color:var(--fg-muted); font-size:13px;">Nincs mentett számla. Az ettől kezdve kiállított számlák itt jelennek meg.</div>';
+    el.innerHTML = '<div style="padding:28px 0; text-align:center; color:var(--fg-muted); font-size:13px;">' + (invHistMode === 'fgo' ? 'Az FGO-ban nem található számla ebben a tartományban.' : (currentInvProvider() === 'fgo' ? 'Nincs mentett számla. Az ettől kezdve kiállított számlák itt jelennek meg. Az FGO-ban számlaszám szerint kereshetsz.' : 'Nincs mentett számla ennél a számlázónál. Az ettől kezdve kiállított számlák itt jelennek meg.')) + '</div>';
   } else {
     el.innerHTML = list.map(x => `
       <div class="inv-hist-row" data-key="${escapeHtml(x.sz)}" style="display:flex; align-items:center; gap:12px; padding:10px 4px; border-bottom:1px solid var(--border); cursor:pointer;">
         <input type="checkbox" ${invHistSel.has(x.sz) ? 'checked' : ''} style="accent-color:var(--primary);">
         <div style="flex:1; min-width:0;">
           <div style="font-weight:600; font-size:13.5px;">${escapeHtml(x.name || '–')}</div>
-          <div style="font-size:12px; color:var(--fg-muted);">${escapeHtml(x.sz)} · #${escapeHtml(String(x.id))} · ${fmt(x.date)}</div>
+          <div style="font-size:12px; color:var(--fg-muted);">${escapeHtml(x.sz)}${x.id ? ' · #' + escapeHtml(String(x.id)) : ''}${x.date ? ' · ' + fmt(x.date) : ''}</div>
         </div>
-        <div style="font-weight:600; font-size:13px; white-space:nowrap;">${(Number(x.total) || 0).toFixed(2)} RON</div>
+        <div style="font-weight:600; font-size:13px; white-space:nowrap;">${x.total != null ? (Number(x.total) || 0).toFixed(2) + ' RON' : ''}</div>
       </div>`).join('');
   }
   document.getElementById('invHistCount').textContent = invHistSel.size + ' / ' + list.length;
@@ -4570,33 +4673,97 @@ window.invHistToggleAll = function (on) {
   renderInvHistory();
 };
 window.openSelectedInvoices = async function () {
-  const log = (getActiveAccount().invoiceLog || []).filter(x => invHistSel.has(x.sz));
+  if (invHistMode === 'fgo') {
+    const chosen = invFgoItems.filter(x => invHistSel.has(x.sz));
+    if (!chosen.length) { toast('Nincs kijelölt számla a nyomtatáshoz', 'warning'); return; }
+    showInvoicesInPreview(chosen.map(x => ({ bytes: x.bytes, sz: x.sz, id: x.id || '', name: x.name })));
+    closeInvHistory();
+    document.getElementById('facturaPreview')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    return;
+  }
+  const prov = currentInvProvider();
+  const log = (getActiveAccount().invoiceLog || []).filter(x => (x.provider || 'fgo') === prov && invHistSel.has(x.sz));
   if (!log.length) { toast('Nincs kijelölt számla a nyomtatáshoz', 'warning'); return; }
   const btn = document.getElementById('invHistOpenBtn');
   btn.disabled = true;
   try {
-    const res = await fetch(PDF_PROXY_URL, {
-      method: 'POST', headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ urls: log.map(x => x.url) })
-    });
-    const data = await res.json().catch(() => ({}));
-    if (!res.ok || !data.success) throw new Error(data.error || ('HTTP ' + res.status));
-    const items = [];
-    let failed = 0;
-    log.forEach((x, i) => {
-      const b64 = data.items[i] && data.items[i].pdfBase64;
-      if (!b64) { failed++; return; }
-      const bin = atob(b64);
-      const bytes = new Uint8Array(bin.length);
-      for (let k = 0; k < bin.length; k++) bytes[k] = bin.charCodeAt(k);
-      items.push({ bytes, sz: x.sz, id: x.id, name: x.name, url: x.url });
-    });
-    if (!items.length) throw new Error('A számlák PDF-je nem érhető el.');
-    showInvoicesInPreview(items);
+    const items = new Array(log.length).fill(null);
+    // 1) FGO (vagy más) linkkel rendelkezők: a szerver tölti le
+    const withUrl = log.map((x, i) => ({ x, i })).filter(o => o.x.url);
+    if (withUrl.length) {
+      const res = await fetch(PDF_PROXY_URL, {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ urls: withUrl.map(o => o.x.url) })
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok || !data.success) throw new Error(data.error || ('HTTP ' + res.status));
+      withUrl.forEach((o, k) => {
+        const b64 = data.items[k] && data.items[k].pdfBase64;
+        if (!b64) return;
+        const bin = atob(b64);
+        const bytes = new Uint8Array(bin.length);
+        for (let q = 0; q < bin.length; q++) bytes[q] = bin.charCodeAt(q);
+        items[o.i] = { bytes, sz: o.x.sz, id: o.x.id, name: o.x.name };
+      });
+    }
+    // 2) link nélküliek: ebből a böngészőből (korábban elmentett PDF)
+    for (let i = 0; i < log.length; i++) {
+      if (items[i]) continue;
+      const stored = await idbGet(idbKey(log[i].provider || 'fgo', log[i].sz));
+      if (stored) items[i] = { bytes: stored, sz: log[i].sz, id: log[i].id, name: log[i].name };
+    }
+    const okItems = items.filter(Boolean);
+    const failed = log.length - okItems.length;
+    if (!okItems.length) throw new Error('A számlák PDF-je nem érhető el.');
+    showInvoicesInPreview(okItems);
     closeInvHistory();
     if (failed) toast(failed + ' számla nem tölthető le', 'warning');
     document.getElementById('facturaPreview')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   } catch (e) {
+    toast('Hiba: ' + e.message, 'error');
+  } finally { btn.disabled = false; }
+};
+window.invBackToLog = function () { invHistMode = 'log'; invHistSel = new Set(); document.getElementById('invHistAll').checked = false; renderInvHistory(); };
+window.searchInFgo = async function () {
+  const acc = getActiveAccount();
+  const cfg = (acc.facturaConfigs || {}).fgo;
+  if (!cfg || !cfg.cui || !cfg.apiKey) { toast('Nincs beállított FGO! Menj a Facturare fülre.', 'warning'); return; }
+  const serie = document.getElementById('invFgoSerie').value.trim() || cfg.serie;
+  const from = parseInt(document.getElementById('invFgoFrom').value, 10);
+  let to = parseInt(document.getElementById('invFgoTo').value, 10);
+  if (!from) { toast('Add meg a kezdő számlaszámot.', 'warning'); return; }
+  if (!to || to < from) to = from;
+  if (to - from + 1 > 30) { toast('Egyszerre legfeljebb 30 számlát lehet lekérni.', 'warning'); return; }
+  const btn = document.getElementById('invFgoBtn');
+  const el = document.getElementById('invHistList');
+  btn.disabled = true;
+  el.innerHTML = '<div style="padding:28px 0; text-align:center; color:var(--fg-muted); font-size:13px;">Keresés az FGO-ban... (kb. 1 másodperc számlánként)</div>';
+  try {
+    const res = await fetch(FGO_LOOKUP_URL, {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ providerConfig: { cui: cfg.cui, apiKey: cfg.apiKey, platformUrl: cfg.platformUrl, serie }, serie, from, to })
+    });
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok || !data.success) throw new Error(data.error || ('HTTP ' + res.status));
+    const byLog = {};
+    (acc.invoiceLog || []).forEach(x => { byLog[x.sz] = x; });
+    invFgoItems = [];
+    data.items.forEach(it => {
+      if (!it.pdfBase64) return;
+      const sz = serie + '-' + it.numar;
+      const bin = atob(it.pdfBase64);
+      const bytes = new Uint8Array(bin.length);
+      for (let k = 0; k < bin.length; k++) bytes[k] = bin.charCodeAt(k);
+      const lg = byLog[sz];
+      invFgoItems.push({ sz, id: lg ? lg.id : '', name: lg ? lg.name : '(FGO számla)', date: lg ? lg.date : '', total: lg ? lg.total : null, bytes });
+    });
+    invHistMode = 'fgo'; invHistSel = new Set();
+    document.getElementById('invHistAll').checked = false;
+    renderInvHistory();
+    const miss = data.items.length - invFgoItems.length;
+    if (miss > 0) toast(miss + ' számla nem található az FGO-ban', 'info');
+  } catch (e) {
+    renderInvHistory();
     toast('Hiba: ' + e.message, 'error');
   } finally { btn.disabled = false; }
 };
@@ -4858,7 +5025,15 @@ async function buildFacturaPreview(provider, providerConfig) {
         ok++;
         const sz = val.result.numar ? `${val.result.serie}-${val.result.numar}` : `${val.result.serie}-`;
         const extUrl = (val.result.pdfUrl || '').trim();
-        if (extUrl) newLog.push({ id: val.order.id, name: val.order.name, sz, date: new Date().toISOString(), url: extUrl, provider, total: val.order.totalWithTax || 0 });
+        if (extUrl || val.result.pdfBase64) {
+          newLog.push({ id: val.order.id, name: val.order.name, sz, date: new Date().toISOString(), url: extUrl, provider, total: val.order.totalWithTax || 0 });
+          if (!extUrl && val.result.pdfBase64) {
+            const bin0 = atob(val.result.pdfBase64);
+            const by0 = new Uint8Array(bin0.length);
+            for (let q = 0; q < bin0.length; q++) by0[q] = bin0.charCodeAt(q);
+            idbPut(idbKey(provider, sz), by0);
+          }
+        }
         let pdfSrc = '';
         let pdfIdx = -1;
         if (val.result.pdfBase64) {
@@ -4919,8 +5094,8 @@ async function buildFacturaPreview(provider, providerConfig) {
   if (newLog.length) {
     try {
       const acc2 = getActiveAccount();
-      const have = new Set(newLog.map(x => x.sz));
-      acc2.invoiceLog = [...newLog.reverse(), ...(acc2.invoiceLog || []).filter(x => !have.has(x.sz))].slice(0, 500);
+      const have = new Set(newLog.map(x => x.provider + '|' + x.sz));
+      acc2.invoiceLog = [...newLog.reverse(), ...(acc2.invoiceLog || []).filter(x => !have.has((x.provider || 'fgo') + '|' + x.sz))].slice(0, 500);
       await persistAccounts();
     } catch (e) { console.warn('Számlanapló mentése nem sikerült:', e); }
   }
