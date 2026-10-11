@@ -718,6 +718,17 @@
       <div class="auth-switch"><span onclick="showStep('signup-credentials')" data-i18n="no_account">Nincs fiókod? Regisztrálj</span></div>
     </div>
 
+    <div class="auth-step" id="step-login-verify">
+      <h1 class="auth-title">Bejelentkezés megerősítése</h1>
+      <p class="auth-desc">Biztonsági okból küldtünk egy 6 jegyű kódot erre a címre:</p>
+      <p id="loginVerifyEmail" style="font-weight:600; margin:-8px 0 16px;"></p>
+      <div id="lverifyError" style="display:none; padding:10px 12px; background:var(--danger-soft); color:var(--danger); border-radius:var(--radius-btn); font-size:13px; margin-bottom:16px;"></div>
+      <div class="field"><label>Megerősítő kód</label><input type="text" id="loginVerifyCode" inputmode="numeric" autocomplete="one-time-code" maxlength="6" placeholder="••••••" style="text-align:center; font-size:22px; letter-spacing:8px; height:52px;" onkeydown="if(event.key==='Enter') verifyLoginCode()" /></div>
+      <button class="btn block lg" onclick="verifyLoginCode()">Megerősítés</button>
+      <div class="auth-switch"><span onclick="resendLoginCode()">Kód újraküldése</span></div>
+      <div class="auth-switch"><span onclick="cancelLogin2fa()">Mégse, kilépés</span></div>
+    </div>
+
     <div class="auth-step" id="step-signup-credentials">
       <div class="signup-steps">
         <div class="signup-step active">1</div>
@@ -2545,6 +2556,18 @@ const UI_TX = {
  "Hibás kód.": {
   "ro": "Cod greșit.",
   "en": "Wrong code."
+ },
+ "Bejelentkezés megerősítése": {
+  "ro": "Confirmarea autentificării",
+  "en": "Confirm your sign-in"
+ },
+ "Biztonsági okból küldtünk egy 6 jegyű kódot erre a címre:": {
+  "ro": "Din motive de securitate, am trimis un cod din 6 cifre la această adresă:",
+  "en": "For security, we sent a 6-digit code to this address:"
+ },
+ "Mégse, kilépés": {
+  "ro": "Anulează, ieși",
+  "en": "Cancel and sign out"
  }
 };
 const UI_PATTERNS = [["^FGO nem JSON választ adott \\(HTTP (\\d+)\\)(?:: ([\\s\\S]*))?$", "FGO nu a returnat JSON (HTTP $1): $2", "FGO did not return JSON (HTTP $1): $2"],["^\u2713 K\u00e9sz \u2014 (\\d+) sikeres, (\\d+) hiba$","✓ Gata — $1 reușite, $2 erori","✓ Done — $1 successful, $2 failed"],["^\u2713 K\u00e9sz \u2014 (\\d+) sz\u00e1mla sikeres, (\\d+) hiba$","✓ Gata — $1 facturi reușite, $2 erori","✓ Done — $1 invoices created, $2 failed"],["^(\\d+) AWB k\u00e9sz, (\\d+) hiba$","$1 AWB gata, $2 erori","$1 AWB done, $2 failed"],["^(\\d+) sz\u00e1mla k\u00e9sz, (\\d+) hiba$","$1 facturi gata, $2 erori","$1 invoices done, $2 failed"],["^(\\d+) rendel\u00e9s bet\u00f6ltve(?: \\((\\d+) kihagyva\\))?$","$1 comenzi încărcate","$1 orders loaded"],["^(.+) AWB \u2014 (\\d+) rendel\u00e9s \u00b7 (.+)$","$1 AWB — $2 comenzi · $3","$1 AWB — $2 orders · $3"],["^Hiba: (.*)$","Eroare: $1","Error: $1"],["^FanCourier: (.*)$","FanCourier: $1","FanCourier: $1"],["^(\\d+) / (\\d+) ezen a h\u00e9ten$","$1 / $2 săptămâna aceasta","$1 / $2 this week"],["^El\u0151fizet\u00e9s m\u00f3dos\u00edtva: (.+)$","Abonament modificat: $1","Subscription changed: $1"],["^\u00c1tv\u00e1ltva: (.+)$","Comutat la: $1","Switched to: $1"],["^Nincs be\u00e1ll\u00edtva a (.+) curier! Menj a Curier be\u00e1ll\u00edt\u00e1sokhoz\\.$","Curierul $1 nu este configurat! Mergi la setările Curier.","The $1 courier is not configured! Go to the Courier settings."],["^Sz\u00e1ml\u00e1k gener\u00e1l\u00e1sa \\((.+)\\)\\.\\.\\.$","Se generează facturile ($1)...","Generating invoices ($1)..."],["^Egyszerre max (\\d+) darab k\u00e9sz\u00fcl\\.$","Se generează maximum $1 odată.","At most $1 are created at a time."],["^Egyszerre max (\\d+) sz\u00e1mla k\u00e9sz\u00fcl\\.$","Se generează maximum $1 facturi odată.","At most $1 invoices are created at a time."],["^\u2014 AWB: (.+), Sz\u00e1mla: (.+)$","— AWB: $1, Factură: $2","— AWB: $1, Invoice: $2"],["^(\\d+) lei/h\u00f3$","$1 lei/lună","$1 lei/mo"],["^A\\(z\\) (.+) sz\u00e1ml\u00e1z\u00f3nak nincs publikusan el\u00e9rhet\u0151 API dokument\u00e1ci\u00f3ja.*$","Furnizorul $1 nu are documentație API publică, deci nu a putut fi implementat.","$1 has no public API documentation, so it could not be implemented."],["^A (.+) (k\u00f6vet\u00e9si|nyomtat\u00e1si) integr\u00e1ci\u00f3 m\u00e9g nincs implement\u00e1lva\\.$","Integrarea $1 nu este implementată încă.","The $1 integration is not implemented yet."],["^Ismeretlen curier: (.+)$","Curier necunoscut: $1","Unknown courier: $1"],["^Ismeretlen sz\u00e1ml\u00e1z\u00f3: (.+)$","Furnizor de facturare necunoscut: $1","Unknown invoicing provider: $1"],["^SameDay: a v\u00e1ros nem tal\u00e1lhat\u00f3 \\((.+)\\)\\.$","SameDay: orașul nu a fost găsit ($1).","SameDay: city not found ($1)."],["^SameDay: ismeretlen megye \\((.+)\\)\\.$","SameDay: județ necunoscut ($1).","SameDay: unknown county ($1)."],["^GLS nem JSON v\u00e1laszt adott \\(HTTP (\\d+)\\)\\.$","GLS nu a returnat JSON (HTTP $1).","GLS did not return JSON (HTTP $1)."]].map(([re, ro, en]) => [new RegExp(re), ro, en]);
@@ -2804,7 +2827,7 @@ let signupData = { email: '', password: '' };
 window.showStep = function (stepId) {
   document.querySelectorAll('.auth-step').forEach(s => s.classList.remove('active'));
   document.getElementById('step-' + stepId).classList.add('active');
-  document.querySelectorAll('#loginError, #signupError, #verifyError').forEach(e => e.style.display = 'none');
+  document.querySelectorAll('#loginError, #signupError, #verifyError, #lverifyError').forEach(e => e.style.display = 'none');
 };
 
 window.signupStep1 = async function () {
@@ -3087,6 +3110,69 @@ window.handleGoogle = async function (mode) {
   }
 };
 
+// ===== Belépés 2. lépés: e-mail kód =====
+let login2faPassed = false;
+let login2faAwaiting = '';
+async function sendCodeTo(email, purpose, errEl) {
+  try {
+    const res = await fetch(VERIFY_BASE + '/send', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, lang: currentLang, purpose })
+    });
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok || !data.success) throw new Error(data.error || ('HTTP ' + res.status));
+    return true;
+  } catch (e) {
+    errEl.textContent = translateUiString(e.message); errEl.style.display = 'block';
+    return false;
+  }
+}
+async function beginLogin2fa(user) {
+  document.getElementById('app').classList.remove('show');
+  document.getElementById('homePage').classList.add('hidden');
+  document.getElementById('authScreen').classList.add('show');
+  showStep('login-verify');
+  document.getElementById('loginVerifyEmail').textContent = user.email;
+  if (login2faAwaiting === user.uid) return; // már elküldtük a kódot
+  login2faAwaiting = user.uid;
+  document.getElementById('loginVerifyCode').value = '';
+  await sendCodeTo(user.email, 'login', document.getElementById('lverifyError'));
+  setTimeout(() => document.getElementById('loginVerifyCode')?.focus(), 50);
+}
+window.resendLoginCode = async function () {
+  const errEl = document.getElementById('lverifyError');
+  errEl.style.display = 'none';
+  if (!auth.currentUser) return;
+  if (await sendCodeTo(auth.currentUser.email, 'login', errEl)) toast('Új kódot küldtünk', 'success');
+};
+window.verifyLoginCode = async function () {
+  const errEl = document.getElementById('lverifyError');
+  errEl.style.display = 'none';
+  const user = auth.currentUser;
+  if (!user) return;
+  const code = document.getElementById('loginVerifyCode').value.replace(/\D/g, '');
+  if (code.length !== 6) { errEl.textContent = translateUiString('Add meg a 6 jegyű kódot.'); errEl.style.display = 'block'; return; }
+  try {
+    const res = await fetch(VERIFY_BASE + '/check', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email: user.email, code })
+    });
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok || !data.success) throw new Error(data.error || ('HTTP ' + res.status));
+    try { localStorage.removeItem('zen3-2fa-pending'); } catch (e) {}
+    login2faPassed = true; login2faAwaiting = '';
+    await window.__rerunAuth();
+  } catch (e) {
+    errEl.textContent = translateUiString(e.message); errEl.style.display = 'block';
+  }
+};
+window.cancelLogin2fa = async function () {
+  try { localStorage.removeItem('zen3-2fa-pending'); } catch (e) {}
+  login2faAwaiting = ''; login2faPassed = false;
+  await signOut(auth);
+  showStep('login');
+};
+
 window.handleLogin = async function () {
   const email = document.getElementById('loginEmail').value.trim();
   const password = document.getElementById('loginPassword').value;
@@ -3096,8 +3182,11 @@ window.handleLogin = async function () {
   if (!email || !password) { errEl.textContent = 'Töltsd ki az összes mezőt!'; errEl.style.display = 'block'; return; }
   try {
     await setPersistence(auth, remember ? browserLocalPersistence : browserSessionPersistence);
+    login2faPassed = false; login2faAwaiting = '';
+    try { localStorage.setItem('zen3-2fa-pending', email.toLowerCase()); } catch (e2) {}
     await signInWithEmailAndPassword(auth, email, password);
   } catch (e) {
+    try { localStorage.removeItem('zen3-2fa-pending'); } catch (e2) {}
     const map = {
       'auth/user-not-found': 'Nincs ilyen fiók.',
       'auth/wrong-password': 'Hibás jelszó.',
@@ -3183,6 +3272,14 @@ window.toggleTheme = function () {
 // AUTH STATE
 const authHandler = async (user) => {
   if (user) {
+    // Jelszavas belépés után kötelező az e-mailben kapott kód (Google belépésnél és megőrzött munkamenetnél nincs)
+    let pend = '';
+    try { pend = localStorage.getItem('zen3-2fa-pending') || ''; } catch (e) {}
+    if (pend && pend === String(user.email || '').toLowerCase() && !login2faPassed) {
+      await beginLogin2fa(user);
+      return;
+    }
+    if (pend && pend !== String(user.email || '').toLowerCase()) { try { localStorage.removeItem('zen3-2fa-pending'); } catch (e) {} }
     currentUser = user;
     document.getElementById('sidebarEmail').textContent = user.email;
     document.getElementById('userAvatar').textContent = (user.email || 'U').charAt(0).toUpperCase();
@@ -3284,6 +3381,7 @@ window.__rerunAuth = () => authHandler(auth.currentUser);
 
 // LOGOUT animációval
 window.logout = async function () {
+  login2faPassed = false; login2faAwaiting = '';
   const overlay = document.createElement('div');
   overlay.id = 'logoutOverlay';
   overlay.innerHTML = `
