@@ -826,6 +826,7 @@
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
         <div><b data-i18n="beta_warning">Beta verzió.</b> <span data-i18n="beta_warning_text">A kártya adatait nem dolgozzuk fel, nem történik valódi fizetés.</span></div>
       </div>
+      <div id="signupPayError" style="display:none; padding:10px 12px; background:var(--danger-soft); color:var(--danger); border-radius:var(--radius-btn); font-size:13px; margin-bottom:16px;"></div>
       <div class="form-section-title" style="margin-top:4px;">Számlázási adatok</div>
       <div id="signupBillingFields"></div>
       <div class="field"><label data-i18n="card_holder">Kártyabirtokos neve</label><input type="text" id="cardHolder" placeholder="POPESCU ION" /></div>
@@ -2886,9 +2887,169 @@ const UI_TX = {
  "A nyugtát és a számlát elküldtük az e-mail címedre.": {
   "ro": "Chitanța și factura au fost trimise pe adresa ta de email.",
   "en": "We emailed your receipt and invoice to you."
+ },
+ "Számlák": {
+  "ro": "Facturi",
+  "en": "Invoices"
+ },
+ "Cég": {
+  "ro": "Companie",
+  "en": "Company"
+ },
+ "AWB-k": {
+  "ro": "AWB-uri",
+  "en": "AWBs"
+ },
+ "Manage Subscription": {
+  "ro": "Gestionează abonamentul",
+  "en": "Manage subscription"
+ },
+ "Fő account": {
+  "ro": "Cont principal",
+  "en": "Main account"
+ },
+ "Felhasználási feltételek": {
+  "ro": "Termeni de utilizare",
+  "en": "Terms of use"
+ },
+ "Teljes platform számlázáshoz és AWB-hez": {
+  "ro": "Platformă completă pentru facturare și AWB",
+  "en": "Complete platform for invoicing and AWBs"
+ },
+ "Készíts AWB-ket és számlákat másodpercek alatt. DPD, WooCommerce és FGO eFactura integráció.": {
+  "ro": "Creează AWB-uri și facturi în câteva secunde. Integrare DPD, WooCommerce și FGO eFactura.",
+  "en": "Create AWBs and invoices in seconds. DPD, WooCommerce and FGO eFactura integration."
+ },
+ "Árak megtekintése": {
+  "ro": "Vezi prețurile",
+  "en": "View pricing"
+ },
+ "Készíts DPD AWB-ket néhány kattintással, közvetlenül a WooCommerce rendelésekből.": {
+  "ro": "Generează AWB-uri DPD în câteva clicuri, direct din comenzile WooCommerce.",
+  "en": "Create DPD AWBs in a few clicks, straight from your WooCommerce orders."
+ },
+ "e-Factura számlák": {
+  "ro": "Facturi e-Factura",
+  "en": "e-Factura invoices"
+ },
+ "Állíts ki számlákat, és küldd el automatikusan az SPV-be az FGO-n keresztül.": {
+  "ro": "Emite facturi și trimite-le automat în SPV prin FGO.",
+  "en": "Issue invoices and send them to SPV automatically through FGO."
+ },
+ "Gyors és egyszerű": {
+  "ro": "Rapid și simplu",
+  "en": "Fast and simple"
+ },
+ "5 másodperc AWB-nként. Modern felület, betanulás nélkül.": {
+  "ro": "5 secunde per AWB. Interfață modernă, fără curbă de învățare.",
+  "en": "5 seconds per AWB. Modern interface, no learning curve."
+ },
+ "Válaszd ki a megfelelő csomagot": {
+  "ro": "Alege pachetul potrivit",
+  "en": "Choose the right plan"
+ },
+ "7 nap ingyen. Bankkártya nem kötelező.": {
+  "ro": "7 zile gratuit. Cardul bancar nu este obligatoriu.",
+  "en": "7 days free. No bank card required."
+ },
+ "Növekvő vállalkozásoknak": {
+  "ro": "Pentru afaceri în creștere",
+  "en": "For growing businesses"
+ },
+ "Nagy cégeknek és csapatoknak": {
+  "ro": "Pentru companii mari și echipe",
+  "en": "For large companies and teams"
+ },
+ "50 AWB / hét": {
+  "ro": "50 AWB / săptămână",
+  "en": "50 AWB / week"
+ },
+ "50 számla / hét": {
+  "ro": "50 facturi / săptămână",
+  "en": "50 invoices / week"
+ },
+ "200 AWB / hét": {
+  "ro": "200 AWB / săptămână",
+  "en": "200 AWB / week"
+ },
+ "200 számla / hét": {
+  "ro": "200 facturi / săptămână",
+  "en": "200 invoices / week"
+ },
+ "DPD + WooCommerce integráció": {
+  "ro": "Integrare DPD + WooCommerce",
+  "en": "DPD + WooCommerce integration"
+ },
+ "Minden Standard integráció": {
+  "ro": "Toate integrările Standard",
+  "en": "All Standard integrations"
+ },
+ "Elsőbbségi támogatás": {
+  "ro": "Suport prioritar",
+  "en": "Priority support"
+ },
+ "Korlátlan AWB": {
+  "ro": "AWB nelimitat",
+  "en": "Unlimited AWBs"
+ },
+ "Korlátlan számla": {
+  "ro": "Facturi nelimitate",
+  "en": "Unlimited invoices"
+ },
+ "Minden integráció": {
+  "ro": "Toate integrările",
+  "en": "All integrations"
+ },
+ "Dedikált 24/7 támogatás": {
+  "ro": "Suport dedicat 24/7",
+  "en": "Dedicated 24/7 support"
+ },
+ "Az Eauto egy román logisztikai platform, amely az online vállalkozók életét könnyíti meg.": {
+  "ro": "Eauto este o platformă logistică românească care ușurează munca antreprenorilor online.",
+  "en": "Eauto is a Romanian logistics platform that makes life easier for online merchants."
+ },
+ "Teljes platform számlázáshoz és AWB-hez Romániában. Üzemeltető: Milan web S.R.L.": {
+  "ro": "Platformă completă pentru facturare și AWB în România. Operator: Milan web S.R.L.",
+  "en": "Complete platform for invoicing and AWBs in Romania. Operator: Milan web S.R.L."
+ },
+ "Vissza a főoldalra": {
+  "ro": "Înapoi la pagina principală",
+  "en": "Back to the homepage"
+ },
+ "Előfizetés kezelése": {
+  "ro": "Gestionează abonamentul",
+  "en": "Manage subscription"
+ },
+ "El kell fogadnod a Felhasználási feltételeket.": {
+  "ro": "Trebuie să accepți Termenii de utilizare.",
+  "en": "You must accept the Terms of use."
+ },
+ "Már van fiókod? Jelentkezz be": {
+  "ro": "Ai deja cont? Autentifică-te",
+  "en": "Already have an account? Log in"
+ },
+ "Kártya": {
+  "ro": "Card",
+  "en": "Card"
+ },
+ "kártya": {
+  "ro": "card",
+  "en": "card"
+ },
+ "Megújítás hiba:": {
+  "ro": "Eroare la reînnoire:",
+  "en": "Renewal error:"
+ },
+ "TERMÉK": {
+  "ro": "PRODUS",
+  "en": "PRODUCT"
+ },
+ "Standard": {
+  "ro": "Standard",
+  "en": "Standard"
  }
 };
-const UI_PATTERNS = [["^FGO nem JSON választ adott \\(HTTP (\\d+)\\)(?:: ([\\s\\S]*))?$", "FGO nu a returnat JSON (HTTP $1): $2", "FGO did not return JSON (HTTP $1): $2"],["^\u2713 K\u00e9sz \u2014 (\\d+) sikeres, (\\d+) hiba$","✓ Gata — $1 reușite, $2 erori","✓ Done — $1 successful, $2 failed"],["^\u2713 K\u00e9sz \u2014 (\\d+) sz\u00e1mla sikeres, (\\d+) hiba$","✓ Gata — $1 facturi reușite, $2 erori","✓ Done — $1 invoices created, $2 failed"],["^(\\d+) AWB k\u00e9sz, (\\d+) hiba$","$1 AWB gata, $2 erori","$1 AWB done, $2 failed"],["^(\\d+) sz\u00e1mla k\u00e9sz, (\\d+) hiba$","$1 facturi gata, $2 erori","$1 invoices done, $2 failed"],["^(\\d+) rendel\u00e9s bet\u00f6ltve(?: \\((\\d+) kihagyva\\))?$","$1 comenzi încărcate","$1 orders loaded"],["^(.+) AWB \u2014 (\\d+) rendel\u00e9s \u00b7 (.+)$","$1 AWB — $2 comenzi · $3","$1 AWB — $2 orders · $3"],["^Hiba: (.*)$","Eroare: $1","Error: $1"],["^FanCourier: (.*)$","FanCourier: $1","FanCourier: $1"],["^(\\d+) / (\\d+) ezen a h\u00e9ten$","$1 / $2 săptămâna aceasta","$1 / $2 this week"],["^El\u0151fizet\u00e9s m\u00f3dos\u00edtva: (.+)$","Abonament modificat: $1","Subscription changed: $1"],["^\u00c1tv\u00e1ltva: (.+)$","Comutat la: $1","Switched to: $1"],["^Nincs be\u00e1ll\u00edtva a (.+) curier! Menj a Curier be\u00e1ll\u00edt\u00e1sokhoz\\.$","Curierul $1 nu este configurat! Mergi la setările Curier.","The $1 courier is not configured! Go to the Courier settings."],["^Sz\u00e1ml\u00e1k gener\u00e1l\u00e1sa \\((.+)\\)\\.\\.\\.$","Se generează facturile ($1)...","Generating invoices ($1)..."],["^Egyszerre max (\\d+) darab k\u00e9sz\u00fcl\\.$","Se generează maximum $1 odată.","At most $1 are created at a time."],["^Egyszerre max (\\d+) sz\u00e1mla k\u00e9sz\u00fcl\\.$","Se generează maximum $1 facturi odată.","At most $1 invoices are created at a time."],["^\u2014 AWB: (.+), Sz\u00e1mla: (.+)$","— AWB: $1, Factură: $2","— AWB: $1, Invoice: $2"],["^(\\d+) lei/h\u00f3$","$1 lei/lună","$1 lei/mo"],["^A\\(z\\) (.+) sz\u00e1ml\u00e1z\u00f3nak nincs publikusan el\u00e9rhet\u0151 API dokument\u00e1ci\u00f3ja.*$","Furnizorul $1 nu are documentație API publică, deci nu a putut fi implementat.","$1 has no public API documentation, so it could not be implemented."],["^A (.+) (k\u00f6vet\u00e9si|nyomtat\u00e1si) integr\u00e1ci\u00f3 m\u00e9g nincs implement\u00e1lva\\.$","Integrarea $1 nu este implementată încă.","The $1 integration is not implemented yet."],["^Ismeretlen curier: (.+)$","Curier necunoscut: $1","Unknown courier: $1"],["^Ismeretlen sz\u00e1ml\u00e1z\u00f3: (.+)$","Furnizor de facturare necunoscut: $1","Unknown invoicing provider: $1"],["^SameDay: a v\u00e1ros nem tal\u00e1lhat\u00f3 \\((.+)\\)\\.$","SameDay: orașul nu a fost găsit ($1).","SameDay: city not found ($1)."],["^SameDay: ismeretlen megye \\((.+)\\)\\.$","SameDay: județ necunoscut ($1).","SameDay: unknown county ($1)."],["^GLS nem JSON v\u00e1laszt adott \\(HTTP (\\d+)\\)\\.$","GLS nu a returnat JSON (HTTP $1).","GLS did not return JSON (HTTP $1)."]].map(([re, ro, en]) => [new RegExp(re), ro, en]);
+const UI_PATTERNS = [["^FGO nem JSON választ adott \\(HTTP (\\d+)\\)(?:: ([\\s\\S]*))?$", "FGO nu a returnat JSON (HTTP $1): $2", "FGO did not return JSON (HTTP $1): $2"],["^\u2713 K\u00e9sz \u2014 (\\d+) sikeres, (\\d+) hiba$","✓ Gata — $1 reușite, $2 erori","✓ Done — $1 successful, $2 failed"],["^\u2713 K\u00e9sz \u2014 (\\d+) sz\u00e1mla sikeres, (\\d+) hiba$","✓ Gata — $1 facturi reușite, $2 erori","✓ Done — $1 invoices created, $2 failed"],["^(\\d+) AWB k\u00e9sz, (\\d+) hiba$","$1 AWB gata, $2 erori","$1 AWB done, $2 failed"],["^(\\d+) sz\u00e1mla k\u00e9sz, (\\d+) hiba$","$1 facturi gata, $2 erori","$1 invoices done, $2 failed"],["^(\\d+) rendel\u00e9s bet\u00f6ltve(?: \\((\\d+) kihagyva\\))?$","$1 comenzi încărcate","$1 orders loaded"],["^(.+) AWB \u2014 (\\d+) rendel\u00e9s \u00b7 (.+)$","$1 AWB — $2 comenzi · $3","$1 AWB — $2 orders · $3"],["^Hiba: (.*)$","Eroare: $1","Error: $1"],["^FanCourier: (.*)$","FanCourier: $1","FanCourier: $1"],["^(\\d+) / (\\d+) ezen a h\u00e9ten$","$1 / $2 săptămâna aceasta","$1 / $2 this week"],["^El\u0151fizet\u00e9s m\u00f3dos\u00edtva: (.+)$","Abonament modificat: $1","Subscription changed: $1"],["^\u00c1tv\u00e1ltva: (.+)$","Comutat la: $1","Switched to: $1"],["^Nincs be\u00e1ll\u00edtva a (.+) curier! Menj a Curier be\u00e1ll\u00edt\u00e1sokhoz\\.$","Curierul $1 nu este configurat! Mergi la setările Curier.","The $1 courier is not configured! Go to the Courier settings."],["^Sz\u00e1ml\u00e1k gener\u00e1l\u00e1sa \\((.+)\\)\\.\\.\\.$","Se generează facturile ($1)...","Generating invoices ($1)..."],["^Egyszerre max (\\d+) darab k\u00e9sz\u00fcl\\.$","Se generează maximum $1 odată.","At most $1 are created at a time."],["^Egyszerre max (\\d+) sz\u00e1mla k\u00e9sz\u00fcl\\.$","Se generează maximum $1 facturi odată.","At most $1 invoices are created at a time."],["^\u2014 AWB: (.+), Sz\u00e1mla: (.+)$","— AWB: $1, Factură: $2","— AWB: $1, Invoice: $2"],["^(.+) \u2014 (\\d+) lei/h\u00f3$","$1 — $2 lei/lună","$1 — $2 lei/mo"],["^(\\d+) lei/h\u00f3$","$1 lei/lună","$1 lei/mo"],["^A\\(z\\) (.+) sz\u00e1ml\u00e1z\u00f3nak nincs publikusan el\u00e9rhet\u0151 API dokument\u00e1ci\u00f3ja.*$","Furnizorul $1 nu are documentație API publică, deci nu a putut fi implementat.","$1 has no public API documentation, so it could not be implemented."],["^A (.+) (k\u00f6vet\u00e9si|nyomtat\u00e1si) integr\u00e1ci\u00f3 m\u00e9g nincs implement\u00e1lva\\.$","Integrarea $1 nu este implementată încă.","The $1 integration is not implemented yet."],["^Ismeretlen curier: (.+)$","Curier necunoscut: $1","Unknown courier: $1"],["^Ismeretlen sz\u00e1ml\u00e1z\u00f3: (.+)$","Furnizor de facturare necunoscut: $1","Unknown invoicing provider: $1"],["^SameDay: a v\u00e1ros nem tal\u00e1lhat\u00f3 \\((.+)\\)\\.$","SameDay: orașul nu a fost găsit ($1).","SameDay: city not found ($1)."],["^SameDay: ismeretlen megye \\((.+)\\)\\.$","SameDay: județ necunoscut ($1).","SameDay: unknown county ($1)."],["^GLS nem JSON v\u00e1laszt adott \\(HTTP (\\d+)\\)\\.$","GLS nu a returnat JSON (HTTP $1).","GLS did not return JSON (HTTP $1)."]].map(([re, ro, en]) => [new RegExp(re), ro, en]);
 
 function translateUiString(str) {
   if (currentLang === 'hu' || !str) return str;
@@ -3145,7 +3306,7 @@ let signupData = { email: '', password: '' };
 window.showStep = function (stepId) {
   document.querySelectorAll('.auth-step').forEach(s => s.classList.remove('active'));
   document.getElementById('step-' + stepId).classList.add('active');
-  document.querySelectorAll('#loginError, #signupError, #verifyError, #lverifyError').forEach(e => e.style.display = 'none');
+  document.querySelectorAll('#loginError, #signupError, #signupPayError, #verifyError, #lverifyError').forEach(e => e.style.display = 'none');
 };
 
 window.signupStep1 = async function () {
@@ -3401,7 +3562,7 @@ window.removeSavedCard = async function () {
 };
 
 window.signupStep3 = async function () {
-  const errEl = document.getElementById('signupError');
+  const errEl = document.getElementById('signupPayError');
   errEl.style.display = 'none';
   if (!document.getElementById('acceptTerms').checked) {
     errEl.textContent = t('confirm_terms');
@@ -3411,11 +3572,11 @@ window.signupStep3 = async function () {
   let savedCard = null;
   if (document.getElementById('saveCard')?.checked) {
     const c = readCardForSave();
-    if (c.error) { errEl.textContent = translateUiString(c.error); errEl.style.display = 'block'; return; }
+    if (c.error) { errEl.textContent = translateUiString(c.error); errEl.style.display = 'block'; errEl.scrollIntoView({ block: 'center', behavior: 'smooth' }); return; }
     savedCard = c;
   }
   const bDetails = readBillingDetails('su', true);
-  if (bDetails.error) { errEl.textContent = translateUiString(bDetails.error); errEl.style.display = 'block'; return; }
+  if (bDetails.error) { errEl.textContent = translateUiString(bDetails.error); errEl.style.display = 'block'; errEl.scrollIntoView({ block: 'center', behavior: 'smooth' }); return; }
   const billingInit = buildInitialBilling(selectedPlan, savedCard, bDetails);
   const receiptStart = new Date().toISOString();
   if (pendingNewUser) {
